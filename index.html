@@ -4,186 +4,445 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tracer Study FIKOM UPDM(B)</title>
+<link rel="icon" href="https://i.imgur.com/JkxRYd6.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{--bg:#f4f7f6;--card:#fff;--text:#17211d;--muted:#66736d;--line:#dce5e1;--accent:#116149;--accent2:#0c4d3a;--danger:#b42318;--ok:#087443;--warn:#a15c00}
+:root{--bg:#f4f7f6;--card:#fff;--text:#17211d;--muted:#66736d;--line:#dce5e1;--accent:#116149;--accent2:#0c4d3a;--danger:#b42318;--ok:#087443;--warn:#b54708}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-header{background:linear-gradient(135deg,#0c4d3a,#167456);color:#fff;padding:34px 18px}
-.wrap{max-width:1180px;margin:auto}
+header{background:linear-gradient(135deg,#0c4d3a,#167456);color:#fff;padding:32px 18px}
+.wrap{max-width:1200px;margin:auto}
 .brand{display:flex;gap:16px;align-items:center}
 .brand img{width:62px;height:62px;object-fit:contain;background:#fff;border-radius:14px;padding:7px}
-.brand h1{margin:0;font-size:26px}
-.brand p{margin:4px 0 0;opacity:.88}
-nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.brand h1{margin:0;font-size:25px}
+.brand p{margin:4px 0 0;opacity:.88;font-size:14px}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
 .navin{display:flex;gap:8px;padding:10px 18px;flex-wrap:wrap}
-.tab{border:0;background:transparent;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+.tab{border:0;background:transparent;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;color:var(--text)}
 .tab.active,.tab:hover{background:#e9f4f0;color:var(--accent)}
-main{padding:24px 18px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px #17352a0b}
-h2,h3{margin-top:0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+main{padding:22px 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 4px 18px #17352a0b}
+h2,h3,h4{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .full{grid-column:1/-1}
-label{display:block;font-weight:700;margin-bottom:6px}
-input,select,textarea{width:100%;border:1px solid #cbd7d2;border-radius:11px;padding:11px 12px;background:#fff;font:inherit}
+label{display:block;font-weight:700;margin-bottom:6px;font-size:14px}
+input,select,textarea{width:100%;border:1px solid #cbd7d2;border-radius:11px;padding:10px 12px;background:#fff;font:inherit}
 textarea{min-height:100px;resize:vertical}
-.btn{border:0;border-radius:11px;padding:11px 16px;background:var(--accent);color:#fff;font-weight:800;cursor:pointer}
+.btn{border:0;border-radius:11px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:800;cursor:pointer;font-size:14px}
+.btn:hover{background:var(--accent2)}
 .btn.secondary{background:#e7efec;color:#164b3b}
 .btn.danger{background:var(--danger)}
-.btn.small{padding:7px 11px;font-size:13px;border-radius:9px}
-.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn.warn{background:#b54708}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:9px}
 .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
 .hidden{display:none!important}
 .hint{color:var(--muted);font-size:13px}
 .req{color:var(--danger)}
-.status{padding:12px;border-radius:11px;margin:12px 0;display:none}
+.status{padding:12px;border-radius:11px;margin:12px 0;display:none;font-size:14px}
 .status.ok{display:block;background:#eaf7ef;color:var(--ok)}
 .status.err{display:block;background:#fff0ef;color:var(--danger)}
-.status.warn{display:block;background:#fff6e6;color:var(--warn)}
+.status.info{display:block;background:#eef4ff;color:#1d4ed8}
 .progress{height:8px;background:#e3ebe8;border-radius:99px;overflow:hidden;margin:12px 0 20px}
-.bar{height:100%;background:var(--accent);width:0}
-.step{display:none}
-.step.active{display:block}
+.bar{height:100%;background:var(--accent);width:0;transition:width .3s}
+.step{display:none}.step.active{display:block}
 .stepnav{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
 .radio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.radio{border:1px solid var(--line);padding:10px;border-radius:10px;font-weight:500;text-align:center}
-.tablewrap{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:12px}
+.radio{border:1px solid var(--line);padding:9px;border-radius:10px;font-weight:500;text-align:center;cursor:pointer;font-size:14px}
+.radio:hover{background:#f1f7f4}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
 .table{width:100%;border-collapse:collapse;font-size:13.5px}
-.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid var(--line);white-space:nowrap}
-.table th{background:#f1f7f4;position:sticky;top:0;z-index:1}
-.kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.kpi div{padding:16px;background:#f1f7f4;border-radius:13px}
-.kpi b{display:block;font-size:26px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.chip{padding:8px 13px;border-radius:99px;background:#eef4f1;cursor:pointer;font-weight:700;font-size:13px;border:1px solid transparent}
-.chip.active{background:var(--accent);color:#fff}
-.filterbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end}
-.barrow{display:grid;grid-template-columns:180px 1fr 64px;gap:10px;align-items:center;margin-bottom:8px;font-size:13px}
-.bartrack{background:#eef4f1;border-radius:99px;height:14px;overflow:hidden}
-.barfill{height:100%;background:linear-gradient(90deg,#116149,#37b48a);border-radius:99px}
-.barval{text-align:right;font-weight:800}
-.donutwrap{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.donut{width:172px;height:172px;border-radius:50%;position:relative;flex:0 0 auto}
-.donuthole{position:absolute;inset:26px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:var(--accent)}
-.legend{list-style:none;padding:0;margin:0;font-size:13px}
-.legend li{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
-.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:800;background:#e9f4f0;color:var(--accent)}
-.badge.warn{background:#fff2df;color:var(--warn)}
-.badge.gray{background:#eceff0;color:#4a5651}
-.subcard{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
-footer{text-align:center;color:var(--muted);padding:30px}
-@media(max-width:960px){.filterbar{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.grid,.radio-grid{grid-template-columns:1fr}.brand h1{font-size:20px}.actions .btn{width:100%}.kpi{grid-template-columns:1fr}.barrow{grid-template-columns:120px 1fr 50px}}
+.table th,.table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.table th{background:#f1f7f4;position:sticky;top:0;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:#33544a}
+.table tbody tr:hover{background:#f7fbf9}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi>div{padding:16px;background:#f1f7f4;border-radius:13px;border:1px solid #e0ece7}
+.kpi b{display:block;font-size:25px;line-height:1.2;color:var(--accent2)}
+.kpi span{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.chartbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.chartbox h4{margin:0 0 10px;font-size:14px;color:#33544a}
+.chartbox canvas{max-height:260px}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px;font-size:13px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:700;background:#e7efec;color:#164b3b}
+.badge.ok{background:#e6f6ec;color:var(--ok)}
+.badge.warn{background:#fdf3e7;color:var(--warn)}
+.badge.err{background:#fdeceb;color:var(--danger)}
+.modal{position:fixed;inset:0;background:#0b1a1588;display:flex;align-items:center;justify-content:center;z-index:60;padding:18px}
+.modal .box{background:#fff;border-radius:16px;max-width:820px;width:100%;max-height:88vh;overflow:auto;padding:22px}
+.tree{list-style:none;padding-left:0;margin:0;font-size:14px}
+.tree li{padding:5px 0;border-bottom:1px dashed var(--line)}
+.tree b{display:inline-block;min-width:220px;color:#33544a}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.subtab{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.subtab button{border:0;background:#eef4f1;color:#2a4a3f;padding:8px 13px;border-radius:99px;cursor:pointer;font-weight:700;font-size:13px}
+.subtab button.active{background:var(--accent);color:#fff}
+footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
+@media(max-width:760px){
+  .grid,.grid3,.grid4,.radio-grid{grid-template-columns:1fr}
+  .brand h1{font-size:19px}
+  .actions{justify-content:stretch}.actions .btn{flex:1}
+  .tree b{min-width:120px}
+}
 </style>
 </head>
 <body>
+
 <header><div class="wrap brand">
   <img src="https://i.imgur.com/JkxRYd6.png" alt="Logo FIKOM UPDM(B)" onerror="this.style.display='none'">
-  <div><h1>Tracer Study FIKOM UPDM(B)</h1><p>Pemetaan kondisi lulusan, relevansi pendidikan, kompetensi, dan masukan alumni.</p></div>
+  <div>
+    <h1>Tracer Study FIKOM UPDM(B)</h1>
+    <p>Pemetaan kondisi lulusan, relevansi pendidikan, kompetensi, dan masukan alumni.</p>
+  </div>
 </div></header>
+
 <nav><div class="wrap navin">
   <button class="tab active" data-view="form">📝 Tracer Study</button>
   <button class="tab" data-view="tracking">🔎 Cek Tracer ID</button>
-  <button class="tab" data-view="admin">🔐 Admin</button>
+  <button class="tab" data-view="admin">📊 Dashboard</button>
 </div></nav>
 
 <main class="wrap">
-<!-- ================= FORM ================= -->
+
+<!-- ======================= FORM ======================= -->
 <section id="view-form">
-<div class="card">
-<h2>Isi Tracer Study</h2>
-<div id="periodeBanner" class="status warn" style="display:none"></div>
-<p class="hint">Tidak perlu login. Isi data dengan benar. Satu NIM hanya dapat mengirim satu respons.</p>
-<div id="formStatus" class="status"></div>
-<div class="progress"><div id="bar" class="bar"></div></div>
-<form id="tracerForm">
-<div class="step active" data-step="1">
-<h3>1. Data Alumni</h3>
-<div class="grid">
-<div><label>NIM <span class="req">*</span></label><input id="nim" required inputmode="numeric" maxlength="9" placeholder="Contoh: 202441001"><span class="hint" id="nimInfo"></span></div>
-<div><label>Nama Lengkap <span class="req">*</span></label><input id="nama" required maxlength="120"></div>
-<div><label>Program Studi <span class="req">*</span></label><select id="programStudi" required><option value="">Pilih</option><option>S1 Ilmu Komunikasi</option><option>S2 Magister Ilmu Komunikasi</option></select></div>
-<div><label>Jenjang <span class="req">*</span></label><select id="jenjang" required><option value="">Pilih</option><option>S1</option><option>S2</option></select></div>
-<div><label>Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4"></div>
-<div><label>Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4"></div>
-<div><label>Email <span class="req">*</span></label><input id="email" type="email" required></div>
-<div><label>WhatsApp <span class="req">*</span></label><input id="whatsapp" required inputmode="numeric" maxlength="13"></div>
-</div>
-<div class="stepnav"><span></span><button type="button" class="btn next">Lanjut →</button></div>
-</div>
+  <div class="card">
+    <h2>Isi Tracer Study</h2>
+    <p class="hint">Tidak perlu login. Pastikan NIM terdaftar pada database alumni FIKOM UPDM(B). Satu NIM hanya dapat mengirim satu respons.</p>
+    <div id="periodeInfo" class="status info" style="display:none"></div>
+    <div id="formStatus" class="status"></div>
+    <div class="progress"><div id="bar" class="bar"></div></div>
 
-<div class="step" data-step="2">
-<h3>2. Kondisi Setelah Lulus</h3>
-<div class="grid"><div class="full"><label>Status saat ini <span class="req">*</span></label><select id="status" required><option value="">Pilih</option><option>Bekerja</option><option>Wirausaha</option><option>Studi lanjut</option><option>Bekerja dan studi lanjut</option><option>Belum bekerja</option><option>Lainnya</option></select></div></div>
-<div id="workBox" class="card hidden"><h3>Data Pekerjaan</h3><div class="grid">
-<div><label>Status pekerjaan</label><input id="statusPekerjaan"></div><div><label>Perusahaan/Instansi</label><input id="perusahaan"></div>
-<div><label>Bidang industri</label><input id="bidangIndustri"></div><div><label>Jabatan</label><input id="jabatan"></div>
-<div><label>Lokasi kerja</label><input id="lokasiKerja"></div><div><label>Tanggal mulai</label><input id="tanggalMulai" type="date"></div>
-<div><label>Masa tunggu (bulan)</label><input id="masaTungguBulan" inputmode="numeric"></div><div><label>Cara mendapatkan kerja</label><input id="caraMendapatKerja"></div>
-<div><label>Kisaran penghasilan</label><select id="penghasilanRange"><option value="">Pilih</option><option>&lt; Rp3 juta</option><option>Rp3–5 juta</option><option>Rp5–10 juta</option><option>&gt; Rp10 juta</option></select></div>
-<div><label>Kesesuaian pekerjaan</label><select id="kesesuaian"><option value="">Pilih</option><option>Sangat sesuai</option><option>Sesuai</option><option>Cukup sesuai</option><option>Kurang sesuai</option><option>Tidak sesuai</option></select></div>
-<div><label>Dukungan pendidikan</label><select id="dukunganPendidikan"><option value="">Pilih</option><option>Sangat besar</option><option>Besar</option><option>Cukup</option><option>Kecil</option><option>Tidak ada</option></select></div>
-</div></div>
-<div id="businessBox" class="card hidden"><h3>Data Wirausaha</h3><div class="grid">
-<div><label>Nama usaha</label><input id="namaUsaha"></div><div><label>Bidang usaha</label><input id="bidangUsaha"></div>
-<div><label>Tahun mulai</label><input id="tahunMulaiUsaha" inputmode="numeric" maxlength="4"></div><div><label>Posisi/peran</label><input id="posisiUsaha"></div>
-<div><label>Jumlah tenaga kerja</label><input id="jumlahTenagaKerja" inputmode="numeric"></div><div><label>Kisaran omzet</label><input id="omzetRange"></div>
-<div class="full"><label>Lokasi usaha</label><input id="lokasiUsaha"></div>
-</div></div>
-<div id="studyBox" class="card hidden"><h3>Data Studi Lanjut</h3><div class="grid">
-<div><label>Perguruan tinggi</label><input id="perguruanTinggi"></div><div><label>Program studi</label><input id="programStudiLanjut"></div>
-<div><label>Jenjang</label><input id="jenjangStudi"></div><div><label>Tahun mulai</label><input id="tahunMulaiStudi" inputmode="numeric"></div>
-<div><label>Status studi</label><input id="statusStudi"></div><div><label>Pembiayaan</label><input id="pembiayaan"></div>
-</div></div>
-<div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
-</div>
+    <form id="tracerForm" novalidate>
 
-<div class="step" data-step="3">
-<h3>3. Kompetensi</h3><p class="hint">Nilai 1–5: 1 sangat rendah, 5 sangat tinggi.</p>
-<div id="competency"></div>
-<div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
-</div>
+      <!-- STEP 1 -->
+      <div class="step active" data-step="1">
+        <h3>1. Data Alumni</h3>
+        <div class="grid">
+          <div>
+            <label>NIM <span class="req">*</span></label>
+            <div style="display:flex;gap:8px">
+              <input id="nim" required inputmode="numeric" maxlength="9" placeholder="Contoh: 202441001">
+              <button type="button" id="checkNimBtn" class="btn secondary" style="white-space:nowrap">Verifikasi</button>
+            </div>
+            <p class="hint" id="nimHint">Klik Verifikasi untuk memuat data dari master alumni.</p>
+          </div>
+          <div><label>Nama Lengkap <span class="req">*</span></label><input id="nama" required maxlength="120"></div>
+          <div><label>Program Studi <span class="req">*</span></label>
+            <select id="programStudi" required><option value="">Pilih</option></select></div>
+          <div><label>Jenjang <span class="req">*</span></label>
+            <select id="jenjang" required><option value="">Pilih</option></select></div>
+          <div><label>Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4"></div>
+          <div><label>Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4"></div>
+          <div><label>IPK</label><input id="ipk" inputmode="decimal" maxlength="5" placeholder="Contoh: 3.45"></div>
+          <div><label>Email <span class="req">*</span></label><input id="email" type="email" required></div>
+          <div><label>WhatsApp <span class="req">*</span></label><input id="whatsapp" required inputmode="numeric" maxlength="13" placeholder="08xxxxxxxxxx"></div>
+        </div>
+        <div class="stepnav"><span></span><button type="button" class="btn next">Lanjut →</button></div>
+      </div>
 
-<div class="step" data-step="4">
-<h3>4. Evaluasi FIKOM</h3><p class="hint">Nilai 1–5.</p>
-<div id="evaluation"></div>
-<div class="grid"><div class="full"><label>Saran untuk FIKOM</label><textarea id="saran" maxlength="2000" placeholder="Masukan yang konstruktif untuk pengembangan FIKOM..."></textarea></div></div>
-<div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
-</div>
+      <!-- STEP 2 -->
+      <div class="step" data-step="2">
+        <h3>2. Kondisi Setelah Lulus</h3>
+        <div class="grid">
+          <div class="full"><label>Status saat ini <span class="req">*</span></label>
+            <select id="status" required><option value="">Pilih</option></select></div>
+        </div>
 
-<div class="step" data-step="5">
-<h3>5. Konfirmasi</h3><div class="card"><p>Pastikan seluruh data sudah benar. Setelah dikirim, data akan disimpan sebagai respons Tracer Study.</p>
-<label><input id="agree" type="checkbox" required> Saya menyatakan data yang diberikan benar.</label></div>
-<div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="submit" class="btn">Kirim Tracer Study ✓</button></div>
-</div>
-</form>
-</div></section>
+        <div id="workBox" class="card hidden" style="margin-top:16px">
+          <h3>Data Pekerjaan</h3>
+          <div class="grid">
+            <div><label>Status pekerjaan</label><select id="statusPekerjaan"></select></div>
+            <div><label>Perusahaan/Instansi <span class="req">*</span></label><input id="perusahaan"></div>
+            <div><label>Bidang industri</label><input id="bidangIndustri" placeholder="Media, Periklanan, Pendidikan, ..."></div>
+            <div><label>Jabatan</label><input id="jabatan"></div>
+            <div><label>Lokasi kerja</label><input id="lokasiKerja"></div>
+            <div><label>Tanggal mulai</label><input id="tanggalMulai" type="date"></div>
+            <div><label>Masa tunggu (bulan)</label><input id="masaTungguBulan" inputmode="numeric" maxlength="3"></div>
+            <div><label>Cara mendapatkan kerja</label><select id="caraMendapatKerja"></select></div>
+            <div><label>Kisaran penghasilan</label><select id="penghasilanRange"></select></div>
+            <div><label>Kesesuaian pekerjaan</label><select id="kesesuaian"></select></div>
+            <div><label>Dukungan pendidikan FIKOM</label><select id="dukunganPendidikan"></select></div>
+          </div>
+        </div>
 
-<!-- ================= TRACKING ================= -->
-<section id="view-tracking" class="hidden"><div class="card"><h2>Cek Tracer ID</h2><p class="hint">Masukkan Tracer ID yang diterima setelah pengisian.</p><div class="grid"><div><label>Tracer ID</label><input id="trackingId" placeholder="TS-2026-000001"></div><div style="align-self:end"><button id="trackBtn" class="btn">Cek</button></div></div><div id="trackResult"></div></div></section>
+        <div id="businessBox" class="card hidden" style="margin-top:16px">
+          <h3>Data Wirausaha</h3>
+          <div class="grid">
+            <div><label>Nama usaha <span class="req">*</span></label><input id="namaUsaha"></div>
+            <div><label>Bidang usaha</label><input id="bidangUsaha"></div>
+            <div><label>Tahun mulai</label><input id="tahunMulaiUsaha" inputmode="numeric" maxlength="4"></div>
+            <div><label>Posisi/peran</label><input id="posisiUsaha"></div>
+            <div><label>Jumlah tenaga kerja</label><input id="jumlahTenagaKerja" inputmode="numeric"></div>
+            <div><label>Kisaran omzet</label><select id="omzetRange"></select></div>
+            <div class="full"><label>Lokasi usaha</label><input id="lokasiUsaha"></div>
+          </div>
+        </div>
 
-<!-- ================= ADMIN ================= -->
-<section id="view-admin" class="hidden">
-<div class="card">
-<h2>Dashboard Tracer Study</h2>
-<div id="adminStatus" class="status"></div>
-<div id="loginBox">
-  <div class="grid"><div><label>Username</label><input id="username" autocomplete="username"></div><div><label>Password</label><input id="password" type="password" autocomplete="current-password"></div></div>
-  <button id="loginBtn" class="btn" style="margin-top:15px">Login</button>
-  <p class="hint">Akun default: admin / ChangeMe-2026! — segera ganti password melalui tab Pengguna.</p>
-</div>
-<div id="dashBox" class="hidden">
-  <div class="actions" style="justify-content:space-between;align-items:center;margin-bottom:12px">
-    <div><span class="badge" id="roleBadge">-</span> <span class="hint" id="userInfo"></span></div>
-    <div class="actions"><button id="refreshBtn" class="btn secondary small">↻ Refresh</button><button id="logoutBtn" class="btn danger small">Logout</button></div>
+        <div id="studyBox" class="card hidden" style="margin-top:16px">
+          <h3>Data Studi Lanjut</h3>
+          <div class="grid">
+            <div><label>Perguruan tinggi <span class="req">*</span></label><input id="perguruanTinggi"></div>
+            <div><label>Program studi</label><input id="programStudiLanjut"></div>
+            <div><label>Jenjang</label><input id="jenjangStudi" placeholder="S2 / S3"></div>
+            <div><label>Tahun mulai</label><input id="tahunMulaiStudi" inputmode="numeric" maxlength="4"></div>
+            <div><label>Status studi</label><input id="statusStudi" placeholder="Aktif / Lulus"></div>
+            <div><label>Pembiayaan</label><input id="pembiayaan" placeholder="Beasiswa / Mandiri / Instansi"></div>
+          </div>
+        </div>
+
+        <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" data-step="3">
+        <h3>3. Kompetensi Lulusan</h3>
+        <p class="hint">Nilai 1–5: 1 sangat rendah, 5 sangat tinggi.</p>
+        <div id="competency"></div>
+        <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" data-step="4">
+        <h3>4. Evaluasi FIKOM</h3>
+        <p class="hint">Nilai 1–5: 1 sangat kurang, 5 sangat baik.</p>
+        <div id="evaluation"></div>
+        <div class="grid"><div class="full"><label>Saran untuk FIKOM UPDM(B)</label>
+          <textarea id="saran" maxlength="2000" placeholder="Masukan konstruktif untuk pengembangan kurikulum, pembelajaran, layanan, dan kompetensi lulusan..."></textarea></div></div>
+        <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" data-step="5">
+        <h3>5. Konfirmasi</h3>
+        <div class="card" style="margin-bottom:14px">
+          <p>Pastikan seluruh data sudah benar. Setelah dikirim, data akan disimpan sebagai respons Tracer Study dan Tracer ID akan dibuat otomatis.</p>
+          <label style="font-weight:600"><input id="agree" type="checkbox" required style="width:auto;margin-right:8px">Saya menyatakan data yang diberikan benar dan dapat dipertanggungjawabkan.</label>
+        </div>
+        <div id="summaryBox" class="card"></div>
+        <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="submit" class="btn">Kirim Tracer Study ✓</button></div>
+      </div>
+
+    </form>
   </div>
-  <div class="chips" id="adminTabs"></div>
-  <div id="tabContent"></div>
-</div>
-</div>
 </section>
+
+<!-- ======================= TRACKING ======================= -->
+<section id="view-tracking" class="hidden">
+  <div class="card">
+    <h2>Cek Tracer ID</h2>
+    <p class="hint">Masukkan Tracer ID yang Anda terima setelah pengisian.</p>
+    <div class="grid">
+      <div><label>Tracer ID</label><input id="trackingId" placeholder="TS-2026-000001"></div>
+      <div style="align-self:end"><button id="trackBtn" class="btn">Cek</button></div>
+    </div>
+    <div id="trackResult"></div>
+  </div>
+</section>
+
+<!-- ======================= ADMIN ======================= -->
+<section id="view-admin" class="hidden">
+  <div class="card">
+    <h2>Dashboard Tracer Study</h2>
+    <div id="adminStatus" class="status"></div>
+
+    <div id="loginBox">
+      <div class="grid">
+        <div><label>Username</label><input id="username" autocomplete="username"></div>
+        <div><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
+      </div>
+      <button id="loginBtn" class="btn" style="margin-top:15px">Login</button>
+      <p class="hint">Setelah instalasi pertama, segera ganti password admin melalui menu <b>Pengguna</b>.</p>
+    </div>
+
+    <div id="dashBox" class="hidden">
+      <div class="toolbar" style="justify-content:space-between">
+        <div><span id="profileBadge" class="badge"></span></div>
+        <div class="actions">
+          <button id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
+          <button id="logoutBtn" class="btn danger sm">Logout</button>
+        </div>
+      </div>
+
+      <div class="subtab" id="adminTabs">
+        <button class="active" data-panel="overview">Ringkasan</button>
+        <button data-panel="responden">Responden</button>
+        <button data-panel="analitik">Analitik</button>
+        <button data-panel="reminder">Reminder</button>
+        <button data-panel="master" data-role="ADMIN">Master Alumni</button>
+        <button data-panel="periode" data-role="ADMIN">Periode</button>
+        <button data-panel="users" data-role="ADMIN">Pengguna</button>
+        <button data-panel="audit" data-role="ADMIN">Audit Log</button>
+      </div>
+
+      <!-- FILTER -->
+      <div class="card" style="background:#f8fbfa">
+        <div class="filters">
+          <div><label>Periode</label><select id="fPeriode"><option value="">Semua</option></select></div>
+          <div><label>Tahun Lulus</label><select id="fTahun"><option value="">Semua</option></select></div>
+          <div><label>Program Studi</label><select id="fProdi"><option value="">Semua</option></select></div>
+          <div><label>Status</label><select id="fStatus"><option value="">Semua</option></select></div>
+          <div><label>Cari (NIM/Nama)</label><input id="fQ" placeholder="Kata kunci..."></div>
+          <div style="display:flex;gap:8px">
+            <button id="applyFilter" class="btn" style="flex:1">Terapkan</button>
+            <button id="resetFilter" class="btn secondary">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL: OVERVIEW -->
+      <div class="panel" data-panel="overview">
+        <div class="kpi" id="kpiBox"></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="chartbox"><h4>Status Lulusan</h4><canvas id="chStatus"></canvas></div>
+          <div class="chartbox"><h4>Sebaran Tahun Lulus</h4><canvas id="chTahun"></canvas></div>
+          <div class="chartbox"><h4>Program Studi</h4><canvas id="chProdi"></canvas></div>
+          <div class="chartbox"><h4>Kesesuaian Pekerjaan</h4><canvas id="chKesesuaian"></canvas></div>
+          <div class="chartbox"><h4>Kisaran Penghasilan</h4><canvas id="chPenghasilan"></canvas></div>
+          <div class="chartbox"><h4>Tren Pengisian (12 bulan)</h4><canvas id="chTrend"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Respons Terbaru</h3>
+          <div class="tablewrap"><table class="table" id="recentTable"></table></div>
+        </div>
+      </div>
+
+      <!-- PANEL: RESPONDEN -->
+      <div class="panel hidden" data-panel="responden">
+        <div class="toolbar">
+          <button class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
+          <button class="btn secondary sm" data-export="xls">⬇ Export Excel</button>
+          <button class="btn secondary sm" data-export="pdf">🖨 Export PDF</button>
+        </div>
+        <div class="tablewrap"><table class="table" id="respTable"></table></div>
+        <div class="pager">
+          <span id="pageInfo"></span>
+          <button class="btn secondary sm" id="prevPage">‹ Prev</button>
+          <button class="btn secondary sm" id="nextPage">Next ›</button>
+        </div>
+      </div>
+
+      <!-- PANEL: ANALITIK -->
+      <div class="panel hidden" data-panel="analitik">
+        <div class="grid">
+          <div class="chartbox"><h4>Rata-rata Kompetensi Lulusan</h4><canvas id="chKompetensi"></canvas></div>
+          <div class="chartbox"><h4>Rata-rata Evaluasi FIKOM</h4><canvas id="chEvaluasi"></canvas></div>
+          <div class="chartbox"><h4>Masa Tunggu Mendapat Kerja</h4><canvas id="chMasaTunggu"></canvas></div>
+          <div class="chartbox"><h4>Bidang Industri (Top 8)</h4><canvas id="chBidang"></canvas></div>
+          <div class="chartbox"><h4>Dukungan Pendidikan FIKOM</h4><canvas id="chDukungan"></canvas></div>
+          <div class="chartbox"><h4>Jenjang Lulusan</h4><canvas id="chJenjang"></canvas></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Masukan Alumni Terbaru</h3>
+          <div id="saranList" class="hint">Belum ada masukan.</div>
+        </div>
+      </div>
+
+      <!-- PANEL: REMINDER -->
+      <div class="panel hidden" data-panel="reminder">
+        <div class="card">
+          <h3>Template Pesan</h3>
+          <div class="grid">
+            <div class="full"><label>Isi pesan</label>
+              <textarea id="reminderTpl">Assalamualaikum {nama},
+
+Kami dari FIKOM UPDM(B) mengundang Anda untuk mengisi Tracer Study periode {periode}.
+Pengisian hanya membutuhkan ±5 menit dan sangat membantu evaluasi kurikulum serta layanan kampus.
+
+Link pengisian: {link}
+
+Terima kasih.
+FIKOM UPDM(B)</textarea>
+            </div>
+            <div><label>Link form</label><input id="reminderLink" placeholder="https://username.github.io/tracer/"></div>
+          </div>
+          <p class="hint">Placeholder: <b>{nama}</b>, <b>{nim}</b>, <b>{prodi}</b>, <b>{tahun}</b>, <b>{periode}</b>, <b>{link}</b>.</p>
+        </div>
+        <div class="card">
+          <h3>Alumni Belum Mengisi <span class="badge warn" id="belumCount">0</span></h3>
+          <div class="toolbar">
+            <button class="btn secondary sm" id="copyAllWa">📋 Copy semua link WhatsApp</button>
+            <button class="btn secondary sm" id="logReminder">🗒 Catat pengiriman</button>
+          </div>
+          <div class="tablewrap"><table class="table" id="reminderTable"></table></div>
+        </div>
+      </div>
+
+      <!-- PANEL: MASTER -->
+      <div class="panel hidden" data-panel="master">
+        <div class="card">
+          <h3>Import Master Alumni</h3>
+          <p class="hint">Tempel data dengan format <b>satu baris per alumni</b>: <code>NIM;NAMA;PROGRAM_STUDI;JENJANG;TAHUN_MASUK;TAHUN_LULUS;EMAIL;WHATSAPP</code>. Data yang sudah ada akan diperbarui.</p>
+          <textarea id="masterCsv" style="min-height:150px" placeholder="202441001;Ahmad Fauzi;S1 Ilmu Komunikasi;S1;2020;2024;ahmad@mail.com;081234567890"></textarea>
+          <div class="actions" style="margin-top:12px">
+            <button class="btn" id="importMaster">Import Master</button>
+          </div>
+          <div id="masterStatus" class="status"></div>
+        </div>
+        <div class="card">
+          <h3>Daftar Master Alumni <span class="badge" id="masterCount">0</span></h3>
+          <div class="tablewrap"><table class="table" id="masterTable"></table></div>
+        </div>
+      </div>
+
+      <!-- PANEL: PERIODE -->
+      <div class="panel hidden" data-panel="periode">
+        <div class="card">
+          <h3>Tambah / Ubah Periode</h3>
+          <div class="grid3">
+            <div><label>Periode ID</label><input id="pId" placeholder="PRD-2026"></div>
+            <div><label>Nama Periode</label><input id="pNama" placeholder="Tracer Study 2026"></div>
+            <div><label>Status</label><select id="pStatus"><option value="BUKA">BUKA</option><option value="TUTUP">TUTUP</option></select></div>
+            <div><label>Tahun Lulus Min</label><input id="pMin" inputmode="numeric" maxlength="4" placeholder="2018"></div>
+            <div><label>Tahun Lulus Max</label><input id="pMax" inputmode="numeric" maxlength="4" placeholder="2025"></div>
+            <div><label>Tanggal Buka</label><input id="pBuka" type="date"></div>
+            <div><label>Tanggal Tutup</label><input id="pTutup" type="date"></div>
+            <div class="full"><label>Catatan</label><input id="pCatatan"></div>
+          </div>
+          <div class="actions" style="margin-top:12px"><button class="btn" id="savePeriode">Simpan Periode</button></div>
+          <div id="periodeStatus" class="status"></div>
+        </div>
+        <div class="card"><h3>Daftar Periode</h3><div class="tablewrap"><table class="table" id="periodeTable"></table></div></div>
+      </div>
+
+      <!-- PANEL: USERS -->
+      <div class="panel hidden" data-panel="users">
+        <div class="card">
+          <h3>Tambah / Ubah Pengguna</h3>
+          <div class="grid3">
+            <div><label>Username</label><input id="uUser"></div>
+            <div><label>Nama Lengkap</label><input id="uNama"></div>
+            <div><label>Password (kosongkan bila tidak diubah)</label><input id="uPass" type="text"></div>
+            <div><label>Role</label><select id="uRole">
+              <option value="ADMIN">ADMIN</option>
+              <option value="KAPRODI">KAPRODI</option>
+              <option value="WADEK">WADEK</option>
+              <option value="DEKAN">DEKAN</option>
+            </select></div>
+            <div><label>Program Studi (khusus KAPRODI)</label><select id="uProdi"><option value="">-</option></select></div>
+            <div><label>Aktif</label><select id="uAktif"><option value="true">Ya</option><option value="false">Tidak</option></select></div>
+          </div>
+          <div class="actions" style="margin-top:12px"><button class="btn" id="saveUser">Simpan Pengguna</button></div>
+          <div id="userStatus" class="status"></div>
+        </div>
+        <div class="card"><h3>Daftar Pengguna</h3><div class="tablewrap"><table class="table" id="userTable"></table></div></div>
+      </div>
+
+      <!-- PANEL: AUDIT -->
+      <div class="panel hidden" data-panel="audit">
+        <div class="card"><h3>Audit Log</h3><div class="tablewrap"><table class="table" id="auditTable"></table></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 </main>
+
 <footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.0</footer>
+
+<div id="modalRoot"></div>
 
 <script>
 /* =========================================================
@@ -191,691 +450,767 @@ footer{text-align:center;color:var(--muted);padding:30px}
    ========================================================= */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
 
-const ROLE_CAPS = {
-  ADMIN:   ['ringkasan','responden','master','periode','reminder','pengguna'],
-  WADEK:   ['ringkasan','responden','reminder'],
-  DEKAN:   ['ringkasan','responden'],
-  KAPRODI: ['ringkasan','responden','reminder']
-};
-const TAB_LABEL = {
-  ringkasan:'📊 Ringkasan', responden:'👥 Data Responden', master:'🗂️ Master Alumni',
-  periode:'📅 Periode', reminder:'📣 Reminder', pengguna:'🔑 Pengguna'
-};
-
-const PROGRAMS = ['S1 Ilmu Komunikasi','S2 Magister Ilmu Komunikasi'];
-const JENJANGS = ['S1','S2'];
-const STATUSES = ['Bekerja','Wirausaha','Studi lanjut','Bekerja dan studi lanjut','Belum bekerja','Lainnya'];
-const PALETTE = ['#116149','#1e8f68','#37b48a','#7dd3b0','#b7e4d1','#0c4d3a','#4f9d82','#9fd8c2','#d5efe5','#2c7a5f'];
-
-const competencies = [['komunikasi','Komunikasi'],['kerjaSama','Kerja sama'],['kepemimpinan','Kepemimpinan'],['teknologi','Penggunaan teknologi'],['literasiDigital','Literasi digital'],['problemSolving','Pemecahan masalah'],['kreativitas','Kreativitas'],['adaptasi','Kemampuan beradaptasi'],['etikaProfesional','Etika profesional']];
-const evaluations = [['kurikulum','Kurikulum'],['dosen','Dosen'],['pembelajaran','Pembelajaran'],['fasilitas','Fasilitas'],['laboratorium','Laboratorium'],['layananAkademik','Layanan akademik'],['layananAdministrasi','Layanan administrasi'],['kemahasiswaan','Kegiatan kemahasiswaan'],['persiapanKerja','Persiapan memasuki dunia kerja']];
-
 /* =========================================================
    STATE
    ========================================================= */
-let step = 1;
-let token = sessionStorage.getItem('ts_token') || '';
-let profile = JSON.parse(sessionStorage.getItem('ts_profile') || 'null');
-let adminTab = 'ringkasan';
-let filters = {tahunDari:'', tahunSampai:'', programStudi:'', jenjang:'', status:'', periodeId:''};
-let lastDashboard = null;
-let masterCache = [];
+let TOKEN   = sessionStorage.getItem('ts_token') || '';
+let PROFILE = null;
+let META    = null;
+let DATA    = null;
+let step    = 1;
+let page    = 1;
+let perPage = 25;
+let MASTER  = [];
+let charts  = {};
 
 /* =========================================================
    UTIL
    ========================================================= */
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function el(id){return document.getElementById(id)}
-function value(id){return (el(id)?.value||'').trim()}
-function msg(id,text,kind='err'){const e=el(id);if(!e)return;e.textContent=text;e.className='status '+kind}
-function clearMsg(id){const e=el(id);if(e){e.className='status';e.textContent=''}}
-function radioGroup(target,key){return document.querySelector(`input[name="${target}_${key}"]:checked`)?.value||''}
-function fmt(n,d=1){return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toFixed(d)}
+const $ = id => document.getElementById(id);
+const val = id => ($(id) ? String($(id).value || '').trim() : '');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const setHtml = (id, h) => { const e = $(id); if (e) e.innerHTML = h; };
 
-async function post(data){
-  const r = await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams(data)});
+function msg(id, text, ok) {
+  const e = $(id); if (!e) return;
+  e.textContent = text;
+  e.className = 'status ' + (ok === true ? 'ok' : ok === 'info' ? 'info' : 'err');
+}
+function clearMsg(id) { const e = $(id); if (e) { e.className = 'status'; e.textContent = ''; } }
+
+async function post(data) {
+  const r = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body: new URLSearchParams(data)
+  });
   return r.json();
 }
-async function get(params){
-  const r = await fetch(GAS_URL+'?'+new URLSearchParams(params));
+async function get(params) {
+  const r = await fetch(GAS_URL + '?' + new URLSearchParams(params));
   return r.json();
 }
-async function api(action,data){
-  return post({action:action,payload:JSON.stringify(data||{})});
-}
-function downloadBase64(name,mime,b64){
+function downloadB64(name, mime, b64) {
   const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
-  const blob = new Blob([arr],{type:mime});
-  const url = URL.createObjectURL(blob);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const blob = new Blob([bytes], { type: mime });
   const a = document.createElement('a');
-  a.href = url; a.download = name;
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 }
-function toast(id,text,kind){msg(id,text,kind);setTimeout(()=>{const e=el(id);if(e&&e.textContent===text)clearMsg(id)},6000)}
+function fillSelect(id, list, placeholder) {
+  const el = $(id); if (!el) return;
+  el.innerHTML = '<option value="">' + (placeholder || 'Pilih') + '</option>' +
+    list.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+}
+function badge(text, kind) { return `<span class="badge ${kind || ''}">${esc(text)}</span>`; }
+
+/* =========================================================
+   KONSTANTA KUESIONER
+   ========================================================= */
+const COMPETENCIES = [
+  ['komunikasi','Komunikasi'],
+  ['kerjaSama','Kerja sama'],
+  ['kepemimpinan','Kepemimpinan'],
+  ['teknologi','Penggunaan teknologi'],
+  ['literasiDigital','Literasi digital'],
+  ['problemSolving','Pemecahan masalah'],
+  ['kreativitas','Kreativitas'],
+  ['adaptasi','Kemampuan beradaptasi'],
+  ['etikaProfesional','Etika profesional']
+];
+const EVALUATIONS = [
+  ['kurikulum','Kurikulum'],
+  ['dosen','Dosen'],
+  ['pembelajaran','Pembelajaran'],
+  ['fasilitas','Fasilitas'],
+  ['laboratorium','Laboratorium'],
+  ['layananAkademik','Layanan akademik'],
+  ['layananAdministrasi','Layanan administrasi'],
+  ['kemahasiswaan','Kegiatan kemahasiswaan'],
+  ['persiapanKerja','Persiapan memasuki dunia kerja']
+];
+
+/* =========================================================
+   BOOTSTRAP
+   ========================================================= */
+(async function boot() {
+  try {
+    META = await get({ action: 'meta' });
+    if (!META.ok) throw new Error(META.error || 'Gagal memuat konfigurasi.');
+    applyMeta();
+    if (TOKEN) tryLogin();
+  } catch (e) {
+    msg('formStatus', 'Gagal terhubung ke server: ' + e.message);
+  }
+})();
+
+function applyMeta() {
+  fillSelect('programStudi', META.programs || [], 'Pilih');
+  fillSelect('jenjang', META.jenjang || [], 'Pilih');
+  fillSelect('status', META.statuses || [], 'Pilih');
+  fillSelect('statusPekerjaan', META.statusPekerjaan || [], 'Pilih');
+  fillSelect('caraMendapatKerja', META.caraMendapatKerja || [], 'Pilih');
+  fillSelect('penghasilanRange', META.penghasilan || [], 'Pilih');
+  fillSelect('kesesuaian', META.kesesuaian || [], 'Pilih');
+  fillSelect('dukunganPendidikan', META.dukungan || [], 'Pilih');
+  fillSelect('omzetRange', META.omzet || [], 'Pilih');
+  fillSelect('uProdi', META.programs || [], '-');
+  buildRatings('competency', COMPETENCIES);
+  buildRatings('evaluation', EVALUATIONS);
+
+  const per = META.periodeAktif;
+  const box = $('periodeInfo');
+  if (per) {
+    box.className = 'status info';
+    box.style.display = 'block';
+    box.innerHTML = `Periode aktif: <b>${esc(per.nama)}</b> · Tahun lulus ${esc(per.tahunMin)}–${esc(per.tahunMax)} · Dibuka ${esc(per.tglBuka)} s/d ${esc(per.tglTutup)}`;
+  } else {
+    box.className = 'status err';
+    box.style.display = 'block';
+    box.textContent = 'Periode Tracer Study sedang ditutup. Hubungi admin FIKOM UPDM(B).';
+  }
+}
+
+function buildRatings(target, list) {
+  $(target).innerHTML = list.map(([key, label]) => `
+    <div style="margin:0 0 13px">
+      <label>${esc(label)} <span class="req">*</span></label>
+      <div class="radio-grid">
+        ${[1,2,3,4,5].map(n => `<label class="radio"><input type="radio" name="${target}_${key}" value="${n}" required> ${n}</label>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function radioGroup(target, key) {
+  const el = document.querySelector(`input[name="${target}_${key}"]:checked`);
+  return el ? el.value : '';
+}
 
 /* =========================================================
    NAVIGASI
    ========================================================= */
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));
-function showView(v){
-  document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));
-  el('view-'+v).classList.remove('hidden');
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  if(v==='admin' && token) loadDashboard();
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => showView(b.dataset.view));
+function showView(v) {
+  document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+  $('view-' + v).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  if (v === 'admin' && TOKEN && !DATA) loadDashboard();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* =========================================================
-   FORM TRACER
+   FORM WIZARD
    ========================================================= */
-function makeRatings(target,list){
-  el(target).innerHTML = list.map(([key,label])=>`<div style="margin:0 0 13px"><label>${label}</label><div class="radio-grid">${[1,2,3,4,5].map(n=>`<label class="radio"><input type="radio" name="${target}_${key}" value="${n}" required> ${n}</label>`).join('')}</div></div>`).join('');
+function updateSteps() {
+  document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', Number(s.dataset.step) === step));
+  $('bar').style.width = (step / 5 * 100) + '%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (step === 5) renderSummary();
 }
-makeRatings('competency',competencies);
-makeRatings('evaluation',evaluations);
 
-function updateSteps(){
-  document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===step));
-  el('bar').style.width = (step/5*100)+'%';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function validateCurrent(){
+document.querySelectorAll('.next').forEach(b => b.onclick = () => {
+  if (validateCurrent() && step < 5) { step++; updateSteps(); }
+});
+document.querySelectorAll('.prev').forEach(b => b.onclick = () => { if (step > 1) { step--; updateSteps(); } });
+
+function validateCurrent() {
   const box = document.querySelector(`.step[data-step="${step}"]`);
-  for(const f of box.querySelectorAll('input,select,textarea')){
-    if(f.required && !f.checkValidity()){ f.reportValidity(); return false; }
+  for (const el of box.querySelectorAll('input,select,textarea')) {
+    if (el.required && !el.checkValidity()) { el.reportValidity(); return false; }
   }
-  if(step===1){
-    if(!/^\d{9}$/.test(value('nim'))){alert('NIM harus 9 digit.');return false}
-    if(!/^\d{4}$/.test(value('tahunMasuk'))||!/^\d{4}$/.test(value('tahunLulus'))){alert('Tahun masuk/lulus harus 4 digit.');return false}
-    if(Number(value('tahunLulus'))<Number(value('tahunMasuk'))){alert('Tahun lulus tidak boleh sebelum tahun masuk.');return false}
-    if(!/^\d{10,13}$/.test(value('whatsapp'))){alert('WhatsApp harus 10–13 digit.');return false}
+  if (step === 1) {
+    if (!/^\d{9}$/.test(val('nim'))) { alert('NIM harus 9 digit.'); return false; }
+    if (!/^\d{4}$/.test(val('tahunMasuk')) || !/^\d{4}$/.test(val('tahunLulus'))) { alert('Tahun masuk/lulus harus 4 digit.'); return false; }
+    if (Number(val('tahunLulus')) < Number(val('tahunMasuk'))) { alert('Tahun lulus tidak boleh sebelum tahun masuk.'); return false; }
+    if (!/^\d{10,13}$/.test(val('whatsapp'))) { alert('WhatsApp harus 10–13 digit.'); return false; }
+    const ipk = val('ipk');
+    if (ipk && (isNaN(Number(ipk)) || Number(ipk) < 0 || Number(ipk) > 4)) { alert('IPK harus antara 0 dan 4.'); return false; }
+  }
+  if (step === 2) {
+    const s = val('status');
+    if ((s === 'Bekerja' || s === 'Bekerja dan studi lanjut') && !val('perusahaan')) { alert('Nama perusahaan/instansi wajib diisi.'); return false; }
+    if (s === 'Wirausaha' && !val('namaUsaha')) { alert('Nama usaha wajib diisi.'); return false; }
+    if ((s === 'Studi lanjut' || s === 'Bekerja dan studi lanjut') && !val('perguruanTinggi')) { alert('Perguruan tinggi wajib diisi.'); return false; }
   }
   return true;
 }
-document.querySelectorAll('.next').forEach(b=>b.onclick=()=>{if(validateCurrent()&&step<5){step++;updateSteps()}});
-document.querySelectorAll('.prev').forEach(b=>b.onclick=()=>{if(step>1){step--;updateSteps()}});
 
-el('status').onchange = ()=>{
-  const s = value('status');
-  el('workBox').classList.toggle('hidden', !(s==='Bekerja'||s==='Bekerja dan studi lanjut'));
-  el('businessBox').classList.toggle('hidden', s!=='Wirausaha');
-  el('studyBox').classList.toggle('hidden', !(s==='Studi lanjut'||s==='Bekerja dan studi lanjut'));
+/* ---------- verifikasi NIM ke master alumni ---------- */
+$('checkNimBtn').onclick = async () => {
+  const nim = val('nim');
+  if (!/^\d{9}$/.test(nim)) { $('nimHint').textContent = 'NIM harus 9 digit.'; return; }
+  $('nimHint').textContent = 'Memeriksa...';
+  try {
+    const r = await get({ action: 'checknim', nim });
+    if (!r.ok) { $('nimHint').textContent = r.error || 'NIM tidak ditemukan.'; return; }
+    if (r.sudahMengisi) { $('nimHint').textContent = 'NIM ini sudah pernah mengisi Tracer Study.'; return; }
+    if (r.masterEmpty) { $('nimHint').textContent = 'Master alumni belum diisi admin — lanjutkan pengisian manual.'; return; }
+    const a = r.alumni;
+    $('nama').value = a.nama || '';
+    if (a.programStudi) $('programStudi').value = a.programStudi;
+    if (a.jenjang) $('jenjang').value = a.jenjang;
+    $('tahunMasuk').value = a.tahunMasuk || '';
+    $('tahunLulus').value = a.tahunLulus || '';
+    $('email').value = a.email || '';
+    $('whatsapp').value = a.whatsapp || '';
+    $('nimHint').textContent = '✓ Data ditemukan pada master alumni. Periksa dan lengkapi bila perlu.';
+  } catch (e) {
+    $('nimHint').textContent = 'Gagal memeriksa NIM: ' + e.message;
+  }
 };
 
-/* Autofill dari master alumni */
-let nimTimer = null;
-el('nim').addEventListener('input', ()=>{
-  clearTimeout(nimTimer);
-  const nim = value('nim');
-  el('nimInfo').textContent = '';
-  if(!/^\d{9}$/.test(nim)) return;
-  nimTimer = setTimeout(async ()=>{
-    try{
-      const r = await get({action:'alumni', nim:nim});
-      if(r && r.ok){
-        if(!value('nama')) el('nama').value = r.nama||'';
-        if(!value('programStudi') && r.programStudi) el('programStudi').value = r.programStudi;
-        if(!value('jenjang') && r.jenjang) el('jenjang').value = r.jenjang;
-        if(!value('tahunMasuk') && r.tahunMasuk) el('tahunMasuk').value = r.tahunMasuk;
-        if(!value('tahunLulus') && r.tahunLulus) el('tahunLulus').value = r.tahunLulus;
-        if(!value('email') && r.email) el('email').value = r.email;
-        if(!value('whatsapp') && r.whatsapp) el('whatsapp').value = r.whatsapp;
-        el('nimInfo').textContent = '✓ Data ditemukan pada master alumni.';
-      }else{
-        el('nimInfo').textContent = '';
-      }
-    }catch(e){}
-  }, 600);
-});
+/* ---------- tampilkan blok kondisional ---------- */
+$('status').onchange = () => {
+  const s = val('status');
+  const kerja = (s === 'Bekerja' || s === 'Bekerja dan studi lanjut');
+  $('workBox').classList.toggle('hidden', !kerja);
+  $('businessBox').classList.toggle('hidden', s !== 'Wirausaha');
+  $('studyBox').classList.toggle('hidden', !(s === 'Studi lanjut' || s === 'Bekerja dan studi lanjut'));
+  $('perusahaan').required = kerja;
+  $('namaUsaha').required = (s === 'Wirausaha');
+  $('perguruanTinggi').required = (s === 'Studi lanjut' || s === 'Bekerja dan studi lanjut');
+};
 
-el('tracerForm').onsubmit = async e=>{
+/* ---------- ringkasan konfirmasi ---------- */
+function renderSummary() {
+  const rows = [
+    ['NIM', val('nim')], ['Nama', val('nama')], ['Program Studi', val('programStudi')],
+    ['Jenjang', val('jenjang')], ['Tahun Masuk', val('tahunMasuk')], ['Tahun Lulus', val('tahunLulus')],
+    ['IPK', val('ipk') || '-'], ['Email', val('email')], ['WhatsApp', val('whatsapp')],
+    ['Status', val('status')],
+    ['Perusahaan/Usaha/PT', val('perusahaan') || val('namaUsaha') || val('perguruanTinggi') || '-']
+  ];
+  setHtml('summaryBox', '<h4>Ringkasan Data</h4><ul class="tree">' +
+    rows.map(([k, v]) => `<li><b>${esc(k)}</b>${esc(v || '-')}</li>`).join('') + '</ul>');
+}
+
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+$('tracerForm').onsubmit = async e => {
   e.preventDefault();
-  if(!validateCurrent()) return;
+  if (!validateCurrent()) return;
+  if (!$('agree').checked) { alert('Centang pernyataan kebenaran data terlebih dahulu.'); return; }
   clearMsg('formStatus');
+
   const payload = {
-    nim:value('nim'), nama:value('nama'), programStudi:value('programStudi'), jenjang:value('jenjang'),
-    tahunMasuk:value('tahunMasuk'), tahunLulus:value('tahunLulus'), email:value('email'),
-    whatsapp:value('whatsapp'), status:value('status'),
-    answers:{},
-    pekerjaan:{statusPekerjaan:value('statusPekerjaan'),perusahaan:value('perusahaan'),bidangIndustri:value('bidangIndustri'),jabatan:value('jabatan'),lokasiKerja:value('lokasiKerja'),tanggalMulai:value('tanggalMulai'),masaTungguBulan:value('masaTungguBulan'),caraMendapatKerja:value('caraMendapatKerja'),penghasilanRange:value('penghasilanRange'),kesesuaian:value('kesesuaian'),dukunganPendidikan:value('dukunganPendidikan')},
-    wirausaha:{namaUsaha:value('namaUsaha'),bidangUsaha:value('bidangUsaha'),tahunMulai:value('tahunMulaiUsaha'),posisi:value('posisiUsaha'),jumlahTenagaKerja:value('jumlahTenagaKerja'),omzetRange:value('omzetRange'),lokasiUsaha:value('lokasiUsaha')},
-    studi:{perguruanTinggi:value('perguruanTinggi'),programStudi:value('programStudiLanjut'),jenjang:value('jenjangStudi'),tahunMulai:value('tahunMulaiStudi'),statusStudi:value('statusStudi'),pembiayaan:value('pembiayaan')},
-    kompetensi:Object.fromEntries(competencies.map(([k])=>[k,radioGroup('competency',k)])),
-    evaluasi:Object.fromEntries(evaluations.map(([k])=>[k,radioGroup('evaluation',k)])),
-    saran:value('saran')
+    nim: val('nim'), nama: val('nama'), programStudi: val('programStudi'), jenjang: val('jenjang'),
+    tahunMasuk: val('tahunMasuk'), tahunLulus: val('tahunLulus'), ipk: val('ipk'),
+    email: val('email'), whatsapp: val('whatsapp'), status: val('status'),
+    answers: {},
+    pekerjaan: {
+      statusPekerjaan: val('statusPekerjaan'), perusahaan: val('perusahaan'),
+      bidangIndustri: val('bidangIndustri'), jabatan: val('jabatan'), lokasiKerja: val('lokasiKerja'),
+      tanggalMulai: val('tanggalMulai'), masaTungguBulan: val('masaTungguBulan'),
+      caraMendapatKerja: val('caraMendapatKerja'), penghasilanRange: val('penghasilanRange'),
+      kesesuaian: val('kesesuaian'), dukunganPendidikan: val('dukunganPendidikan')
+    },
+    wirausaha: {
+      namaUsaha: val('namaUsaha'), bidangUsaha: val('bidangUsaha'), tahunMulai: val('tahunMulaiUsaha'),
+      posisi: val('posisiUsaha'), jumlahTenagaKerja: val('jumlahTenagaKerja'),
+      omzetRange: val('omzetRange'), lokasiUsaha: val('lokasiUsaha')
+    },
+    studi: {
+      perguruanTinggi: val('perguruanTinggi'), programStudi: val('programStudiLanjut'),
+      jenjang: val('jenjangStudi'), tahunMulai: val('tahunMulaiStudi'),
+      statusStudi: val('statusStudi'), pembiayaan: val('pembiayaan')
+    },
+    kompetensi: Object.fromEntries(COMPETENCIES.map(([k]) => [k, radioGroup('competency', k)])),
+    evaluasi: Object.fromEntries(EVALUATIONS.map(([k]) => [k, radioGroup('evaluation', k)])),
+    saran: val('saran')
   };
+
   const btn = e.submitter;
   btn.disabled = true; btn.textContent = 'Mengirim...';
-  try{
-    const r = await api('submit', payload);
-    if(!r.ok) throw new Error(r.error||'Gagal mengirim');
-    el('tracerForm').reset();
-    el('workBox').classList.add('hidden');
-    el('businessBox').classList.add('hidden');
-    el('studyBox').classList.add('hidden');
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    step = 1; updateSteps();
-    msg('formStatus', 'Berhasil. Tracer ID Anda: '+r.tracerId, 'ok');
-    el('trackingId').value = r.tracerId;
-    showView('tracking');
-    el('trackResult').innerHTML = `<div class="status ok" style="display:block"><b>${esc(r.tracerId)}</b><br>Simpan Tracer ID ini untuk pengecekan berkala.</div>`;
-  }catch(err){
-    msg('formStatus', err.message, 'err');
-  }finally{
+  try {
+    const r = await post({ action: 'submit', payload: JSON.stringify(payload) });
+    if (!r.ok) throw new Error(r.error || 'Gagal mengirim.');
+    resetForm();
+    msg('formStatus', `✓ Berhasil. Tracer ID Anda: ${r.tracerId}. Simpan nomor ini untuk pengecekan.`, true);
+    $('trackingId').value = r.tracerId;
+    setTimeout(() => showView('tracking'), 1200);
+  } catch (err) {
+    msg('formStatus', err.message);
+  } finally {
     btn.disabled = false; btn.textContent = 'Kirim Tracer Study ✓';
   }
 };
 
-/* Periode banner */
-(async ()=>{
-  try{
-    const r = await get({action:'periode'});
-    if(r && r.ok && r.periode){
-      const p = r.periode;
-      const open = r.open !== false;
-      const b = el('periodeBanner');
-      b.style.display = 'block';
-      b.className = 'status ' + (open?'ok':'warn');
-      b.innerHTML = `<b>${esc(p.nama)}</b> · Periode ${esc(p.tanggalMulai)} s/d ${esc(p.tanggalSelesai)} · Target lulusan ${esc(p.tahunDari)}–${esc(p.tahunSampai)}` + (open?'':` <br><b>Periode sedang ditutup.</b>`);
-    }
-  }catch(e){}
-})();
+function resetForm() {
+  $('tracerForm').reset();
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  $('workBox').classList.add('hidden');
+  $('businessBox').classList.add('hidden');
+  $('studyBox').classList.add('hidden');
+  step = 1; updateSteps();
+}
 
 /* =========================================================
    TRACKING
    ========================================================= */
-el('trackBtn').onclick = async ()=>{
-  const id = value('trackingId');
-  if(!id) return;
-  const box = el('trackResult');
-  box.innerHTML = '<p>Memeriksa...</p>';
-  try{
-    const r = await get({action:'lookup', tracerId:id});
-    box.innerHTML = r.ok
-      ? `<div class="status ok" style="display:block"><b>${esc(r.tracerId)}</b><br>Nama: ${esc(r.nama)}<br>Program Studi: ${esc(r.programStudi)}<br>Jenjang: ${esc(r.jenjang)}<br>Tahun Lulus: ${esc(r.tahunLulus)}<br>Status: ${esc(r.status)}</div>`
-      : `<div class="status err" style="display:block">${esc(r.error||'Tidak ditemukan')}</div>`;
-  }catch(e){
-    box.innerHTML = '<div class="status err" style="display:block">Gagal terhubung ke server.</div>';
+$('trackBtn').onclick = async () => {
+  const id = val('trackingId');
+  if (!id) return;
+  setHtml('trackResult', '<p class="hint">Memeriksa...</p>');
+  try {
+    const r = await get({ action: 'lookup', tracerId: id });
+    if (!r.ok) { setHtml('trackResult', `<div class="status err" style="display:block">${esc(r.error)}</div>`); return; }
+    setHtml('trackResult', `<div class="status ok" style="display:block">
+      <b>${esc(r.tracerId)}</b><br>Nama: ${esc(r.nama)}<br>Program Studi: ${esc(r.programStudi)}
+      <br>Jenjang: ${esc(r.jenjang)}<br>Tahun Lulus: ${esc(r.tahunLulus)}
+      <br>Status: ${esc(r.status)}<br>Dikirim: ${esc(r.createdAt)}</div>`);
+  } catch (e) {
+    setHtml('trackResult', '<div class="status err" style="display:block">Gagal terhubung ke server.</div>');
   }
 };
 
 /* =========================================================
-   ADMIN — LOGIN / LOGOUT
+   AUTH
    ========================================================= */
-el('loginBtn').onclick = async ()=>{
-  const btn = el('loginBtn');
-  btn.disabled = true;
-  try{
-    const r = await api('login', {username:value('username'), password:el('password').value});
-    if(!r.ok) throw new Error(r.error||'Login gagal');
-    token = r.token; profile = r.profile;
-    sessionStorage.setItem('ts_token', token);
-    sessionStorage.setItem('ts_profile', JSON.stringify(profile));
-    msg('adminStatus','Login berhasil sebagai '+profile.role+'.','ok');
+$('loginBtn').onclick = async () => {
+  const btn = $('loginBtn'); btn.disabled = true;
+  try {
+    const r = await post({ action: 'login', username: val('username'), password: $('password').value });
+    if (!r.ok) throw new Error(r.error);
+    TOKEN = r.token; PROFILE = r.profile;
+    sessionStorage.setItem('ts_token', TOKEN);
+    msg('adminStatus', 'Login berhasil sebagai ' + PROFILE.role + '.', true);
     loadDashboard();
-  }catch(e){
-    msg('adminStatus', e.message, 'err');
-  }finally{
-    btn.disabled = false;
-  }
+  } catch (e) {
+    msg('adminStatus', e.message);
+  } finally { btn.disabled = false; }
 };
-el('logoutBtn').onclick = async ()=>{
-  try{ await api('logout',{token:token}); }catch(e){}
+
+async function tryLogin() {
+  try { await loadDashboard(); } catch (e) { /* silent */ }
+}
+
+$('logoutBtn').onclick = async () => {
+  try { await post({ action: 'logout', token: TOKEN }); } catch (e) {}
+  TOKEN = ''; PROFILE = null; DATA = null;
   sessionStorage.removeItem('ts_token');
-  sessionStorage.removeItem('ts_profile');
-  token=''; profile=null;
-  el('loginBox').classList.remove('hidden');
-  el('dashBox').classList.add('hidden');
-  el('adminStatus').className='status';
+  $('loginBox').classList.remove('hidden');
+  $('dashBox').classList.add('hidden');
+  msg('adminStatus', 'Logout berhasil.', true);
 };
-el('refreshBtn').onclick = ()=>loadDashboard();
 
 /* =========================================================
-   ADMIN — DASHBOARD
+   DASHBOARD
    ========================================================= */
-async function loadDashboard(){
-  if(!token) return;
-  el('loginBox').classList.add('hidden');
-  el('dashBox').classList.remove('hidden');
-  el('roleBadge').textContent = profile?.role || '-';
-  el('userInfo').textContent = (profile?.username||'') + (profile?.programStudi? ' · '+profile.programStudi : '');
-  buildAdminTabs();
-  await renderTab();
-}
-function buildAdminTabs(){
-  const caps = ROLE_CAPS[profile?.role] || [];
-  if(!caps.includes(adminTab)) adminTab = caps[0];
-  el('adminTabs').innerHTML = caps.map(c=>`<div class="chip ${c===adminTab?'active':''}" data-tab="${c}">${TAB_LABEL[c]}</div>`).join('');
-  el('adminTabs').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{adminTab=c.dataset.tab;buildAdminTabs();renderTab();});
-}
-function filterBarHtml(){
-  return `<div class="filterbar" style="margin-bottom:14px">
-    <div><label>Tahun lulus dari</label><input id="fTahunDari" inputmode="numeric" maxlength="4" value="${esc(filters.tahunDari)}" placeholder="2020"></div>
-    <div><label>Tahun lulus sampai</label><input id="fTahunSampai" inputmode="numeric" maxlength="4" value="${esc(filters.tahunSampai)}" placeholder="2026"></div>
-    <div><label>Program studi</label><select id="fProdi"><option value="">Semua</option>${PROGRAMS.map(p=>`<option ${filters.programStudi===p?'selected':''}>${p}</option>`).join('')}</select></div>
-    <div><label>Jenjang</label><select id="fJenjang"><option value="">Semua</option>${JENJANGS.map(j=>`<option ${filters.jenjang===j?'selected':''}>${j}</option>`).join('')}</select></div>
-    <div><label>Status</label><select id="fStatus"><option value="">Semua</option>${STATUSES.map(s=>`<option ${filters.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
-    <div class="actions"><button class="btn secondary small" id="fReset">Reset</button><button class="btn small" id="fApply">Terapkan</button></div>
-  </div>`;
-}
-function bindFilterBar(){
-  const apply = el('fApply'), reset = el('fReset');
-  if(apply) apply.onclick = ()=>{
-    filters.tahunDari = value('fTahunDari');
-    filters.tahunSampai = value('fTahunSampai');
-    filters.programStudi = value('fProdi');
-    filters.jenjang = value('fJenjang');
-    filters.status = value('fStatus');
-    renderTab();
-  };
-  if(reset) reset.onclick = ()=>{
-    filters = {tahunDari:'',tahunSampai:'',programStudi:'',jenjang:'',status:'',periodeId:''};
-    renderTab();
+$('refreshBtn').onclick = () => loadDashboard();
+$('applyFilter').onclick = () => { page = 1; loadDashboard(); };
+$('resetFilter').onclick = () => {
+  ['fPeriode','fTahun','fProdi','fStatus','fQ'].forEach(i => $(i).value = '');
+  page = 1; loadDashboard();
+};
+document.querySelectorAll('#adminTabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#adminTabs button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('hidden', p.dataset.panel !== b.dataset.panel));
+  if (b.dataset.panel === 'analitik') renderAnalitik();
+});
+$('prevPage').onclick = () => { if (page > 1) { page--; renderResponden(); } };
+$('nextPage').onclick = () => { if (DATA && page * perPage < DATA.items.length) { page++; renderResponden(); } };
+
+function currentFilters() {
+  return {
+    periodeId: val('fPeriode'), tahun: val('fTahun'), programStudi: val('fProdi'),
+    status: val('fStatus'), q: val('fQ')
   };
 }
-function renderBars(obj, emptyText='Belum ada data'){
-  const entries = Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]);
-  if(!entries.length) return `<p class="hint">${emptyText}</p>`;
-  const max = Math.max(1,...entries.map(e=>e[1]));
-  return entries.map(([k,v])=>`<div class="barrow"><span>${esc(k)}</span><div class="bartrack"><div class="barfill" style="width:${(v/max*100).toFixed(1)}%"></div></div><span class="barval">${v}</span></div>`).join('');
-}
-function renderDonut(obj){
-  const entries = Object.entries(obj||{}).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]);
-  const total = entries.reduce((s,e)=>s+e[1],0);
-  if(!entries.length) return '<p class="hint">Belum ada data</p>';
-  let acc = 0; const stops = [];
-  entries.forEach((e,i)=>{
-    const start = acc/total*100; acc += e[1]; const end = acc/total*100;
-    stops.push(`${PALETTE[i%PALETTE.length]} ${start.toFixed(2)}% ${end.toFixed(2)}%`);
-  });
-  return `<div class="donutwrap">
-    <div class="donut" style="background:conic-gradient(${stops.join(',')})"><div class="donuthole">${total}</div></div>
-    <ul class="legend">${entries.map((e,i)=>`<li><i style="background:${PALETTE[i%PALETTE.length]}"></i>${esc(e[0])} <b>${e[1]}</b> <span class="hint">${(e[1]/total*100).toFixed(1)}%</span></li>`).join('')}</ul>
-  </div>`;
-}
-function renderRatingBars(obj,labelMap){
-  const entries = Object.entries(obj||{});
-  if(!entries.length) return '<p class="hint">Belum ada data</p>';
-  const max = 5;
-  return entries.map(([k,v])=>`<div class="barrow"><span>${esc(labelMap[k]||k)}</span><div class="bartrack"><div class="barfill" style="width:${(v/max*100).toFixed(1)}%"></div></div><span class="barval">${fmt(v,2)}</span></div>`).join('');
-}
-const KOMP_LABEL = Object.fromEntries(competencies);
-const EVAL_LABEL = Object.fromEntries(evaluations);
 
-async function renderTab(){
-  const box = el('tabContent');
-  if(adminTab==='ringkasan') return renderRingkasan(box);
-  if(adminTab==='responden') return renderResponden(box);
-  if(adminTab==='master') return renderMaster(box);
-  if(adminTab==='periode') return renderPeriode(box);
-  if(adminTab==='reminder') return renderReminder(box);
-  if(adminTab==='pengguna') return renderPengguna(box);
-}
-
-/* ---------- RINGKASAN ---------- */
-async function renderRingkasan(box){
-  box.innerHTML = filterBarHtml() + '<p class="hint">Memuat dashboard...</p>';
-  bindFilterBar();
-  try{
-    const r = await api('dashboard', {token, filters});
-    if(!r.ok) throw new Error(r.error);
-    lastDashboard = r;
-    const s = r.summary;
-    box.innerHTML = filterBarHtml() + `
-      <div class="kpi">
-        <div>Total responden<b>${s.total}</b></div>
-        <div>Master alumni<b>${s.totalMaster}</b></div>
-        <div>Tingkat respons<b>${s.responseRate}%</b></div>
-        <div>Belum mengisi<b>${s.belumMengisi}</b></div>
-      </div>
-      <div class="grid" style="margin-top:16px">
-        <div class="subcard"><h3>Distribusi Status Lulusan</h3>${renderDonut(s.statusCounts)}</div>
-        <div class="subcard"><h3>Sebaran Program Studi</h3>${renderBars(s.programCounts)}</div>
-        <div class="subcard"><h3>Sebaran Tahun Lulus</h3>${renderBars(s.yearCounts)}</div>
-        <div class="subcard"><h3>Sebaran Jenjang</h3>${renderBars(s.jenjangCounts)}</div>
-        <div class="subcard"><h3>Rata-rata Kompetensi (1–5)</h3>${renderRatingBars(s.kompetensiAvg, KOMP_LABEL)}</div>
-        <div class="subcard"><h3>Rata-rata Evaluasi FIKOM (1–5)</h3>${renderRatingBars(s.evaluasiAvg, EVAL_LABEL)}</div>
-        <div class="subcard"><h3>Kisaran Penghasilan</h3>${renderBars(s.penghasilanCounts)}</div>
-        <div class="subcard"><h3>Kesesuaian Pekerjaan</h3>${renderBars(s.kesesuaianCounts)}</div>
-      </div>
-      <div class="subcard"><h3>Indikator Kunci</h3>
-        <p><b>Rata-rata masa tunggu kerja:</b> ${s.masaTungguAvg} bulan</p>
-        <p><b>Alumni bekerja/wirausaha:</b> ${s.bekerjaCount} orang</p>
-        <p><b>Alumni studi lanjut:</b> ${s.studiCount} orang</p>
-        <p><b>Periode aktif:</b> ${esc(r.periodeAktif?.nama || 'Belum ditetapkan')}</p>
-      </div>`;
-    bindFilterBar();
-  }catch(e){
-    box.innerHTML = filterBarHtml() + `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-    bindFilterBar();
+async function loadDashboard() {
+  if (!TOKEN) return;
+  $('loginBox').classList.add('hidden');
+  $('dashBox').classList.remove('hidden');
+  setHtml('dashboardPlaceholder', '');
+  try {
+    const r = await post({ action: 'dashboard', token: TOKEN, filters: JSON.stringify(currentFilters()) });
+    if (!r.ok) throw new Error(r.error);
+    DATA = r; PROFILE = r.profile;
+    $('profileBadge').textContent = `${PROFILE.username} · ${PROFILE.role}${PROFILE.programStudi ? ' · ' + PROFILE.programStudi : ''}`;
+    applyRoleUI();
+    buildFilterOptions();
+    renderOverview();
+    renderResponden();
+    renderAnalitik();
+    renderReminder();
+    if (PROFILE.role === 'ADMIN') { renderMaster(); renderPeriode(); renderUsers(); renderAudit(); }
+    clearMsg('adminStatus');
+  } catch (e) {
+    msg('adminStatus', e.message);
+    if (/sesi|Autentikasi|token/i.test(e.message)) {
+      sessionStorage.removeItem('ts_token'); TOKEN = '';
+      $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
+    }
   }
+}
+
+function applyRoleUI() {
+  document.querySelectorAll('#adminTabs button[data-role]').forEach(b => {
+    b.classList.toggle('hidden', b.dataset.role !== PROFILE.role);
+  });
+}
+
+function buildFilterOptions() {
+  const d = DATA;
+  const keep = (id, list) => {
+    const el = $(id); const cur = el.value;
+    el.innerHTML = '<option value="">Semua</option>' + list.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    el.value = cur;
+  };
+  keep('fPeriode', (d.periode || []).map(p => p.periodeId));
+  keep('fTahun', Object.keys(d.charts.yearCounts || {}).sort().reverse());
+  keep('fProdi', Object.keys(d.charts.programCounts || {}));
+  keep('fStatus', Object.keys(d.charts.statusCounts || {}));
+}
+
+/* ---------- OVERVIEW ---------- */
+function renderOverview() {
+  const s = DATA.summary;
+  setHtml('kpiBox', `
+    <div><span>Total Responden</span><b>${s.total}</b></div>
+    <div><span>Total Master Alumni</span><b>${s.totalMaster}</b></div>
+    <div><span>Belum Mengisi</span><b>${s.belumMengisi}</b></div>
+    <div><span>Response Rate</span><b>${s.responseRate}%</b></div>
+    <div><span>Bekerja</span><b>${s.bekerja}</b></div>
+    <div><span>Wirausaha</span><b>${s.wirausaha}</b></div>
+    <div><span>Studi Lanjut</span><b>${s.studi}</b></div>
+    <div><span>Belum Bekerja</span><b>${s.belumBekerja}</b></div>
+    <div><span>S1</span><b>${s.s1}</b></div>
+    <div><span>S2</span><b>${s.s2}</b></div>
+  `);
+
+  const c = DATA.charts;
+  mkBar('chStatus', c.statusCounts, '#116149');
+  mkBar('chTahun', c.yearCounts, '#167456');
+  mkDoughnut('chProdi', c.programCounts, ['#116149','#4f9d7f','#a3cbb9','#0c4d3a']);
+  mkBar('chKesesuaian', c.kesesuaianCounts, '#2f7d5f');
+  mkBar('chPenghasilan', c.penghasilanCounts, '#7ab79c');
+  mkLine('chTrend', c.monthlyTrend);
+
+  const rows = (DATA.recent || []).map(r => `<tr>
+    <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
+    <td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td><td>${badge(r.status)}</td></tr>`).join('');
+  setHtml('recentTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Lulus</th><th>Status</th></tr></thead><tbody>${rows || '<tr><td colspan="6">Belum ada data.</td></tr>'}</tbody>`);
 }
 
 /* ---------- RESPONDEN ---------- */
-async function renderResponden(box){
-  box.innerHTML = filterBarHtml() + '<p class="hint">Memuat data responden...</p>';
-  bindFilterBar();
-  try{
-    const r = await api('dashboard', {token, filters});
-    if(!r.ok) throw new Error(r.error);
-    lastDashboard = r;
-    const rows = r.responden || [];
-    box.innerHTML = filterBarHtml() + `
-      <div class="actions" style="justify-content:flex-start;margin-bottom:12px">
-        <button class="btn secondary small" id="expXls">⬇ Export Excel</button>
-        <button class="btn secondary small" id="expPdf">⬇ Export PDF</button>
-        <span class="hint" style="align-self:center">${rows.length} baris</span>
-      </div>
-      <div class="tablewrap"><table class="table">
-        <thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Lulus</th><th>Status</th><th>Email</th><th>WhatsApp</th><th>Waktu</th></tr></thead>
-        <tbody>${rows.map(x=>`<tr>
-          <td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td>
-          <td>${esc(x.jenjang)}</td><td>${esc(x.tahunLulus)}</td><td><span class="badge">${esc(x.status)}</span></td>
-          <td>${esc(x.email)}</td><td>${esc(x.whatsapp)}</td><td>${esc(x.createdAt)}</td>
-        </tr>`).join('') || '<tr><td colspan="10" class="hint">Belum ada data</td></tr>'}</tbody>
-      </table></div>`;
-    bindFilterBar();
-    el('expXls').onclick = ()=>doExport('export.excel','xlsx');
-    el('expPdf').onclick = ()=>doExport('export.pdf','pdf');
-  }catch(e){
-    box.innerHTML = filterBarHtml() + `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-    bindFilterBar();
-  }
-}
-async function doExport(action, kind){
-  const btn = event?.target; if(btn) btn.disabled = true;
-  try{
-    const r = await api(action, {token, filters});
-    if(!r.ok) throw new Error(r.error);
-    downloadBase64(r.filename, r.mime, r.base64);
-  }catch(e){
-    alert('Gagal export: '+e.message);
-  }finally{ if(btn) btn.disabled = false; }
+function renderResponden() {
+  const items = DATA.items || [];
+  const start = (page - 1) * perPage;
+  const slice = items.slice(start, start + perPage);
+  const rows = slice.map(r => `<tr>
+    <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
+    <td>${esc(r.programStudi)}</td><td>${esc(r.jenjang)}</td><td>${esc(r.tahunLulus)}</td>
+    <td>${badge(r.status)}</td>
+    <td><button class="btn secondary sm" data-detail="${esc(r.tracerId)}">Detail</button></td>
+  </tr>`).join('');
+  setHtml('respTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Lulus</th><th>Status</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="8">Tidak ada data.</td></tr>'}</tbody>`);
+  document.querySelectorAll('[data-detail]').forEach(b => b.onclick = () => showDetail(b.dataset.detail));
+  $('pageInfo').textContent = `Halaman ${page} · ${items.length} data`;
 }
 
-/* ---------- MASTER ALUMNI ---------- */
-async function renderMaster(box){
-  box.innerHTML = `<p class="hint">Memuat master alumni...</p>`;
-  try{
-    const r = await api('master.list', {token, q:'', limit:1000});
-    if(!r.ok) throw new Error(r.error);
-    masterCache = r.rows;
-    box.innerHTML = `
-      <div class="subcard">
-        <h3>Tambah / Perbarui Alumni</h3>
-        <div class="grid">
-          <div><label>NIM</label><input id="mNim" maxlength="9" inputmode="numeric"></div>
-          <div><label>Nama</label><input id="mNama"></div>
-          <div><label>Program Studi</label><select id="mProdi"><option value="">Pilih</option>${PROGRAMS.map(p=>`<option>${p}</option>`).join('')}</select></div>
-          <div><label>Jenjang</label><select id="mJenjang"><option value="">Pilih</option>${JENJANGS.map(j=>`<option>${j}</option>`).join('')}</select></div>
-          <div><label>Tahun Masuk</label><input id="mMasuk" maxlength="4" inputmode="numeric"></div>
-          <div><label>Tahun Lulus</label><input id="mLulus" maxlength="4" inputmode="numeric"></div>
-          <div><label>Email</label><input id="mEmail" type="email"></div>
-          <div><label>WhatsApp</label><input id="mWa" maxlength="13" inputmode="numeric"></div>
-        </div>
-        <div class="actions" style="margin-top:12px"><button class="btn" id="mSave">Simpan</button></div>
-        <div id="masterStatus" class="status"></div>
+function showDetail(id) {
+  const r = (DATA.items || []).find(x => x.tracerId === id);
+  if (!r) return;
+  const p = r.pekerjaan || {}, w = r.wirausaha || {}, st = r.studi || {}, k = r.kompetensi || {}, e = r.evaluasi || {};
+  const li = (a, b) => `<li><b>${esc(a)}</b>${esc(b || '-')}</li>`;
+  const html = `
+    <div class="modal" id="detailModal"><div class="box">
+      <div class="actions" style="justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0">${esc(r.nama)} · ${esc(r.tracerId)}</h3>
+        <button class="btn secondary sm" onclick="document.getElementById('detailModal').remove()">Tutup</button>
       </div>
-      <div class="subcard">
-        <h3>Import Massal (CSV / tempel dari Excel)</h3>
-        <p class="hint">Format kolom: NIM, NAMA, PROGRAM_STUDI, JENJANG, TAHUN_MASUK, TAHUN_LULUS, EMAIL, WHATSAPP</p>
-        <textarea id="impText" placeholder="202441001;Budi Santoso;S1 Ilmu Komunikasi;S1;2020;2024;budi@mail.com;081234567890"></textarea>
-        <div class="actions" style="margin-top:12px"><button class="btn secondary" id="impBtn">Import</button></div>
-        <div id="impStatus" class="status"></div>
-      </div>
-      <div class="subcard">
-        <h3>Daftar Master Alumni (${masterCache.length})</h3>
-        <div class="grid"><div><label>Cari</label><input id="mSearch" placeholder="NIM / nama"></div></div>
-        <div class="tablewrap" style="margin-top:12px"><table class="table" id="mTable">
-          <thead><tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Lulus</th><th>Email</th><th>WhatsApp</th><th>Status</th><th></th></tr></thead>
-          <tbody></tbody>
-        </table></div>
-      </div>`;
-    drawMasterTable('');
-    el('mSearch').oninput = e=>drawMasterTable(e.target.value.toLowerCase());
-    el('mSave').onclick = saveMaster;
-    el('impBtn').onclick = importMaster;
-  }catch(e){
-    box.innerHTML = `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-  }
+      <h4>Identitas</h4>
+      <ul class="tree">
+        ${li('NIM', r.nim)}${li('Program Studi', r.programStudi)}${li('Jenjang', r.jenjang)}
+        ${li('Tahun Masuk', r.tahunMasuk)}${li('Tahun Lulus', r.tahunLulus)}${li('IPK', r.ipk)}
+        ${li('Email', r.email)}${li('WhatsApp', r.whatsapp)}${li('Status', r.status)}${li('Dikirim', r.createdAt)}
+      </ul>
+      <h4 style="margin-top:14px">Pekerjaan</h4>
+      <ul class="tree">${li('Status', p.STATUS_PEKERJAAN)}${li('Perusahaan', p.PERUSAHAAN)}${li('Bidang', p.BIDANG_INDUSTRI)}
+        ${li('Jabatan', p.JABATAN)}${li('Lokasi', p.LOKASI_KERJA)}${li('Masa Tunggu', p.MASA_TUNGGU_BULAN)}
+        ${li('Penghasilan', p.PENGHASILAN_RANGE)}${li('Kesesuaian', p.KESESUAIAN)}${li('Dukungan FIKOM', p.DUKUNGAN_PENDIDIKAN)}</ul>
+      <h4 style="margin-top:14px">Wirausaha</h4>
+      <ul class="tree">${li('Nama Usaha', w.NAMA_USAHA)}${li('Bidang', w.BIDANG_USAHA)}${li('Tenaga Kerja', w.JUMLAH_TENAGA_KERJA)}${li('Omzet', w.OMZET_RANGE)}</ul>
+      <h4 style="margin-top:14px">Studi Lanjut</h4>
+      <ul class="tree">${li('Perguruan Tinggi', st.PERGURUAN_TINGGI)}${li('Program Studi', st.PROGRAM_STUDI)}${li('Jenjang', st.JENJANG)}${li('Pembiayaan', st.PEMBIAYAAN)}</ul>
+      <h4 style="margin-top:14px">Kompetensi (1–5)</h4>
+      <ul class="tree">${COMPETENCIES.map(([key, label]) => li(label, k[colOf(key)])).join('')}</ul>
+      <h4 style="margin-top:14px">Evaluasi FIKOM (1–5)</h4>
+      <ul class="tree">${EVALUATIONS.map(([key, label]) => li(label, e[colOf(key)])).join('')}</ul>
+      <h4 style="margin-top:14px">Saran</h4>
+      <p style="white-space:pre-wrap">${esc(r.saran || '-')}</p>
+    </div></div>`;
+  $('modalRoot').innerHTML = html;
 }
-function drawMasterTable(q){
-  const rows = masterCache.filter(x=>!q || (x.nim+' '+x.nama).toLowerCase().includes(q));
-  el('mTable').querySelector('tbody').innerHTML = rows.map(x=>`<tr>
-    <td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.jenjang)}</td>
-    <td>${esc(x.tahunLulus)}</td><td>${esc(x.email)}</td><td>${esc(x.whatsapp)}</td>
-    <td>${x.sudahMengisi?'<span class="badge">Sudah</span>':'<span class="badge warn">Belum</span>'}</td>
-    <td><button class="btn danger small" data-nim="${esc(x.nim)}">Hapus</button></td>
-  </tr>`).join('') || '<tr><td colspan="9" class="hint">Tidak ada data</td></tr>';
-  el('mTable').querySelectorAll('button[data-nim]').forEach(b=>b.onclick=()=>delMaster(b.dataset.nim));
-}
-async function saveMaster(){
-  const data = {nim:value('mNim'),nama:value('mNama'),programStudi:value('mProdi'),jenjang:value('mJenjang'),tahunMasuk:value('mMasuk'),tahunLulus:value('mLulus'),email:value('mEmail'),whatsapp:value('mWa')};
-  if(!/^\d{9}$/.test(data.nim)) return msg('masterStatus','NIM harus 9 digit.','err');
-  try{
-    const r = await api('master.save',{token,data});
-    if(!r.ok) throw new Error(r.error);
-    msg('masterStatus','Data alumni disimpan.','ok');
-    ['mNim','mNama','mMasuk','mLulus','mEmail','mWa'].forEach(i=>el(i).value='');
-    renderMaster(el('tabContent'));
-  }catch(e){ msg('masterStatus',e.message,'err'); }
-}
-async function delMaster(nim){
-  if(!confirm('Hapus NIM '+nim+' dari master alumni?')) return;
-  try{
-    const r = await api('master.delete',{token,nim});
-    if(!r.ok) throw new Error(r.error);
-    renderMaster(el('tabContent'));
-  }catch(e){ alert(e.message); }
-}
-async function importMaster(){
-  const raw = el('impText').value.trim();
-  if(!raw) return msg('impStatus','Tidak ada data untuk diimpor.','err');
-  const rows = raw.split(/\r?\n/).map(l=>l.split(/[;\t,]/).map(c=>c.trim())).filter(r=>r.length>=2 && r[0]);
-  if(!rows.length) return msg('impStatus','Format tidak dikenali.','err');
-  el('impBtn').disabled = true;
-  try{
-    const r = await api('master.import',{token,rows});
-    if(!r.ok) throw new Error(r.error);
-    msg('impStatus',`Import selesai. Baru: ${r.inserted}, diperbarui: ${r.updated}, dilewati: ${r.skipped}.`,'ok');
-    el('impText').value = '';
-    renderMaster(el('tabContent'));
-  }catch(e){ msg('impStatus',e.message,'err'); }
-  finally{ el('impBtn').disabled = false; }
+function colOf(key) {
+  return key.replace(/([A-Z])/g, '_$1').toUpperCase();
 }
 
-/* ---------- PERIODE ---------- */
-async function renderPeriode(box){
-  box.innerHTML = '<p class="hint">Memuat periode...</p>';
-  try{
-    const r = await api('periode.list',{token});
-    if(!r.ok) throw new Error(r.error);
-    box.innerHTML = `
-      <div class="subcard">
-        <h3>Periode Tracer Study</h3>
-        <div class="grid">
-          <div><label>Nama Periode</label><input id="pNama" placeholder="Tracer Study 2026"></div>
-          <div><label>Target Tahun Lulus (dari)</label><input id="pDari" maxlength="4" inputmode="numeric" placeholder="2024"></div>
-          <div><label>Target Tahun Lulus (sampai)</label><input id="pSampai" maxlength="4" inputmode="numeric" placeholder="2026"></div>
-          <div><label>Tanggal Mulai</label><input id="pMulai" type="date"></div>
-          <div><label>Tanggal Selesai</label><input id="pSelesai" type="date"></div>
-          <div><label>Status</label><select id="pStatus"><option value="AKTIF">AKTIF</option><option value="NONAKTIF">NONAKTIF</option></select></div>
-          <div class="full"><label>Catatan</label><input id="pCatatan"></div>
-        </div>
-        <div class="actions" style="margin-top:12px"><button class="btn" id="pSave">Simpan Periode</button></div>
-        <div id="periodeStatus" class="status"></div>
-      </div>
-      <div class="subcard"><h3>Daftar Periode</h3>
-        <div class="tablewrap"><table class="table"><thead><tr><th>ID</th><th>Nama</th><th>Target Lulus</th><th>Mulai</th><th>Selesai</th><th>Status</th><th></th></tr></thead>
-        <tbody>${r.rows.map(p=>`<tr>
-          <td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td><td>${esc(p.tahunDari)}–${esc(p.tahunSampai)}</td>
-          <td>${esc(p.tanggalMulai)}</td><td>${esc(p.tanggalSelesai)}</td>
-          <td>${p.status==='AKTIF'?'<span class="badge">AKTIF</span>':'<span class="badge gray">NONAKTIF</span>'}</td>
-          <td>${p.status==='AKTIF'?'':`<button class="btn secondary small" data-act="${esc(p.periodeId)}">Aktifkan</button>`}
-              <button class="btn danger small" data-del="${esc(p.periodeId)}">Hapus</button></td>
-        </tr>`).join('') || '<tr><td colspan="7" class="hint">Belum ada periode</td></tr>'}</tbody></table></div>
-      </div>`;
-    el('pSave').onclick = async ()=>{
-      try{
-        const rr = await api('periode.save',{token,data:{nama:value('pNama'),tahunDari:value('pDari'),tahunSampai:value('pSampai'),tanggalMulai:value('pMulai'),tanggalSelesai:value('pSelesai'),status:value('pStatus'),catatan:value('pCatatan')}});
-        if(!rr.ok) throw new Error(rr.error);
-        renderPeriode(box);
-      }catch(e){ msg('periodeStatus',e.message,'err'); }
-    };
-    box.querySelectorAll('button[data-act]').forEach(b=>b.onclick=async()=>{
-      await api('periode.activate',{token,periodeId:b.dataset.act});
-      renderPeriode(box);
-    });
-    box.querySelectorAll('button[data-del]').forEach(b=>b.onclick=async()=>{
-      if(!confirm('Hapus periode ini?')) return;
-      await api('periode.delete',{token,periodeId:b.dataset.del});
-      renderPeriode(box);
-    });
-  }catch(e){
-    box.innerHTML = `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-  }
+/* ---------- ANALITIK ---------- */
+function renderAnalitik() {
+  if (!DATA) return;
+  const c = DATA.charts;
+  mkRadar('chKompetensi', c.kompetensiAvg, COMPETENCIES);
+  mkRadar('chEvaluasi', c.evaluasiAvg, EVALUATIONS);
+  mkBar('chMasaTunggu', c.masaTungguBuckets, '#0c4d3a');
+  mkHBar('chBidang', c.bidangCounts, '#4f9d7f');
+  mkBar('chDukungan', c.dukunganCounts, '#167456');
+  mkDoughnut('chJenjang', c.jenjangCounts, ['#116149','#7ab79c']);
+
+  const saran = (DATA.items || []).filter(x => x.saran && x.saran.length > 3).slice(-12).reverse();
+  setHtml('saranList', saran.length
+    ? saran.map(x => `<div style="border-bottom:1px solid var(--line);padding:10px 0">
+        <b>${esc(x.nama)}</b> <span class="hint">· ${esc(x.programStudi)} · ${esc(x.tahunLulus)}</span>
+        <p style="margin:6px 0 0;white-space:pre-wrap">${esc(x.saran)}</p></div>`).join('')
+    : 'Belum ada masukan.');
 }
 
-/* ---------- REMINDER ---------- */
-async function renderReminder(box){
-  box.innerHTML = `<div class="subcard">
-      <h3>Filter Penerima Reminder</h3>
-      <div class="filterbar">
-        <div><label>Tahun lulus dari</label><input id="rDari" maxlength="4" inputmode="numeric" value="${esc(filters.tahunDari)}"></div>
-        <div><label>Tahun lulus sampai</label><input id="rSampai" maxlength="4" inputmode="numeric" value="${esc(filters.tahunSampai)}"></div>
-        <div><label>Program studi</label><select id="rProdi"><option value="">Semua</option>${PROGRAMS.map(p=>`<option>${p}</option>`).join('')}</select></div>
-        <div class="actions"><button class="btn" id="rLoad">Tampilkan</button></div>
-      </div>
-    </div>
-    <div id="reminderList"></div>`;
-  el('rLoad').onclick = loadReminderList;
-  loadReminderList();
+/* ---------- CHART HELPERS ---------- */
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+function baseOpts(extra) {
+  return Object.assign({
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+  }, extra || {});
 }
-async function loadReminderList(){
-  const box = el('reminderList');
-  box.innerHTML = '<p class="hint">Memuat daftar alumni belum mengisi...</p>';
-  const f = {tahunDari:value('rDari'), tahunSampai:value('rSampai'), programStudi:value('rProdi')};
-  try{
-    const r = await api('reminder.list',{token, filters:f});
-    if(!r.ok) throw new Error(r.error);
-    const rows = r.rows || [];
-    const defaultMsg = 'Yth. {nama} ({nim}), kami mengundang Anda untuk mengisi Tracer Study FIKOM UPDM(B) periode {periode}. Silakan isi melalui tautan berikut: {link} . Terima kasih.';
-    box.innerHTML = `
-      <div class="subcard"><h3>Pesan Reminder (${rows.length} alumni belum mengisi)</h3>
-        <textarea id="rMsg">${esc(defaultMsg)}</textarea>
-        <p class="hint">Placeholder: {nama} {nim} {prodi} {tahun} {periode} {link}</p>
-        <div class="actions" style="justify-content:flex-start;margin-top:12px">
-          <button class="btn secondary small" id="rAll">Pilih Semua</button>
-          <button class="btn secondary small" id="rNone">Kosongkan</button>
-          <button class="btn small" id="rEmail">✉ Kirim Email</button>
-          <button class="btn secondary small" id="rWa">💬 Buat Tautan WhatsApp</button>
-        </div>
-        <div id="reminderStatus" class="status"></div>
-      </div>
-      <div class="tablewrap"><table class="table" id="rTable">
-        <thead><tr><th><input type="checkbox" id="rHead" style="width:auto"></th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Lulus</th><th>Email</th><th>WhatsApp</th><th>WA</th></tr></thead>
-        <tbody>${rows.map((x,i)=>`<tr>
-          <td><input type="checkbox" class="rChk" style="width:auto" data-i="${i}" ${x.email?'':'disabled'}></td>
-          <td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.tahunLulus)}</td>
-          <td>${esc(x.email)}</td><td>${esc(x.whatsapp)}</td>
-          <td><a class="btn secondary small" target="_blank" rel="noopener" href="${waLink(x.whatsapp, buildMsg(el('rMsg')?.value||defaultMsg, x))}">Buka</a></td>
-        </tr>`).join('') || '<tr><td colspan="8" class="hint">Semua alumni sudah mengisi 🎉</td></tr>'}</tbody>
-      </table></div>`;
-    el('rAll').onclick = ()=>box.querySelectorAll('.rChk:not(:disabled)').forEach(c=>c.checked=true);
-    el('rNone').onclick = ()=>box.querySelectorAll('.rChk').forEach(c=>c.checked=false);
-    el('rHead').onclick = e=>box.querySelectorAll('.rChk:not(:disabled)').forEach(c=>c.checked=e.target.checked);
-    el('rEmail').onclick = async ()=>{
-      const picked = [...box.querySelectorAll('.rChk:checked')].map(c=>rows[Number(c.dataset.i)]);
-      if(!picked.length) return msg('reminderStatus','Pilih minimal satu penerima.','err');
-      if(!confirm('Kirim email reminder ke '+picked.length+' alumni?')) return;
-      el('rEmail').disabled = true;
-      try{
-        const rr = await api('reminder.send',{token, channel:'email', template:value('rMsg'), nims:picked.map(x=>x.nim)});
-        if(!rr.ok) throw new Error(rr.error);
-        msg('reminderStatus','Email terkirim: '+rr.sent+', gagal: '+rr.failed+'.','ok');
-        loadReminderList();
-      }catch(e){ msg('reminderStatus',e.message,'err'); }
-      finally{ el('rEmail').disabled = false; }
-    };
-    el('rWa').onclick = ()=>{
-      const picked = [...box.querySelectorAll('.rChk:checked')].map(c=>rows[Number(c.dataset.i)]);
-      if(!picked.length) return msg('reminderStatus','Pilih minimal satu penerima.','err');
-      picked.forEach((x,i)=>setTimeout(()=>window.open(waLink(x.whatsapp, buildMsg(value('rMsg'), x)),'_blank'), i*450));
-      msg('reminderStatus','Membuka '+picked.length+' tautan WhatsApp. Izinkan pop-up pada browser.','ok');
-      api('reminder.send',{token, channel:'whatsapp', template:value('rMsg'), nims:picked.map(x=>x.nim)});
-    };
-  }catch(e){
-    box.innerHTML = `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-  }
+function mkBar(id, obj, color) {
+  destroyChart(id);
+  const el = $(id); if (!el || !obj) return;
+  const labels = Object.keys(obj);
+  charts[id] = new Chart(el, {
+    type: 'bar',
+    data: { labels, datasets: [{ data: labels.map(k => obj[k]), backgroundColor: color, borderRadius: 7 }] },
+    options: baseOpts()
+  });
 }
-function buildMsg(tpl, x){
-  return String(tpl||'')
-    .replace(/{nama}/g, x.nama||'')
-    .replace(/{nim}/g, x.nim||'')
-    .replace(/{prodi}/g, x.programStudi||'')
-    .replace(/{tahun}/g, x.tahunLulus||'')
-    .replace(/{periode}/g, lastDashboard?.periodeAktif?.nama || 'Tracer Study')
-    .replace(/{link}/g, location.origin + location.pathname);
+function mkHBar(id, obj, color) {
+  destroyChart(id);
+  const el = $(id); if (!el || !obj) return;
+  const entries = Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  charts[id] = new Chart(el, {
+    type: 'bar',
+    data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: color, borderRadius: 7 }] },
+    options: baseOpts({ indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } })
+  });
 }
-function waLink(phone, text){
-  let p = String(phone||'').replace(/\D/g,'');
-  if(p.startsWith('0')) p = '62'+p.slice(1);
-  if(!p.startsWith('62')) p = '62'+p;
-  return 'https://wa.me/'+p+'?text='+encodeURIComponent(text);
+function mkDoughnut(id, obj, colors) {
+  destroyChart(id);
+  const el = $(id); if (!el || !obj) return;
+  const labels = Object.keys(obj);
+  charts[id] = new Chart(el, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: labels.map(k => obj[k]), backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+function mkLine(id, obj) {
+  destroyChart(id);
+  const el = $(id); if (!el || !obj) return;
+  const labels = Object.keys(obj);
+  charts[id] = new Chart(el, {
+    type: 'line',
+    data: { labels, datasets: [{ data: labels.map(k => obj[k]), borderColor: '#116149', backgroundColor: '#11614922', fill: true, tension: .35, pointRadius: 3 }] },
+    options: baseOpts()
+  });
+}
+function mkRadar(id, obj, list) {
+  destroyChart(id);
+  const el = $(id); if (!el || !obj) return;
+  const labels = list.map(([, label]) => label);
+  charts[id] = new Chart(el, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Rata-rata',
+        data: list.map(([key]) => obj[colOf(key)] || 0),
+        borderColor: '#116149', backgroundColor: '#11614933', pointBackgroundColor: '#116149'
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } }
+  });
 }
 
-/* ---------- PENGGUNA ---------- */
-async function renderPengguna(box){
-  box.innerHTML = '<p class="hint">Memuat pengguna...</p>';
-  try{
-    const r = await api('users.list',{token});
-    if(!r.ok) throw new Error(r.error);
-    box.innerHTML = `
-      <div class="subcard"><h3>Tambah / Perbarui Pengguna</h3>
-        <div class="grid">
-          <div><label>Username</label><input id="uUser"></div>
-          <div><label>Nama</label><input id="uNama"></div>
-          <div><label>Password (kosongkan bila tidak diubah)</label><input id="uPass" type="password"></div>
-          <div><label>Role</label><select id="uRole"><option>ADMIN</option><option>KAPRODI</option><option>WADEK</option><option>DEKAN</option></select></div>
-          <div><label>Program Studi (untuk Kaprodi)</label><select id="uProdi"><option value="">-</option>${PROGRAMS.map(p=>`<option>${p}</option>`).join('')}</select></div>
-          <div><label>Aktif</label><select id="uAktif"><option value="true">Ya</option><option value="false">Tidak</option></select></div>
-        </div>
-        <div class="actions" style="margin-top:12px"><button class="btn" id="uSave">Simpan</button></div>
-        <div id="userStatus" class="status"></div>
-      </div>
-      <div class="subcard"><h3>Daftar Pengguna</h3>
-        <div class="tablewrap"><table class="table"><thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th><th></th></tr></thead>
-        <tbody>${r.rows.map(u=>`<tr>
-          <td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td><span class="badge">${esc(u.role)}</span></td>
-          <td>${esc(u.programStudi)}</td><td>${u.aktif?'Ya':'Tidak'}</td>
-          <td><button class="btn danger small" data-u="${esc(u.username)}">Hapus</button></td>
-        </tr>`).join('')}</tbody></table></div>
-      </div>`;
-    el('uSave').onclick = async ()=>{
-      try{
-        const rr = await api('users.save',{token,data:{username:value('uUser'),nama:value('uNama'),password:el('uPass').value,role:value('uRole'),programStudi:value('uProdi'),aktif:value('uAktif')}});
-        if(!rr.ok) throw new Error(rr.error);
-        renderPengguna(box);
-      }catch(e){ msg('userStatus',e.message,'err'); }
-    };
-    box.querySelectorAll('button[data-u]').forEach(b=>b.onclick=async()=>{
-      if(!confirm('Hapus pengguna '+b.dataset.u+'?')) return;
-      const rr = await api('users.delete',{token,username:b.dataset.u});
-      if(!rr.ok) return alert(rr.error);
-      renderPengguna(box);
-    });
-  }catch(e){
-    box.innerHTML = `<div class="status err" style="display:block">${esc(e.message)}</div>`;
-  }
+/* =========================================================
+   EXPORT
+   ========================================================= */
+document.querySelectorAll('[data-export]').forEach(b => b.onclick = async () => {
+  const fmt = b.dataset.export;
+  b.disabled = true; const t = b.textContent; b.textContent = 'Menyiapkan...';
+  try {
+    const r = await post({ action: 'export', token: TOKEN, format: fmt, filters: JSON.stringify(currentFilters()) });
+    if (!r.ok) throw new Error(r.error);
+    if (fmt === 'pdf') {
+      const html = decodeURIComponent(escape(atob(r.base64)));
+      const w = window.open('', '_blank');
+      w.document.write(html); w.document.close();
+      setTimeout(() => w.print(), 700);
+    } else {
+      downloadB64(r.filename, r.mime, r.base64);
+    }
+  } catch (e) { alert('Export gagal: ' + e.message); }
+  finally { b.disabled = false; b.textContent = t; }
+});
+
+/* =========================================================
+   REMINDER
+   ========================================================= */
+function renderReminder() {
+  MASTER = DATA.belum || [];
+  $('belumCount').textContent = MASTER.length;
+  const rows = MASTER.slice(0, 300).map((m, i) => `<tr>
+    <td>${esc(m.nim)}</td><td>${esc(m.nama)}</td><td>${esc(m.programStudi)}</td><td>${esc(m.tahunLulus)}</td>
+    <td>${esc(m.whatsapp || '-')}</td><td>${esc(m.email || '-')}</td>
+    <td>
+      <button class="btn secondary sm" data-wa="${i}">WA</button>
+      <button class="btn secondary sm" data-mail="${i}">Email</button>
+    </td></tr>`).join('');
+  setHtml('reminderTable', `<thead><tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Lulus</th><th>WA</th><th>Email</th><th>Aksi</th></tr></thead><tbody>${rows || '<tr><td colspan="7">Semua alumni sudah mengisi 🎉</td></tr>'}</tbody>`);
+  document.querySelectorAll('[data-wa]').forEach(b => b.onclick = () => openWA(MASTER[+b.dataset.wa]));
+  document.querySelectorAll('[data-mail]').forEach(b => b.onclick = () => openMail(MASTER[+b.dataset.mail]));
+}
+
+function buildMessage(m) {
+  const per = (DATA.periode || []).find(p => p.periodeId === (DATA.aktif ? DATA.aktif.periodeId : '')) || {};
+  return $('reminderTpl').value
+    .replace(/{nama}/g, m.nama || '')
+    .replace(/{nim}/g, m.nim || '')
+    .replace(/{prodi}/g, m.programStudi || '')
+    .replace(/{tahun}/g, m.tahunLulus || '')
+    .replace(/{periode}/g, per.nama || 'Tracer Study')
+    .replace(/{link}/g, val('reminderLink') || 'https://fikom-updmb.github.io/tracer-study/');
+}
+function normalizePhone(p) {
+  let s = String(p || '').replace(/\D/g, '');
+  if (s.startsWith('0')) s = '62' + s.slice(1);
+  if (!s.startsWith('62')) s = '62' + s;
+  return s;
+}
+function openWA(m) {
+  const phone = normalizePhone(m.whatsapp);
+  if (!phone || phone === '62') return alert('Nomor WhatsApp tidak tersedia.');
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(buildMessage(m)), '_blank');
+}
+function openMail(m) {
+  if (!m.email) return alert('Email tidak tersedia.');
+  const subject = 'Undangan Pengisian Tracer Study FIKOM UPDM(B)';
+  window.location.href = 'mailto:' + m.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildMessage(m));
+}
+$('copyAllWa').onclick = async () => {
+  const txt = MASTER.slice(0, 200).map(m => `${m.nama} (${m.nim}) - ${normalizePhone(m.whatsapp)}\n${buildMessage(m)}`).join('\n\n---\n\n');
+  try { await navigator.clipboard.writeText(txt); alert('Link pesan disalin untuk ' + Math.min(MASTER.length, 200) + ' alumni.'); }
+  catch (e) { alert('Gagal menyalin: ' + e.message); }
+};
+$('logReminder').onclick = async () => {
+  const channel = prompt('Channel pengiriman (WA/EMAIL):', 'WA');
+  if (!channel) return;
+  try {
+    const r = await post({ action: 'reminderSave', token: TOKEN, channel, total: MASTER.length });
+    alert(r.ok ? 'Tercatat: ' + r.total + ' pengingat pada ' + r.sentAt : r.error);
+  } catch (e) { alert(e.message); }
+};
+
+/* =========================================================
+   MASTER ALUMNI (ADMIN)
+   ========================================================= */
+$('importMaster').onclick = async () => {
+  const raw = $('masterCsv').value.trim();
+  if (!raw) return alert('Tempel data terlebih dahulu.');
+  const rows = raw.split(/\r?\n/).map(l => l.split(/[;\t,]/).map(s => s.trim())).filter(r => r[0]);
+  try {
+    const r = await post({ action: 'masterImport', token: TOKEN, rows: JSON.stringify(rows) });
+    msg('masterStatus', r.ok ? `Import selesai: ${r.inserted} baru, ${r.updated} diperbarui.` : r.error, r.ok);
+    if (r.ok) { $('masterCsv').value = ''; loadDashboard(); }
+  } catch (e) { msg('masterStatus', e.message); }
+};
+function renderMaster() {
+  const list = DATA.master || [];
+  $('masterCount').textContent = list.length;
+  const rows = list.slice(0, 500).map(m => `<tr>
+    <td>${esc(m.nim)}</td><td>${esc(m.nama)}</td><td>${esc(m.programStudi)}</td>
+    <td>${esc(m.jenjang)}</td><td>${esc(m.tahunLulus)}</td>
+    <td>${m.sudah ? badge('Sudah', 'ok') : badge('Belum', 'warn')}</td></tr>`).join('');
+  setHtml('masterTable', `<thead><tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Lulus</th><th>Status</th></tr></thead><tbody>${rows || '<tr><td colspan="6">Master alumni masih kosong.</td></tr>'}</tbody>`);
+}
+
+/* =========================================================
+   PERIODE (ADMIN)
+   ========================================================= */
+$('savePeriode').onclick = async () => {
+  const payload = {
+    periodeId: val('pId'), nama: val('pNama'), tahunMin: val('pMin'), tahunMax: val('pMax'),
+    tglBuka: val('pBuka'), tglTutup: val('pTutup'), status: val('pStatus'), catatan: val('pCatatan')
+  };
+  if (!payload.periodeId || !payload.nama) return alert('Periode ID dan Nama wajib diisi.');
+  try {
+    const r = await post({ action: 'periodeSave', token: TOKEN, payload: JSON.stringify(payload) });
+    msg('periodeStatus', r.ok ? 'Periode disimpan.' : r.error, r.ok);
+    if (r.ok) { META = await get({ action: 'meta' }); loadDashboard(); }
+  } catch (e) { msg('periodeStatus', e.message); }
+};
+function renderPeriode() {
+  const list = DATA.periode || [];
+  const rows = list.map(p => `<tr>
+    <td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td>
+    <td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td>
+    <td>${esc(p.tglBuka)}</td><td>${esc(p.tglTutup)}</td>
+    <td>${p.status === 'BUKA' ? badge('BUKA','ok') : badge('TUTUP','err')}</td>
+    <td>${DATA.aktif && DATA.aktif.periodeId === p.periodeId ? badge('AKTIF') : ''}</td></tr>`).join('');
+  setHtml('periodeTable', `<thead><tr><th>ID</th><th>Nama</th><th>Rentang</th><th>Buka</th><th>Tutup</th><th>Status</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="7">Belum ada periode.</td></tr>'}</tbody>`);
+}
+
+/* =========================================================
+   USERS (ADMIN)
+   ========================================================= */
+$('saveUser').onclick = async () => {
+  const payload = {
+    username: val('uUser'), nama: val('uNama'), password: val('uPass'),
+    role: val('uRole'), programStudi: val('uProdi'), aktif: val('uAktif')
+  };
+  if (!payload.username) return alert('Username wajib diisi.');
+  try {
+    const r = await post({ action: 'userSave', token: TOKEN, payload: JSON.stringify(payload) });
+    msg('userStatus', r.ok ? 'Pengguna disimpan.' : r.error, r.ok);
+    if (r.ok) loadDashboard();
+  } catch (e) { msg('userStatus', e.message); }
+};
+function renderUsers() {
+  const list = DATA.users || [];
+  const rows = list.map(u => `<tr>
+    <td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${badge(u.role)}</td>
+    <td>${esc(u.programStudi || '-')}</td>
+    <td>${u.aktif ? badge('Aktif','ok') : badge('Nonaktif','err')}</td>
+    <td><button class="btn secondary sm" data-uedit="${esc(u.username)}">Ubah</button></td></tr>`).join('');
+  setHtml('userTable', `<thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Status</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="6">Belum ada pengguna.</td></tr>'}</tbody>`);
+  document.querySelectorAll('[data-uedit]').forEach(b => b.onclick = () => {
+    const u = list.find(x => x.username === b.dataset.uedit);
+    if (!u) return;
+    $('uUser').value = u.username; $('uNama').value = u.nama; $('uPass').value = '';
+    $('uRole').value = u.role; $('uProdi').value = u.programStudi || ''; $('uAktif').value = String(u.aktif);
+  });
+}
+
+/* =========================================================
+   AUDIT (ADMIN)
+   ========================================================= */
+function renderAudit() {
+  const rows = (DATA.audit || []).map(a => `<tr>
+    <td>${esc(a.timestamp)}</td><td>${esc(a.actor)}</td><td>${badge(a.action)}</td>
+    <td>${esc(a.ref)}</td><td>${esc(a.detail)}</td></tr>`).join('');
+  setHtml('auditTable', `<thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Ref</th><th>Detail</th></tr></thead><tbody>${rows || '<tr><td colspan="5">Belum ada log.</td></tr>'}</tbody>`);
 }
 
 /* =========================================================
    INIT
    ========================================================= */
 updateSteps();
-if(token) loadDashboard();
 </script>
 </body>
 </html>
