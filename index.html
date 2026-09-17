@@ -12,10 +12,19 @@
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
 header{background:linear-gradient(135deg,#0c4d3a,#167456);color:#fff;padding:32px 18px}
 .wrap{max-width:1200px;margin:auto}
-.brand{display:flex;gap:16px;align-items:center}
+.brand{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .brand img{width:62px;height:62px;object-fit:contain;background:#fff;border-radius:14px;padding:7px}
 .brand h1{margin:0;font-size:25px}
 .brand p{margin:4px 0 0;opacity:.88;font-size:14px}
+.brand .spacer{flex:1}
+#connPill{display:inline-flex;align-items:center;gap:8px;background:#ffffff22;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:700;backdrop-filter:blur(4px);transition:background .3s}
+#connPill.ok{background:#22c55e33}
+#connPill.err{background:#ef444433}
+#connPill.pending{background:#f59e0b33}
+#connDot{width:10px;height:10px;border-radius:50%;background:#fbbf24;display:inline-block;box-shadow:0 0 0 0 #fbbf2488;animation:pulse 1.6s infinite}
+#connPill.ok #connDot{background:#4ade80;animation:none}
+#connPill.err #connDot{background:#f87171;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #fbbf2488}70%{box-shadow:0 0 0 10px #fbbf2400}100%{box-shadow:0 0 0 0 #fbbf2400}}
 nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
 .navin{display:flex;gap:8px;padding:10px 18px;flex-wrap:wrap}
 .tab{border:0;background:transparent;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;color:var(--text)}
@@ -84,6 +93,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
   .brand h1{font-size:19px}
   .actions{justify-content:stretch}.actions .btn{flex:1}
   .tree b{min-width:120px}
+  .brand .spacer{flex-basis:100%;height:0}
+  #connPill{margin-left:0}
 }
 </style>
 </head>
@@ -95,6 +106,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     <h1>Tracer Study FIKOM UPDM(B)</h1>
     <p>Pemetaan kondisi lulusan, relevansi pendidikan, kompetensi, dan masukan alumni.</p>
   </div>
+  <span class="spacer"></span>
+  <span id="connPill" class="pending" title="Status koneksi ke server Apps Script">
+    <span id="connDot"></span>
+    <span id="connText">Menghubungkan…</span>
+  </span>
 </div></header>
 
 <nav><div class="wrap navin">
@@ -123,10 +139,10 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           <div>
             <label>NIM <span class="req">*</span></label>
             <div style="display:flex;gap:8px">
-              <input id="nim" required inputmode="numeric" maxlength="9" placeholder="Contoh: 202441001">
+              <input id="nim" required inputmode="numeric" maxlength="9" placeholder="Contoh: 202441001 / 202431001">
               <button type="button" id="checkNimBtn" class="btn secondary" style="white-space:nowrap">Verifikasi</button>
             </div>
-            <p class="hint" id="nimHint">Klik Verifikasi untuk memuat data dari master alumni.</p>
+            <p class="hint" id="nimHint">Format S1: <b>yyyy41xxx</b> · S2: <b>yyyy31xxx</b>. Klik Verifikasi untuk memuat data master.</p>
           </div>
           <div><label>Nama Lengkap <span class="req">*</span></label><input id="nama" required maxlength="120"></div>
           <div><label>Program Studi <span class="req">*</span></label>
@@ -249,17 +265,18 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
     <div id="loginBox">
       <div class="grid">
-        <div><label>Username</label><input id="username" autocomplete="username"></div>
+        <div><label>Username</label><input id="username" autocomplete="username" placeholder="admin / kaprodi.s1 / kaprodi.s2 / wadek / dekan"></div>
         <div><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
       </div>
       <button id="loginBtn" class="btn" style="margin-top:15px">Login</button>
-      <p class="hint">Setelah instalasi pertama, segera ganti password admin melalui menu <b>Pengguna</b>.</p>
+      <p class="hint">Login default: <b>FIKOM-2026!</b> — segera ganti password melalui menu <b>Pengguna</b>.</p>
     </div>
 
     <div id="dashBox" class="hidden">
       <div class="toolbar" style="justify-content:space-between">
         <div><span id="profileBadge" class="badge"></span></div>
         <div class="actions">
+          <button id="changePassBtn" class="btn warn sm">🔑 Ganti Password</button>
           <button id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
           <button id="logoutBtn" class="btn danger sm">Logout</button>
         </div>
@@ -373,8 +390,9 @@ FIKOM UPDM(B)</textarea>
       <div class="panel hidden" data-panel="master">
         <div class="card">
           <h3>Import Master Alumni</h3>
-          <p class="hint">Tempel data dengan format <b>satu baris per alumni</b>: <code>NIM;NAMA;PROGRAM_STUDI;JENJANG;TAHUN_MASUK;TAHUN_LULUS;EMAIL;WHATSAPP</code>. Data yang sudah ada akan diperbarui.</p>
-          <textarea id="masterCsv" style="min-height:150px" placeholder="202441001;Ahmad Fauzi;S1 Ilmu Komunikasi;S1;2020;2024;ahmad@mail.com;081234567890"></textarea>
+          <p class="hint">Tempel data dengan format <b>satu baris per alumni</b>: <code>NIM;NAMA;PROGRAM_STUDI;JENJANG;TAHUN_MASUK;TAHUN_LULUS;EMAIL;WHATSAPP</code>. Data yang sudah ada akan diperbarui. Kode prodi NIM otomatis divalidasi (41=S1, 31=S2).</p>
+          <textarea id="masterCsv" style="min-height:150px" placeholder="202441001;Ahmad Fauzi;S1 Ilmu Komunikasi;S1;2020;2024;ahmad@mail.com;081234567890
+202431001;Siti Aminah;S2 Magister Ilmu Komunikasi;S2;2021;2024;siti@mail.com;081234567891"></textarea>
           <div class="actions" style="margin-top:12px">
             <button class="btn" id="importMaster">Import Master</button>
           </div>
@@ -410,10 +428,11 @@ FIKOM UPDM(B)</textarea>
       <div class="panel hidden" data-panel="users">
         <div class="card">
           <h3>Tambah / Ubah Pengguna</h3>
+          <p class="hint">Isi password baru untuk membuat / mengganti password. Kosongkan bila tidak ingin mengubah. Perubahan langsung tersimpan di sheet <b>USERS</b>.</p>
           <div class="grid3">
             <div><label>Username</label><input id="uUser"></div>
             <div><label>Nama Lengkap</label><input id="uNama"></div>
-            <div><label>Password (kosongkan bila tidak diubah)</label><input id="uPass" type="text"></div>
+            <div><label>Password (min 6 karakter)</label><input id="uPass" type="text" autocomplete="new-password"></div>
             <div><label>Role</label><select id="uRole">
               <option value="ADMIN">ADMIN</option>
               <option value="KAPRODI">KAPRODI</option>
@@ -446,7 +465,7 @@ FIKOM UPDM(B)</textarea>
 
 <script>
 /* =========================================================
-   KONFIGURASI
+   KONFIGURASI — ganti dengan URL deployment Apps Script Anda
    ========================================================= */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
 
@@ -507,6 +526,34 @@ function fillSelect(id, list, placeholder) {
     list.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
 }
 function badge(text, kind) { return `<span class="badge ${kind || ''}">${esc(text)}</span>`; }
+
+/* =========================================================
+   INDIKATOR KONEKSI SERVER
+   ========================================================= */
+async function pingServer() {
+  const pill = $('connPill'), txt = $('connText');
+  if (!pill || !txt) return;
+  pill.className = 'pending';
+  const t0 = Date.now();
+  try {
+    const r = await get({ action: 'health' });
+    const ms = Date.now() - t0;
+    if (r && r.ok) {
+      pill.className = 'ok';
+      txt.textContent = `Terhubung · ${ms}ms · v${r.version || '?'}`;
+      pill.title = `Server: ${r.app}\nVersi: ${r.version}\nWaktu server: ${r.time}\nSpreadsheet: ${r.spreadsheet || '-'}`;
+    } else {
+      throw new Error((r && r.error) || 'Respon tidak valid');
+    }
+  } catch (e) {
+    pill.className = 'err';
+    txt.textContent = 'Terputus dari server';
+    pill.title = 'Gagal terhubung: ' + e.message;
+  }
+}
+pingServer();
+setInterval(pingServer, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) pingServer(); });
 
 /* =========================================================
    KONSTANTA KUESIONER
@@ -616,14 +663,31 @@ document.querySelectorAll('.next').forEach(b => b.onclick = () => {
 });
 document.querySelectorAll('.prev').forEach(b => b.onclick = () => { if (step > 1) { step--; updateSteps(); } });
 
+function validateNIMLocal(nim, jenjang) {
+  const s = String(nim || '').trim();
+  if (!/^\d{9}$/.test(s)) return 'NIM harus 9 digit angka.';
+  const tahun = s.substring(0, 4);
+  const kode  = s.substring(4, 6);
+  const urut  = s.substring(6, 9);
+  if (!/^20\d{2}$/.test(tahun)) return 'Empat digit pertama NIM harus tahun masuk valid (20xx).';
+  if (Number(urut) < 1) return 'Tiga digit terakhir NIM minimal 001.';
+  const j = String(jenjang || '').toUpperCase();
+  if (j === 'S1' && kode !== '41') return 'Kode prodi S1 harus "41" pada digit ke-5 & 6 NIM.';
+  if (j === 'S2' && kode !== '31') return 'Kode prodi S2 harus "31" pada digit ke-5 & 6 NIM.';
+  if (!j && kode !== '41' && kode !== '31') return 'Kode prodi NIM tidak valid (41 untuk S1 / 31 untuk S2).';
+  return null;
+}
+
 function validateCurrent() {
   const box = document.querySelector(`.step[data-step="${step}"]`);
   for (const el of box.querySelectorAll('input,select,textarea')) {
     if (el.required && !el.checkValidity()) { el.reportValidity(); return false; }
   }
   if (step === 1) {
-    if (!/^\d{9}$/.test(val('nim'))) { alert('NIM harus 9 digit.'); return false; }
+    const err = validateNIMLocal(val('nim'), val('jenjang'));
+    if (err) { alert(err); return false; }
     if (!/^\d{4}$/.test(val('tahunMasuk')) || !/^\d{4}$/.test(val('tahunLulus'))) { alert('Tahun masuk/lulus harus 4 digit.'); return false; }
+    if (val('tahunMasuk') !== val('nim').substring(0,4)) { alert('Tahun masuk harus sama dengan 4 digit pertama NIM.'); return false; }
     if (Number(val('tahunLulus')) < Number(val('tahunMasuk'))) { alert('Tahun lulus tidak boleh sebelum tahun masuk.'); return false; }
     if (!/^\d{10,13}$/.test(val('whatsapp'))) { alert('WhatsApp harus 10–13 digit.'); return false; }
     const ipk = val('ipk');
@@ -641,14 +705,26 @@ function validateCurrent() {
 /* ---------- verifikasi NIM ke master alumni ---------- */
 $('checkNimBtn').onclick = async () => {
   const nim = val('nim');
-  if (!/^\d{9}$/.test(nim)) { $('nimHint').textContent = 'NIM harus 9 digit.'; return; }
+  const local = validateNIMLocal(nim, val('jenjang'));
+  if (local) { $('nimHint').innerHTML = '<span style="color:#b42318">✗ ' + esc(local) + '</span>'; return; }
   $('nimHint').textContent = 'Memeriksa...';
   try {
     const r = await get({ action: 'checknim', nim });
-    if (!r.ok) { $('nimHint').textContent = r.error || 'NIM tidak ditemukan.'; return; }
-    if (r.sudahMengisi) { $('nimHint').textContent = 'NIM ini sudah pernah mengisi Tracer Study.'; return; }
-    if (r.masterEmpty) { $('nimHint').textContent = 'Master alumni belum diisi admin — lanjutkan pengisian manual.'; return; }
+    if (!r.ok) { $('nimHint').innerHTML = '<span style="color:#b42318">✗ ' + esc(r.error || 'NIM tidak valid.') + '</span>'; return; }
+    if (r.sudahMengisi) { $('nimHint').innerHTML = '<span style="color:#b54708">⚠ NIM sudah pernah mengisi. Tracer ID: <b>' + esc(r.tracerId || '-') + '</b></span>'; return; }
+    const j = nim.substring(4,6) === '41' ? 'S1' : 'S2';
+    if (r.masterEmpty) {
+      $('nimHint').innerHTML = '<span style="color:#1d4ed8">ℹ Master alumni belum diisi admin — lanjutkan pengisian manual. Terdeteksi jenjang: <b>' + j + '</b></span>';
+      if (!val('jenjang')) $('jenjang').value = j;
+      return;
+    }
     const a = r.alumni;
+    if (!a) {
+      $('nimHint').innerHTML = '<span style="color:#b54708">⚠ NIM valid (' + j + ') namun belum ada di master alumni. Lengkapi data manual.</span>';
+      if (!val('jenjang')) $('jenjang').value = j;
+      if (!val('programStudi')) $('programStudi').value = j === 'S1' ? 'S1 Ilmu Komunikasi' : 'S2 Magister Ilmu Komunikasi';
+      return;
+    }
     $('nama').value = a.nama || '';
     if (a.programStudi) $('programStudi').value = a.programStudi;
     if (a.jenjang) $('jenjang').value = a.jenjang;
@@ -656,9 +732,9 @@ $('checkNimBtn').onclick = async () => {
     $('tahunLulus').value = a.tahunLulus || '';
     $('email').value = a.email || '';
     $('whatsapp').value = a.whatsapp || '';
-    $('nimHint').textContent = '✓ Data ditemukan pada master alumni. Periksa dan lengkapi bila perlu.';
+    $('nimHint').innerHTML = '<span style="color:#087443">✓ Data ditemukan pada master alumni. Periksa dan lengkapi bila perlu.</span>';
   } catch (e) {
-    $('nimHint').textContent = 'Gagal memeriksa NIM: ' + e.message;
+    $('nimHint').innerHTML = '<span style="color:#b42318">✗ Gagal memeriksa: ' + esc(e.message) + '</span>';
   }
 };
 
@@ -797,6 +873,16 @@ $('logoutBtn').onclick = async () => {
   msg('adminStatus', 'Logout berhasil.', true);
 };
 
+$('changePassBtn').onclick = async () => {
+  const oldP = prompt('Password lama:'); if (oldP === null) return;
+  const newP = prompt('Password baru (min 6 karakter):'); if (newP === null) return;
+  if (newP.length < 6) return alert('Password baru minimal 6 karakter.');
+  try {
+    const r = await post({ action: 'changepassword', token: TOKEN, oldPassword: oldP, newPassword: newP });
+    alert(r.ok ? '✓ Password berhasil diubah.' : '✗ ' + r.error);
+  } catch (e) { alert('Gagal: ' + e.message); }
+};
+
 /* =========================================================
    DASHBOARD
    ========================================================= */
@@ -826,7 +912,6 @@ async function loadDashboard() {
   if (!TOKEN) return;
   $('loginBox').classList.add('hidden');
   $('dashBox').classList.remove('hidden');
-  setHtml('dashboardPlaceholder', '');
   try {
     const r = await post({ action: 'dashboard', token: TOKEN, filters: JSON.stringify(currentFilters()) });
     if (!r.ok) throw new Error(r.error);
@@ -1126,7 +1211,7 @@ $('importMaster').onclick = async () => {
   const rows = raw.split(/\r?\n/).map(l => l.split(/[;\t,]/).map(s => s.trim())).filter(r => r[0]);
   try {
     const r = await post({ action: 'masterImport', token: TOKEN, rows: JSON.stringify(rows) });
-    msg('masterStatus', r.ok ? `Import selesai: ${r.inserted} baru, ${r.updated} diperbarui.` : r.error, r.ok);
+    msg('masterStatus', r.ok ? `Import selesai: ${r.inserted} baru, ${r.updated} diperbarui, ${r.skipped || 0} dilewati (NIM tidak valid).` : r.error, r.ok);
     if (r.ok) { $('masterCsv').value = ''; loadDashboard(); }
   } catch (e) { msg('masterStatus', e.message); }
 };
@@ -1178,7 +1263,7 @@ $('saveUser').onclick = async () => {
   try {
     const r = await post({ action: 'userSave', token: TOKEN, payload: JSON.stringify(payload) });
     msg('userStatus', r.ok ? 'Pengguna disimpan.' : r.error, r.ok);
-    if (r.ok) loadDashboard();
+    if (r.ok) { $('uPass').value = ''; loadDashboard(); }
   } catch (e) { msg('userStatus', e.message); }
 };
 function renderUsers() {
