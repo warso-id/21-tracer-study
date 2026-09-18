@@ -736,26 +736,42 @@ function extractAlumniByNim(response, nim) {
   const target = normalizeNim(nim);
   if (!target || !response) return null;
 
-  // Prioritas 1: object alumni yang dikembalikan server.
-  const direct = normalizeMasterRecord(
-    response.alumni || response.data || response.row || response.master
-  );
-  if (direct && normalizeNim(direct.nim) === target) return direct;
-
-  // Prioritas 2: bila server mengembalikan daftar baris.
+  // PENTING:
+  // Front-end TIDAK pernah mencari nama. Yang dicari hanya NIM.
+  // Nama diambil dari record/baris yang NIM-nya sama persis.
   const candidates = [];
-  if (Array.isArray(response.rows)) candidates.push(...response.rows);
-  if (Array.isArray(response.alumniList)) candidates.push(...response.alumniList);
-  if (Array.isArray(response.data)) candidates.push(...response.data);
+
+  const pushCandidate = item => {
+    if (item == null) return;
+    if (Array.isArray(item)) {
+      candidates.push({
+        nim: item[0],
+        nama: item[1],
+        programStudi: item[2],
+        jenjang: item[3],
+        tahunMasuk: item[4],
+        tahunLulus: item[5],
+        email: item[6],
+        whatsapp: item[7]
+      });
+    } else if (typeof item === 'object') {
+      candidates.push(item);
+    }
+  };
+
+  // Respons checknim dari backend.
+  pushCandidate(response.alumni);
+  pushCandidate(response.row);
+  pushCandidate(response.master);
+
+  // Jika backend mengirim daftar baris, cari BARIS dengan NIM yang sama.
+  if (Array.isArray(response.rows)) response.rows.forEach(pushCandidate);
+  if (Array.isArray(response.alumniList)) response.alumniList.forEach(pushCandidate);
+  if (Array.isArray(response.data)) response.data.forEach(pushCandidate);
 
   for (const item of candidates) {
-    const row = normalizeMasterRecord(
-      Array.isArray(item)
-        ? { nim: item[0], nama: item[1], programStudi: item[2], jenjang: item[3],
-            tahunMasuk: item[4], tahunLulus: item[5], email: item[6], whatsapp: item[7] }
-        : item
-    );
-    if (row && normalizeNim(row.nim) === target) return row;
+    const row = normalizeMasterRecord(item);
+    if (row && row.nim === target) return row;
   }
 
   return null;
@@ -766,7 +782,9 @@ function clearNimVerification(message = 'Masukkan NIM lalu klik Verifikasi.') {
   VERIFIED_ALUMNI = null;
   $('nama').value = '';
   $('nama').readOnly = true;
-  $('namaHint').textContent = 'Nama Lengkap akan otomatis diambil dari baris NIM pada master alumni.';
+  $('nama').removeAttribute('data-master-nim');
+  $('nama').removeAttribute('data-master-source');
+  $('namaHint').textContent = 'Nama Lengkap akan otomatis diambil dari baris NIM pada MASTER_ALUMNI (real time).';
   $('namaHint').style.color = '';
   if (message) $('nimHint').textContent = message;
 }
@@ -789,7 +807,9 @@ function applyVerifiedAlumni(alumni, nim) {
 
   $('nama').value = row.nama;
   $('nama').readOnly = true;
-  $('namaHint').textContent = '✓ Nama dikunci dari baris NIM ' + row.nim + ' pada master alumni.';
+  $('nama').dataset.masterNim = row.nim;
+  $('nama').dataset.masterSource = 'MASTER_ALUMNI';
+  $('namaHint').textContent = '✓ Nama dikunci dari baris NIM ' + row.nim + ' pada MASTER_ALUMNI (real time).';
   $('namaHint').style.color = 'var(--ok)';
 
   if (row.programStudi != null && String(row.programStudi).trim()) {
@@ -875,7 +895,8 @@ async function post(data) {
   const r = await fetch(GAS_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-    body: new URLSearchParams(data)
+    body: new URLSearchParams(data),
+    cache: 'no-store'
   });
   const text = await r.text();
   let json;
@@ -885,7 +906,11 @@ async function post(data) {
   return json;
 }
 async function get(params) {
-  const r = await fetch(GAS_URL + '?' + new URLSearchParams(params));
+  const query = new URLSearchParams({...params, _rt: Date.now().toString()});
+  const r = await fetch(GAS_URL + '?' + query.toString(), {
+    cache: 'no-store',
+    headers: { 'Cache-Control': 'no-cache' }
+  });
   const text = await r.text();
   let json;
   try { json = JSON.parse(text); }
@@ -1078,6 +1103,15 @@ function validateCurrent() {
       );
     }
 
+    if (normalizeNim(VERIFIED_ALUMNI.nim) !== nim ||
+        $('nama').dataset.masterNim !== nim ||
+        $('nama').dataset.masterSource !== 'MASTER_ALUMNI') {
+      return failValidation(
+        'Verifikasi identitas tidak valid. Klik Verifikasi kembali agar Nama diambil dari MASTER_ALUMNI berdasarkan NIM.',
+        'nim'
+      );
+    }
+
     const masterName = normalizeName(VERIFIED_ALUMNI.nama || '');
     const currentName = normalizeName(val('nama'));
     if (!masterName || currentName !== masterName) {
@@ -1143,11 +1177,13 @@ function validateCurrent() {
  * 6. Jika NIM berubah, verifikasi lama langsung dibatalkan.
  */
 $('checkNimBtn').onclick = async () => {
-  const nim = normalizeNim(val('nim'));
+  const rawNim = val('nim');
+  const nim = normalizeNim(rawNim);
 
-  if (!/^\d{9}$/.test(nim)) {
-    clearNimVerification('NIM harus tepat 9 digit.');
-    return failValidation('NIM harus tepat 9 digit.', 'nim');
+  if (!/^\d{9}$/.test(nim) || rawNim !== nim) {
+    // NIM harus dikirim persis sebagai 9 digit agar pencarian baris master tidak ambigu.
+    clearNimVerification('NIM harus tepat 9 digit angka tanpa spasi atau tanda lain.');
+    return failValidation('NIM harus tepat 9 digit angka tanpa spasi atau tanda lain.', 'nim');
   }
 
   // Setiap verifikasi baru membatalkan hasil verifikasi sebelumnya.
@@ -1318,10 +1354,10 @@ $('tracerForm').onsubmit = async e => {
   clearMsg('formStatus');
 
   const payload = {
-      // Nama authoritative: selalu dari record master hasil pencocokan NIM.
-      nama: VERIFIED_ALUMNI ? normalizeName(VERIFIED_ALUMNI.nama) : '',
-
-    nim: val('nim'), nama: val('nama'), programStudi: val('programStudi'), jenjang: val('jenjang'),
+    // Nama authoritative: SELALU berasal dari baris MASTER_ALUMNI dengan NIM yang sama.
+    nim: val('nim'),
+    nama: VERIFIED_ALUMNI ? normalizeName(VERIFIED_ALUMNI.nama) : '',
+    programStudi: val('programStudi'), jenjang: val('jenjang'),
     tahunMasuk: val('tahunMasuk'), tahunLulus: val('tahunLulus'), ipk: val('ipk'),
     email: val('email'), whatsapp: val('whatsapp'), status: val('status'),
     answers: {},
@@ -1373,7 +1409,13 @@ function resetForm() {
   $('studyBox').classList.add('hidden');
   step = 1; updateSteps();
   updateNimTypeInfo();
-  $('namaHint').textContent = 'Minimal 2 kata, tanpa angka.';
+  VERIFIED_NIM = '';
+  VERIFIED_ALUMNI = null;
+  $('nama').value = '';
+  $('nama').readOnly = true;
+  $('nama').removeAttribute('data-master-nim');
+  $('nama').removeAttribute('data-master-source');
+  $('namaHint').textContent = 'Nama Lengkap akan otomatis diambil dari baris NIM pada MASTER_ALUMNI (real time).';
   $('namaHint').style.color = '';
 }
 
