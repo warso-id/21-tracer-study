@@ -127,6 +127,21 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .toast.ok{border-left-color:var(--ok);color:var(--ok)}
 .toast.info{border-left-color:var(--info);color:var(--info)}
 @keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.notify-wrap{position:relative;display:flex;align-items:center;gap:8px}
+.header-tools{display:flex;align-items:center;gap:10px}
+.notify-btn{position:relative;border:1px solid #ffffff33;background:#ffffff18;color:#fff;border-radius:99px;width:40px;height:40px;cursor:pointer;font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.notify-btn:hover{background:#ffffff2b}
+.notify-count{position:absolute;right:-2px;top:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #0c4d3a}
+.notify-panel{position:fixed;right:18px;top:74px;width:min(380px,calc(100vw - 24px));background:#fff;color:var(--text);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px #17352a2b;z-index:120;overflow:hidden}
+.notify-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:800}
+.notify-item{padding:11px 14px;border-bottom:1px solid #edf2ef;display:grid;gap:2px}
+.notify-item b{font-size:13px}
+.notify-item span{font-size:12.5px;color:var(--muted)}
+.notify-empty{padding:22px 14px;text-align:center;color:var(--muted);font-size:13px}
+.nim-type{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 9px;border-radius:9px;background:#eef7f3;color:#0c4d3a;font-size:12px;font-weight:800;border:1px solid #d6e9e1}
+.nim-type.s2{background:#eef4ff;color:#1d4ed8;border-color:#dbe5ff}
+.nim-type.warn{background:#fff8e8;color:#b54708;border-color:#f5dfb4}
+
 
 @media(max-width:860px){
   .login-shell{grid-template-columns:1fr}
@@ -141,8 +156,35 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
   .actions{justify-content:stretch}.actions .btn{flex:1}
   .tree b{min-width:120px}
   header{padding:18px 14px}
-  .navin{padding:8px 12px}
-  .tab{padding:8px 10px;font-size:13px}
+  .navin{padding:8px 12px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .tab{padding:8px 10px;font-size:13px;white-space:nowrap}
+  main{padding:14px 10px}
+  .card{padding:15px;border-radius:14px}
+  .brand{gap:10px}
+  .brand h1{font-size:17px;line-height:1.25}
+  .brand p{font-size:12px}
+  .grid,.grid3{grid-template-columns:1fr}
+  .radio-grid{grid-template-columns:repeat(5,minmax(46px,1fr))}
+  .stepnav,.actions{flex-direction:column}
+  .stepnav .btn,.actions .btn{width:100%;flex:unset}
+  .toolbar{display:grid;grid-template-columns:1fr}
+  .toolbar .btn{width:100%}
+  .tablewrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .table{min-width:720px}
+  .modal{padding:8px}
+  .modal .box{max-height:94vh;padding:15px}
+  .toast-wrap{left:10px;right:10px;top:10px;max-width:none}
+  .toast{font-size:13px}
+  .login-form{padding:22px 16px}
+}
+@media(max-width:430px){
+  body{font-size:14px}
+  .brand img{width:44px;height:44px}
+  .brand h1{font-size:16px}
+  .brand p{display:none}
+  .radio-grid{grid-template-columns:repeat(5,1fr);gap:5px}
+  .radio{padding:8px 3px;font-size:12px}
+  input,select,textarea{padding:9px 10px}
 }
 </style>
 </head>
@@ -155,10 +197,13 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       <h1>Tracer Study FIKOM UPDM(B)</h1>
       <p>Pemetaan kondisi lulusan, relevansi pendidikan, kompetensi, dan masukan alumni.</p>
     </div>
-    <span class="conn-pill" id="connPill" title="Status koneksi ke server Apps Script">
-      <span class="conn-dot check" id="connDot"></span>
-      <span id="connText">Menghubungkan…</span>
-    </span>
+    <div class="header-tools">
+      <button type="button" class="notify-btn" id="notifyBtn" title="Notifikasi" aria-label="Buka notifikasi">🔔<span class="notify-count hidden" id="notifyCount">0</span></button>
+      <span class="conn-pill" id="connPill" title="Status koneksi ke server Apps Script">
+        <span class="conn-dot check" id="connDot"></span>
+        <span id="connText">Menghubungkan…</span>
+      </span>
+    </div>
   </div>
 </header>
 
@@ -192,9 +237,19 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
             </div>
             <p class="hint" id="nimHint">Klik Verifikasi untuk memuat data dari master alumni.</p>
           </div>
-          <div><label>Nama Lengkap <span class="req">*</span></label><input id="nama" required maxlength="120"></div>
-          <div><label>Program Studi <span class="req">*</span></label>
-            <select id="programStudi" required><option value="">Pilih</option></select></div>
+          <div>
+            <label for="nama">Nama Lengkap <span class="req">*</span></label>
+            <input id="nama" required maxlength="120" autocomplete="name" inputmode="text"
+                   placeholder="Nama lengkap sesuai data alumni"
+                   pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[' .-][A-Za-zÀ-ÖØ-öø-ÿ]+)+"
+                   aria-describedby="namaHint">
+            <p class="hint" id="namaHint">Minimal 2 kata, tanpa angka.</p>
+          </div>
+          <div>
+            <label for="programStudi">Program Studi <span class="req">*</span></label>
+            <select id="programStudi" required><option value="">Pilih</option></select>
+            <div id="nimTypeInfo" class="nim-type warn">Pilih Program Studi untuk menampilkan format NIM.</div>
+          </div>
           <div><label>Jenjang <span class="req">*</span></label>
             <select id="jenjang" required><option value="">Pilih</option></select></div>
           <div><label>Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4"></div>
@@ -352,7 +407,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
           <div class="login-actions">
             <label><input type="checkbox" id="rememberUser"> Ingat username</label>
-            <a href="#" onclick="alert('Hubungi Administrator FIKOM UPDM(B) untuk reset password.');return false;" style="color:var(--accent);text-decoration:none;font-weight:600">Lupa password?</a>
+            <a href="#" id="forgotPassLink" style="color:var(--accent);text-decoration:none;font-weight:600">Lupa password?</a>
           </div>
 
           <button id="loginBtn" class="btn block">Masuk →</button>
@@ -550,7 +605,7 @@ FIKOM UPDM(B)</textarea>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.0</footer>
+<footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.1</footer>
 
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
@@ -582,6 +637,115 @@ const $ = id => document.getElementById(id);
 const val = id => ($(id) ? String($(id).value || '').trim() : '');
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const setHtml = (id, h) => { const e = $(id); if (e) e.innerHTML = h; };
+let NOTIFICATIONS = [];
+
+function addNotification(title, message, kind='info') {
+  NOTIFICATIONS.unshift({title, message, kind, time:new Date()});
+  NOTIFICATIONS = NOTIFICATIONS.slice(0, 20);
+  renderNotifications();
+}
+
+function renderNotifications() {
+  const countEl = $('notifyCount');
+  if (!countEl) return;
+  const count = Math.min(NOTIFICATIONS.length, 99);
+  countEl.textContent = count;
+  countEl.classList.toggle('hidden', count === 0);
+}
+
+function openNotifications() {
+  const old = document.querySelector('.notify-panel');
+  if (old) { old.remove(); return; }
+  const panel = document.createElement('div');
+  panel.className = 'notify-panel';
+  panel.innerHTML = `
+    <div class="notify-head">
+      <span>🔔 Notifikasi</span>
+      <button type="button" class="btn secondary sm" id="clearNotifications">Bersihkan</button>
+    </div>
+    ${NOTIFICATIONS.length ? NOTIFICATIONS.map(n => `
+      <div class="notify-item">
+        <b>${esc(n.title)}</b>
+        <span>${esc(n.message)}</span>
+      </div>`).join('') : '<div class="notify-empty">Belum ada notifikasi.</div>'}`;
+  document.body.appendChild(panel);
+  const clear = $('clearNotifications');
+  if (clear) clear.onclick = () => {
+    NOTIFICATIONS = [];
+    renderNotifications();
+    panel.remove();
+  };
+}
+
+if ($('notifyBtn')) $('notifyBtn').onclick = openNotifications;
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelector('.notify-panel')?.remove();
+});
+
+function failValidation(message, fieldId) {
+  toast(message, 'err');
+  addNotification('Validasi', message, 'err');
+  if (fieldId && $(fieldId)) {
+    const el = $(fieldId);
+    el.focus();
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  msg('formStatus', message, false);
+  return false;
+}
+
+function normalizeName(name) {
+  return String(name || '').replace(/\s+/g, ' ').trim();
+}
+
+function isValidFullName(name) {
+  const n = normalizeName(name);
+  if (n.length < 3 || n.length > 120) return false;
+  if (/\d/.test(n)) return false;
+  if (/[^A-Za-zÀ-ÖØ-öø-ÿ' .-]/.test(n)) return false;
+  const words = n.split(' ').filter(Boolean);
+  return words.length >= 2 && words.every(w => /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(w));
+}
+
+function normalizeProgramStudiName(v) {
+  return String(v || '').trim().toLowerCase().replace(/\s+/g,' ');
+}
+
+function getProgramLevel(program) {
+  const p = normalizeProgramStudiName(program);
+  if (/\bs2\b/.test(p) || p.includes('magister')) return 'S2';
+  if (/\bs1\b/.test(p) || p.includes('ilmu komunikasi')) return 'S1';
+  return '';
+}
+
+function updateNimTypeInfo() {
+  const box = $('nimTypeInfo');
+  if (!box) return;
+  const prodi = val('programStudi');
+  const level = getProgramLevel(prodi);
+  if (level === 'S1') {
+    box.className = 'nim-type';
+    box.textContent = '🎓 S1 Ilmu Komunikasi · NIM S1';
+    return;
+  }
+  if (level === 'S2') {
+    box.className = 'nim-type s2';
+    box.textContent = '🎓 S2 Magister Ilmu Komunikasi · NIM S2';
+    return;
+  }
+  box.className = 'nim-type warn';
+  box.textContent = 'Pilih Program Studi untuk menampilkan format NIM.';
+}
+
+function expectedNimLevel(nim) {
+  const n = String(nim || '');
+  if (!/^\d{9}$/.test(n)) return '';
+  const marker = n.slice(4,6);
+  if (marker === '41') return 'S1';
+  if (marker === '31') return 'S2';
+  return '';
+}
+
 
 function msg(id, text, ok) {
   const e = $(id); if (!e) return;
@@ -606,11 +770,21 @@ async function post(data) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
     body: new URLSearchParams(data)
   });
-  return r.json();
+  const text = await r.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch (_) { throw new Error(`Respons server tidak valid (HTTP ${r.status}).`); }
+  if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
+  return json;
 }
 async function get(params) {
   const r = await fetch(GAS_URL + '?' + new URLSearchParams(params));
-  return r.json();
+  const text = await r.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch (_) { throw new Error(`Respons server tidak valid (HTTP ${r.status}).`); }
+  if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
+  return json;
 }
 function downloadB64(name, mime, b64) {
   const bin = atob(b64);
@@ -771,53 +945,176 @@ document.querySelectorAll('.prev').forEach(b => b.onclick = () => { if (step > 1
 
 function validateCurrent() {
   const box = document.querySelector(`.step[data-step="${step}"]`);
+  if (!box) return false;
+
   for (const el of box.querySelectorAll('input,select,textarea')) {
-    if (el.required && !el.checkValidity()) { el.reportValidity(); return false; }
+    if (el.required && !el.checkValidity()) {
+      el.reportValidity();
+      const label = el.closest('div')?.querySelector('label')?.textContent?.replace('*','').trim() || 'kolom';
+      return failValidation(`${label} wajib diisi atau formatnya belum benar.`, el.id);
+    }
   }
+
   if (step === 1) {
-    if (!/^\d{9}$/.test(val('nim'))) { alert('NIM harus 9 digit.'); return false; }
-    if (!/^\d{4}$/.test(val('tahunMasuk')) || !/^\d{4}$/.test(val('tahunLulus'))) { alert('Tahun masuk/lulus harus 4 digit.'); return false; }
-    if (Number(val('tahunLulus')) < Number(val('tahunMasuk'))) { alert('Tahun lulus tidak boleh sebelum tahun masuk.'); return false; }
-    if (!/^\d{10,13}$/.test(val('whatsapp'))) { alert('WhatsApp harus 10–13 digit.'); return false; }
+    const nama = normalizeName(val('nama'));
+    $('nama').value = nama;
+    if (!isValidFullName(nama)) return failValidation('Nama Lengkap harus minimal 2 kata dan tidak boleh mengandung angka.', 'nama');
+
+    const nim = val('nim');
+    if (!/^\d{9}$/.test(nim)) return failValidation('NIM harus tepat 9 digit.', 'nim');
+
+    const prodi = val('programStudi');
+    const level = getProgramLevel(prodi);
+    const nimLevel = expectedNimLevel(nim);
+    if (level && nimLevel && level !== nimLevel) {
+      return failValidation(`Program Studi ${level} harus menggunakan NIM ${level}. NIM yang dimasukkan terdeteksi sebagai ${nimLevel}.`, 'nim');
+    }
+    if (level === 'S1' && nim.slice(4,6) !== '41') {
+      return failValidation('NIM S1 harus menggunakan penanda 41 pada digit ke-5 dan ke-6.', 'nim');
+    }
+    if (level === 'S2' && nim.slice(4,6) !== '31') {
+      return failValidation('NIM S2 harus menggunakan penanda 31 pada digit ke-5 dan ke-6.', 'nim');
+    }
+
+    if (!/^\d{4}$/.test(val('tahunMasuk')) || !/^\d{4}$/.test(val('tahunLulus'))) {
+      return failValidation('Tahun masuk dan tahun lulus harus 4 digit.', 'tahunMasuk');
+    }
+    if (Number(val('tahunLulus')) < Number(val('tahunMasuk'))) {
+      return failValidation('Tahun lulus tidak boleh sebelum tahun masuk.', 'tahunLulus');
+    }
+    if (!/^\d{10,13}$/.test(val('whatsapp'))) {
+      return failValidation('WhatsApp harus 10–13 digit.', 'whatsapp');
+    }
     const ipk = val('ipk');
-    if (ipk && (isNaN(Number(ipk)) || Number(ipk) < 0 || Number(ipk) > 4)) { alert('IPK harus antara 0 dan 4.'); return false; }
+    if (ipk && (isNaN(Number(ipk)) || Number(ipk) < 0 || Number(ipk) > 4)) {
+      return failValidation('IPK harus antara 0 dan 4.', 'ipk');
+    }
   }
+
   if (step === 2) {
     const s = val('status');
-    if ((s === 'Bekerja' || s === 'Bekerja dan studi lanjut') && !val('perusahaan')) { alert('Nama perusahaan/instansi wajib diisi.'); return false; }
-    if (s === 'Wirausaha' && !val('namaUsaha')) { alert('Nama usaha wajib diisi.'); return false; }
-    if ((s === 'Studi lanjut' || s === 'Bekerja dan studi lanjut') && !val('perguruanTinggi')) { alert('Perguruan tinggi wajib diisi.'); return false; }
+    if ((s === 'Bekerja' || s === 'Bekerja dan studi lanjut') && !val('perusahaan')) {
+      return failValidation('Nama perusahaan/instansi wajib diisi.', 'perusahaan');
+    }
+    if (s === 'Wirausaha' && !val('namaUsaha')) {
+      return failValidation('Nama usaha wajib diisi.', 'namaUsaha');
+    }
+    if ((s === 'Studi lanjut' || s === 'Bekerja dan studi lanjut') && !val('perguruanTinggi')) {
+      return failValidation('Perguruan tinggi wajib diisi.', 'perguruanTinggi');
+    }
   }
+
   return true;
 }
 
 /* ---------- verifikasi NIM ke master alumni ---------- */
 $('checkNimBtn').onclick = async () => {
   const nim = val('nim');
-  if (!/^\d{9}$/.test(nim)) { $('nimHint').textContent = 'NIM harus 9 digit.'; return; }
-  $('nimHint').textContent = 'Memeriksa...';
+  if (!/^\d{9}$/.test(nim)) {
+    $('nimHint').textContent = 'NIM harus tepat 9 digit.';
+    return failValidation('NIM harus tepat 9 digit.', 'nim');
+  }
+
+  $('checkNimBtn').disabled = true;
+  $('checkNimBtn').textContent = 'Memeriksa...';
+  $('nimHint').textContent = 'Memeriksa NIM pada master alumni...';
+
   try {
     const r = await get({ action: 'checknim', nim });
-    if (!r.ok) { $('nimHint').textContent = r.error || 'NIM tidak ditemukan.'; return; }
-    if (r.sudahMengisi) { $('nimHint').textContent = 'NIM ini sudah pernah mengisi Tracer Study.'; return; }
-    if (r.masterEmpty) { $('nimHint').textContent = 'Master alumni belum diisi admin — lanjutkan pengisian manual.'; return; }
+    if (!r.ok) {
+      $('nimHint').textContent = r.error || 'NIM tidak ditemukan.';
+      addNotification('Verifikasi NIM gagal', r.error || 'NIM tidak ditemukan.', 'err');
+      toast(r.error || 'NIM tidak ditemukan.', 'err');
+      return;
+    }
+    if (r.sudahMengisi) {
+      $('nimHint').textContent = 'NIM ini sudah pernah mengisi Tracer Study.';
+      addNotification('NIM sudah terdaftar', 'NIM ini sudah pernah mengisi Tracer Study.', 'info');
+      toast('NIM ini sudah pernah mengisi Tracer Study.', 'info');
+      return;
+    }
+    if (r.masterEmpty) {
+      $('nimHint').textContent = 'Master alumni belum diisi admin — lanjutkan pengisian manual.';
+      addNotification('Master alumni kosong', 'Data dapat dilanjutkan secara manual.', 'info');
+      return;
+    }
+
     const a = r.alumni;
     if (!a) {
       $('nimHint').textContent = 'NIM tidak ditemukan di master alumni. Hubungi admin FIKOM.';
+      addNotification('NIM tidak ditemukan', 'Hubungi admin FIKOM UPDM(B).', 'err');
       return;
     }
-    $('nama').value = a.nama || '';
+
+    $('nama').value = normalizeName(a.nama || '');
     if (a.programStudi) $('programStudi').value = a.programStudi;
     if (a.jenjang) $('jenjang').value = a.jenjang;
     $('tahunMasuk').value = a.tahunMasuk || '';
     $('tahunLulus').value = a.tahunLulus || '';
     $('email').value = a.email || '';
     $('whatsapp').value = a.whatsapp || '';
+    updateNimTypeInfo();
+
+    const level = getProgramLevel(val('programStudi'));
+    const nimLevel = expectedNimLevel(nim);
+    if (level && nimLevel && level !== nimLevel) {
+      $('nimHint').textContent = `Data master ditemukan, tetapi NIM terdeteksi sebagai ${nimLevel} sedangkan Program Studi adalah ${level}.`;
+      addNotification('Ketidaksesuaian NIM/Prodi', `NIM ${nimLevel} tidak sesuai Program Studi ${level}.`, 'err');
+      toast(`NIM ${nimLevel} tidak sesuai Program Studi ${level}.`, 'err');
+      return;
+    }
+
     $('nimHint').textContent = '✓ Data ditemukan pada master alumni. Periksa dan lengkapi bila perlu.';
+    addNotification('NIM berhasil diverifikasi', `${a.nama || nim} · ${a.programStudi || 'Program Studi belum tersedia'}.`, 'ok');
+    toast('NIM berhasil diverifikasi.', 'ok');
   } catch (e) {
     $('nimHint').textContent = 'Gagal memeriksa NIM: ' + e.message;
+    addNotification('Verifikasi NIM gagal', e.message, 'err');
+    toast('Gagal memeriksa NIM: ' + e.message, 'err');
+  } finally {
+    $('checkNimBtn').disabled = false;
+    $('checkNimBtn').textContent = 'Verifikasi';
   }
 };
+
+/* ---------- validasi realtime nama + hubungan Program Studi/NIM ---------- */
+$('nama').addEventListener('input', () => {
+  const n = normalizeName($('nama').value);
+  $('nama').value = n;
+  const hint = $('namaHint');
+  if (!n) {
+    hint.textContent = 'Minimal 2 kata, tanpa angka.';
+    hint.style.color = '';
+  } else if (isValidFullName(n)) {
+    hint.textContent = '✓ Format nama lengkap valid.';
+    hint.style.color = 'var(--ok)';
+  } else {
+    hint.textContent = 'Nama harus minimal 2 kata dan tidak boleh mengandung angka.';
+    hint.style.color = 'var(--danger)';
+  }
+});
+
+$('programStudi').addEventListener('change', () => {
+  updateNimTypeInfo();
+  const level = getProgramLevel(val('programStudi'));
+  const nimLevel = expectedNimLevel(val('nim'));
+  if (level && nimLevel && level !== nimLevel) {
+    $('nimHint').textContent = `Perhatian: Program Studi ${level} membutuhkan NIM ${level}.`;
+    addNotification('Program Studi berubah', `Pastikan NIM sesuai dengan ${level}.`, 'info');
+    toast(`Program Studi ${level} membutuhkan NIM ${level}.`, 'info');
+  }
+});
+
+$('nim').addEventListener('input', () => {
+  const level = expectedNimLevel(val('nim'));
+  const prodiLevel = getProgramLevel(val('programStudi'));
+  if (level) {
+    $('nimHint').textContent = `NIM terdeteksi: ${level}.`;
+  }
+  if (prodiLevel && level && prodiLevel !== level) {
+    $('nimHint').textContent = `NIM terdeteksi ${level}; Program Studi yang dipilih adalah ${prodiLevel}.`;
+  }
+});
 
 /* ---------- tampilkan blok kondisional ---------- */
 $('status').onchange = () => {
@@ -850,7 +1147,7 @@ function renderSummary() {
 $('tracerForm').onsubmit = async e => {
   e.preventDefault();
   if (!validateCurrent()) return;
-  if (!$('agree').checked) { alert('Centang pernyataan kebenaran data terlebih dahulu.'); return; }
+  if (!$('agree').checked) { failValidation('Centang pernyataan kebenaran data terlebih dahulu.', 'agree'); return; }
   clearMsg('formStatus');
 
   const payload = {
@@ -905,6 +1202,9 @@ function resetForm() {
   $('businessBox').classList.add('hidden');
   $('studyBox').classList.add('hidden');
   step = 1; updateSteps();
+  updateNimTypeInfo();
+  $('namaHint').textContent = 'Minimal 2 kata, tanpa angka.';
+  $('namaHint').style.color = '';
 }
 
 /* =========================================================
@@ -937,6 +1237,13 @@ $('togglePass').onclick = () => {
 
 $('username').addEventListener('keypress', e => { if (e.key === 'Enter') $('password').focus(); });
 $('password').addEventListener('keypress', e => { if (e.key === 'Enter') $('loginBtn').click(); });
+$('forgotPassLink').onclick = e => {
+  e.preventDefault();
+  const text = 'Hubungi Administrator FIKOM UPDM(B) untuk reset password.';
+  toast(text, 'info');
+  addNotification('Lupa password', text, 'info');
+};
+
 
 $('loginBtn').onclick = async () => {
   const btn = $('loginBtn'); btn.disabled = true; btn.textContent = 'Memproses...';
@@ -1351,8 +1658,8 @@ $('importMaster').onclick = async () => {
   try {
     const r = await post({ action: 'masterImport', token: TOKEN, rows: JSON.stringify(rows) });
     msg('masterStatus', r.ok ? `Import selesai: ${r.inserted} baru, ${r.updated} diperbarui, ${r.skipped || 0} dilewati.` : r.error, r.ok);
-    if (r.ok) { $('masterCsv').value = ''; toast('Import master berhasil.', 'ok'); loadDashboard(); }
-  } catch (e) { msg('masterStatus', e.message); }
+    if (r.ok) { $('masterCsv').value = ''; toast('Import master berhasil.', 'ok'); addNotification('Master Alumni', 'Import master alumni berhasil.', 'ok'); loadDashboard(); }
+  } catch (e) { msg('masterStatus', e.message); toast(e.message, 'err'); addNotification('Import master gagal', e.message, 'err'); }
 };
 function renderMaster() {
   const list = DATA.master || [];
@@ -1372,12 +1679,12 @@ $('savePeriode').onclick = async () => {
     periodeId: val('pId'), nama: val('pNama'), tahunMin: val('pMin'), tahunMax: val('pMax'),
     tglBuka: val('pBuka'), tglTutup: val('pTutup'), status: val('pStatus'), catatan: val('pCatatan')
   };
-  if (!payload.periodeId || !payload.nama) return alert('Periode ID dan Nama wajib diisi.');
+  if (!payload.periodeId || !payload.nama) { toast('Periode ID dan Nama wajib diisi.', 'err'); addNotification('Validasi periode', 'Periode ID dan Nama wajib diisi.', 'err'); return; }
   try {
     const r = await post({ action: 'periodeSave', token: TOKEN, payload: JSON.stringify(payload) });
     msg('periodeStatus', r.ok ? 'Periode disimpan.' : r.error, r.ok);
-    if (r.ok) { META = await get({ action: 'meta' }); toast('Periode disimpan.', 'ok'); loadDashboard(); }
-  } catch (e) { msg('periodeStatus', e.message); }
+    if (r.ok) { META = await get({ action: 'meta' }); toast('Periode disimpan.', 'ok'); addNotification('Periode', 'Periode berhasil disimpan.', 'ok'); loadDashboard(); }
+  } catch (e) { msg('periodeStatus', e.message); toast(e.message, 'err'); addNotification('Periode gagal', e.message, 'err'); }
 };
 function renderPeriode() {
   const list = DATA.periode || [];
@@ -1398,12 +1705,12 @@ $('saveUser').onclick = async () => {
     username: val('uUser'), nama: val('uNama'), password: val('uPass'),
     role: val('uRole'), programStudi: val('uProdi'), aktif: val('uAktif')
   };
-  if (!payload.username) return alert('Username wajib diisi.');
+  if (!payload.username) { toast('Username wajib diisi.', 'err'); addNotification('Validasi pengguna', 'Username wajib diisi.', 'err'); return; }
   try {
     const r = await post({ action: 'userSave', token: TOKEN, payload: JSON.stringify(payload) });
     msg('userStatus', r.ok ? 'Pengguna disimpan.' : r.error, r.ok);
-    if (r.ok) { toast('Pengguna disimpan.', 'ok'); loadDashboard(); }
-  } catch (e) { msg('userStatus', e.message); }
+    if (r.ok) { toast('Pengguna disimpan.', 'ok'); addNotification('Pengguna', 'Data pengguna berhasil disimpan.', 'ok'); loadDashboard(); }
+  } catch (e) { msg('userStatus', e.message); toast(e.message, 'err'); addNotification('Pengguna gagal', e.message, 'err'); }
 };
 function renderUsers() {
   const list = DATA.users || [];
