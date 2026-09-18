@@ -37,6 +37,7 @@ h2,h3,h4{margin-top:0}
 label{display:block;font-weight:700;margin-bottom:6px;font-size:14px}
 input,select,textarea{width:100%;border:1px solid #cbd7d2;border-radius:11px;padding:10px 12px;background:#fff;font:inherit;transition:.15s}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px #1161491f}
+input[readonly]{background:#f3f7f5;color:#24483c;cursor:not-allowed}
 textarea{min-height:100px;resize:vertical}
 .btn{border:0;border-radius:11px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:800;cursor:pointer;font-size:14px;transition:.15s}
 .btn:hover{background:var(--accent2)}
@@ -239,10 +240,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           </div>
           <div>
             <label for="nama">Nama Lengkap <span class="req">*</span></label>
-            <input id="nama" required maxlength="120" autocomplete="name" inputmode="text"
-                   placeholder="Nama lengkap sesuai data alumni"
+            <input id="nama" required maxlength="120" autocomplete="off" inputmode="text"
+                   placeholder="Nama akan otomatis diambil berdasarkan NIM"
                    pattern="[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[' .-][A-Za-zÀ-ÖØ-öø-ÿ]+)+"
-                   aria-describedby="namaHint">
+                   aria-describedby="namaHint" readonly>
+             <p class="hint" style="margin-top:4px;color:#116149">🔒 Nama Lengkap dikunci dan harus berasal dari baris NIM yang diverifikasi.</p>
             <p class="hint" id="namaHint">Minimal 2 kata, tanpa angka.</p>
           </div>
           <div>
@@ -630,6 +632,11 @@ let MASTER  = [];
 let charts  = {};
 let online  = false;
 
+// Verifikasi identitas selalu mengikuti NIM.
+// Nama tidak boleh menjadi kunci pencarian dan tidak boleh diedit manual.
+let VERIFIED_NIM = '';
+let VERIFIED_ALUMNI = null;
+
 /* =========================================================
    UTIL
    ========================================================= */
@@ -697,6 +704,106 @@ function failValidation(message, fieldId) {
 function normalizeName(name) {
   return String(name || '').replace(/\s+/g, ' ').trim();
 }
+
+/* =========================================================
+   PENCocokan MASTER: NIM -> BARIS YANG SAMA -> NAMA
+   ========================================================= */
+function normalizeNim(nim) {
+  // Menghindari masalah angka yang dikembalikan sebagai number/string
+  // serta spasi atau format lain dari Google Sheets.
+  return String(nim == null ? '' : nim).replace(/\D/g, '').trim();
+}
+
+function normalizeMasterRecord(record) {
+  if (!record || typeof record !== 'object') return null;
+
+  // Dukungan beberapa kemungkinan nama field dari Apps Script.
+  const nim = normalizeNim(
+    record.nim ?? record.NIM ?? record.Nim ?? record[0]
+  );
+  const nama = normalizeName(
+    record.nama ?? record.namaLengkap ?? record.NAMA ?? record.Nama ?? record[1] ?? ''
+  );
+
+  return {
+    ...record,
+    nim,
+    nama
+  };
+}
+
+function extractAlumniByNim(response, nim) {
+  const target = normalizeNim(nim);
+  if (!target || !response) return null;
+
+  // Prioritas 1: object alumni yang dikembalikan server.
+  const direct = normalizeMasterRecord(
+    response.alumni || response.data || response.row || response.master
+  );
+  if (direct && normalizeNim(direct.nim) === target) return direct;
+
+  // Prioritas 2: bila server mengembalikan daftar baris.
+  const candidates = [];
+  if (Array.isArray(response.rows)) candidates.push(...response.rows);
+  if (Array.isArray(response.alumniList)) candidates.push(...response.alumniList);
+  if (Array.isArray(response.data)) candidates.push(...response.data);
+
+  for (const item of candidates) {
+    const row = normalizeMasterRecord(
+      Array.isArray(item)
+        ? { nim: item[0], nama: item[1], programStudi: item[2], jenjang: item[3],
+            tahunMasuk: item[4], tahunLulus: item[5], email: item[6], whatsapp: item[7] }
+        : item
+    );
+    if (row && normalizeNim(row.nim) === target) return row;
+  }
+
+  return null;
+}
+
+function clearNimVerification(message = 'Masukkan NIM lalu klik Verifikasi.') {
+  VERIFIED_NIM = '';
+  VERIFIED_ALUMNI = null;
+  $('nama').value = '';
+  $('nama').readOnly = true;
+  $('namaHint').textContent = 'Nama Lengkap akan otomatis diambil dari baris NIM pada master alumni.';
+  $('namaHint').style.color = '';
+  if (message) $('nimHint').textContent = message;
+}
+
+function applyVerifiedAlumni(alumni, nim) {
+  const row = normalizeMasterRecord(alumni);
+  const target = normalizeNim(nim);
+
+  if (!row || !row.nim || row.nim !== target) {
+    throw new Error('Data master tidak cocok: NIM yang diverifikasi tidak sama dengan NIM pada baris master.');
+  }
+
+  if (!row.nama || !isValidFullName(row.nama)) {
+    throw new Error('Nama pada baris NIM tersebut kosong atau formatnya tidak valid.');
+  }
+
+  // Satu-satunya sumber Nama Lengkap adalah baris master dengan NIM yang sama.
+  VERIFIED_NIM = row.nim;
+  VERIFIED_ALUMNI = row;
+
+  $('nama').value = row.nama;
+  $('nama').readOnly = true;
+  $('namaHint').textContent = '✓ Nama dikunci dari baris NIM ' + row.nim + ' pada master alumni.';
+  $('namaHint').style.color = 'var(--ok)';
+
+  if (row.programStudi != null && String(row.programStudi).trim()) {
+    $('programStudi').value = String(row.programStudi).trim();
+  }
+  if (row.jenjang != null) $('jenjang').value = row.jenjang || '';
+  $('tahunMasuk').value = row.tahunMasuk ?? '';
+  $('tahunLulus').value = row.tahunLulus ?? '';
+  $('email').value = row.email ?? '';
+  $('whatsapp').value = row.whatsapp ?? '';
+
+  updateNimTypeInfo();
+}
+
 
 function isValidFullName(name) {
   const n = normalizeName(name);
@@ -960,8 +1067,26 @@ function validateCurrent() {
     $('nama').value = nama;
     if (!isValidFullName(nama)) return failValidation('Nama Lengkap harus minimal 2 kata dan tidak boleh mengandung angka.', 'nama');
 
-    const nim = val('nim');
+    const nim = normalizeNim(val('nim'));
     if (!/^\d{9}$/.test(nim)) return failValidation('NIM harus tepat 9 digit.', 'nim');
+
+    // Nama hanya sah bila berasal dari verifikasi NIM yang sama.
+    if (!VERIFIED_NIM || VERIFIED_NIM !== nim || !VERIFIED_ALUMNI) {
+      return failValidation(
+        'Verifikasi NIM terlebih dahulu. Nama Lengkap harus otomatis diambil dari baris NIM pada master alumni.',
+        'nim'
+      );
+    }
+
+    const masterName = normalizeName(VERIFIED_ALUMNI.nama || '');
+    const currentName = normalizeName(val('nama'));
+    if (!masterName || currentName !== masterName) {
+      $('nama').value = masterName;
+      return failValidation(
+        'Nama Lengkap tidak sesuai dengan baris NIM yang diverifikasi. Silakan klik Verifikasi kembali.',
+        'nim'
+      );
+    }
 
     const prodi = val('programStudi');
     const level = getProgramLevel(prodi);
@@ -1008,67 +1133,98 @@ function validateCurrent() {
 }
 
 /* ---------- verifikasi NIM ke master alumni ---------- */
+/*
+ * ALUR IDENTITAS:
+ * 1. User memasukkan NIM.
+ * 2. Server mencari NIM pada MASTER ALUMNI.
+ * 3. Server harus mengembalikan BARIS yang NIM-nya sama.
+ * 4. Nama diambil dari kolom Nama pada BARIS tersebut.
+ * 5. Nama dikunci (readonly).
+ * 6. Jika NIM berubah, verifikasi lama langsung dibatalkan.
+ */
 $('checkNimBtn').onclick = async () => {
-  const nim = val('nim');
+  const nim = normalizeNim(val('nim'));
+
   if (!/^\d{9}$/.test(nim)) {
-    $('nimHint').textContent = 'NIM harus tepat 9 digit.';
+    clearNimVerification('NIM harus tepat 9 digit.');
     return failValidation('NIM harus tepat 9 digit.', 'nim');
   }
 
+  // Setiap verifikasi baru membatalkan hasil verifikasi sebelumnya.
+  VERIFIED_NIM = '';
+  VERIFIED_ALUMNI = null;
+  $('nama').value = '';
+  $('nama').readOnly = true;
+
   $('checkNimBtn').disabled = true;
   $('checkNimBtn').textContent = 'Memeriksa...';
-  $('nimHint').textContent = 'Memeriksa NIM pada master alumni...';
+  $('nimHint').textContent = 'Mencari NIM pada master alumni berdasarkan baris NIM...';
 
   try {
     const r = await get({ action: 'checknim', nim });
-    if (!r.ok) {
-      $('nimHint').textContent = r.error || 'NIM tidak ditemukan.';
-      addNotification('Verifikasi NIM gagal', r.error || 'NIM tidak ditemukan.', 'err');
-      toast(r.error || 'NIM tidak ditemukan.', 'err');
+
+    if (!r || !r.ok) {
+      const message = (r && r.error) || 'NIM tidak ditemukan.';
+      clearNimVerification(message);
+      addNotification('Verifikasi NIM gagal', message, 'err');
+      toast(message, 'err');
       return;
     }
+
     if (r.sudahMengisi) {
-      $('nimHint').textContent = 'NIM ini sudah pernah mengisi Tracer Study.';
+      clearNimVerification('NIM ini sudah pernah mengisi Tracer Study.');
       addNotification('NIM sudah terdaftar', 'NIM ini sudah pernah mengisi Tracer Study.', 'info');
       toast('NIM ini sudah pernah mengisi Tracer Study.', 'info');
       return;
     }
+
     if (r.masterEmpty) {
-      $('nimHint').textContent = 'Master alumni belum diisi admin — lanjutkan pengisian manual.';
-      addNotification('Master alumni kosong', 'Data dapat dilanjutkan secara manual.', 'info');
+      // Tanpa master, tidak boleh mengisi nama secara manual.
+      clearNimVerification('Master alumni belum diisi admin. Nama tidak dapat dicocokkan berdasarkan NIM.');
+      addNotification('Master alumni kosong', 'Verifikasi Nama berdasarkan NIM tidak dapat dilakukan.', 'err');
+      toast('Master alumni kosong. Hubungi admin FIKOM.', 'err');
       return;
     }
 
-    const a = r.alumni;
-    if (!a) {
-      $('nimHint').textContent = 'NIM tidak ditemukan di master alumni. Hubungi admin FIKOM.';
-      addNotification('NIM tidak ditemukan', 'Hubungi admin FIKOM UPDM(B).', 'err');
+    // Cari record yang NIM-nya BENAR-BENAR sama.
+    const alumni = extractAlumniByNim(r, nim);
+
+    if (!alumni) {
+      clearNimVerification('NIM ditemukan, tetapi baris master dengan NIM yang sama tidak ditemukan.');
+      addNotification('Pencocokan NIM gagal', `Tidak ada baris master yang cocok dengan NIM ${nim}.`, 'err');
+      toast('Baris master berdasarkan NIM tidak ditemukan.', 'err');
       return;
     }
 
-    $('nama').value = normalizeName(a.nama || '');
-    if (a.programStudi) $('programStudi').value = a.programStudi;
-    if (a.jenjang) $('jenjang').value = a.jenjang;
-    $('tahunMasuk').value = a.tahunMasuk || '';
-    $('tahunLulus').value = a.tahunLulus || '';
-    $('email').value = a.email || '';
-    $('whatsapp').value = a.whatsapp || '';
-    updateNimTypeInfo();
+    // Pastikan tidak ada kemungkinan nama berasal dari input user.
+    applyVerifiedAlumni(alumni, nim);
 
     const level = getProgramLevel(val('programStudi'));
     const nimLevel = expectedNimLevel(nim);
+
     if (level && nimLevel && level !== nimLevel) {
-      $('nimHint').textContent = `Data master ditemukan, tetapi NIM terdeteksi sebagai ${nimLevel} sedangkan Program Studi adalah ${level}.`;
-      addNotification('Ketidaksesuaian NIM/Prodi', `NIM ${nimLevel} tidak sesuai Program Studi ${level}.`, 'err');
+      clearNimVerification(`Data master ditemukan, tetapi NIM terdeteksi sebagai ${nimLevel} sedangkan Program Studi adalah ${level}.`);
+      addNotification(
+        'Ketidaksesuaian NIM/Prodi',
+        `NIM ${nimLevel} tidak sesuai Program Studi ${level}.`,
+        'err'
+      );
       toast(`NIM ${nimLevel} tidak sesuai Program Studi ${level}.`, 'err');
       return;
     }
 
-    $('nimHint').textContent = '✓ Data ditemukan pada master alumni. Periksa dan lengkapi bila perlu.';
-    addNotification('NIM berhasil diverifikasi', `${a.nama || nim} · ${a.programStudi || 'Program Studi belum tersedia'}.`, 'ok');
-    toast('NIM berhasil diverifikasi.', 'ok');
+    $('nimHint').textContent =
+      `✓ Terverifikasi. NIM ${nim} → Nama: ${VERIFIED_ALUMNI.nama}`;
+
+    addNotification(
+      'NIM berhasil diverifikasi',
+      `${VERIFIED_ALUMNI.nama} · NIM ${nim}`,
+      'ok'
+    );
+    toast('NIM dan Nama Lengkap berhasil dicocokkan.', 'ok');
+
   } catch (e) {
-    $('nimHint').textContent = 'Gagal memeriksa NIM: ' + e.message;
+    clearNimVerification('Gagal memeriksa NIM: ' + e.message);
     addNotification('Verifikasi NIM gagal', e.message, 'err');
     toast('Gagal memeriksa NIM: ' + e.message, 'err');
   } finally {
@@ -1079,19 +1235,18 @@ $('checkNimBtn').onclick = async () => {
 
 /* ---------- validasi realtime nama + hubungan Program Studi/NIM ---------- */
 $('nama').addEventListener('input', () => {
-  const n = normalizeName($('nama').value);
-  $('nama').value = n;
-  const hint = $('namaHint');
-  if (!n) {
-    hint.textContent = 'Minimal 2 kata, tanpa angka.';
-    hint.style.color = '';
-  } else if (isValidFullName(n)) {
-    hint.textContent = '✓ Format nama lengkap valid.';
-    hint.style.color = 'var(--ok)';
-  } else {
-    hint.textContent = 'Nama harus minimal 2 kata dan tidak boleh mengandung angka.';
-    hint.style.color = 'var(--danger)';
+  // Nama adalah data master berdasarkan NIM; jangan izinkan perubahan manual.
+  if (VERIFIED_NIM && normalizeNim(val('nim')) === VERIFIED_NIM && VERIFIED_ALUMNI) {
+    const masterName = normalizeName(VERIFIED_ALUMNI.nama || '');
+    if ($('nama').value !== masterName) $('nama').value = masterName;
+    $('namaHint').textContent = '✓ Nama dikunci dari baris NIM pada master alumni.';
+    $('namaHint').style.color = 'var(--ok)';
+    return;
   }
+
+  $('nama').value = '';
+  $('namaHint').textContent = 'Verifikasi NIM terlebih dahulu untuk memuat Nama Lengkap.';
+  $('namaHint').style.color = 'var(--danger)';
 });
 
 $('programStudi').addEventListener('change', () => {
@@ -1106,13 +1261,25 @@ $('programStudi').addEventListener('change', () => {
 });
 
 $('nim').addEventListener('input', () => {
-  const level = expectedNimLevel(val('nim'));
-  const prodiLevel = getProgramLevel(val('programStudi'));
-  if (level) {
-    $('nimHint').textContent = `NIM terdeteksi: ${level}.`;
+  const nim = normalizeNim(val('nim'));
+
+  // Begitu NIM berubah, hasil verifikasi sebelumnya tidak berlaku lagi.
+  if (VERIFIED_NIM && nim !== VERIFIED_NIM) {
+    clearNimVerification('NIM berubah. Klik Verifikasi kembali untuk mencocokkan Nama.');
   }
+
+  const level = expectedNimLevel(nim);
+  const prodiLevel = getProgramLevel(val('programStudi'));
+
+  if (level) {
+    $('nimHint').textContent = `NIM terdeteksi: ${level}. Klik Verifikasi untuk mengambil Nama berdasarkan baris NIM.`;
+  } else if (nim.length) {
+    $('nimHint').textContent = 'Masukkan NIM 9 digit lalu klik Verifikasi.';
+  }
+
   if (prodiLevel && level && prodiLevel !== level) {
-    $('nimHint').textContent = `NIM terdeteksi ${level}; Program Studi yang dipilih adalah ${prodiLevel}.`;
+    $('nimHint').textContent =
+      `NIM terdeteksi ${level}; Program Studi yang dipilih adalah ${prodiLevel}.`;
   }
 });
 
@@ -1151,6 +1318,9 @@ $('tracerForm').onsubmit = async e => {
   clearMsg('formStatus');
 
   const payload = {
+      // Nama authoritative: selalu dari record master hasil pencocokan NIM.
+      nama: VERIFIED_ALUMNI ? normalizeName(VERIFIED_ALUMNI.nama) : '',
+
     nim: val('nim'), nama: val('nama'), programStudi: val('programStudi'), jenjang: val('jenjang'),
     tahunMasuk: val('tahunMasuk'), tahunLulus: val('tahunLulus'), ipk: val('ipk'),
     email: val('email'), whatsapp: val('whatsapp'), status: val('status'),
