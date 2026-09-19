@@ -193,9 +193,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
 <header>
   <div class="wrap brand">
-    <img src="https://i.imgur.com/JkxRYd6.png" alt="Logo FIKOM UPDM(B)" onerror="this.style.display='none'">
+    <img src="https://i.imgur.com/JkxRYd6.png" alt="Logo FIKOM UPDM (B)" onerror="this.style.display='none'">
     <div class="brand-main">
-      <h1>Tracer Study FIKOM UPDM(B)</h1>
+      <h1>Tracer Study FIKOM UPDM (B)</h1>
       <p>Pemetaan kondisi lulusan, relevansi pendidikan, kompetensi, dan masukan alumni.</p>
     </div>
     <div class="header-tools">
@@ -220,7 +220,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 <section id="view-form">
   <div class="card">
     <h2>Isi Tracer Study</h2>
-    <p class="hint">Tidak perlu login. Pastikan NIM terdaftar pada database alumni FIKOM UPDM(B). Satu NIM hanya dapat mengirim satu respons.</p>
+    <p class="hint">Tidak perlu login. Pastikan NIM terdaftar pada database alumni FIKOM UPDM (B). Satu NIM hanya dapat mengirim satu respons.</p>
     <div id="periodeInfo" class="status info" style="display:none"></div>
     <div id="formStatus" class="status"></div>
     <div class="progress"><div id="bar" class="bar"></div></div>
@@ -329,7 +329,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <h3>4. Evaluasi FIKOM</h3>
         <p class="hint">Nilai 1–5: 1 sangat kurang, 5 sangat baik.</p>
         <div id="evaluation"></div>
-        <div class="grid"><div class="full"><label>Saran untuk FIKOM UPDM(B)</label>
+        <div class="grid"><div class="full"><label>Saran untuk FIKOM UPDM (B)</label>
           <textarea id="saran" maxlength="2000" placeholder="Masukan konstruktif untuk pengembangan kurikulum, pembelajaran, layanan, dan kompetensi lulusan..."></textarea></div></div>
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
@@ -373,7 +373,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="login-hero">
           <div>
             <h2>Selamat Datang 👋</h2>
-            <p>Portal resmi Tracer Study FIKOM UPDM(B). Silakan masuk sesuai peran Anda.</p>
+            <p>Portal resmi Tracer Study FIKOM UPDM (B). Silakan masuk sesuai peran Anda.</p>
           </div>
           <div class="role-list">
             <div class="role-item">
@@ -389,7 +389,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
               <div><b>Wadek &amp; Dekan</b><small>Dashboard agregat fakultas</small></div>
             </div>
           </div>
-          <small style="opacity:.7;font-size:12px">© 2026 FIKOM UPDM(B) · Sistem Tracer Study</small>
+          <small style="opacity:.7;font-size:12px">© 2026 FIKOM UPDM (B) · Sistem Tracer Study</small>
         </div>
 
         <div class="login-form">
@@ -514,13 +514,13 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
             <div class="full"><label>Isi pesan</label>
               <textarea id="reminderTpl">Assalamualaikum {nama},
 
-Kami dari FIKOM UPDM(B) mengundang Anda untuk mengisi Tracer Study periode {periode}.
+Kami dari FIKOM UPDM (B) mengundang Anda untuk mengisi Tracer Study periode {periode}.
 Pengisian hanya membutuhkan ±5 menit dan sangat membantu evaluasi kurikulum serta layanan kampus.
 
 Link pengisian: {link}
 
 Terima kasih.
-FIKOM UPDM(B)</textarea>
+FIKOM UPDM (B)</textarea>
             </div>
             <div><label>Link form</label><input id="reminderLink" placeholder="https://username.github.io/tracer/"></div>
           </div>
@@ -607,7 +607,7 @@ FIKOM UPDM(B)</textarea>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.2</footer>
+<footer>Tracer Study FIKOM UPDM (B) · Sistem administrasi alumni · v2.0.2</footer>
 
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
@@ -1033,7 +1033,7 @@ function applyMeta() {
   } else {
     box.className = 'status err';
     box.style.display = 'block';
-    box.textContent = 'Periode Tracer Study sedang ditutup. Hubungi admin FIKOM UPDM(B).';
+    box.textContent = 'Periode Tracer Study sedang ditutup. Hubungi admin FIKOM UPDM (B).';
   }
 }
 
@@ -1454,7 +1454,7 @@ $('username').addEventListener('keypress', e => { if (e.key === 'Enter') $('pass
 $('password').addEventListener('keypress', e => { if (e.key === 'Enter') $('loginBtn').click(); });
 $('forgotPassLink').onclick = e => {
   e.preventDefault();
-  const text = 'Hubungi Administrator FIKOM UPDM(B) untuk reset password.';
+  const text = 'Hubungi Administrator FIKOM UPDM (B) untuk reset password.';
   toast(text, 'info');
   addNotification('Lupa password', text, 'info');
 };
@@ -1846,7 +1846,7 @@ function openWA(m) {
 }
 function openMail(m) {
   if (!m.email) return alert('Email tidak tersedia.');
-  const subject = 'Undangan Pengisian Tracer Study FIKOM UPDM(B)';
+  const subject = 'Undangan Pengisian Tracer Study FIKOM UPDM (B)';
   window.location.href = 'mailto:' + m.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildMessage(m));
 }
 $('copyAllWa').onclick = async () => {
