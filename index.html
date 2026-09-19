@@ -607,7 +607,7 @@ FIKOM UPDM(B)</textarea>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.1</footer>
+<footer>Tracer Study FIKOM UPDM(B) · Sistem administrasi alumni · v2.0.2</footer>
 
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
@@ -906,10 +906,13 @@ async function post(data) {
   return json;
 }
 async function get(params) {
+  // PENTING: jangan tambahkan header kustom (mis. Cache-Control) di sini.
+  // Google Apps Script Web App (/exec) tidak menangani preflight OPTIONS,
+  // sehingga request GET dengan header non-simple akan gagal dengan
+  // "Failed to fetch" di browser. Cache-busting cukup lewat parameter _rt.
   const query = new URLSearchParams({...params, _rt: Date.now().toString()});
   const r = await fetch(GAS_URL + '?' + query.toString(), {
-    cache: 'no-store',
-    headers: { 'Cache-Control': 'no-cache' }
+    cache: 'no-store'
   });
   const text = await r.text();
   let json;
