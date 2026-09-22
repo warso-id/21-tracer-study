@@ -98,8 +98,6 @@ textarea{min-height:100px;resize:vertical}
 .subtab button.active{background:var(--accent);color:#fff}
 .subtab button:hover:not(.active){background:#d5e5df}
 footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
-
-/* LOGIN PRODUKSI */
 .login-shell{display:grid;grid-template-columns:1fr 1fr;min-height:520px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 10px 40px #17352a14}
 .login-hero{background:linear-gradient(135deg,#0c4d3a,#167456);color:#fff;padding:38px 32px;display:flex;flex-direction:column;justify-content:space-between}
 .login-hero h2{margin:0 0 8px;font-size:24px}
@@ -120,8 +118,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .login-actions input{width:auto}
 .login-foot{margin-top:22px;font-size:12.5px;color:var(--muted);text-align:center}
 .login-foot b{color:var(--accent)}
-
-/* TOAST */
 .toast-wrap{position:fixed;top:18px;right:18px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:340px}
 .toast{background:#fff;border-left:4px solid var(--accent);padding:12px 16px;border-radius:10px;box-shadow:0 6px 24px #17352a1f;font-size:13.5px;animation:slideIn .25s;font-weight:500}
 .toast.err{border-left-color:var(--danger);color:var(--danger)}
@@ -142,13 +138,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .nim-type{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 9px;border-radius:9px;background:#eef7f3;color:#0c4d3a;font-size:12px;font-weight:800;border:1px solid #d6e9e1}
 .nim-type.s2{background:#eef4ff;color:#1d4ed8;border-color:#dbe5ff}
 .nim-type.warn{background:#fff8e8;color:#b54708;border-color:#f5dfb4}
-
-
-@media(max-width:860px){
-  .login-shell{grid-template-columns:1fr}
-  .login-hero{display:none}
-  .login-form{padding:26px 20px}
-}
+@media(max-width:860px){.login-shell{grid-template-columns:1fr}.login-hero{display:none}.login-form{padding:26px 20px}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid{grid-template-columns:1fr}
   .brand h1{font-size:18px}
@@ -226,7 +216,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     <div class="progress"><div id="bar" class="bar"></div></div>
 
     <form id="tracerForm" novalidate>
-      <!-- STEP 1 -->
       <div class="step active" data-step="1">
         <h3>1. Data Alumni</h3>
         <div class="grid">
@@ -263,7 +252,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><span></span><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 2 -->
       <div class="step" data-step="2">
         <h3>2. Kondisi Setelah Lulus</h3>
         <div class="grid">
@@ -316,7 +304,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 3 -->
       <div class="step" data-step="3">
         <h3>3. Kompetensi Lulusan</h3>
         <p class="hint">Nilai 1–5: 1 sangat rendah, 5 sangat tinggi.</p>
@@ -324,7 +311,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 4 -->
       <div class="step" data-step="4">
         <h3>4. Evaluasi FIKOM</h3>
         <p class="hint">Nilai 1–5: 1 sangat kurang, 5 sangat baik.</p>
@@ -334,7 +320,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 5 -->
       <div class="step" data-step="5">
         <h3>5. Konfirmasi</h3>
         <div class="card" style="margin-bottom:14px">
@@ -367,7 +352,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     <h2>Dashboard Tracer Study</h2>
     <div id="adminStatus" class="status"></div>
 
-    <!-- LOGIN -->
     <div id="loginBox">
       <div class="login-shell">
         <div class="login-hero">
@@ -421,7 +405,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="dashBox" class="hidden">
       <div class="toolbar" style="justify-content:space-between;align-items:center">
         <div><span id="profileBadge" class="badge"></span></div>
@@ -443,7 +426,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <button data-panel="audit" data-role="ADMIN">Audit Log</button>
       </div>
 
-      <!-- FILTER -->
       <div class="card" style="background:#f8fbfa">
         <div class="filters">
           <div><label>Periode</label><select id="fPeriode"><option value="">Semua</option></select></div>
@@ -458,7 +440,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         </div>
       </div>
 
-      <!-- PANEL: OVERVIEW -->
       <div class="panel" data-panel="overview">
         <div class="kpi" id="kpiBox"></div>
         <div class="grid" style="margin-top:16px">
@@ -475,7 +456,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         </div>
       </div>
 
-      <!-- PANEL: RESPONDEN -->
       <div class="panel hidden" data-panel="responden">
         <div class="toolbar">
           <button class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
@@ -490,7 +470,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         </div>
       </div>
 
-      <!-- PANEL: ANALITIK -->
       <div class="panel hidden" data-panel="analitik">
         <div class="grid">
           <div class="chartbox"><h4>Rata-rata Kompetensi Lulusan</h4><canvas id="chKompetensi"></canvas></div>
@@ -506,7 +485,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         </div>
       </div>
 
-      <!-- PANEL: REMINDER -->
       <div class="panel hidden" data-panel="reminder">
         <div class="card">
           <h3>Template Pesan</h3>
@@ -536,7 +514,6 @@ FIKOM UPDM (B)</textarea>
         </div>
       </div>
 
-      <!-- PANEL: MASTER -->
       <div class="panel hidden" data-panel="master">
         <div class="card">
           <h3>Import Master Alumni</h3>
@@ -553,7 +530,6 @@ FIKOM UPDM (B)</textarea>
         </div>
       </div>
 
-      <!-- PANEL: PERIODE -->
       <div class="panel hidden" data-panel="periode">
         <div class="card">
           <h3>Tambah / Ubah Periode</h3>
@@ -573,7 +549,6 @@ FIKOM UPDM (B)</textarea>
         <div class="card"><h3>Daftar Periode</h3><div class="tablewrap"><table class="table" id="periodeTable"></table></div></div>
       </div>
 
-      <!-- PANEL: USERS -->
       <div class="panel hidden" data-panel="users">
         <div class="card">
           <h3>Tambah / Ubah Pengguna</h3>
@@ -596,7 +571,6 @@ FIKOM UPDM (B)</textarea>
         <div class="card"><h3>Daftar Pengguna</h3><div class="tablewrap"><table class="table" id="userTable"></table></div></div>
       </div>
 
-      <!-- PANEL: AUDIT -->
       <div class="panel hidden" data-panel="audit">
         <div class="card"><h3>Audit Log</h3><div class="tablewrap"><table class="table" id="auditTable"></table></div></div>
       </div>
@@ -607,7 +581,7 @@ FIKOM UPDM (B)</textarea>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · Sistem administrasi alumni · v4.3.0</footer>
+<footer>Tracer Study FIKOM UPDM (B) · Sistem administrasi alumni · v5.0.0</footer>
 
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
@@ -615,18 +589,18 @@ FIKOM UPDM (B)</textarea>
 
 <script>
 /* ============================================================
-   TRACER STUDY FIKOM UPDM(B) — INDEX.HTML v4.3.0
-   Kontrak Code.gs v4.3.0:
+   TRACER STUDY FIKOM UPDM(B) — INDEX.HTML v5.0.0 — PRODUCTION
+   Kontrak Code.gs v5.0.0:
    GET  : health, meta, revision, checknim, lookup, setup
    POST : submit, login, logout, changePassword, dashboard,
           detail, export, reminderSave, masterImport,
           periodeSave, userSave
 
-   Prinsip penting:
+   Prinsip:
    1. NIM = kunci identitas. Nama selalu dari MASTER_ALUMNI.
-   2. Backend adalah otoritas terakhir untuk validasi.
-   3. Dashboard pakai server-side pagination (page param).
-   4. Tidak memakai header custom pada GET GAS agar tidak memicu CORS preflight.
+   2. Backend = otoritas terakhir validasi.
+   3. Dashboard pakai server-side pagination + request-id guard.
+   4. showView('admin') debounced agar tidak spam request.
    ============================================================ */
 
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
@@ -642,6 +616,9 @@ let VERIFIED_NIM = '';
 let VERIFIED_ALUMNI = null;
 let NOTIFICATIONS = [];
 let REMINDER_MASTER = [];
+let dashboardReqId = 0;          /* [F4] request-id guard */
+let adminLoadTimer = null;       /* [F5] debounce */
+let nimInputTimer = null;
 
 const $ = id => document.getElementById(id);
 const val = id => $(id) ? String($(id).value ?? '').trim() : '';
@@ -650,12 +627,8 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({
 }[m]));
 const setHtml = (id, html) => { if ($(id)) $(id).innerHTML = html; };
 
-function normalizeName(v) {
-  return String(v || '').replace(/\s+/g, ' ').trim();
-}
-function normalizeNim(v) {
-  return String(v ?? '').replace(/\D/g, '');
-}
+function normalizeName(v) { return String(v || '').replace(/\s+/g, ' ').trim(); }
+function normalizeNim(v) { return String(v ?? '').replace(/\D/g, ''); }
 function isValidFullName(v) {
   const n = normalizeName(v);
   if (n.length < 3 || n.length > 120 || /\d/.test(n)) return false;
@@ -668,7 +641,6 @@ function getProgramLevel(v) {
   if (/\bs1\b/.test(p)) return 'S1';
   return '';
 }
-/* [S15] Sinkron dengan backend: cek urut >= 1 */
 function expectedNimLevel(nim) {
   const n = normalizeNim(nim);
   if (!/^\d{9}$/.test(n)) return '';
@@ -682,9 +654,7 @@ function formatDateTime(v) {
   if (!v) return '-';
   try { return new Date(v).toLocaleString('id-ID'); } catch (_) { return String(v); }
 }
-function badge(text, kind='') {
-  return `<span class="badge ${kind}">${esc(text)}</span>`;
-}
+function badge(text, kind='') { return `<span class="badge ${kind}">${esc(text)}</span>`; }
 function msg(id, text, ok) {
   const e = $(id);
   if (!e) return;
@@ -702,11 +672,7 @@ function toast(text, kind='info') {
   el.className = 'toast ' + kind;
   el.textContent = text;
   wrap.appendChild(el);
-  setTimeout(() => {
-    el.style.opacity='0';
-    el.style.transform='translateX(30px)';
-    el.style.transition='.3s';
-  }, 3200);
+  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(30px)'; el.style.transition='.3s'; }, 3200);
   setTimeout(() => el.remove(), 3600);
 }
 function addNotification(title, message, kind='info') {
@@ -737,9 +703,7 @@ function openNotifications() {
       '<div class="notify-empty">Belum ada notifikasi.</div>'}`;
   document.body.appendChild(p);
   $('clearNotifications')?.addEventListener('click', () => {
-    NOTIFICATIONS=[];
-    renderNotifications();
-    p.remove();
+    NOTIFICATIONS=[]; renderNotifications(); p.remove();
   });
 }
 $('notifyBtn')?.addEventListener('click', openNotifications);
@@ -780,8 +744,7 @@ async function post(data) {
   const r = await fetch(GAS_URL, {
     method:'POST',
     headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-    body,
-    cache:'no-store'
+    body, cache:'no-store'
   });
   return parseResponse(r);
 }
@@ -797,8 +760,7 @@ function downloadB64(filename, mime, b64) {
   setTimeout(()=>URL.revokeObjectURL(a.href),3000);
 }
 function fillSelect(id,list,placeholder='Pilih') {
-  const e=$(id);
-  if (!e) return;
+  const e=$(id); if (!e) return;
   const arr=Array.isArray(list)?list:[];
   e.innerHTML=`<option value="">${esc(placeholder)}</option>`+
     arr.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
@@ -818,7 +780,6 @@ const EVALUATIONS = [
   ['layananAkademik','Layanan akademik'],['layananAdministrasi','Layanan administrasi'],
   ['kemahasiswaan','Kegiatan kemahasiswaan'],['persiapanKerja','Persiapan memasuki dunia kerja']
 ];
-/* [T5] buildRatings hanya sekali; jangan reset pilihan user */
 function buildRatings(target,list) {
   const e=$(target); if (!e) return;
   if (e.dataset.built === 'yes') return;
@@ -861,7 +822,9 @@ function applyMeta() {
     } else {
       box.className='status err';
       box.style.display='block';
-      box.textContent='Periode Tracer Study sedang ditutup. Hubungi admin FIKOM UPDM (B).';
+      box.textContent = META.periodeError
+        ? 'Periode Tracer Study bermasalah: ' + META.periodeError
+        : 'Periode Tracer Study sedang ditutup. Hubungi admin FIKOM UPDM (B).';
     }
   }
   updateNimTypeInfo();
@@ -906,8 +869,7 @@ function extractAlumniByNim(response,nim) {
     else candidates.push(x);
   };
   add(response.alumni); add(response.row); add(response.master);
-  add(response.data);
-  add(response.rows); add(response.alumniList);
+  add(response.data); add(response.rows); add(response.alumniList);
   for(const x of candidates){
     const r=normalizeMasterRecord(x);
     if(r && r.nim===target) return r;
@@ -920,10 +882,7 @@ function clearNimVerification(hint='Masukkan NIM lalu klik Verifikasi.') {
   const nEl=$('nama'); if(nEl){nEl.value=''; nEl.readOnly=true; nEl.dataset.masterNim=''; nEl.dataset.masterSource='';}
   const hEl=$('nimHint'); if(hEl) hEl.textContent=hint;
   const nhEl=$('namaHint');
-  if(nhEl){
-    nhEl.textContent='Nama Lengkap akan otomatis diambil dari MASTER_ALUMNI berdasarkan NIM.';
-    nhEl.style.color='';
-  }
+  if(nhEl){ nhEl.textContent='Nama Lengkap akan otomatis diambil dari MASTER_ALUMNI berdasarkan NIM.'; nhEl.style.color='';}
 }
 function lockMasterFields(lock) {
   ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(id=>{
@@ -934,13 +893,10 @@ function applyVerifiedAlumni(row,nim) {
   const r=normalizeMasterRecord(row), n=normalizeNim(nim);
   if(!r || r.nim!==n) throw new Error('Baris MASTER_ALUMNI tidak cocok dengan NIM yang diverifikasi.');
   if(!isValidFullName(r.nama)) throw new Error('Nama pada baris MASTER_ALUMNI tidak valid.');
-  VERIFIED_NIM=n;
-  VERIFIED_ALUMNI=r;
+  VERIFIED_NIM=n; VERIFIED_ALUMNI=r;
   const nEl=$('nama');
-  nEl.value=r.nama;
-  nEl.readOnly=true;
-  nEl.dataset.masterNim=n;
-  nEl.dataset.masterSource='MASTER_ALUMNI';
+  nEl.value=r.nama; nEl.readOnly=true;
+  nEl.dataset.masterNim=n; nEl.dataset.masterSource='MASTER_ALUMNI';
   const nhEl=$('namaHint');
   nhEl.textContent=`✓ Nama dikunci dari baris MASTER_ALUMNI dengan NIM ${n}.`;
   nhEl.style.color='var(--ok)';
@@ -972,9 +928,7 @@ $('checkNimBtn')?.addEventListener('click',async()=>{
     if(level && prodiLevel && level!==prodiLevel)
       throw new Error(`Data master tidak konsisten: NIM ${level} tetapi Program Studi ${prodiLevel}.`);
     $('nimHint').textContent=`✓ NIM ${nim} terverifikasi. Data diambil dari satu baris MASTER_ALUMNI.`;
-    /* [S6] Tombol dikunci setelah sukses */
-    b.textContent='✓ Terverifikasi';
-    b.disabled=true;
+    b.textContent='✓ Terverifikasi'; b.disabled=true;
     toast('NIM berhasil diverifikasi.','ok');
     addNotification('Verifikasi NIM berhasil',`${nim} · ${alumni.nama}`,'ok');
   }catch(e){
@@ -984,8 +938,6 @@ $('checkNimBtn')?.addEventListener('click',async()=>{
     b.disabled=false; b.textContent='Verifikasi';
   }
 });
-/* [S5] Debounce input NIM */
-let nimInputTimer;
 $('nim')?.addEventListener('input',()=>{
   clearTimeout(nimInputTimer);
   nimInputTimer=setTimeout(()=>{
@@ -1075,7 +1027,6 @@ function validateCurrent(){
 document.querySelectorAll('.next').forEach(b=>b.onclick=()=>{if(validateCurrent()&&step<5){step++;updateSteps();}});
 document.querySelectorAll('.prev').forEach(b=>b.onclick=()=>{if(step>1){step--;updateSteps();}});
 
-/* [S7] Ringkasan diambil dari VERIFIED_ALUMNI, bukan dari DOM */
 function renderSummary(){
   const src=VERIFIED_ALUMNI || {};
   const rows=[
@@ -1099,13 +1050,9 @@ function collectPayload(){
   return {
     nim:val('nim'),
     nama:normalizeName(VERIFIED_ALUMNI?.nama || ''),
-    programStudi:val('programStudi'),
-    jenjang:val('jenjang'),
-    tahunMasuk:val('tahunMasuk'),
-    tahunLulus:val('tahunLulus'),
-    ipk:val('ipk'),
-    email:val('email'),
-    whatsapp:val('whatsapp'),
+    programStudi:val('programStudi'), jenjang:val('jenjang'),
+    tahunMasuk:val('tahunMasuk'), tahunLulus:val('tahunLulus'),
+    ipk:val('ipk'), email:val('email'), whatsapp:val('whatsapp'),
     status:val('status'),
     pekerjaan:{
       statusPekerjaan:val('statusPekerjaan'), perusahaan:val('perusahaan'),
@@ -1167,7 +1114,6 @@ function resetForm(){
   lockMasterFields(false);
   clearNimVerification('Form siap digunakan kembali.');
   updateNimTypeInfo();
-  /* Reset dataset.built untuk ratings agar re-build di sesi baru (opsional) */
   ['competency','evaluation'].forEach(id => { if($(id)) $(id).dataset.built=''; });
   buildRatings('competency',COMPETENCIES);
   buildRatings('evaluation',EVALUATIONS);
@@ -1205,13 +1151,19 @@ $('trackBtn')?.addEventListener('click',async()=>{
   }finally{b.disabled=false;b.textContent='Cek';}
 });
 
-/* ---------------- NAVIGATION ---------------- */
+/* ---------------- NAVIGATION [F5] ---------------- */
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
 function showView(v){
   document.querySelectorAll('main > section').forEach(s=>s.classList.add('hidden'));
   $('view-'+v)?.classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  if(v==='admin' && TOKEN) loadDashboard(1);
+  if(v==='admin' && TOKEN){
+    const currentPage = DATA?.pagination?.page;
+    if (!currentPage) {
+      clearTimeout(adminLoadTimer);
+      adminLoadTimer = setTimeout(()=>loadDashboard(1), 150);
+    }
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1314,7 +1266,7 @@ $('changePassBtn')?.addEventListener('click',()=>{
   };
 });
 
-/* ---------------- DASHBOARD (server-side pagination) [T1] ---------------- */
+/* ---------------- DASHBOARD [F4] ---------------- */
 function currentFilters(){
   return {
     periodeId:val('fPeriode'), tahun:val('fTahun'),
@@ -1349,7 +1301,6 @@ document.querySelectorAll('#adminTabs button').forEach(b=>b.addEventListener('cl
   if(p==='audit')renderAudit();
 }));
 
-/* [S8] applyRoleUI juga reset tab aktif jika tab tersebut tersembunyi */
 function applyRoleUI(){
   const role=PROFILE?.role||'';
   let needSwitch=false;
@@ -1371,6 +1322,7 @@ function applyRoleUI(){
 async function loadDashboard(pageNo){
   if(!TOKEN)return;
   pageNo = Math.max(1, Number(pageNo)||1);
+  const reqId = ++dashboardReqId;
   $('loginBox').classList.add('hidden');$('dashBox').classList.remove('hidden');
   try{
     const r=await post({
@@ -1378,6 +1330,7 @@ async function loadDashboard(pageNo){
       filters:JSON.stringify(currentFilters()),
       page: pageNo
     });
+    if (reqId !== dashboardReqId) return;
     if(!r.ok)throw new Error(r.error||'Gagal memuat dashboard.');
     DATA=r;PROFILE=r.profile||PROFILE;
     $('profileBadge').textContent=`${PROFILE?.username||''} · ${PROFILE?.role||''}${PROFILE?.programStudi?' · '+PROFILE.programStudi:''}`;
@@ -1392,6 +1345,7 @@ async function loadDashboard(pageNo){
     }
     clearMsg('adminStatus');
   }catch(e){
+    if (reqId !== dashboardReqId) return;
     msg('adminStatus',e.message,false);
     if(/token|sesi|auth|login/i.test(e.message)){
       TOKEN='';PROFILE=null;DATA=null;sessionStorage.removeItem('ts_token');
@@ -1409,7 +1363,6 @@ function buildFilterOptions(){
     e.value=cur;
   };
   keep('fPeriode',(d.periode||[]).map(x=>x.periodeId));
-  /* [S10] filter hanya tahun valid */
   keep('fTahun',Object.keys(d.charts?.yearCounts||{}).filter(k=>/^\d{4}$/.test(k)).sort().reverse());
   keep('fProdi',Object.keys(d.charts?.programCounts||{}));
   keep('fStatus',Object.keys(d.charts?.statusCounts||{}));
@@ -1442,7 +1395,6 @@ function renderOverview(){
   setHtml('recentTable',`<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Lulus</th><th>Status</th></tr></thead>
   <tbody>${rows||'<tr><td colspan="6">Belum ada data.</td></tr>'}</tbody>`);
 }
-/* [T1] Responden — server-side pagination */
 function renderResponden(){
   const items=DATA?.items||[];
   const pg=DATA?.pagination||{page:1,perPage:25,total:0,totalPages:1};
@@ -1459,7 +1411,6 @@ function renderResponden(){
   const prev=$('prevPage'); if(prev) prev.disabled = pg.page <= 1;
   const next=$('nextPage'); if(next) next.disabled = pg.page >= pg.totalPages;
 }
-/* [T1] Detail via action `detail` (fallback ke DATA.items) */
 async function showDetail(id){
   let r=(DATA?.items||[]).find(x=>x.tracerId===id);
   if(!r){
@@ -1467,10 +1418,7 @@ async function showDetail(id){
       const res=await post({action:'detail',token:TOKEN,tracerId:id});
       if(!res.ok)throw new Error(res.error||'Gagal memuat detail.');
       r=res.item;
-    }catch(e){
-      toast('Gagal memuat detail: '+e.message,'err');
-      return;
-    }
+    }catch(e){ toast('Gagal memuat detail: '+e.message,'err'); return; }
   }
   const p=r.pekerjaan||{},w=r.wirausaha||{},st=r.studi||{},k=r.kompetensi||{},ev=r.evaluasi||{};
   const li=(a,b)=>`<li><b>${esc(a)}</b>${esc(b??'-')}</li>`;
@@ -1515,7 +1463,6 @@ function renderAnalitik(){
   mkHBar('chBidang',c.bidangCounts);
   mkBar('chDukungan',c.dukunganCounts);
   mkDoughnut('chJenjang',c.jenjangCounts);
-  /* [T1] saranList dari server */
   const s=DATA?.saranList||[];
   setHtml('saranList',s.length?s.map(x=>`
     <div style="border-bottom:1px solid var(--line);padding:10px 0">
@@ -1581,9 +1528,7 @@ function renderReminder(){
   REMINDER_MASTER=DATA?.belum||[];
   const total=DATA?.belumTotal ?? REMINDER_MASTER.length;
   const bel=$('belumCount');
-  if(bel){
-    bel.textContent = total + (total > REMINDER_MASTER.length ? ` (tampil ${REMINDER_MASTER.length})` : '');
-  }
+  if(bel) bel.textContent = total + (total > REMINDER_MASTER.length ? ` (tampil ${REMINDER_MASTER.length})` : '');
   const rows=REMINDER_MASTER.map((m,i)=>`
     <tr><td>${esc(m.nim)}</td><td>${esc(m.nama)}</td><td>${esc(m.programStudi)}</td>
     <td>${esc(m.tahunLulus)}</td><td>${esc(m.whatsapp||'-')}</td><td>${esc(m.email||'-')}</td>
@@ -1672,7 +1617,6 @@ function parseMasterDelimitedText(text){
   if(field!=='' || row.length){row.push(field.trim());if(row.some(v=>String(v).trim()!==''))rows.push(row);}
   return rows;
 }
-/* [T3] Tampilkan skipReasons jika ada */
 $('importMaster')?.addEventListener('click',async()=>{
   const raw=val('masterCsv');
   if(!raw)return toast('Tempel data master terlebih dahulu.','err');
@@ -1809,7 +1753,7 @@ function renderAudit(){
   const remembered=localStorage.getItem('ts_username');
   if(remembered){$('username').value=remembered;$('rememberUser').checked=true;}
   await pingServer();
-  setInterval(pingServer,300000); /* [R5] 5 menit */
+  setInterval(pingServer,300000);
   try{
     META=await get({action:'meta'});
     if(!META.ok)throw new Error(META.error||'Konfigurasi server tidak tersedia.');
