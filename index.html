@@ -869,7 +869,7 @@ function expectedNimLevel(nim) {
   if (!/^\d{9}$/.test(n)) return '';
   const marker = n.slice(4,6);
   if (marker === '41') return 'S1';
-  if (marker === '31') return 'S2';
+  if (marker === '03') return 'S2';
   return '';
 }
 
@@ -1134,8 +1134,8 @@ function validateCurrent() {
     if (level === 'S1' && nim.slice(4,6) !== '41') {
       return failValidation('NIM S1 harus menggunakan penanda 41 pada digit ke-5 dan ke-6.', 'nim');
     }
-    if (level === 'S2' && nim.slice(4,6) !== '31') {
-      return failValidation('NIM S2 harus menggunakan penanda 31 pada digit ke-5 dan ke-6.', 'nim');
+    if (level === 'S2' && nim.slice(4,6) !== '03') {
+      return failValidation('NIM S2 harus menggunakan penanda 03 pada digit ke-5 dan ke-6.', 'nim');
     }
 
     if (!/^\d{4}$/.test(val('tahunMasuk')) || !/^\d{4}$/.test(val('tahunLulus'))) {
