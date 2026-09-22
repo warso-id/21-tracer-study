@@ -1258,7 +1258,7 @@ $('changePassBtn')?.addEventListener('click',()=>{
         <h3 style="margin:0">🔑 Ubah Password</h3>
         <button class="btn secondary sm" id="closePass">Tutup</button>
       </div>
-      <p class="hint">Gunakan minimal 6 karakter. Untuk keamanan, jangan gunakan password default setelah login pertama.</p>
+      <p class="hint">Gunakan minimal 8 karakter. Untuk keamanan, jangan gunakan password default setelah login pertama.</p>
       <label>Password Lama</label><input id="oldPass" type="password" autocomplete="current-password">
       <label style="margin-top:10px">Password Baru</label><input id="newPass" type="password" autocomplete="new-password">
       <label style="margin-top:10px">Konfirmasi</label><input id="newPass2" type="password" autocomplete="new-password">
@@ -1269,7 +1269,7 @@ $('changePassBtn')?.addEventListener('click',()=>{
   $('doChangePass').onclick=async()=>{
     const oldP=$('oldPass').value,newP=$('newPass').value,newP2=$('newPass2').value;
     if(!oldP||!newP)return msg('passStatus','Semua kolom wajib diisi.',false);
-    if(newP.length<6)return msg('passStatus','Password baru minimal 6 karakter.',false);
+    if(newP.length<8)return msg('passStatus','Password baru minimal 8 karakter.',false);
     if(newP!==newP2)return msg('passStatus','Konfirmasi password tidak cocok.',false);
     const b=$('doChangePass');b.disabled=true;b.textContent='Menyimpan...';
     try{
@@ -1496,21 +1496,9 @@ document.querySelectorAll('[data-export]').forEach(b=>b.addEventListener('click'
   try{
     const r=await post({action:'export',token:TOKEN,format:fmt,filters:JSON.stringify(currentFilters())});
     if(!r.ok)throw new Error(r.error||'Export gagal.');
-    if(fmt==='pdf' || r.isHtml){
-      let html=r.html||'';
-      if(!html && r.base64){
-        try{html=new TextDecoder().decode(Uint8Array.from(atob(r.base64),c=>c.charCodeAt(0)));}
-        catch(_){html=decodeURIComponent(escape(atob(r.base64)));}
-      }
-      if(!html)throw new Error('Konten PDF/print tidak diterima server.');
-      const w=window.open('','_blank');
-      if(!w)throw new Error('Popup diblokir browser.');
-      w.document.open();w.document.write(html);w.document.close();
-      setTimeout(()=>w.print(),700);
-    }else{
-      downloadB64(r.filename,r.mime,r.base64);
-    }
-    toast(`Export ${fmt.toUpperCase()} berhasil.`,'ok');
+    if(!r.base64 || !r.filename || !r.mime)throw new Error('File export tidak lengkap dari server.');
+    downloadB64(r.filename,r.mime,r.base64);
+    toast(`Export ${fmt.toUpperCase()} berhasil diunduh.`,'ok');
     addNotification('Export berhasil',fmt.toUpperCase(),'ok');
   }catch(e){toast(e.message,'err');addNotification('Export gagal',e.message,'err');}
   finally{b.disabled=false;b.textContent=old;}
@@ -1566,17 +1554,52 @@ $('logReminder')?.addEventListener('click',async()=>{
   try{
     const r=await post({action:'reminderSave',token:TOKEN,channel:channel.toUpperCase(),total:REMINDER_MASTER.length});
     if(!r.ok)throw new Error(r.error||'Gagal mencatat reminder.');
-    toast('Pengiriman reminder tercatat.','ok');
-    addNotification('Reminder',`Tercatat ${r.total??REMINDER_MASTER.length} pengingat.`,'ok');
+    toast('Reminder manual berhasil dicatat.','ok');
+    addNotification('Reminder',`Dicatat sebagai MANUAL untuk ${r.total??REMINDER_MASTER.length} alumni.`,'ok');
   }catch(e){toast(e.message,'err');}
 });
 
 /* ---------------- MASTER IMPORT ---------------- */
+function detectMasterDelimiter(text){
+  const first=(String(text||'').split(/\r?\n/).find(x=>x.trim())||'');
+  let inQuotes=false,counts={',':0,';':0,'\t':0};
+  for(let i=0;i<first.length;i++){
+    const ch=first[i];
+    if(ch==='"'){
+      if(inQuotes && first[i+1]==='"'){i++;continue;}
+      inQuotes=!inQuotes;continue;
+    }
+    if(!inQuotes && Object.prototype.hasOwnProperty.call(counts,ch))counts[ch]++;
+  }
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][1]>0
+    ? Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0] : ',';
+}
+function parseMasterDelimitedText(text){
+  const delimiter=detectMasterDelimiter(text);
+  const rows=[];let row=[],field='',inQuotes=false;
+  const src=String(text||'');
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(ch==='"'){
+      if(inQuotes && src[i+1]==='"'){field+='"';i++;continue;}
+      inQuotes=!inQuotes;continue;
+    }
+    if(!inQuotes && ch===delimiter){row.push(field.trim());field='';continue;}
+    if(!inQuotes && (ch==='\n' || ch==='\r')){
+      if(ch==='\r' && src[i+1]==='\n')i++;
+      row.push(field.trim());field='';
+      if(row.some(v=>String(v).trim()!==''))rows.push(row);
+      row=[];continue;
+    }
+    field+=ch;
+  }
+  if(field!=='' || row.length){row.push(field.trim());if(row.some(v=>String(v).trim()!==''))rows.push(row);}
+  return rows;
+}
 $('importMaster')?.addEventListener('click',async()=>{
   const raw=val('masterCsv');
   if(!raw)return toast('Tempel data master terlebih dahulu.','err');
-  const rows=raw.split(/\r?\n/).map(line=>line.trim()).filter(Boolean)
-    .map(line=>line.split(/[;\t,]/).map(x=>x.trim()));
+  const rows=parseMasterDelimitedText(raw);
   try{
     const r=await post({action:'masterImport',token:TOKEN,rows:JSON.stringify(rows)});
     if(!r.ok)throw new Error(r.error||'Import gagal.');
