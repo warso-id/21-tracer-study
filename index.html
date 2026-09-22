@@ -631,9 +631,10 @@ function normalizeName(v) { return String(v || '').replace(/\s+/g, ' ').trim(); 
 function normalizeNim(v) { return String(v ?? '').replace(/\D/g, ''); }
 function isValidFullName(v) {
   const n = normalizeName(v);
-  if (n.length < 3 || n.length > 120 || /\d/.test(n)) return false;
-  if (/[^A-Za-zÀ-ÖØ-öø-ÿ' .-]/.test(n)) return false;
-  return n.split(' ').filter(Boolean).length >= 2;
+  if (n.length < 3 || n.length > 120) return false;
+  if (/\d/.test(n)) return false;                       // tidak boleh ada angka
+  if (/[^A-Za-zÀ-ÖØ-öø-ÿ' .-]/.test(n)) return false;   // karakter aman
+  return true;                                           // minimal 3 huruf = valid
 }
 function getProgramLevel(v) {
   const p = String(v || '').toLowerCase().replace(/\s+/g,' ').trim();
