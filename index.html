@@ -152,6 +152,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .file-drop{border:2px dashed var(--line);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.15s;background:#fafcfb}
 .file-drop:hover,.file-drop.dragging{border-color:var(--accent);background:#f1f7f4}
 .perf-badge{font-size:11px;color:var(--muted);font-weight:600}
+.settings-note{background:#eef4ff;border-left:4px solid var(--info);padding:12px 14px;border-radius:10px;font-size:13px;color:#1e3a8a;margin-bottom:14px}
 @media(max-width:860px){.login-shell{grid-template-columns:1fr}.login-hero{display:none}.login-form{padding:26px 20px}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}
@@ -181,7 +182,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     </div>
     <div class="header-tools">
       <button type="button" class="notify-btn" id="notifyBtn" title="Notifikasi">🔔<span class="notify-count hidden" id="notifyCount">0</span></button>
-      <button type="button" class="notify-btn" id="configBtn" title="Pengaturan koneksi">⚙️</button>
       <span class="conn-pill" id="connPill" title="Status koneksi">
         <span class="conn-dot check" id="connDot"></span>
         <span id="connText">Menghubungkan…</span>
@@ -553,6 +553,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <button data-panel="periode" data-role="ADMIN">Periode</button>
         <button data-panel="users" data-role="ADMIN">Pengguna</button>
         <button data-panel="audit" data-role="ADMIN">Audit Log</button>
+        <button data-panel="settings" data-role="ADMIN">⚙️ Pengaturan Koneksi</button>
       </div>
 
       <div class="card" style="background:#f8fbfa">
@@ -709,6 +710,55 @@ FIKOM UPDM (B)</textarea>
       <div class="panel hidden" data-panel="audit">
         <div class="card"><h3>Audit Log</h3><div class="tablewrap"><table class="table" id="auditTable"></table></div></div>
       </div>
+
+      <!-- ============ PANEL PENGATURAN KONEKSI (KHUSUS ADMIN) ============ -->
+      <div class="panel hidden" data-panel="settings">
+        <div class="card">
+          <h3>⚙️ Pengaturan Koneksi Backend</h3>
+          <div class="settings-note">
+            🔒 <b>Khusus ADMIN</b> · Pengaturan ini menentukan URL Web App Google Apps Script (Code.gs) yang digunakan oleh seluruh aplikasi. Perubahan langsung berlaku untuk semua request berikutnya.
+          </div>
+
+          <div class="grid">
+            <div class="full">
+              <label>GAS_URL (Web App Endpoint)</label>
+              <input id="cfgUrl" placeholder="https://script.google.com/macros/s/…/exec">
+              <p class="hint">Salin dari <b>Deploy → New deployment → Web app → URL</b> di Google Apps Script. Harus diakhiri <code>/exec</code>.</p>
+            </div>
+            <div>
+              <label>Status Koneksi</label>
+              <div id="cfgConnState" class="hint">Memeriksa…</div>
+            </div>
+            <div>
+              <label>Versi Server</label>
+              <div id="cfgServerVer" class="hint">-</div>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:14px">
+            <button class="btn secondary" id="resetCfg">↺ Reset ke Default</button>
+            <button class="btn secondary" id="testCfg">🔍 Tes Koneksi</button>
+            <button class="btn" id="saveCfg">💾 Simpan Pengaturan</button>
+          </div>
+          <div id="cfgStatus" class="status"></div>
+
+          <hr style="margin:18px 0;border:0;border-top:1px solid var(--line)">
+          <h4>Informasi Aplikasi</h4>
+          <ul class="tree">
+            <li><b>Versi Aplikasi</b>v5.4.0</li>
+            <li><b>Versi Backend</b><span id="cfgServerVer2">-</span></li>
+            <li><b>GAS_URL Aktif</b><span id="cfgActiveUrl" style="word-break:break-all">-</span></li>
+            <li><b>Default URL</b><span style="word-break:break-all">${DEFAULT_GAS_URL_DISPLAY_PLACEHOLDER}</span></li>
+          </ul>
+
+          <div class="actions" style="margin-top:14px">
+            <button class="btn secondary" id="clearMetaCache">🧹 Bersihkan Cache Meta</button>
+            <button class="btn secondary" id="clearAllCache">🗑️ Bersihkan Semua Cache Lokal</button>
+          </div>
+          <p class="hint" style="margin-top:8px">Cache lokal menyimpan META (opsi dropdown) agar form cepat dimuat. Bersihkan jika ada perubahan struktur dari server.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -722,6 +772,7 @@ FIKOM UPDM (B)</textarea>
 <script>
 /* =========================================================
    TRACER STUDY FIKOM UPDM(B) — v5.4.0 — SYNC with code.gs
+   Konfigurasi koneksi (GAS_URL) hanya dapat diubah oleh ADMIN
    ========================================================= */
 
 /* ---------- KONFIGURASI ---------- */
@@ -827,7 +878,7 @@ function failValidation(text, fieldId = '') {
   return false;
 }
 
-/* ---------- HTTP LAYER (dengan timeout + abort) ---------- */
+/* ---------- HTTP LAYER ---------- */
 async function parseResponse(r) {
   const text = await r.text();
   let json;
@@ -835,7 +886,6 @@ async function parseResponse(r) {
   if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
   return json;
 }
-
 async function fetchWithTimeout(url, opts = {}, timeout = REQ_TIMEOUT) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeout);
@@ -849,13 +899,11 @@ async function fetchWithTimeout(url, opts = {}, timeout = REQ_TIMEOUT) {
     throw err;
   }
 }
-
 async function get(params) {
   const q = new URLSearchParams({ ...params, _rt: String(Date.now()) });
   const r = await fetchWithTimeout(GAS_URL + '?' + q.toString(), { cache: 'no-store' });
   return parseResponse(r);
 }
-
 async function post(data) {
   const body = new URLSearchParams();
   Object.entries(data || {}).forEach(([k, v]) => {
@@ -869,7 +917,6 @@ async function post(data) {
   });
   return parseResponse(r);
 }
-
 function downloadB64(filename, mime, b64) {
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
@@ -886,7 +933,7 @@ function fillSelect(id, list, placeholder = 'Pilih') {
   e.innerHTML = `<option value="">${esc(placeholder)}</option>` + (list || []).map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
 }
 
-/* ---------- META CACHE (untuk kecepatan) ---------- */
+/* ---------- META CACHE ---------- */
 function loadMetaFromCache() {
   try {
     const raw = localStorage.getItem(META_CACHE_KEY);
@@ -901,7 +948,7 @@ function saveMetaToCache(data) {
   try { localStorage.setItem(META_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
 }
 
-/* ---------- KOMPETENSI & EVALUASI (sinkron dengan code.gs) ---------- */
+/* ---------- KOMPETENSI & EVALUASI ---------- */
 const COMPETENCIES = [
   ['integritas','Integritas'],['etikaProfesional','Etika profesi'],['komunikasiLisan','Komunikasi lisan'],['komunikasiTertulis','Komunikasi tertulis'],
   ['bahasaInggris','Bahasa Inggris'],['teknologi','Teknologi informasi'],['kerjaSama','Kerja sama'],['kepemimpinan','Kepemimpinan'],
@@ -929,7 +976,6 @@ const EVALUATIONS = [
   ['kegiatanInternasional','Kegiatan internasional'],['dukunganKarier','Dukungan transisi ke karier']
 ];
 
-/* 9 kunci backend — sinkron dengan KOMPETENSI_COLS di code.gs */
 const KOMPETENSI_MAP = {
   KOMUNIKASI: ['komunikasiLisan','komunikasiTertulis'],
   KERJA_SAMA: ['kerjaSama'],
@@ -941,7 +987,6 @@ const KOMPETENSI_MAP = {
   ADAPTASI: ['adaptasi'],
   ETIKA_PROFESIONAL: ['etikaProfesional']
 };
-/* 9 kunci backend — sinkron dengan EVALUASI_COLS di code.gs */
 const EVALUASI_MAP = {
   KURIKULUM: ['kurikulum'],
   DOSEN: ['dosen'],
@@ -1278,7 +1323,7 @@ function mapRatings(frontendTarget, mappingDef) {
   return out;
 }
 
-/* ---------- COLLECT PAYLOAD (sinkron dengan code.gs) ---------- */
+/* ---------- COLLECT PAYLOAD ---------- */
 function collectPayload() {
   const answers = {
     jenisKelamin: val('jenisKelamin'), emailAlternatif: val('emailAlternatif'), predikat: val('predikat'),
@@ -1462,53 +1507,15 @@ async function pingServer() {
     online = true; dot.className = 'conn-dot ok';
     txt.textContent = 'Online · ' + (r.version ? 'v' + r.version : 'server');
     $('connPill').title = 'Server ' + (r.app || 'Tracer Study') + ' · ' + (r.time || '');
+    // Update status koneksi di panel pengaturan (jika ada)
+    const st = $('cfgConnState'); if (st) { st.innerHTML = '<span style="color:var(--ok);font-weight:700">● Online</span> · ' + (r.time || ''); }
+    const sv = $('cfgServerVer'); if (sv) sv.textContent = r.version ? ('v' + r.version) : '-';
+    const sv2 = $('cfgServerVer2'); if (sv2) sv2.textContent = r.version ? ('v' + r.version) : '-';
   } catch (e) {
     online = false; dot.className = 'conn-dot err'; txt.textContent = 'Server tidak terhubung';
+    const st = $('cfgConnState'); if (st) st.innerHTML = '<span style="color:var(--danger);font-weight:700">● Offline</span>';
   }
 }
-
-/* ---------- CONFIG MODAL ---------- */
-$('configBtn')?.addEventListener('click', () => {
-  $('modalRoot').innerHTML = `
-    <div class="modal" id="cfgModal"><div class="box" style="max-width:560px">
-      <div class="actions" style="justify-content:space-between">
-        <h3 style="margin:0">⚙️ Pengaturan Koneksi</h3>
-        <button class="btn secondary sm" id="closeCfg">Tutup</button>
-      </div>
-      <p class="hint">URL Web App Google Apps Script (Code.gs). Kosongkan untuk kembali ke default.</p>
-      <label>GAS_URL</label>
-      <input id="cfgUrl" value="${esc(GAS_URL)}" placeholder="https://script.google.com/macros/s/...">
-      <div class="actions" style="margin-top:14px">
-        <button class="btn secondary" id="resetCfg">Reset Default</button>
-        <button class="btn" id="saveCfg">Simpan & Test</button>
-      </div>
-      <div id="cfgStatus" class="status"></div>
-      <p class="hint" style="margin-top:10px">Versi sinkron: <b>v5.4.0</b> · Code.gs kompatibel dengan index.html ini.</p>
-    </div></div>`;
-  $('closeCfg').onclick = () => $('cfgModal').remove();
-  $('resetCfg').onclick = () => { $('cfgUrl').value = DEFAULT_GAS_URL; };
-  $('saveCfg').onclick = async () => {
-    const url = val('cfgUrl') || DEFAULT_GAS_URL;
-    GAS_URL = url;
-    localStorage.setItem('ts_gas_url', url);
-    msg('cfgStatus', 'Menyimpan & mengetes koneksi...', 'info');
-    try {
-      const r = await get({ action: 'health' });
-      if (!r.ok) throw new Error(r.error || 'Gagal terhubung.');
-      msg('cfgStatus', `✓ Terhubung ke server v${r.version || '?'}`, true);
-      toast('Konfigurasi disimpan.', 'ok');
-      // refresh meta
-      localStorage.removeItem(META_CACHE_KEY);
-      META = null;
-      const m = await get({ action: 'meta' });
-      META = m; saveMetaToCache(m); applyMeta();
-    } catch (e) {
-      msg('cfgStatus', 'Gagal: ' + e.message, false);
-      toast('Koneksi gagal: ' + e.message, 'err');
-    }
-  };
-});
-$('connPill')?.addEventListener('click', () => { pingServer(); toast('Memeriksa koneksi...', 'info'); });
 
 /* ---------- AUTH ---------- */
 $('togglePass')?.addEventListener('click', () => {
@@ -1617,6 +1624,7 @@ document.querySelectorAll('#adminTabs button').forEach(b => b.addEventListener('
   if (p === 'periode') renderPeriode();
   if (p === 'users') renderUsers();
   if (p === 'audit') renderAudit();
+  if (p === 'settings') renderSettings();
 }));
 
 function applyRoleUI() {
@@ -1656,10 +1664,10 @@ async function loadDashboard(pageNo) {
     DATA = r; PROFILE = r.profile || PROFILE;
     applyRoleUI(); buildFilterOptions();
     renderOverview(); renderResponden();
-    // Lazy render analitik & reminder hanya saat tab dibuka
     const activeTab = document.querySelector('#adminTabs button.active')?.dataset.panel;
     if (activeTab === 'analitik') renderAnalitik();
     if (activeTab === 'reminder') renderReminder();
+    if (activeTab === 'settings') renderSettings();
     if (PROFILE?.role === 'ADMIN') { renderMaster(); renderPeriode(); renderUsers(); renderAudit(); }
     clearMsg('adminStatus');
     lastDashLoadMs = Math.round(performance.now() - t0);
@@ -1903,7 +1911,7 @@ $('logReminder')?.addEventListener('click', async () => {
   } catch (e) { toast(e.message, 'err'); }
 });
 
-/* ---------- MASTER IMPORT (paste + file drop) ---------- */
+/* ---------- MASTER IMPORT ---------- */
 function detectMasterDelimiter(text) {
   const first = (String(text || '').split(/\r?\n/).find(x => x.trim()) || '').trim();
   if (!first) return ',';
@@ -1934,7 +1942,6 @@ function parseMasterDelimitedText(text) {
     field += ch;
   }
   if (field !== '' || row.length) { row.push(field.trim()); if (row.some(v => String(v).trim() !== '')) rows.push(row); }
-  // Lewati header
   if (rows.length && /nim/i.test(String(rows[0][0] || ''))) rows.shift();
   return rows;
 }
@@ -2134,16 +2141,101 @@ function renderAudit() {
   <tbody>${rows || '<tr><td colspan="5">Belum ada log.</td></tr>'}</tbody>`);
 }
 
+/* ---------- PANEL PENGATURAN KONEKSI (ADMIN ONLY) ---------- */
+function renderSettings() {
+  if ((PROFILE?.role || '').toUpperCase() !== 'ADMIN') return;
+  const urlInput = $('cfgUrl');
+  if (urlInput) urlInput.value = GAS_URL;
+  const actUrl = $('cfgActiveUrl');
+  if (actUrl) actUrl.textContent = GAS_URL;
+  const defUrl = $('cfgDefaultUrl');
+  if (defUrl) defUrl.textContent = DEFAULT_GAS_URL;
+  clearMsg('cfgStatus');
+}
+$('resetCfg')?.addEventListener('click', () => {
+  if (!confirm('Kembalikan GAS_URL ke default?')) return;
+  GAS_URL = DEFAULT_GAS_URL;
+  localStorage.removeItem('ts_gas_url');
+  const el = $('cfgUrl'); if (el) el.value = DEFAULT_GAS_URL;
+  const actUrl = $('cfgActiveUrl'); if (actUrl) actUrl.textContent = DEFAULT_GAS_URL;
+  toast('GAS_URL dikembalikan ke default.', 'info');
+  pingServer();
+});
+$('testCfg')?.addEventListener('click', async () => {
+  const url = val('cfgUrl') || DEFAULT_GAS_URL;
+  msg('cfgStatus', 'Menguji koneksi ke ' + url + '…', 'info');
+  try {
+    const q = new URLSearchParams({ action: 'health', _rt: String(Date.now()) });
+    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'Server tidak merespons OK.');
+    msg('cfgStatus', `✓ Terhubung. Versi server: v${j.version || '?'} · ${j.time || ''}`, true);
+  } catch (e) {
+    msg('cfgStatus', '✗ Gagal: ' + e.message, false);
+  }
+});
+$('saveCfg')?.addEventListener('click', async () => {
+  const url = val('cfgUrl');
+  if (!url) return toast('GAS_URL tidak boleh kosong.', 'err');
+  if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec/.test(url))
+    return toast('Format URL tidak valid. Harus diakhiri /exec.', 'err');
+  const b = $('saveCfg'); b.disabled = true; b.textContent = 'Menyimpan...';
+  try {
+    // Test dulu
+    const q = new URLSearchParams({ action: 'health', _rt: String(Date.now()) });
+    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'Server tidak merespons OK.');
+
+    // Simpan
+    GAS_URL = url;
+    localStorage.setItem('ts_gas_url', url);
+    const actUrl = $('cfgActiveUrl'); if (actUrl) actUrl.textContent = url;
+    msg('cfgStatus', `✓ Pengaturan disimpan. Server: v${j.version || '?'}. Memuat ulang META…`, true);
+    toast('Pengaturan koneksi tersimpan.', 'ok');
+    addNotification('Pengaturan Koneksi', 'GAS_URL diperbarui.', 'ok');
+
+    // Refresh META
+    localStorage.removeItem(META_CACHE_KEY);
+    META = null;
+    const m = await get({ action: 'meta' });
+    if (m && m.ok) { META = m; saveMetaToCache(m); applyMeta(); }
+    pingServer();
+  } catch (e) {
+    msg('cfgStatus', '✗ Gagal menyimpan: ' + e.message, false);
+    toast(e.message, 'err');
+  } finally {
+    b.disabled = false; b.textContent = '💾 Simpan Pengaturan';
+  }
+});
+$('clearMetaCache')?.addEventListener('click', () => {
+  localStorage.removeItem(META_CACHE_KEY);
+  toast('Cache META dibersihkan.', 'ok');
+});
+$('clearAllCache')?.addEventListener('click', () => {
+  if (!confirm('Bersihkan semua cache lokal (META + URL)? Anda akan logout.')) return;
+  localStorage.removeItem(META_CACHE_KEY);
+  localStorage.removeItem('ts_gas_url');
+  localStorage.removeItem('ts_username');
+  sessionStorage.removeItem('ts_token');
+  toast('Semua cache dibersihkan. Reload halaman…', 'info');
+  setTimeout(() => location.reload(), 900);
+});
+
 /* ---------- BOOTSTRAP ---------- */
 (async function boot() {
   const remembered = localStorage.getItem('ts_username');
   if (remembered) { $('username').value = remembered; $('rememberUser').checked = true; }
 
+  // Isi default URL placeholder di panel settings
+  const defUrlEl = $('cfgDefaultUrl');
+  if (defUrlEl) defUrlEl.textContent = DEFAULT_GAS_URL;
+
   // Coba tampilkan META cache dulu (instant render)
   const cached = loadMetaFromCache();
   if (cached) { META = cached; applyMeta(); }
 
-  // Ping server & fetch meta (parallel kalau bisa)
+  // Ping server & fetch meta
   pingServer();
   setInterval(pingServer, 300000);
 
