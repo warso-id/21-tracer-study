@@ -198,6 +198,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
 <main class="wrap">
 
+<!-- ==================== FORM ==================== -->
 <section id="view-form">
   <div class="card">
     <h2>Isi Tracer Study</h2>
@@ -489,6 +490,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
   </div>
 </section>
 
+<!-- ==================== TRACKING ==================== -->
 <section id="view-tracking" class="hidden">
   <div class="card">
     <h2>Cek Tracer ID</h2>
@@ -501,6 +503,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
   </div>
 </section>
 
+<!-- ==================== ADMIN ==================== -->
 <section id="view-admin" class="hidden">
   <div class="card">
     <h2>Dashboard Tracer Study</h2>
@@ -745,10 +748,10 @@ FIKOM UPDM (B)</textarea>
           <hr style="margin:18px 0;border:0;border-top:1px solid var(--line)">
           <h4>Informasi Aplikasi</h4>
           <ul class="tree">
-            <li><b>Versi Aplikasi</b>v5.4.0</li>
+            <li><b>Versi Aplikasi</b><span id="appVersion">v5.4.2</span></li>
             <li><b>Versi Backend</b><span id="cfgServerVer2">-</span></li>
             <li><b>GAS_URL Aktif</b><span id="cfgActiveUrl" style="word-break:break-all">-</span></li>
-            <li><b>Default URL</b><span style="word-break:break-all">${DEFAULT_GAS_URL_DISPLAY_PLACEHOLDER}</span></li>
+            <li><b>Default URL</b><span id="cfgDefaultUrl" style="word-break:break-all">-</span></li>
           </ul>
 
           <div class="actions" style="margin-top:14px">
@@ -765,24 +768,29 @@ FIKOM UPDM (B)</textarea>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v5.4.0</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v5.4.2</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
 /* =========================================================
-   TRACER STUDY FIKOM UPDM(B) — v5.4.0 — SYNC with code.gs
-   Konfigurasi koneksi (GAS_URL) hanya dapat diubah oleh ADMIN
+   TRACER STUDY FIKOM UPDM(B) — v5.4.2
+   - Sinkron dengan code.gs v5.4.2
+   - Timeout 60s (cold start GAS friendly) + retry otomatis 2×
+   - Pengaturan koneksi hanya di tab ADMIN
    ========================================================= */
 
 /* ---------- KONFIGURASI ---------- */
+const APP_VERSION_STR = 'v5.4.2';
 const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
 let GAS_URL = localStorage.getItem('ts_gas_url') || DEFAULT_GAS_URL;
 
 const META_CACHE_KEY = 'ts_meta_cache';
-const META_CACHE_TTL = 5 * 60 * 1000; // 5 menit
-const REQ_TIMEOUT = 15000;
-const TOTAL_STEPS = 8;
+const META_CACHE_TTL = 5 * 60 * 1000;
+const REQ_TIMEOUT      = 60000;
+const REQ_TIMEOUT_FAST = 20000;
+const MAX_RETRY        = 2;
+const TOTAL_STEPS      = 8;
 
 /* ---------- STATE ---------- */
 let TOKEN = sessionStorage.getItem('ts_token') || '';
@@ -793,7 +801,7 @@ let VERIFIED_NIM = '', VERIFIED_ALUMNI = null;
 let NOTIFICATIONS = [], REMINDER_MASTER = [];
 let dashboardReqId = 0, adminLoadTimer = null, nimInputTimer = null, searchTimer = null;
 let lastDashLoadMs = 0;
-let inflight = new Map();
+let bootWarmedUp = false;
 
 /* ---------- HELPERS ---------- */
 const $ = id => document.getElementById(id);
@@ -848,8 +856,8 @@ function toast(text, kind = 'info') {
   el.className = 'toast ' + kind;
   el.textContent = text;
   wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(30px)'; el.style.transition = '.3s'; }, 3200);
-  setTimeout(() => el.remove(), 3600);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(30px)'; el.style.transition = '.3s'; }, 3500);
+  setTimeout(() => el.remove(), 3900);
 }
 function addNotification(title, message, kind = 'info') {
   NOTIFICATIONS.unshift({ title, message, kind, time: new Date() });
@@ -895,26 +903,42 @@ async function fetchWithTimeout(url, opts = {}, timeout = REQ_TIMEOUT) {
     return r;
   } catch (err) {
     clearTimeout(timer);
-    if (err.name === 'AbortError') throw new Error('Request timeout (server terlalu lama merespons).');
+    if (err.name === 'AbortError') throw new Error('timeout');
     throw err;
   }
 }
-async function get(params) {
+async function fetchRetry(url, opts = {}, timeout = REQ_TIMEOUT, maxRetry = MAX_RETRY) {
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetry; attempt++) {
+    try {
+      return await fetchWithTimeout(url, opts, timeout);
+    } catch (err) {
+      lastErr = err;
+      const isRetryable = err.message === 'timeout' || /network|fetch|Failed to fetch/i.test(err.message);
+      if (!isRetryable || attempt === maxRetry) throw err;
+      const txt = $('connText');
+      if (txt) txt.textContent = `Percobaan ${attempt + 2}/${maxRetry + 1}…`;
+      await new Promise(r => setTimeout(r, 800 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+async function get(params, opts = {}) {
+  const timeout = opts.timeout || REQ_TIMEOUT;
   const q = new URLSearchParams({ ...params, _rt: String(Date.now()) });
-  const r = await fetchWithTimeout(GAS_URL + '?' + q.toString(), { cache: 'no-store' });
+  const r = await fetchRetry(GAS_URL + '?' + q.toString(), { cache: 'no-store' }, timeout);
   return parseResponse(r);
 }
-async function post(data) {
+async function post(data, opts = {}) {
+  const timeout = opts.timeout || REQ_TIMEOUT;
   const body = new URLSearchParams();
-  Object.entries(data || {}).forEach(([k, v]) => {
-    if (v !== undefined && v !== null) body.set(k, String(v));
-  });
-  const r = await fetchWithTimeout(GAS_URL, {
+  Object.entries(data || {}).forEach(([k, v]) => { if (v !== undefined && v !== null) body.set(k, String(v)); });
+  const r = await fetchRetry(GAS_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
     body,
     cache: 'no-store'
-  });
+  }, timeout);
   return parseResponse(r);
 }
 function downloadB64(filename, mime, b64) {
@@ -975,24 +999,15 @@ const EVALUATIONS = [
   ['mbkmKualitas','Kualitas MBKM'],['bimbinganTugasAkhir','Bimbingan tugas akhir/tesis'],['publikasiMahasiswa','Dukungan publikasi mahasiswa'],
   ['kegiatanInternasional','Kegiatan internasional'],['dukunganKarier','Dukungan transisi ke karier']
 ];
-
 const KOMPETENSI_MAP = {
   KOMUNIKASI: ['komunikasiLisan','komunikasiTertulis'],
-  KERJA_SAMA: ['kerjaSama'],
-  KEPEMIMPINAN: ['kepemimpinan'],
-  TEKNOLOGI: ['teknologi'],
-  LITERASI_DIGITAL: ['literasiDigital'],
-  PROBLEM_SOLVING: ['problemSolving'],
-  KREATIVITAS: ['kreativitas'],
-  ADAPTASI: ['adaptasi'],
-  ETIKA_PROFESIONAL: ['etikaProfesional']
+  KERJA_SAMA: ['kerjaSama'], KEPEMIMPINAN: ['kepemimpinan'], TEKNOLOGI: ['teknologi'],
+  LITERASI_DIGITAL: ['literasiDigital'], PROBLEM_SOLVING: ['problemSolving'],
+  KREATIVITAS: ['kreativitas'], ADAPTASI: ['adaptasi'], ETIKA_PROFESIONAL: ['etikaProfesional']
 };
 const EVALUASI_MAP = {
-  KURIKULUM: ['kurikulum'],
-  DOSEN: ['dosen'],
-  PEMBELAJARAN: ['metodePembelajaran'],
-  FASILITAS: ['fasilitas'],
-  LABORATORIUM: ['laboratorium'],
+  KURIKULUM: ['kurikulum'], DOSEN: ['dosen'], PEMBELAJARAN: ['metodePembelajaran'],
+  FASILITAS: ['fasilitas'], LABORATORIUM: ['laboratorium'],
   LAYANAN_AKADEMIK: ['bimbinganAkademik','layananAdministrasi'],
   LAYANAN_ADMINISTRASI: ['layananAdministrasi'],
   KEMAHASISWAAN: ['layananMahasiswa','kegiatanAlumni'],
@@ -1008,7 +1023,6 @@ const RADAR_EVALUASI = [
   ['FASILITAS','Fasilitas'],['LABORATORIUM','Laboratorium'],['LAYANAN_AKADEMIK','Layanan akademik'],
   ['LAYANAN_ADMINISTRASI','Layanan administrasi'],['KEMAHASISWAAN','Kemahasiswaan'],['PERSIAPAN_KERJA','Persiapan kerja']
 ];
-
 const CHECK_OPTIONS = {
   sumberKerja:['Career Center','Website perusahaan','LinkedIn','Job portal','Media sosial','Dosen','Alumni','Teman','Keluarga','Magang','Campus recruitment','Bursa kerja','Networking','Membangun usaha sendiri','Lainnya'],
   mataKuliahBermanfaat:['Public Relations','Corporate Communication','Strategic Communication','Crisis Communication','Digital Communication','Marketing Communication','Media Relations','Advertising','Broadcasting','Journalism','Komunikasi Organisasi','Komunikasi Politik','Metodologi Penelitian','Statistik','Manajemen Komunikasi'],
@@ -1038,14 +1052,8 @@ function buildRatings(target, list) {
     </div>`).join('');
   e.dataset.built = 'yes';
 }
-function radioGroup(target, key) {
-  const el = document.querySelector(`input[name="${target}_${key}"]:checked`);
-  return el ? el.value : '';
-}
-function resetRatingsBuilt() {
-  ['competency','competencyNeeded','evaluation'].forEach(id => { if ($(id)) $(id).dataset.built = ''; });
-}
-
+function radioGroup(target, key) { const el = document.querySelector(`input[name="${target}_${key}"]:checked`); return el ? el.value : ''; }
+function resetRatingsBuilt() { ['competency','competencyNeeded','evaluation'].forEach(id => { if ($(id)) $(id).dataset.built = ''; }); }
 function detectStatusFlags(s) {
   return {
     beker: s === 'Bekerja' || s === 'Bekerja dan berwirausaha' || s === 'Bekerja sambil melanjutkan pendidikan',
@@ -1054,7 +1062,6 @@ function detectStatusFlags(s) {
     nganggur: s === 'Belum bekerja dan sedang mencari pekerjaan' || s === 'Belum bekerja dan tidak sedang mencari pekerjaan'
   };
 }
-
 function applyMeta() {
   if (!META) return;
   fillSelect('programStudi', META.programs || [], 'Pilih');
@@ -1090,7 +1097,6 @@ function updateNimTypeInfo() {
   if (level === 'S2') { box.className = 'nim-type s2'; box.textContent = '🎓 S2 Magister Ilmu Komunikasi · NIM S2 (penanda 03)'; return; }
   box.className = 'nim-type warn'; box.textContent = 'Pilih Program Studi untuk menampilkan format NIM.';
 }
-
 function normalizeMasterRecord(r) {
   if (!r) return null;
   if (Array.isArray(r)) {
@@ -1209,7 +1215,6 @@ $('jenjang')?.addEventListener('change', () => {
     toast('Jenjang mengikuti data MASTER_ALUMNI.', 'info');
   }
 });
-
 $('status')?.addEventListener('change', () => {
   const f = detectStatusFlags(val('status'));
   $('workBox').classList.toggle('hidden', !f.beker);
@@ -1289,7 +1294,6 @@ document.querySelectorAll('.next').forEach(b => b.addEventListener('click', () =
 document.querySelectorAll('.prev').forEach(b => b.addEventListener('click', () => {
   if (step > 1) { step--; updateSteps(); }
 }));
-
 function renderGapPreview() {
   const rows = COMPETENCIES.map(([k, l]) => {
     const a = +radioGroup('competency', k) || 0;
@@ -1312,8 +1316,6 @@ function renderSummary() {
   ];
   setHtml('summaryBox', `<h4>Ringkasan Data</h4><ul class="tree">${rows.map(([k, v]) => `<li><b>${esc(k)}</b>${esc(v || '-')}</li>`).join('')}</ul>`);
 }
-
-/* ---------- MAPPING RATINGS ---------- */
 function mapRatings(frontendTarget, mappingDef) {
   const out = {};
   Object.entries(mappingDef).forEach(([backendCol, sources]) => {
@@ -1322,8 +1324,6 @@ function mapRatings(frontendTarget, mappingDef) {
   });
   return out;
 }
-
-/* ---------- COLLECT PAYLOAD ---------- */
 function collectPayload() {
   const answers = {
     jenisKelamin: val('jenisKelamin'), emailAlternatif: val('emailAlternatif'), predikat: val('predikat'),
@@ -1437,8 +1437,9 @@ $('tracerForm')?.addEventListener('submit', async e => {
     resetForm();
     setTimeout(() => showView('tracking'), 1000);
   } catch (err) {
-    msg('formStatus', err.message, false); toast(err.message, 'err');
-    addNotification('Pengiriman gagal', err.message, 'err');
+    const em = err.message === 'timeout' ? 'Timeout — server mungkin sedang cold start. Coba kirim ulang.' : err.message;
+    msg('formStatus', em, false); toast(em, 'err');
+    addNotification('Pengiriman gagal', em, 'err');
   } finally { btn.disabled = false; btn.textContent = 'Kirim Tracer Study ✓'; }
 });
 function resetForm() {
@@ -1500,14 +1501,15 @@ function showView(v) {
 async function pingServer() {
   const dot = $('connDot'), txt = $('connText');
   if (!dot || !txt) return;
-  dot.className = 'conn-dot check'; txt.textContent = 'Menghubungkan…';
+  dot.className = 'conn-dot check';
+  txt.textContent = bootWarmedUp ? 'Memeriksa…' : 'Pemanasan server (cold start)…';
   try {
-    const r = await get({ action: 'health' });
+    const r = await get({ action: 'health' }, { timeout: REQ_TIMEOUT_FAST });
     if (!r.ok) throw new Error(r.error || 'offline');
     online = true; dot.className = 'conn-dot ok';
     txt.textContent = 'Online · ' + (r.version ? 'v' + r.version : 'server');
     $('connPill').title = 'Server ' + (r.app || 'Tracer Study') + ' · ' + (r.time || '');
-    // Update status koneksi di panel pengaturan (jika ada)
+    bootWarmedUp = true;
     const st = $('cfgConnState'); if (st) { st.innerHTML = '<span style="color:var(--ok);font-weight:700">● Online</span> · ' + (r.time || ''); }
     const sv = $('cfgServerVer'); if (sv) sv.textContent = r.version ? ('v' + r.version) : '-';
     const sv2 = $('cfgServerVer2'); if (sv2) sv2.textContent = r.version ? ('v' + r.version) : '-';
@@ -1544,7 +1546,10 @@ $('loginBtn')?.addEventListener('click', async () => {
     toast('Login berhasil.', 'ok');
     addNotification('Login berhasil', `${PROFILE?.nama || PROFILE?.username || ''} · ${PROFILE?.role || ''}`, 'ok');
     await loadDashboard(1);
-  } catch (e) { msg('adminStatus', e.message, false); toast(e.message, 'err'); }
+  } catch (e) {
+    const em = e.message === 'timeout' ? 'Timeout saat login — coba lagi.' : e.message;
+    msg('adminStatus', em, false); toast(em, 'err');
+  }
   finally { b.disabled = false; b.textContent = 'Masuk →'; }
 });
 async function tryLogin() {
@@ -1592,7 +1597,10 @@ $('changePassBtn')?.addEventListener('click', () => {
       msg('passStatus', '✓ Password berhasil diubah.', true);
       addNotification('Password', 'Password berhasil diubah.', 'ok');
       setTimeout(() => $('passModal')?.remove(), 1000);
-    } catch (e) { msg('passStatus', e.message, false); toast(e.message, 'err'); }
+    } catch (e) {
+      const em = e.message === 'timeout' ? 'Timeout — coba lagi.' : e.message;
+      msg('passStatus', em, false); toast(em, 'err');
+    }
     finally { b.disabled = false; b.textContent = 'Simpan Password'; }
   };
 });
@@ -1626,7 +1634,6 @@ document.querySelectorAll('#adminTabs button').forEach(b => b.addEventListener('
   if (p === 'audit') renderAudit();
   if (p === 'settings') renderSettings();
 }));
-
 function applyRoleUI() {
   const role = (PROFILE?.role || '').toUpperCase();
   let needSwitch = false;
@@ -1656,6 +1663,7 @@ async function loadDashboard(pageNo) {
   pageNo = Math.max(1, Number(pageNo) || 1);
   const reqId = ++dashboardReqId;
   $('loginBox').classList.add('hidden'); $('dashBox').classList.remove('hidden');
+  msg('adminStatus', 'Memuat data dashboard…', 'info');
   const t0 = performance.now();
   try {
     const r = await post({ action: 'dashboard', token: TOKEN, filters: JSON.stringify(currentFilters()), page: pageNo });
@@ -1671,18 +1679,17 @@ async function loadDashboard(pageNo) {
     if (PROFILE?.role === 'ADMIN') { renderMaster(); renderPeriode(); renderUsers(); renderAudit(); }
     clearMsg('adminStatus');
     lastDashLoadMs = Math.round(performance.now() - t0);
-    const pb = $('perfBadge');
-    if (pb) pb.textContent = `⚡ ${lastDashLoadMs} ms`;
+    const pb = $('perfBadge'); if (pb) pb.textContent = `⚡ ${lastDashLoadMs} ms`;
   } catch (e) {
     if (reqId !== dashboardReqId) return;
-    msg('adminStatus', e.message, false);
+    const em = e.message === 'timeout' ? 'Timeout — server mungkin sedang cold start. Klik Refresh lagi.' : e.message;
+    msg('adminStatus', em, false);
     if (/token|sesi|auth|login/i.test(e.message)) {
       TOKEN = ''; PROFILE = null; DATA = null; sessionStorage.removeItem('ts_token');
       $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
     }
   }
 }
-
 function buildFilterOptions() {
   const d = DATA || {};
   const keep = (id, arr) => {
@@ -1695,7 +1702,6 @@ function buildFilterOptions() {
   keep('fProdi', Object.keys(d.charts?.programCounts || {}));
   keep('fStatus', Object.keys(d.charts?.statusCounts || {}));
 }
-
 function renderOverview() {
   const s = DATA?.summary || {};
   setHtml('kpiBox', `
@@ -1719,7 +1725,6 @@ function renderOverview() {
   setHtml('recentTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Lulus</th><th>Status</th></tr></thead>
   <tbody>${rows || '<tr><td colspan="6">Belum ada data.</td></tr>'}</tbody>`);
 }
-
 function renderResponden() {
   const items = DATA?.items || [];
   const pg = DATA?.pagination || { page: 1, perPage: 25, total: 0, totalPages: 1 };
@@ -1735,7 +1740,6 @@ function renderResponden() {
   const prev = $('prevPage'); if (prev) prev.disabled = pg.page <= 1;
   const next = $('nextPage'); if (next) next.disabled = pg.page >= pg.totalPages;
 }
-
 async function showDetail(id) {
   let r = (DATA?.items || []).find(x => x.tracerId === id);
   if (!r) {
@@ -1786,7 +1790,6 @@ async function showDetail(id) {
     </div></div>`;
   $('closeDetail').onclick = () => $('detailModal').remove();
 }
-
 function renderAnalitik() {
   const c = DATA?.charts || {};
   mkRadar('chKompetensi', c.kompetensiAvg, RADAR_KOMPETENSI);
@@ -1802,7 +1805,6 @@ function renderAnalitik() {
       <p style="margin:6px 0;white-space:pre-wrap">${esc(x.saran)}</p>
     </div>`).join('') : 'Belum ada masukan.');
 }
-
 function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
 function chartBase(extra = {}) {
   return Object.assign({
@@ -1945,7 +1947,6 @@ function parseMasterDelimitedText(text) {
   if (rows.length && /nim/i.test(String(rows[0][0] || ''))) rows.shift();
   return rows;
 }
-
 $('downloadTemplate')?.addEventListener('click', () => {
   const csv = 'NIM;NAMA;PROGRAM_STUDI;JENJANG;TAHUN_MASUK;TAHUN_LULUS;EMAIL;WHATSAPP\n202441001;Ahmad Fauzi;S1 Ilmu Komunikasi;S1;2020;2024;ahmad@mail.com;081234567890\n202403001;Budi Santoso;S2 Magister Ilmu Komunikasi;S2;2022;2024;budi@mail.com;081298765432\n';
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1975,7 +1976,6 @@ if (dropZone) {
   });
 }
 $('clearMaster')?.addEventListener('click', () => { $('masterCsv').value = ''; clearMsg('masterStatus'); });
-
 $('importMaster')?.addEventListener('click', async () => {
   const raw = val('masterCsv');
   if (!raw) return toast('Tempel data master atau pilih file terlebih dahulu.', 'err');
@@ -1996,7 +1996,10 @@ $('importMaster')?.addEventListener('click', async () => {
     $('masterCsv').value = '';
     toast('Master Alumni berhasil diimport.', 'ok');
     loadDashboard(1).catch(() => {});
-  } catch (e) { msg('masterStatus', e.message, false); toast(e.message, 'err'); }
+  } catch (e) {
+    const em = e.message === 'timeout' ? 'Timeout — coba import lagi dengan data lebih kecil.' : e.message;
+    msg('masterStatus', em, false); toast(em, 'err');
+  }
   finally { btn.disabled = false; btn.textContent = 'Import Master'; }
 });
 function renderMaster() {
@@ -2093,8 +2096,6 @@ function renderUsers() {
   });
   document.querySelectorAll('[data-ureset]').forEach(b => b.onclick = () => openResetPass(b.dataset.ureset, b.dataset.urole));
 }
-
-/* ---------- RESET PASSWORD (ADMIN) ---------- */
 function openResetPass(username, role) {
   const defaults = { ADMIN: 'admin123', KAPRODI: 'kaprodi123', WADEK: 'wadek123', DEKAN: 'dekan123' };
   const def = defaults[(role || '').toUpperCase()] || 'fikom123';
@@ -2131,8 +2132,6 @@ function openResetPass(username, role) {
     finally { b.disabled = false; b.textContent = 'Reset ke Default'; }
   };
 }
-
-/* ---------- AUDIT ---------- */
 function renderAudit() {
   const rows = (DATA?.audit || []).map(a => `<tr>
     <td>${esc(a.timestamp)}</td><td>${esc(a.actor)}</td><td>${badge(a.action)}</td>
@@ -2141,15 +2140,13 @@ function renderAudit() {
   <tbody>${rows || '<tr><td colspan="5">Belum ada log.</td></tr>'}</tbody>`);
 }
 
-/* ---------- PANEL PENGATURAN KONEKSI (ADMIN ONLY) ---------- */
+/* ---------- SETTINGS (ADMIN only) ---------- */
 function renderSettings() {
   if ((PROFILE?.role || '').toUpperCase() !== 'ADMIN') return;
-  const urlInput = $('cfgUrl');
-  if (urlInput) urlInput.value = GAS_URL;
-  const actUrl = $('cfgActiveUrl');
-  if (actUrl) actUrl.textContent = GAS_URL;
-  const defUrl = $('cfgDefaultUrl');
-  if (defUrl) defUrl.textContent = DEFAULT_GAS_URL;
+  const u = $('cfgUrl'); if (u) u.value = GAS_URL;
+  const a = $('cfgActiveUrl'); if (a) a.textContent = GAS_URL;
+  const d = $('cfgDefaultUrl'); if (d) d.textContent = DEFAULT_GAS_URL;
+  const av = $('appVersion'); if (av) av.textContent = APP_VERSION_STR;
   clearMsg('cfgStatus');
 }
 $('resetCfg')?.addEventListener('click', () => {
@@ -2157,7 +2154,7 @@ $('resetCfg')?.addEventListener('click', () => {
   GAS_URL = DEFAULT_GAS_URL;
   localStorage.removeItem('ts_gas_url');
   const el = $('cfgUrl'); if (el) el.value = DEFAULT_GAS_URL;
-  const actUrl = $('cfgActiveUrl'); if (actUrl) actUrl.textContent = DEFAULT_GAS_URL;
+  const a = $('cfgActiveUrl'); if (a) a.textContent = DEFAULT_GAS_URL;
   toast('GAS_URL dikembalikan ke default.', 'info');
   pingServer();
 });
@@ -2166,12 +2163,12 @@ $('testCfg')?.addEventListener('click', async () => {
   msg('cfgStatus', 'Menguji koneksi ke ' + url + '…', 'info');
   try {
     const q = new URLSearchParams({ action: 'health', _rt: String(Date.now()) });
-    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' });
+    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' }, REQ_TIMEOUT_FAST);
     const j = await r.json();
     if (!j.ok) throw new Error(j.error || 'Server tidak merespons OK.');
     msg('cfgStatus', `✓ Terhubung. Versi server: v${j.version || '?'} · ${j.time || ''}`, true);
   } catch (e) {
-    msg('cfgStatus', '✗ Gagal: ' + e.message, false);
+    msg('cfgStatus', '✗ Gagal: ' + (e.message === 'timeout' ? 'Timeout (server cold start).' : e.message), false);
   }
 });
 $('saveCfg')?.addEventListener('click', async () => {
@@ -2181,28 +2178,25 @@ $('saveCfg')?.addEventListener('click', async () => {
     return toast('Format URL tidak valid. Harus diakhiri /exec.', 'err');
   const b = $('saveCfg'); b.disabled = true; b.textContent = 'Menyimpan...';
   try {
-    // Test dulu
     const q = new URLSearchParams({ action: 'health', _rt: String(Date.now()) });
-    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' });
+    const r = await fetchWithTimeout(url + '?' + q.toString(), { cache: 'no-store' }, REQ_TIMEOUT);
     const j = await r.json();
     if (!j.ok) throw new Error(j.error || 'Server tidak merespons OK.');
 
-    // Simpan
     GAS_URL = url;
     localStorage.setItem('ts_gas_url', url);
-    const actUrl = $('cfgActiveUrl'); if (actUrl) actUrl.textContent = url;
+    const a = $('cfgActiveUrl'); if (a) a.textContent = url;
     msg('cfgStatus', `✓ Pengaturan disimpan. Server: v${j.version || '?'}. Memuat ulang META…`, true);
     toast('Pengaturan koneksi tersimpan.', 'ok');
     addNotification('Pengaturan Koneksi', 'GAS_URL diperbarui.', 'ok');
 
-    // Refresh META
     localStorage.removeItem(META_CACHE_KEY);
     META = null;
     const m = await get({ action: 'meta' });
     if (m && m.ok) { META = m; saveMetaToCache(m); applyMeta(); }
     pingServer();
   } catch (e) {
-    msg('cfgStatus', '✗ Gagal menyimpan: ' + e.message, false);
+    msg('cfgStatus', '✗ Gagal: ' + (e.message === 'timeout' ? 'Timeout (server cold start).' : e.message), false);
     toast(e.message, 'err');
   } finally {
     b.disabled = false; b.textContent = '💾 Simpan Pengaturan';
@@ -2227,28 +2221,24 @@ $('clearAllCache')?.addEventListener('click', () => {
   const remembered = localStorage.getItem('ts_username');
   if (remembered) { $('username').value = remembered; $('rememberUser').checked = true; }
 
-  // Isi default URL placeholder di panel settings
   const defUrlEl = $('cfgDefaultUrl');
   if (defUrlEl) defUrlEl.textContent = DEFAULT_GAS_URL;
+  const av = $('appVersion');
+  if (av) av.textContent = APP_VERSION_STR;
 
-  // Coba tampilkan META cache dulu (instant render)
   const cached = loadMetaFromCache();
   if (cached) { META = cached; applyMeta(); }
 
-  // Ping server & fetch meta
   pingServer();
   setInterval(pingServer, 300000);
 
   try {
     const fresh = await get({ action: 'meta' });
-    if (fresh && fresh.ok) {
-      META = fresh; saveMetaToCache(fresh); applyMeta();
-    } else if (!META) {
-      throw new Error(fresh?.error || 'Konfigurasi server tidak tersedia.');
-    }
+    if (fresh && fresh.ok) { META = fresh; saveMetaToCache(fresh); applyMeta(); }
+    else if (!META) throw new Error(fresh?.error || 'Konfigurasi server tidak tersedia.');
   } catch (e) {
     if (!META) {
-      msg('formStatus', 'Gagal memuat konfigurasi server: ' + e.message, false);
+      msg('formStatus', 'Gagal memuat konfigurasi server: ' + (e.message === 'timeout' ? 'Timeout (server cold start). Coba muat ulang halaman.' : e.message), false);
       addNotification('Koneksi server gagal', e.message, 'err');
     }
   }
