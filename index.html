@@ -144,7 +144,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="grid">
           <div><label for="tahunMasuk">Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2020"><span class="field-error" id="err-tahunMasuk"></span></div>
           <div><label for="tahunLulus">Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2024"><span class="field-error" id="err-tahunLulus"></span></div>
-          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="5" pattern="[0-4](\.[0-9]{1,2})?" placeholder="contoh: 3.45" required autocomplete="off"><span class="field-error" id="err-ipk"></span></div>
+          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="5" placeholder="contoh: 3.45" required autocomplete="off"><span class="field-error" id="err-ipk"></span><p class="field-hint">Gunakan titik atau koma sebagai desimal (contoh: <code>3.45</code> atau <code>3,45</code>).</p></div>
           <div><label for="jenisKelamin">Jenis Kelamin</label><select id="jenisKelamin"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
           <div><label for="tempatLahir">Tempat Lahir</label><input id="tempatLahir" maxlength="60"></div>
           <div><label for="tanggalLahir">Tanggal Lahir</label><input id="tanggalLahir" type="date" max="2010-12-31" min="1950-01-01"></div>
@@ -174,7 +174,22 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       <div class="step" data-step="2">
         <h3>Bagian B — Pekerjaan Saat Ini</h3>
         <div class="grid">
-          <div class="full"><label for="statusPekerjaanUtama">B1. Status pekerjaan Anda saat ini <span class="req">*</span></label><select id="statusPekerjaanUtama" required data-conditional="bekerja"><option value="">Pilih</option><option>Bekerja penuh waktu</option><option>Bekerja paruh waktu</option><option>Wiraswasta</option><option>Melanjutkan pendidikan</option><option>Tidak bekerja / sedang mencari kerja</option></select><span class="field-error" id="err-statusPekerjaanUtama"></span></div>
+          <div class="full"><label for="statusPekerjaanUtama">B1. Status pekerjaan Anda saat ini <span class="req">*</span></label>
+            <select id="statusPekerjaanUtama" required data-conditional="bekerja">
+              <option value="">Pilih status Anda saat ini</option>
+              <option>Bekerja</option>
+              <option>Berwirausaha</option>
+              <option>Bekerja dan berwirausaha</option>
+              <option>Melanjutkan pendidikan</option>
+              <option>Bekerja sambil melanjutkan pendidikan</option>
+              <option>Berwirausaha sambil melanjutkan pendidikan</option>
+              <option>Belum bekerja dan sedang mencari pekerjaan</option>
+              <option>Belum bekerja dan tidak sedang mencari pekerjaan</option>
+              <option>Lainnya</option>
+            </select>
+            <span class="field-error" id="err-statusPekerjaanUtama"></span>
+            <p class="field-hint">Pilih sesuai kondisi Anda saat ini. Jika Anda bekerja <b>dan</b> melanjutkan pendidikan, pilih <b>"Bekerja sambil melanjutkan pendidikan"</b>.</p>
+          </div>
         </div>
         <div id="bekerjaBox" class="conditional-box hidden">
           <p class="cb-title">📌 Detail Pekerjaan</p>
@@ -420,7 +435,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v12.1.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v12.1.1 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -428,11 +443,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 'use strict';
 
 /* =========================================================
-   TRACER STUDY FIKOM UPDM (B) — v12.1.0 FINAL PRODUCTION
-   SINKRON dengan Code.gs v12.1.0
+   TRACER STUDY FIKOM UPDM (B) — v12.1.1 FINAL PRODUCTION
+   SINKRON dengan Code.gs v12.1.1
    ========================================================= */
 
-const APP_VERSION_STR = 'v12.1.0';
+const APP_VERSION_STR = 'v12.1.1';
 const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
 const GAS_URL = localStorage.getItem('ts_gas_url') || DEFAULT_GAS_URL;
 
@@ -453,6 +468,19 @@ const RATE_CFG = {
   health:      { max: 10, win: 60 * 1000 },
   default:     { max: 20, win: 60 * 1000 }
 };
+
+/* 9 opsi B1 resmi — SINKRON dengan Code.gs OPT.statuses */
+const VALID_STATUS_PEKERJAAN = [
+  'Bekerja',
+  'Berwirausaha',
+  'Bekerja dan berwirausaha',
+  'Melanjutkan pendidikan',
+  'Bekerja sambil melanjutkan pendidikan',
+  'Berwirausaha sambil melanjutkan pendidikan',
+  'Belum bekerja dan sedang mencari pekerjaan',
+  'Belum bekerja dan tidak sedang mencari pekerjaan',
+  'Lainnya'
+];
 
 let TOKEN = sessionStorage.getItem('ts_token') || '';
 let TOKEN_EXP = Number(sessionStorage.getItem('ts_token_exp') || 0);
@@ -622,7 +650,6 @@ async function post(data) {
   const gate = RateLimiter.hit('post:' + action, cfg.max, cfg.win);
   if (!gate.ok) throw new Error(`Terlalu banyak permintaan. Coba lagi dalam ${Math.ceil(gate.retry/1000)} detik.`);
 
-  // Serialize ENTIRE data object (with action inside) as payload
   const payloadStr = JSON.stringify(data || {});
   const ts = Date.now();
   const sigInput = payloadStr + '|' + ts;
@@ -836,6 +863,7 @@ $('nim')?.addEventListener('input', () => {
 });
 $('programStudi')?.addEventListener('change', () => { updateNimTypeInfo(); updateLevelBanner(); showLevelGroup(); });
 
+/* Sanitasi tahun — hanya digit, 4 karakter */
 ['tahunMasuk','tahunLulus','tahunPrestasi'].forEach(id => {
   $(id)?.addEventListener('input', () => {
     const el = $(id);
@@ -843,22 +871,54 @@ $('programStudi')?.addEventListener('change', () => { updateNimTypeInfo(); updat
   });
 });
 
-  /* FIX BUG IPK: sanitasi otomatis — koma→titik, hanya digit & satu titik */
+/* =========================================================
+   FIX BUG IPK: sanitasi otomatis koma→titik, hanya 1 digit
+   integer + 1 titik + 2 digit desimal. Terima koma & titik.
+   ========================================================= */
 $('ipk')?.addEventListener('input', () => {
   const el = $('ipk');
   let v = String(el.value).replace(/,/g, '.').replace(/[^0-9.]/g, '');
   const parts = v.split('.');
   if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
-  // Batasi: 1 digit integer + 1 titik + 2 digit desimal
-  if (parts[0] && parts[0].length > 1) v = parts[0].slice(0, 1) + (parts[1] !== undefined ? '.' + parts[1].slice(0, 2) : '');
+  // Batasi integer jadi 1 digit (0–4) + opsional .XX
+  if (parts[0] && parts[0].length > 1) {
+    v = parts[0].slice(0, 1) + (parts[1] !== undefined ? '.' + parts[1].slice(0, 2) : '');
+  }
   el.value = v.slice(0, 4);
 });
+$('ipk')?.addEventListener('blur', () => {
+  const el = $('ipk');
+  let v = el.value.trim().replace(',', '.');
+  if (!v) return;
+  const n = Number(v);
+  if (Number.isFinite(n) && n >= 0 && n <= 4) {
+    // Normalisasi ke 2 desimal
+    el.value = n.toFixed(2);
+  }
+});
+
+/* =========================================================
+   CONDITIONAL MAP — FIX LOGIC B1 statusPekerjaanUtama
+   Tampilkan detail pekerjaan JIKA user:
+   - Bekerja / berwirausaha / kombinasi (kecuali murni studi atau belum bekerja)
+   ========================================================= */
 const CONDITIONAL_MAP = {
-  statusPekerjaanUtama: { box: 'bekerjaBox', show: v => /Bekerja|Wiraswasta/i.test(v), required: ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja'] },
-  ikutMagang:           { box: 'magangBox',   show: v => v === 'Ya', required: ['kontribusiMagang','magangBantuKerja'] },
+  statusPekerjaanUtama: {
+    box: 'bekerjaBox',
+    show: v => {
+      if (!v) return false;
+      // Murni studi atau belum bekerja → tidak tampil
+      if (/^Melanjutkan pendidikan$/i.test(v)) return false;
+      if (/^Belum bekerja/i.test(v)) return false;
+      // Selain itu (Bekerja, Berwirausaha, kombinasi dengan studi) → tampil
+      return /Bekerja|Wiraswasta|Berwirausaha/i.test(v);
+    },
+    required: ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja']
+  },
+  ikutMagang:           { box: 'magangBox',     show: v => v === 'Ya', required: ['kontribusiMagang','magangBantuKerja'] },
   ikutOrganisasi:       { box: 'organisasiBox', show: v => v === 'Ya', required: [] },
-  punyaPrestasi:        { box: 'prestasiBox', show: v => v === 'Ya', required: [] },
-  melanjutkanStudi:     { box: 'studiBox',    show: v => v === 'Ya', required: [] }
+  punyaPrestasi:        { box: 'prestasiBox',   show: v => v === 'Ya', required: [] },
+  melanjutkanStudi:     { box: 'studiBox',      show: v => v === 'Ya', required: [] }
 };
 
 function applyConditional(id) {
@@ -877,6 +937,21 @@ function applyConditional(id) {
 }
 Object.keys(CONDITIONAL_MAP).forEach(id => {
   $(id)?.addEventListener('change', () => applyConditional(id));
+});
+
+/* =========================================================
+   AUTO-SYNC: Jika B1 mengandung "melanjutkan pendidikan",
+   auto-set G1 melanjutkanStudi = "Ya" (jika belum diisi).
+   ========================================================= */
+$('statusPekerjaanUtama')?.addEventListener('change', () => {
+  const v = val('statusPekerjaanUtama');
+  const studi = /melanjutkan pendidikan/i.test(v) && !/^Belum bekerja/i.test(v);
+  const el = $('melanjutkanStudi');
+  if (el && studi && !el.value) {
+    el.value = 'Ya';
+    el.dispatchEvent(new Event('change'));
+    toast('Status "melanjutkan pendidikan" terdeteksi — Bagian G otomatis terisi "Ya".', 'info');
+  }
 });
 
 function updateSteps() {
@@ -935,13 +1010,15 @@ function validateStepByNumber(s) {
       return focusErr('tahunLulus');
     }
 
+    /* FIX IPK: toleran terhadap koma & titik */
     const ipkRaw = val('ipk').replace(',', '.');
-const ipk = Number(ipkRaw);
-if (!ipkRaw) { setFieldError('ipk','IPK wajib diisi.'); return focusErr('ipk'); }
-if (!Number.isFinite(ipk) || ipk < 0 || ipk > 4) {
-  setFieldError('ipk', `IPK "${val('ipk')}" tidak valid. Masukkan angka 0.00–4.00 (contoh: 3.45).`);
-  return focusErr('ipk');
-}
+    const ipk = Number(ipkRaw);
+    if (!ipkRaw) { setFieldError('ipk','IPK wajib diisi.'); return focusErr('ipk'); }
+    if (!Number.isFinite(ipk) || ipk < 0 || ipk > 4) {
+      setFieldError('ipk', `IPK "${val('ipk')}" tidak valid. Masukkan angka 0.00–4.00 (contoh: 3.45).`);
+      return focusErr('ipk');
+    }
+
     if (!isEmail(val('email'))) { setFieldError('email','Format email tidak valid.'); return focusErr('email'); }
     if (!isPhoneID(val('whatsapp'))) { setFieldError('whatsapp','Nomor WhatsApp harus 10–15 digit angka.'); return focusErr('whatsapp'); }
     if (nl === 'S1') {
@@ -956,8 +1033,14 @@ if (!Number.isFinite(ipk) || ipk < 0 || ipk > 4) {
   }
 
   if (s === 2) {
-    if (!val('statusPekerjaanUtama')) { setFieldError('statusPekerjaanUtama','Status pekerjaan wajib dipilih.'); return focusErr('statusPekerjaanUtama'); }
-    if (!CONDITIONAL_MAP.statusPekerjaanUtama.show(val('statusPekerjaanUtama'))) return true;
+    const statusUtama = val('statusPekerjaanUtama');
+    if (!statusUtama) { setFieldError('statusPekerjaanUtama','Status pekerjaan wajib dipilih.'); return focusErr('statusPekerjaanUtama'); }
+    /* Whitelist anti-bypass via DevTools */
+    if (VALID_STATUS_PEKERJAAN.indexOf(statusUtama) < 0) {
+      setFieldError('statusPekerjaanUtama', 'Pilih salah satu opsi yang tersedia.');
+      return focusErr('statusPekerjaanUtama');
+    }
+    if (!CONDITIONAL_MAP.statusPekerjaanUtama.show(statusUtama)) return true;
     if (!val('masaTungguKerja')) { setFieldError('masaTungguKerja','Masa tunggu wajib dipilih.'); return focusErr('masaTungguKerja'); }
     if (!val('bidangIndustri')) { setFieldError('bidangIndustri','Bidang industri wajib dipilih.'); return focusErr('bidangIndustri'); }
     if (!val('kesesuaianPekerjaan')) { setFieldError('kesesuaianPekerjaan','Kesesuaian pekerjaan wajib dipilih.'); return focusErr('kesesuaianPekerjaan'); }
@@ -1088,6 +1171,11 @@ function collectPayload() {
   const prestasi = val('punyaPrestasi') === 'Ya';
   const studi = val('melanjutkanStudi') === 'Ya';
 
+  /* Normalisasi IPK: koma → titik, format 2 desimal */
+  let ipkNorm = val('ipk').replace(',', '.');
+  const ipkN = Number(ipkNorm);
+  if (Number.isFinite(ipkN) && ipkN >= 0 && ipkN <= 4) ipkNorm = ipkN.toFixed(2);
+
   return {
     nim: clampStr(val('nim'), 9),
     nama: clampStr(VERIFIED_ALUMNI?.nama || '', 120),
@@ -1095,7 +1183,7 @@ function collectPayload() {
     jenjang: clampStr(val('jenjang'), 4),
     level,
     tahunMasuk: clampStr(val('tahunMasuk'), 4), tahunLulus: clampStr(val('tahunLulus'), 4),
-    ipk: clampStr(val('ipk'), 4), jenisKelamin: clampStr(val('jenisKelamin'), 20),
+    ipk: clampStr(ipkNorm, 5), jenisKelamin: clampStr(val('jenisKelamin'), 20),
     tempatLahir: clampStr(val('tempatLahir'), 60), tanggalLahir: clampStr(val('tanggalLahir'), 10),
     email: clampStr(val('email'), 120), whatsapp: clampStr(val('whatsapp'), 15),
     alamatDomisili: clampStr(val('alamatDomisili'), 500),
@@ -1152,7 +1240,6 @@ function collectPayload() {
   };
 }
 
-/* FIX: submit uses formData key (not payload) to avoid nesting conflict */
 $('tracerForm')?.addEventListener('submit', async e => {
   e.preventDefault();
   clearAllFieldErrors();
@@ -1463,7 +1550,6 @@ function renderAnalitik() {
     </div>`).join('') : 'Belum ada masukan.');
 }
 
-/* FIX: use server-side relevansiCounts + masaTungguBuckets */
 function renderAkreditasi() {
   const d = DATA || {};
   const sum = d.summary || {};
@@ -1500,7 +1586,6 @@ function renderAkreditasi() {
     <li><b>Periode Pelaporan:</b> Data dapat difilter per tahun lulus &amp; program studi.</li>
     <li><b>Standar Data:</b> Mengikuti kamus data Tracer Study Ditjen Belmawa Kemdiktisaintek.</li>`);
 
-  // Use SERVER-SIDE aggregations (bukan client-side dari paginated items)
   mkBar('chAccRelevansi', ch.relevansiCounts || {});
   mkBar('chAccMasaTunggu', ch.masaTungguBuckets || {});
 }
