@@ -505,11 +505,16 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           <div class="card">
             <h4>📥 Import Master Alumni (CSV)</h4>
             <p class="hint">Format kolom: NIM, NAMA, PROGRAM_STUDI, JENJANG, TAHUN_MASUK, TAHUN_LULUS, EMAIL, WHATSAPP</p>
-            <textarea id="csvImport" maxlength="500000" placeholder="Paste CSV di sini..." style="min-height:150px;font-family:monospace;font-size:12px"></textarea>
+            <label for="csvFile">Pilih file CSV (maks. 5000 baris)</label>
+            <input type="file" id="csvFile" accept=".csv,.txt,text/csv">
+            <div id="csvFileInfo" class="hint" style="margin:6px 0 12px"></div>
+            <textarea id="csvImport" maxlength="500000" placeholder="Atau paste CSV di sini (opsional jika file sudah dipilih)..." style="min-height:110px;font-family:monospace;font-size:12px"></textarea>
             <div class="toolbar" style="margin-top:10px">
               <button class="btn sm" id="doImportBtn">✓ Import CSV</button>
             </div>
+            <progress id="importProgress" value="0" max="100" style="width:100%;height:14px;display:none;margin-bottom:8px"></progress>
             <div id="importResult" class="hint"></div>
+            <div id="importSkips" class="hint" style="max-height:180px;overflow:auto;font-family:monospace;font-size:12px;white-space:pre-wrap"></div>
           </div>
           <div class="card">
             <h4>📜 Audit Log (200 terakhir)</h4>
@@ -609,7 +614,58 @@ async function exportData(format){try{const filters={periode:val('fPeriode'),tah
 async function saveUser(){const username=val('newUsername'),nama=val('newNama'),role=val('newRole'),programStudi=val('newProgram'),password=val('newPassword'),aktif=$('newAktif')?.checked??true;try{await apiPost({action:'usersave',payload:JSON.stringify({username,nama,role,programStudi,password,aktif})});toast('User berhasil disimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
 async function savePeriode(){const payload={periodeId:val('newPeriodeId'),nama:val('newPeriodeNama'),status:val('newPeriodeStatus'),tahunMin:val('newPeriodeMin'),tahunMax:val('newPeriodeMax'),tglBuka:val('newPeriodeBuka'),tglTutup:val('newPeriodeTutup'),catatan:val('newPeriodeCatatan')};try{await apiPost({action:'periodesave',payload:JSON.stringify(payload)});toast('Periode berhasil disimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
 function openAdminModal(type){const root=$('modalRoot');if(type==='user'){root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>Tambah User</h3><input id="newUsername" placeholder="Username"><input id="newNama" placeholder="Nama"><select id="newRole"><option value="ADMIN">ADMIN</option><option value="KAPRODI_S1">KAPRODI_S1</option><option value="KAPRODI_S2">KAPRODI_S2</option><option value="WADEK">WADEK</option><option value="DEKAN">DEKAN</option><option value="MAHASISWA">MAHASISWA</option></select><input id="newProgram" placeholder="Program Studi"><input id="newPassword" type="password" placeholder="Password minimal 8 karakter"><label><input id="newAktif" type="checkbox" checked> Aktif</label><div class="actions"><button class="btn secondary" onclick="$('modalRoot').innerHTML=''">Batal</button><button class="btn" onclick="saveUser();$('modalRoot').innerHTML=''">Simpan</button></div></div></div>`}else{root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>Tambah/Update Periode</h3><input id="newPeriodeId" placeholder="PRD-2026"><input id="newPeriodeNama" placeholder="Nama periode"><select id="newPeriodeStatus"><option>BUKA</option><option>TUTUP</option></select><input id="newPeriodeMin" placeholder="Tahun min"><input id="newPeriodeMax" placeholder="Tahun max"><input id="newPeriodeBuka" type="date"><input id="newPeriodeTutup" type="date"><textarea id="newPeriodeCatatan" placeholder="Catatan"></textarea><div class="actions"><button class="btn secondary" onclick="$('modalRoot').innerHTML=''">Batal</button><button class="btn" onclick="savePeriode();$('modalRoot').innerHTML=''">Simpan</button></div></div></div>`}}
-function initAdmin(){if($('ubahPassBtn'))$('ubahPassBtn').onclick=()=>changePasswordModal(false);$('notifyBtn')?.addEventListener('click',()=>toast('Notifikasi akan muncul setelah ada aksi sistem.','info'));$('loginBtn').onclick=login;$('logoutBtn').onclick=logout;$('refreshBtn').onclick=loadDashboard;$('applyFilter').onclick=()=>{respPage=1;loadDashboard()};$('resetFilter').onclick=()=>{['fPeriode','fTahun','fProdi','fQ'].forEach(id=>$(id).value='');respPage=1;loadDashboard()};$('togglePass').onclick=()=>{$('password').type=$('password').type==='password'?'text':'password'};$$('#adminTabs button').forEach(b=>b.onclick=()=>switchPanel(b.dataset.panel));$$('[data-export]').forEach(b=>b.onclick=()=>exportData(b.dataset.export==='xlsx'?'xls':b.dataset.export));$('addUserBtn')?.addEventListener('click',()=>openAdminModal('user'));$('addPeriodeBtn')?.addEventListener('click',()=>openAdminModal('periode'));$('reloadUserBtn')?.addEventListener('click',loadDashboard);$('reloadPeriodeBtn')?.addEventListener('click',loadDashboard);$('reloadAuditBtn')?.addEventListener('click',loadDashboard);$('doImportBtn')?.addEventListener('click',async()=>{const f=$('csvImport')?.files?.[0];if(!f)return toast('Pilih file CSV terlebih dahulu.','err');const text=await f.text();try{const r=await apiPost({action:'masterimport',csv:text});$('importResult').textContent=`Insert: ${r.inserted}, Update: ${r.updated}, Skip: ${r.skipped}`;loadDashboard()}catch(e){toast(e.message,'err')}})}
+function initAdmin(){if($('ubahPassBtn'))$('ubahPassBtn').onclick=()=>changePasswordModal(false);$('notifyBtn')?.addEventListener('click',()=>toast('Notifikasi akan muncul setelah ada aksi sistem.','info'));$('loginBtn').onclick=login;$('logoutBtn').onclick=logout;$('refreshBtn').onclick=loadDashboard;$('applyFilter').onclick=()=>{respPage=1;loadDashboard()};$('resetFilter').onclick=()=>{['fPeriode','fTahun','fProdi','fQ'].forEach(id=>$(id).value='');respPage=1;loadDashboard()};$('togglePass').onclick=()=>{$('password').type=$('password').type==='password'?'text':'password'};$$('#adminTabs button').forEach(b=>b.onclick=()=>switchPanel(b.dataset.panel));$$('[data-export]').forEach(b=>b.onclick=()=>exportData(b.dataset.export==='xlsx'?'xls':b.dataset.export));$('addUserBtn')?.addEventListener('click',()=>openAdminModal('user'));$('addPeriodeBtn')?.addEventListener('click',()=>openAdminModal('periode'));$('reloadUserBtn')?.addEventListener('click',loadDashboard);$('reloadPeriodeBtn')?.addEventListener('click',loadDashboard);$('reloadAuditBtn')?.addEventListener('click',loadDashboard);$('csvFile')?.addEventListener('change',previewCsv);$('doImportBtn')?.addEventListener('click',runMasterImport)}
+const IMPORT_CHUNK=250,IMPORT_MAX=5000;
+function parseCsvText(text){
+  const src=String(text||'').replace(/^\uFEFF/,'');
+  const first=(src.split(/\r?\n/).find(x=>x.trim())||'').trim();
+  const c={',':0,';':0,'\t':0};let q=false;
+  for(const ch of first){if(ch==='"'){q=!q;continue}if(!q&&Object.prototype.hasOwnProperty.call(c,ch))c[ch]++}
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0],delim=top[1]>0?top[0]:',';
+  const rows=[];let row=[],f='';q=false;
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(ch==='"'){if(q&&src[i+1]==='"'){f+='"';i++;continue}q=!q;continue}
+    if(!q&&ch===delim){row.push(f.trim());f='';continue}
+    if(!q&&(ch==='\n'||ch==='\r')){if(ch==='\r'&&src[i+1]==='\n')i++;row.push(f.trim());f='';if(row.some(v=>v!==''))rows.push(row);row=[];continue}
+    f+=ch
+  }
+  if(f!==''||row.length){row.push(f.trim());if(row.some(v=>v!==''))rows.push(row)}
+  if(rows.length&&/nim/i.test(String(rows[0][0]||'')))rows.shift();
+  return rows
+}
+async function readImportRows(){const f=$('csvFile')?.files?.[0];const text=f?await f.text():($('csvImport')?.value||'');return parseCsvText(text)}
+async function previewCsv(){
+  const info=$('csvFileInfo'),f=$('csvFile')?.files?.[0];if(!info)return;
+  if(!f){info.textContent='';return}
+  try{const rows=await readImportRows();info.textContent=`${f.name} · ${(f.size/1024).toFixed(1)} KB · ${rows.length} baris data`+(rows.length>IMPORT_MAX?` — melebihi batas ${IMPORT_MAX} baris`:'')}
+  catch(e){info.textContent='Gagal membaca file: '+e.message}
+}
+async function runMasterImport(){
+  const btn=$('doImportBtn'),prog=$('importProgress'),res=$('importResult'),sk=$('importSkips');
+  if(!$('csvFile')?.files?.[0]&&!val('csvImport'))return toast('Pilih file CSV terlebih dahulu.','err');
+  let rows;try{rows=await readImportRows()}catch(e){return toast('Gagal membaca file: '+e.message,'err')}
+  if(!rows.length)return toast('File kosong atau format CSV tidak terbaca.','err');
+  if(rows.length>IMPORT_MAX)return toast(`Maksimal ${IMPORT_MAX} baris per import (file berisi ${rows.length}).`,'err');
+  btn.disabled=true;prog.style.display='block';prog.max=rows.length;prog.value=0;sk.textContent='';
+  let ins=0,upd=0,skp=0,done=0;const skipLines=[];
+  try{
+    for(let i=0;i<rows.length;i+=IMPORT_CHUNK){
+      const part=rows.slice(i,i+IMPORT_CHUNK);
+      const r=await apiPost({action:'masterimport',rows:part});
+      ins+=r.inserted||0;upd+=r.updated||0;skp+=r.skipped||0;done+=part.length;
+      (r.skipReasons||[]).forEach(s=>{if(skipLines.length<200)skipLines.push(`Data ke-${i+s.row}: ${s.nim||'-'} — ${s.reason}`)});
+      prog.value=done;
+      res.textContent=`Memproses ${done}/${rows.length} (${Math.round(done/rows.length*100)}%) · Insert: ${ins} · Update: ${upd} · Skip: ${skp}`;
+      sk.textContent=skipLines.join('\n')
+    }
+    res.textContent=`Selesai. Total ${rows.length} baris · Insert: ${ins} · Update: ${upd} · Skip: ${skp}`;
+    toast('Import selesai.','ok');loadDashboard()
+  }catch(e){
+    res.textContent=`Berhenti di data ke-${done+1}: ${e.message}. Data sebelumnya sudah tersimpan; import ulang aman (NIM yang sama hanya di-update).`;
+    toast(e.message,'err')
+  }finally{btn.disabled=false}
+}
 function initForm(){buildChecks('organisasiProfesi',ORGANISASI_PROFESI);buildChecks('jenisPrestasi',JENIS_PRESTASI);rebuildRatings();initConditionals();$$('.next').forEach(b=>b.onclick=()=>{if(validateStep(step)){step=Math.min(TOTAL_STEPS,step+1);updateSteps()}});$$('.prev').forEach(b=>b.onclick=()=>{step=Math.max(1,step-1);updateSteps()});$$('#stepIndicator button').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.step);if(n<=step||validateStep(step)){step=n;updateSteps()}});$('tracerForm').onsubmit=e=>{e.preventDefault();submitTracer()};$('checkNimBtn').onclick=checkNim;$('trackBtn').onclick=async()=>{try{const r=await apiGet({action:'lookup',tracerId:val('trackingId')});const d=r.data||{};$('trackResult').innerHTML=`<div class="status ok">Tracer ID: ${esc(d.tracerId)} · NIM: ${esc(d.nim)} · Nama: ${esc(d.nama)} · Status: ${esc(d.status||'Tersimpan')}</div>`}catch(e){msg('trackResult',e.message,false)}};showView('form')}
 async function init(){initForm();initAdmin();$$('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));await loadMeta();if(TOKEN&&TOKEN_EXP&&Date.now()<TOKEN_EXP){try{const r=await apiPost({action:'dashboard',filters:'{}',page:1,perPage:RESP_PER_PAGE});PROFILE=r.profile;showDashboard()}catch(_){logout()}}else if(TOKEN){logout()}setInterval(()=>{if(TOKEN&&TOKEN_EXP&&Date.now()>TOKEN_EXP)logout()},30000)}
 document.addEventListener('DOMContentLoaded',init);
