@@ -71,7 +71,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     </div>
     <div class="header-tools">
       <button type="button" class="btn-ubah-pass hidden" id="ubahPassBtn" title="Ubah Password">🔑 Ubah Password</button>
-      <button type="button" class="notify-btn" id="notifyBtn" title="Notifikasi" aria-label="Notifikasi">🔔<span class="notify-count hidden" id="notifyCount">0</span></button>
+      
       <span class="conn-pill" id="connPill" title="Status koneksi"><span class="conn-dot check" id="connDot"></span><span id="connText">Menghubungkan…</span></span>
     </div>
   </div>
@@ -116,7 +116,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     </div>
 
     <form id="tracerForm" novalidate autocomplete="off">
-      <!-- STEP 1 — BAGIAN A -->
+      <!-- STEP 1 -->
       <div class="step active" data-step="1">
         <h3>Bagian A — Data Pribadi</h3>
         <div class="form-section-title">🔐 Verifikasi NIM</div>
@@ -147,7 +147,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="grid">
           <div><label for="tahunMasuk">Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2020"><span class="field-error" id="err-tahunMasuk"></span></div>
           <div><label for="tahunLulus">Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2024"><span class="field-error" id="err-tahunLulus"></span></div>
-          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="5" placeholder="contoh: 3.45" required autocomplete="off"><span class="field-error" id="err-ipk"></span><p class="field-hint">Gunakan titik atau koma sebagai desimal (contoh: <code>3.45</code> atau <code>3,45</code>).</p></div>
+          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="5" placeholder="contoh: 3.45" required autocomplete="off"><span class="field-error" id="err-ipk"></span><p class="field-hint">Gunakan titik atau koma (contoh: <code>3.45</code> atau <code>3,45</code>).</p></div>
           <div><label for="jenisKelamin">Jenis Kelamin</label><select id="jenisKelamin"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
           <div><label for="tempatLahir">Tempat Lahir</label><input id="tempatLahir" maxlength="60"></div>
           <div><label for="tanggalLahir">Tanggal Lahir</label><input id="tanggalLahir" type="date" max="2015-12-31" min="1950-01-01"><span class="field-error" id="err-tanggalLahir"></span></div>
@@ -177,22 +177,16 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><span></span><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 2 — BAGIAN B -->
+      <!-- STEP 2 -->
       <div class="step" data-step="2">
         <h3>Bagian B — Pekerjaan Saat Ini</h3>
         <div class="grid">
           <div class="full"><label for="statusPekerjaanUtama">B1. Status pekerjaan Anda saat ini <span class="req">*</span></label>
             <select id="statusPekerjaanUtama" required data-conditional="bekerja">
               <option value="">Pilih status Anda saat ini</option>
-              <option>Bekerja</option>
-              <option>Berwirausaha</option>
-              <option>Bekerja dan berwirausaha</option>
-              <option>Melanjutkan pendidikan</option>
-              <option>Bekerja sambil melanjutkan pendidikan</option>
-              <option>Berwirausaha sambil melanjutkan pendidikan</option>
-              <option>Belum bekerja dan sedang mencari pekerjaan</option>
-              <option>Belum bekerja dan tidak sedang mencari pekerjaan</option>
-              <option>Lainnya</option>
+              <option>Bekerja</option><option>Berwirausaha</option><option>Bekerja dan berwirausaha</option>
+              <option>Melanjutkan pendidikan</option><option>Bekerja sambil melanjutkan pendidikan</option><option>Berwirausaha sambil melanjutkan pendidikan</option>
+              <option>Belum bekerja dan sedang mencari pekerjaan</option><option>Belum bekerja dan tidak sedang mencari pekerjaan</option><option>Lainnya</option>
             </select>
             <span class="field-error" id="err-statusPekerjaanUtama"></span>
           </div>
@@ -236,7 +230,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 3 — BAGIAN C -->
+      <!-- STEP 3 -->
       <div class="step" data-step="3">
         <h3>Bagian C — Pengalaman Magang / PKL</h3>
         <p class="hint">Menggali efektivitas program magang sebagai bagian dari Kurikulum MBKM.</p>
@@ -258,7 +252,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 4 — BAGIAN D -->
+      <!-- STEP 4 -->
       <div class="step" data-step="4">
         <h3>Bagian D — Keterlibatan dalam Organisasi Profesi Komunikasi</h3>
         <div class="grid">
@@ -279,7 +273,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 5 — BAGIAN E -->
+      <!-- STEP 5 -->
       <div class="step" data-step="5">
         <h3>Bagian E — Prestasi Alumni</h3>
         <div class="grid">
@@ -303,14 +297,14 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 6 — BAGIAN F -->
+      <!-- STEP 6 -->
       <div class="step" data-step="6">
         <h3>Bagian F — Kompetensi dan Relevansi Kurikulum</h3>
         <div class="card" style="background:#f8fbfa">
           <ul class="tree">
-            <li><b>Penguasaan (F1)</b>1 = Sangat Rendah · 5 = Sangat Tinggi — nilai penguasaan saat lulus.</li>
-            <li><b>Kebutuhan (F2)</b>1 = Sangat Rendah · 5 = Sangat Tinggi — nilai kebutuhan di dunia kerja saat ini.</li>
-            <li><b>Metode (F3)</b>1 = Sangat Kurang · 5 = Sangat Besar — penekanan metode pembelajaran di Prodi.</li>
+            <li><b>Penguasaan (F1)</b>1 = Sangat Rendah · 5 = Sangat Tinggi.</li>
+            <li><b>Kebutuhan (F2)</b>1 = Sangat Rendah · 5 = Sangat Tinggi.</li>
+            <li><b>Metode (F3)</b>1 = Sangat Kurang · 5 = Sangat Besar.</li>
           </ul>
         </div>
         <div class="card"><h4>F1. Penguasaan Kompetensi Saat Lulus</h4><div id="kompetensiDikuasai"></div></div>
@@ -323,7 +317,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 7 — BAGIAN G -->
+      <!-- STEP 7 -->
       <div class="step" data-step="7">
         <h3>Bagian G — Studi Lanjut</h3>
         <div class="grid">
@@ -340,23 +334,23 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
             <div><label for="biayaStudiLanjut">G6. Sumber biaya studi lanjut</label><select id="biayaStudiLanjut" data-conditional="biayaStudiLanjutLain"><option value="">Pilih</option><option>Biaya sendiri/keluarga</option><option>Beasiswa</option><option>Perusahaan</option><option>Lainnya</option></select></div>
             <div id="biayaStudiLanjutLainBox" class="hidden"><label for="biayaStudiLanjutLain">Sebutkan sumber biaya <span class="req">*</span></label><input id="biayaStudiLanjutLain" maxlength="100"><span class="field-error" id="err-biayaStudiLanjutLain"></span></div>
             <div><label for="studiDukungKarier">G7. Studi lanjut mendukung karier Anda?</label><select id="studiDukungKarier"><option value="">Pilih</option><option>Sangat mendukung</option><option>Mendukung</option><option>Cukup mendukung</option><option>Kurang mendukung</option><option>Tidak mendukung</option></select></div>
-            <div class="full"><label for="alasanStudiLanjut">G8. Alasan utama melanjutkan studi</label><textarea id="alasanStudiLanjut" maxlength="500" placeholder="Contoh: meningkatkan kompetensi, syarat jabatan, passion akademik..."></textarea><span class="char-counter" data-for="alasanStudiLanjut">0 / 500</span></div>
+            <div class="full"><label for="alasanStudiLanjut">G8. Alasan utama melanjutkan studi</label><textarea id="alasanStudiLanjut" maxlength="500" placeholder="Contoh: meningkatkan kompetensi, syarat jabatan..."></textarea><span class="char-counter" data-for="alasanStudiLanjut">0 / 500</span></div>
           </div>
         </div>
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- STEP 8 — BAGIAN H -->
+      <!-- STEP 8 -->
       <div class="step" data-step="8">
         <h3>Bagian H — Umpan Balik &amp; Konfirmasi</h3>
         <div class="grid">
-          <div class="full"><label for="saranKurikulum">H1. Saran untuk pengembangan kurikulum Program Studi</label><textarea id="saranKurikulum" maxlength="2000" placeholder="Saran pengembangan kurikulum..."></textarea><span class="char-counter" data-for="saranKurikulum">0 / 2000</span></div>
-          <div class="full"><label for="kompetensiTambahan">H2. Kompetensi tambahan yang perlu ditingkatkan lulusan</label><textarea id="kompetensiTambahan" maxlength="1500" placeholder="Contoh: literasi AI, analisis data komunikasi..."></textarea><span class="char-counter" data-for="kompetensiTambahan">0 / 1500</span></div>
+          <div class="full"><label for="saranKurikulum">H1. Saran untuk pengembangan kurikulum Program Studi</label><textarea id="saranKurikulum" maxlength="2000"></textarea><span class="char-counter" data-for="saranKurikulum">0 / 2000</span></div>
+          <div class="full"><label for="kompetensiTambahan">H2. Kompetensi tambahan yang perlu ditingkatkan lulusan</label><textarea id="kompetensiTambahan" maxlength="1500"></textarea><span class="char-counter" data-for="kompetensiTambahan">0 / 1500</span></div>
           <div><label for="fasilitasiKarier">H3. Fasilitasi Prodi terhadap pengembangan karier alumni</label><select id="fasilitasiKarier"><option value="">Pilih</option><option>Sangat memadai</option><option>Memadai</option><option>Cukup memadai</option><option>Kurang memadai</option><option>Tidak memadai</option></select></div>
           <div><label for="bersediaMentor">H4. Bersedia menjadi mentor alumni junior?</label><select id="bersediaMentor"><option value="">Pilih</option><option>Ya</option><option>Tidak</option><option>Mungkin</option></select></div>
           <div><label for="bersediaLowongan">H5. Bersedia memberikan info lowongan kerja?</label><select id="bersediaLowongan"><option value="">Pilih</option><option>Ya</option><option>Tidak</option><option>Mungkin</option></select></div>
-          <div><label for="kontakProfesional">H6. Kontak profesional (LinkedIn/Email)</label><input id="kontakProfesional" maxlength="200" placeholder="linkedin.com/in/... atau email"></div>
-          <div class="full"><label for="rekomendasiAlumniIndustri">H7. Rekomendasi alumni untuk industri/instansi Anda</label><textarea id="rekomendasiAlumniIndustri" maxlength="500" placeholder="Rekomendasi atau masukan untuk pengembangan alumni FIKOM"></textarea><span class="char-counter" data-for="rekomendasiAlumniIndustri">0 / 500</span></div>
+          <div><label for="kontakProfesional">H6. Kontak profesional (LinkedIn/Email)</label><input id="kontakProfesional" maxlength="200"></div>
+          <div class="full"><label for="rekomendasiAlumniIndustri">H7. Rekomendasi alumni untuk industri/instansi Anda</label><textarea id="rekomendasiAlumniIndustri" maxlength="500"></textarea><span class="char-counter" data-for="rekomendasiAlumniIndustri">0 / 500</span></div>
           <div class="full"><label for="kesanPesan">H8. Kesan dan pesan untuk almamater</label><textarea id="kesanPesan" maxlength="2000"></textarea><span class="char-counter" data-for="kesanPesan">0 / 2000</span></div>
         </div>
         <div class="card" style="margin-top:16px">
@@ -399,12 +393,13 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
             <div class="role-item"><div class="role-icon">📘</div><div><b>Kaprodi S2</b><small>Analitik S2 Magister Ilmu Komunikasi</small></div></div>
             <div class="role-item"><div class="role-icon">🎯</div><div><b>Wadek</b><small>Analitik Fakultas (S1 + S2)</small></div></div>
             <div class="role-item"><div class="role-icon">👑</div><div><b>Dekan</b><small>Visi Strategis Fakultas &amp; Universitas</small></div></div>
+            <div class="role-item"><div class="role-icon">🎓</div><div><b>Mahasiswa</b><small>Dashboard pribadi berdasarkan NIM</small></div></div>
           </div>
         </div>
         <div class="login-form">
           <h3>Masuk ke Dashboard</h3>
           <p class="sub">Gunakan akun resmi yang diberikan admin FIKOM.</p>
-          <div class="input-group"><label for="username">Username</label><input id="username" autocomplete="username" placeholder="contoh: admin, kaprodi.s1, dekan" maxlength="64"></div>
+          <div class="input-group"><label for="username">Username</label><input id="username" autocomplete="username" placeholder="contoh: admin, kaprodi.s1" maxlength="64"></div>
           <div class="input-group"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••" maxlength="128"><button type="button" class="toggle" id="togglePass" aria-label="Tampilkan password">👁️</button></div>
           <button id="loginBtn" class="btn block">Masuk →</button>
           <p class="login-foot">🔒 Dilindungi rate-limit &amp; audit log</p>
@@ -415,7 +410,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     <div id="dashBox" class="hidden">
       <div class="role-banner" id="roleBanner">
         <div class="rb-icon" id="rbIcon">🛡️</div>
-        <div><h3 id="rbTitle">Dashboard Admin</h3><p id="rbDesc">Akses penuh ke seluruh data tracer study S1 &amp; S2.</p></div>
+        <div><h3 id="rbTitle">Dashboard Admin</h3><p id="rbDesc">Akses penuh.</p></div>
         <span class="role-scope" id="rbScope">Semua Data</span>
       </div>
       <div class="toolbar" style="justify-content:space-between;align-items:center">
@@ -456,7 +451,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       <div class="panel hidden" data-panel="responden">
         <div class="toolbar">
           <button class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
-          <button class="btn secondary sm" data-export="xlsx">⬇ Export XLSX</button>
+          <button class="btn secondary sm" data-export="xls">⬇ Export Excel</button>
           <span class="hint" id="respInfo" style="margin-left:auto"></span>
         </div>
         <div class="tablewrap"><table class="table" id="respTable"></table></div>
@@ -482,7 +477,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           <button data-scope="all" class="active">Semua</button><button data-scope="s1">Prodi S1</button><button data-scope="s2">Prodi S2</button><button data-scope="fak">Fakultas</button><button data-scope="univ">Universitas</button>
         </div>
         <div class="acc-panel"><h5>Indikator Kinerja Utama — BAN-PT No. 36/2025</h5><ul id="accListBANPT"></ul></div>
-        <div class="acc-panel"><h5>Instrumen LAMSPAK No. 5/2025 — Bidang Sosial Politik Administrasi dan Komunikasi</h5><ul id="accListLAMSPAK"></ul></div>
+        <div class="acc-panel"><h5>Instrumen LAMSPAK No. 5/2025</h5><ul id="accListLAMSPAK"></ul></div>
         <div class="acc-panel"><h5>Pelaporan PDDIKTI — tracerstudy.kemdikbud.go.id</h5><ul id="accListPDDIKTI"></ul></div>
         <div class="grid" style="margin-top:16px">
           <div class="chartbox"><h4>Relevansi Bidang Kerja per Prodi</h4><canvas id="chAccRelevansi"></canvas></div>
@@ -494,19 +489,27 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="grid" style="gap:16px">
           <div class="card">
             <h4>👥 Manajemen User</h4>
-            <div class="toolbar"><button class="btn sm" id="addUserBtn">+ Tambah User</button><button class="btn secondary sm" id="reloadUserBtn">↻ Reload</button></div>
+            <div class="toolbar">
+              <button class="btn sm" id="addUserBtn">+ Tambah User</button>
+              <button class="btn secondary sm" id="reloadUserBtn">↻ Reload</button>
+            </div>
             <div class="tablewrap"><table class="table" id="userTable"></table></div>
           </div>
           <div class="card">
             <h4>📅 Manajemen Periode</h4>
-            <div class="toolbar"><button class="btn sm" id="addPeriodeBtn">+ Tambah Periode</button><button class="btn secondary sm" id="reloadPeriodeBtn">↻ Reload</button></div>
+            <div class="toolbar">
+              <button class="btn sm" id="addPeriodeBtn">+ Tambah Periode</button>
+              <button class="btn secondary sm" id="reloadPeriodeBtn">↻ Reload</button>
+            </div>
             <div class="tablewrap"><table class="table" id="periodeTable"></table></div>
           </div>
           <div class="card">
             <h4>📥 Import Master Alumni (CSV)</h4>
             <p class="hint">Format kolom: NIM, NAMA, PROGRAM_STUDI, JENJANG, TAHUN_MASUK, TAHUN_LULUS, EMAIL, WHATSAPP</p>
             <textarea id="csvImport" maxlength="500000" placeholder="Paste CSV di sini..." style="min-height:150px;font-family:monospace;font-size:12px"></textarea>
-            <div class="toolbar" style="margin-top:10px"><button class="btn sm" id="doImportBtn">✓ Import CSV</button></div>
+            <div class="toolbar" style="margin-top:10px">
+              <button class="btn sm" id="doImportBtn">✓ Import CSV</button>
+            </div>
             <div id="importResult" class="hint"></div>
           </div>
           <div class="card">
@@ -522,1521 +525,291 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v12.3.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v13.1.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
+
 <script>
 'use strict';
-const APP_VERSION_STR = 'v12.3.0';
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
-const GAS_URL = localStorage.getItem('ts_gas_url') || DEFAULT_GAS_URL;
 
-const REQ_TIMEOUT = 60000;
-const MAX_RETRY = 2;
-const TOTAL_STEPS = 8;
-const SESSION_MAX_AGE = 30 * 60 * 1000;
-const RESP_PER_PAGE = 50;
+const APP_VERSION_STR='v13.1.0';
+const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
+const GAS_URL=localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL;
+const TOTAL_STEPS=8, RESP_PER_PAGE=50, SESSION_MAX_AGE=12*60*60*1000;
+let TOKEN=sessionStorage.getItem('ts_token')||'';
+let TOKEN_EXP=Number(sessionStorage.getItem('ts_token_exp')||0);
+let PROFILE=null,META=null,DATA=null,step=1,charts={},VERIFIED_NIM='',VERIFIED_ALUMNI=null,respPage=1,formSubmitted=false,publicNonce='';
+const $=id=>document.getElementById(id), $$=s=>document.querySelectorAll(s), val=id=>$(id)?String($(id).value||'').trim():'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeNim=v=>String(v??'').replace(/\D/g,'').trim();
+const normalizeName=v=>String(v??'').replace(/\s+/g,' ').trim();
+const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+const isPhoneID=v=>/^\d{10,15}$/.test(v);
+const isYear=v=>/^(19|20)\d{2}$/.test(v);
+const PROGRAMS=['S1 Ilmu Komunikasi','S2 Magister Ilmu Komunikasi'];
+const STATUS=['Bekerja','Berwirausaha','Bekerja dan berwirausaha','Melanjutkan pendidikan','Bekerja sambil melanjutkan pendidikan','Berwirausaha sambil melanjutkan pendidikan','Belum bekerja dan sedang mencari pekerjaan','Belum bekerja dan tidak sedang mencari pekerjaan','Lainnya'];
+const KOMPETENSI_S1=[['etikaIntegritas','Etika dan integritas profesional'],['keahlianBidang','Keahlian berdasarkan bidang ilmu komunikasi'],['komunikasiLisanTulisan','Kemampuan komunikasi lisan dan tulisan'],['teknologiDigital','Penguasaan teknologi informasi dan media digital'],['analisisKritis','Kemampuan analisis dan berpikir kritis'],['kerjaSamaTim','Kerja sama tim dan kepemimpinan'],['bahasaInggris','Bahasa Inggris profesional'],['risetKontenMedia','Kemampuan riset dan produksi konten media']];
+const KOMPETENSI_S2=[['etikaIntegritas','Etika dan integritas akademik/profesional'],['keahlianBidang','Keahlian lanjutan bidang ilmu komunikasi'],['risetKomunikasi','Kemampuan riset komunikasi'],['teoriKontemporer','Penguasaan teori komunikasi kontemporer'],['publikasiIlmiah','Kemampuan menulis ilmiah dan publikasi'],['kepemimpinanManajemen','Kepemimpinan dan manajemen komunikasi strategis'],['bahasaInggris','Bahasa Inggris akademik/profesional'],['analisisKebijakan','Analisis kebijakan dan regulasi media'],['komunikasiLisanTulisan','Kemampuan komunikasi lisan dan tulisan'],['teknologiDigital','Penguasaan teknologi informasi dan media digital']];
+const METODE_S1=[['kuliahTatapMuka','Perkuliahan tatap muka'],['praktikumLab','Praktikum/laboratorium media'],['magangPkl','Magang/PKL'],['projectBased','Pembelajaran berbasis proyek'],['diskusiPresentasi','Diskusi dan presentasi'],['daringBlended','Pembelajaran daring/blended learning']];
+const METODE_S2=[['kuliahTatapMuka','Perkuliahan tatap muka'],['seminarLokakarya','Seminar dan lokakarya'],['penelitianMandiri','Penelitian mandiri/tesis'],['studiKasus','Studi kasus dan analisis kritis'],['publikasiIlmiah','Publikasi ilmiah'],['daringBlended','Pembelajaran daring/blended learning'],['magangProfesional','Magang/praktik profesional']];
+const ORGANISASI_PROFESI=['PRINDONESIA','PWI (Persatuan Wartawan Indonesia)','IJTI (Ikatan Jurnalis Televisi Indonesia)','AMSI (Asosiasi Media Siber Indonesia)','ASPIKOM (Asosiasi Pendidikan Ilmu Komunikasi)','Perhumas (Perhimpunan Hubungan Masyarakat Indonesia)','P3I (Perhimpunan Perusahaan Periklanan Indonesia)','Lainnya'];
+const JENIS_PRESTASI=['Juara kompetisi karya jurnalistik','Juara kompetisi periklanan/kreatif','Juara kompetisi PR/komunikasi strategis','Penghargaan profesional','Publikasi ilmiah','Prestasi akademik (cumlaude, dll.)','Lainnya'];
 
-const RATE_CFG = {
-  login:     { max: 5,  win: 5 * 60 * 1000 },
-  submit:    { max: 3,  win: 60 * 1000 },
-  checknim:  { max: 8,  win: 5 * 60 * 1000 },
-  dashboard: { max: 30, win: 60 * 1000 },
-  export:    { max: 5,  win: 5 * 60 * 1000 },
-  lookup:    { max: 20, win: 60 * 1000 },
-  meta:      { max: 10, win: 60 * 1000 },
-  health:    { max: 10, win: 60 * 1000 },
-  default:   { max: 20, win: 60 * 1000 }
-};
+function toast(t,k='info'){const w=$('toastWrap');if(!w)return;const e=document.createElement('div');e.className='toast '+k;e.textContent=String(t).slice(0,400);w.appendChild(e);setTimeout(()=>e.remove(),4500)}
+function msg(id,t,ok){const e=$(id);if(!e)return;e.textContent=t||'';e.className='status '+(ok===true?'ok':ok==='info'?'info':'err');e.style.display=t?'block':'none'}
+function setFieldError(id,t){const e=$('err-'+id),i=$(id);if(e){e.textContent=t||'';e.classList.toggle('show',!!t)}if(i)i.classList.toggle('err',!!t)}
+function clearErrors(){$$('.field-error').forEach(e=>{e.textContent='';e.classList.remove('show')});$$('.err').forEach(e=>e.classList.remove('err'))}
+function fail(id,t){setFieldError(id,t);$(id)?.scrollIntoView({behavior:'smooth',block:'center'});return false}
+function expectedNimLevel(n){n=normalizeNim(n);if(!/^\d{9}$/.test(n))return'';return n.slice(4,6)==='41'?'S1':n.slice(4,6)==='03'?'S2':''}
+function getProgramLevel(v){v=String(v||'').toLowerCase();return v.includes('s2')||v.includes('magister')?'S2':v.includes('s1')?'S1':''}
+function getCurrentYear(){return new Date().getFullYear()}
+function checkedValues(id){return [...document.querySelectorAll(`input[name="${id}_item"]:checked`)].map(e=>e.value)}
+function radioGroup(target,key){const e=document.querySelector(`input[name="${target}_${key}"]:checked`);return e?e.value:''}
+function buildChecks(id,a){const e=$(id);if(e)e.innerHTML=(a||[]).map(x=>`<label class="check-item"><input type="checkbox" name="${id}_item" value="${esc(x)}"><span>${esc(x)}</span></label>`).join('')}
+function buildRatings(target,list){const e=$(target);if(!e)return;e.innerHTML=list.map(([k,l])=>`<div style="margin:0 0 13px"><label>${esc(l)} <span class="req">*</span></label><div class="radio-grid">${[1,2,3,4,5].map(n=>`<label class="radio"><input type="radio" name="${target}_${k}" value="${n}"> ${n}</label>`).join('')}</div></div>`).join('')}
+function currentKompetensiList(){return getProgramLevel(val('programStudi'))==='S2'?KOMPETENSI_S2:KOMPETENSI_S1}
+function currentMetodeList(){return getProgramLevel(val('programStudi'))==='S2'?METODE_S2:METODE_S1}
+function rebuildRatingsForLevel(){buildRatings('kompetensiDikuasai',currentKompetensiList());buildRatings('kompetensiDibutuhkan',currentKompetensiList());buildRatings('metodePembelajaran',currentMetodeList())}
+function populateProgramFields(){
+  const p=$('programStudi'),j=$('jenjang'); if(!p||!j)return;
+  p.innerHTML='<option value="">Pilih</option>'+PROGRAMS.map(x=>`<option>${esc(x)}</option>`).join('');
+  j.innerHTML='<option value="">Pilih</option><option>S1</option><option>S2</option>';
+}
+function updateLevelBanner(){
+  const l=getProgramLevel(val('programStudi')),b=$('levelBanner');if(!b)return;
+  b.classList.toggle('show',!!l);b.classList.toggle('s1',l==='S1');b.classList.toggle('s2',l==='S2');
+  $('levelBadge').textContent=l||'—';$('levelTitle').textContent=l==='S2'?'📘 Program Studi S2 Magister Ilmu Komunikasi':'📗 Program Studi S1 Ilmu Komunikasi';
+  $('levelDesc').innerHTML=l==='S2'?'NIM penanda <code>03</code> · tugas akhir <b>tesis</b>.':'NIM penanda <code>41</code> · tugas akhir <b>skripsi</b>.';
+  $('levelHint').textContent=VERIFIED_NIM?'✓ NIM '+VERIFIED_NIM:'Menunggu verifikasi NIM';
+}
+function showLevelGroup(){const l=getProgramLevel(val('programStudi'));$('groupS1')?.classList.toggle('hidden',l!=='S1');$('groupS2')?.classList.toggle('hidden',l!=='S2');if($('judulSkripsi'))$('judulSkripsi').required=l==='S1';if($('judulTesis'))$('judulTesis').required=l==='S2';}
+function clearNimVerification(){
+  VERIFIED_NIM='';VERIFIED_ALUMNI=null;
+  ['nama','programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).value=''});
+  if($('programStudi'))$('programStudi').disabled=true;if($('jenjang'))$('jenjang').disabled=true;
+  if($('nama'))$('nama').readOnly=true;updateLevelBanner();showLevelGroup();
+}
+function applyVerifiedAlumni(r,n){
+  VERIFIED_NIM=n;VERIFIED_ALUMNI=r;
+  $('nama').value=r.nama||'';$('nama').dataset.masterNim=n;
+  ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).value=r[k]||''});
+  if(r.email&&!val('email'))$('email').value=r.email;if(r.whatsapp&&!val('whatsapp'))$('whatsapp').value=r.whatsapp;
+  ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).disabled=true});$('nama').readOnly=true;
+  $('nimTypeInfo').className='nim-type '+(r.jenjang==='S2'?'s2':'');$('nimTypeInfo').textContent='✓ NIM terverifikasi · '+r.jenjang;
+  updateLevelBanner();showLevelGroup();rebuildRatingsForLevel();
+}
+function setOnline(ok){$('connDot')?.classList.toggle('ok',ok);$('connDot')?.classList.toggle('err',!ok);$('connDot')?.classList.remove('check');$('connText').textContent=ok?'Online':'Offline'}
 
-const VALID_STATUS_PEKERJAAN = [
-  'Bekerja','Berwirausaha','Bekerja dan berwirausaha','Melanjutkan pendidikan',
-  'Bekerja sambil melanjutkan pendidikan','Berwirausaha sambil melanjutkan pendidikan',
-  'Belum bekerja dan sedang mencari pekerjaan','Belum bekerja dan tidak sedang mencari pekerjaan','Lainnya'
-];
-
-let TOKEN = sessionStorage.getItem('ts_token') || '';
-let TOKEN_EXP = Number(sessionStorage.getItem('ts_token_exp') || 0);
-let PROFILE = null, META = null, DATA = null;
-let step = 1, charts = {}, online = false;
-let VERIFIED_NIM = '', VERIFIED_ALUMNI = null;
-let NOTIFICATIONS = [];
-let dashboardReqId = 0, nimInputTimer = null;
-let accScope = 'all';
-let respPage = 1;
-let formSubmitted = false;
-
-const $ = id => document.getElementById(id);
-const $$ = sel => document.querySelectorAll(sel);
-const val = id => ($(id) ? String($(id).value || '').trim() : '');
-const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const setHtml = (id, h) => { const e = $(id); if (e) e.innerHTML = h; };
-const normalizeName = v => String(v || '').replace(/\s+/g, ' ').trim();
-const normalizeNim = v => String(v == null ? '' : v).replace(/\D/g, '').trim();
-const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-const isPhoneID = v => /^\d{10,15}$/.test(v);
-const isYear = v => /^(19|20)\d{2}$/.test(v);
-const clampStr = (v, n) => String(v || '').slice(0, n);
-const getCurrentYear = () => new Date().getFullYear();
-
-function isValidFullName(v) {
-  const n = normalizeName(v);
-  if (n.length < 3 || n.length > 120) return false;
-  if (/\d/.test(n)) return false;
-  if (/[^A-Za-zÀ-ÖØ-öø-ÿ' .-]/.test(n)) return false;
+async function apiPost(data){
+  const p={...data,action:String(data.action||'')};
+  if(!p.action)throw Error('Parameter action wajib dikirim pada POST.');
+  if(TOKEN)p.token=TOKEN;
+  const r=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),cache:'no-store'});
+  const j=await r.json().catch(()=>({ok:false,error:'Respons server bukan JSON.'}));
+  if(!r.ok||j.ok===false)throw Error(j.error||'Permintaan gagal.');
+  return j;
+}
+async function apiGet(params){
+  const q=new URLSearchParams({...params,action:String(params.action||'')});
+  if(!q.get('action'))throw Error('Parameter action wajib dikirim.');
+  const r=await fetch(GAS_URL+'?'+q,{cache:'no-store'});
+  const j=await r.json().catch(()=>({ok:false,error:'Respons server bukan JSON.'}));
+  if(!r.ok||j.ok===false)throw Error(j.error||'Permintaan gagal.');
+  return j;
+}
+async function loadMeta(){
+  META=await apiGet({action:'meta'});
+  publicNonce=META.publicNonce||'';
+  const pi=META.periodeAktif;
+  msg('periodeInfo',pi?`Periode aktif: ${pi.nama} · rentang lulusan ${pi.tahunMin||'-'}–${pi.tahunMax||'-'}`:'Periode Tracer Study sedang ditutup.',!!pi);
+  if($('fPeriode'))$('fPeriode').innerHTML='<option value="">Semua</option>'+((META.periodeList||[]).map(x=>`<option value="${esc(x.periodeId)}">${esc(x.nama)}</option>`).join(''));
+  if($('fProdi'))$('fProdi').innerHTML='<option value="">Semua</option>'+PROGRAMS.map(x=>`<option>${esc(x)}</option>`).join('');
+  const years=new Set();(META.periodeList||[]).forEach(p=>{for(let y=Number(p.tahunMin);y<=Number(p.tahunMax);y++)if(y>1900&&y<2200)years.add(y)});
+  if($('fTahun'))$('fTahun').innerHTML='<option value="">Semua</option>'+[...years].sort((a,b)=>b-a).map(y=>`<option>${y}</option>`).join('');
+}
+function collectForm(){
+  const o={};$('tracerForm').querySelectorAll('input,select,textarea').forEach(e=>{
+    if(!e.id||e.disabled||e.type==='radio'||e.type==='checkbox')return;o[e.id]=e.value;
+  });
+  o.organisasiProfesi=checkedValues('organisasiProfesi');o.jenisPrestasi=checkedValues('jenisPrestasi');
+  o.kompetensiDikuasai={};o.kompetensiDibutuhkan={};o.metodePembelajaran={};
+  currentKompetensiList().forEach(([k])=>{o.kompetensiDikuasai[k]=radioGroup('kompetensiDikuasai',k);o.kompetensiDibutuhkan[k]=radioGroup('kompetensiDibutuhkan',k)});
+  currentMetodeList().forEach(([k])=>o.metodePembelajaran[k]=radioGroup('metodePembelajaran',k));
+  o.consentData=$('consentData')?.checked===true;o.consentContact=$('consentContact')?.checked===true;
+  o.level=getProgramLevel(o.programStudi);o._v=APP_VERSION_STR;return o;
+}
+function validateStep(n){
+  clearErrors();
+  if(n===1){
+    if(!/^\d{9}$/.test(VERIFIED_NIM))return fail('nim','Verifikasi NIM terlebih dahulu.');
+    if(getProgramLevel(val('programStudi'))!==expectedNimLevel(VERIFIED_NIM))return fail('programStudi','Program studi tidak sesuai pola NIM.');
+    if(!isYear(val('tahunMasuk')))return fail('tahunMasuk','Tahun masuk harus 4 digit.');
+    if(!isYear(val('tahunLulus')))return fail('tahunLulus','Tahun lulus harus 4 digit.');
+    if(Number(val('tahunLulus'))<Number(val('tahunMasuk')))return fail('tahunLulus','Tahun lulus tidak boleh sebelum tahun masuk.');
+    const ip=Number(val('ipk').replace(',','.'));if(!Number.isFinite(ip)||ip<0||ip>4)return fail('ipk','IPK harus 0.00–4.00.');
+    if(!isEmail(val('email')))return fail('email','Email tidak valid.');if(!isPhoneID(val('whatsapp')))return fail('whatsapp','WhatsApp harus 10–15 digit.');
+    const l=getProgramLevel(val('programStudi'));
+    if(l==='S1'){if(!val('judulSkripsi'))return fail('judulSkripsi','Judul skripsi wajib diisi.');if(!val('konsentrasiS1'))return fail('konsentrasiS1','Konsentrasi S1 wajib dipilih.');if(val('konsentrasiS1')==='Lainnya'&&!val('konsentrasiS1Lain'))return fail('konsentrasiS1Lain','Konsentrasi lainnya wajib diisi.')}
+    if(l==='S2'){if(!val('judulTesis'))return fail('judulTesis','Judul tesis wajib diisi.');if(!val('konsentrasiS2'))return fail('konsentrasiS2','Konsentrasi S2 wajib dipilih.');if(val('konsentrasiS2')==='Lainnya'&&!val('konsentrasiS2Lain'))return fail('konsentrasiS2Lain','Konsentrasi lainnya wajib diisi.')}
+  }
+  if(n===2){
+    const s=val('statusPekerjaanUtama');if(!s||!STATUS.includes(s))return fail('statusPekerjaanUtama','Status pekerjaan wajib dipilih.');
+    if(s==='Lainnya'&&!val('statusPekerjaanLain'))return fail('statusPekerjaanLain','Jelaskan status pekerjaan.');
+    const work=['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(s),biz=['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(s);
+    if(work){for(const k of ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.');if(val('bidangIndustri')==='Lainnya'&&!val('bidangIndustriLain'))return fail('bidangIndustriLain','Sebutkan bidang industri.');if(val('caraDapatKerja')==='Lainnya'&&!val('caraDapatKerjaLain'))return fail('caraDapatKerjaLain','Sebutkan cara mendapatkan pekerjaan.')}
+    if(biz&&!val('namaUsaha'))return fail('namaUsaha','Nama usaha wajib diisi untuk status wirausaha.');
+  }
+  if(n===3&&!val('ikutMagang'))return fail('ikutMagang','Pilih Ya/Tidak.');
+  if(n===3&&val('ikutMagang')==='Ya'){for(const k of ['kontribusiMagang','magangBantuKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.')}
+  if(n===4&&!val('ikutOrganisasi'))return fail('ikutOrganisasi','Pilih Ya/Tidak.');
+  if(n===4&&val('ikutOrganisasi')==='Ya'&&checkedValues('organisasiProfesi').length===0)return fail('organisasiProfesi','Pilih minimal satu organisasi profesi.');
+  if(n===4&&checkedValues('organisasiProfesi').includes('Lainnya')&&!val('organisasiProfesiLain'))return fail('organisasiProfesiLain','Sebutkan organisasi lainnya.');
+  if(n===5&&!val('punyaPrestasi'))return fail('punyaPrestasi','Pilih Ya/Tidak.');
+  if(n===5&&val('punyaPrestasi')==='Ya'&&checkedValues('jenisPrestasi').length===0)return fail('jenisPrestasi','Pilih minimal satu jenis prestasi.');
+  if(n===5&&checkedValues('jenisPrestasi').includes('Lainnya')&&!val('jenisPrestasiLain'))return fail('jenisPrestasiLain','Sebutkan jenis prestasi lainnya.');
+  if(n===6){
+    for(const [k] of currentKompetensiList())if(!radioGroup('kompetensiDikuasai',k)||!radioGroup('kompetensiDibutuhkan',k))return toast('Lengkapi seluruh penilaian F1–F2.','err'),false;
+    for(const [k] of currentMetodeList())if(!radioGroup('metodePembelajaran',k))return toast('Lengkapi seluruh penilaian F3.','err'),false;
+    for(const k of ['hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.');
+  }
+  if(n===7){if(!val('melanjutkanStudi'))return fail('melanjutkanStudi','Pilih Ya/Tidak.');if(val('melanjutkanStudi')==='Ya'){if(!val('jenjangStudiLanjut'))return fail('jenjangStudiLanjut','Jenjang studi lanjut wajib dipilih.');if(val('jenjangStudiLanjut')==='Lainnya'&&!val('jenjangStudiLanjutLain'))return fail('jenjangStudiLanjutLain','Sebutkan jenjang studi lanjut.');if(val('biayaStudiLanjut')==='Lainnya'&&!val('biayaStudiLanjutLain'))return fail('biayaStudiLanjutLain','Sebutkan sumber biaya.');}}
+  if(n===8&&!$('consentData').checked)return fail('consentData','Persetujuan data wajib dicentang.');
   return true;
 }
-function expectedNimLevel(nim) {
-  const n = normalizeNim(nim);
-  if (!/^\d{9}$/.test(n)) return '';
-  if (Number(n.slice(6, 9)) < 1) return '';
-  const m = n.slice(4, 6);
-  if (m === '41') return 'S1';
-  if (m === '03') return 'S2';
-  return '';
+function updateSteps(){
+  $$('.step').forEach(e=>e.classList.toggle('active',Number(e.dataset.step)===step));
+  $$('#stepIndicator button').forEach((e,i)=>{e.classList.toggle('active',i+1===step);e.classList.toggle('done',i+1<step)});
+  $('bar').style.width=(step/TOTAL_STEPS*100)+'%';if(step===8)renderSummary();scrollTo({top:0,behavior:'smooth'});
 }
-function getProgramLevel(v) {
-  const p = String(v || '').toLowerCase().replace(/\s+/g, ' ').trim();
-  if (/\bs2\b/.test(p) || p.includes('magister')) return 'S2';
-  if (/\bs1\b/.test(p)) return 'S1';
-  return '';
+function renderSummary(){const d=collectForm();$('summaryBox').innerHTML='<h4>Ringkasan data yang akan dikirim</h4><div class="tablewrap"><table class="table">'+Object.entries(d).filter(([k,v])=>v!==''&&v!=null&&typeof v!=='object').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')+'</table></div>'}
+async function submitTracer(){
+  if(formSubmitted||!publicNonce)return;if(!validateStep(8))return;formSubmitted=true;
+  const b=document.querySelector('#tracerForm button[type=submit]');if(b)b.disabled=true;
+  try{
+    const payload=collectForm();
+    const r=await apiPost({action:'submit',formData:JSON.stringify(payload),publicNonce, _ts:Date.now()});
+    toast('Tracer Study berhasil disimpan.','ok');msg('formStatus',`Berhasil. Tracer ID: ${r.tracerId}`,true);
+    $('trackingId').value=r.tracerId;sessionStorage.setItem('last_tracer_id',r.tracerId);formSubmitted=true;
+  }catch(e){formSubmitted=false;if(b)b.disabled=false;toast(e.message,'err');try{await loadMeta()}catch(_){}}
 }
-function badgeJenjang(level) {
-  const l = (level || '').toUpperCase();
-  if (l === 'S1') return '<span class="badge s1">S1</span>';
-  if (l === 'S2') return '<span class="badge s2">S2</span>';
-  return `<span class="badge">${esc(level || '-')}</span>`;
+function roleInfo(profile){
+  const r=String(profile?.role||'').toUpperCase();
+  if(r==='ADMIN')return ['🛡️','Dashboard Admin','Akses penuh sistem','Semua Data','admin'];
+  if(r==='KAPRODI_S1'||(r==='KAPRODI'&&getProgramLevel(profile.programStudi)==='S1'))return ['📗','Dashboard Kaprodi S1','Analitik dan data S1','S1','kaprodi-s1'];
+  if(r==='KAPRODI_S2'||(r==='KAPRODI'&&getProgramLevel(profile.programStudi)==='S2'))return ['📘','Dashboard Kaprodi S2','Analitik dan data S2','S2','kaprodi-s2'];
+  if(r==='WADEK')return ['🎯','Dashboard Wakil Dekan','Monitoring fakultas','Fakultas','wadek'];
+  if(r==='DEKAN')return ['👑','Dashboard Dekan','Ringkasan strategis','Fakultas + Universitas','dekan'];
+  if(r==='MAHASISWA')return ['🎓','Dashboard Mahasiswa','Profil dan status tracer','Pribadi','mahasiswa'];
+  return ['👤','Dashboard','Akses terbatas','Terbatas',''];
 }
-function toast(text, kind = 'info') {
-  const wrap = $('toastWrap'); if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = 'toast ' + kind;
-  el.textContent = String(text).slice(0, 300);
-  wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transition = '.3s'; }, 3500);
-  setTimeout(() => el.remove(), 3900);
+function isStaff(){return ['ADMIN','KAPRODI_S1','KAPRODI_S2','KAPRODI','WADEK','DEKAN'].includes(String(PROFILE?.role||'').toUpperCase())}
+function showDashboard(){
+  $('ubahPassBtn')?.classList.remove('hidden');
+  const m=roleInfo(PROFILE);$('loginBox').classList.add('hidden');$('dashBox').classList.remove('hidden');
+  $('rbIcon').textContent=m[0];$('rbTitle').textContent=m[1];$('rbDesc').textContent=m[2];$('rbScope').textContent=m[3];
+  $('profileBadge').textContent=PROFILE.username+' · '+m[1].replace('Dashboard ','');
+  $('profileBadge').className='role-badge badge role-'+m[4];
+  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',String(PROFILE.role).toUpperCase()!=='ADMIN'));
+  $$('.staff-only').forEach(e=>e.classList.toggle('hidden',!isStaff()));
+  if(!isStaff()){$('.filters')?.classList.add('hidden');$$('[data-export]').forEach(e=>e.classList.add('hidden'));$('adminTabs')?.classList.add('hidden');}
+  else{$('.filters')?.classList.remove('hidden');$('adminTabs')?.classList.remove('hidden');}
+  loadDashboard();
 }
-function addNotification(title, message) {
-  NOTIFICATIONS.unshift({ title: String(title).slice(0, 80), message: String(message).slice(0, 160), time: new Date() });
-  NOTIFICATIONS = NOTIFICATIONS.slice(0, 20);
-  const e = $('notifyCount');
-  if (e) { e.textContent = Math.min(NOTIFICATIONS.length, 99); e.classList.toggle('hidden', NOTIFICATIONS.length === 0); }
+async function login(){
+  const u=val('username'),p=val('password');if(!u||!p)return toast('Username dan password wajib diisi.','err');
+  try{const r=await apiPost({action:'login',username:u,password:p,ua:navigator.userAgent.slice(0,200)});TOKEN=r.token;TOKEN_EXP=Date.now()+SESSION_MAX_AGE;PROFILE=r.profile;sessionStorage.setItem('ts_token',TOKEN);sessionStorage.setItem('ts_token_exp',String(TOKEN_EXP));showDashboard();toast('Login berhasil.','ok');if(r.profile?.mustChangePassword)setTimeout(()=>{toast('Password awal/yang direset wajib diganti.','info');changePasswordModal()},250)}
+  catch(e){toast(e.message,'err')}
 }
-function openNotifications() {
-  document.querySelector('.notify-panel')?.remove();
-  const p = document.createElement('div');
-  p.className = 'notify-panel';
-  p.innerHTML = `<div class="notify-head"><span>🔔 Notifikasi</span><button type="button" class="btn secondary sm" id="clearNotifications">Bersihkan</button></div>
-    ${NOTIFICATIONS.length ? NOTIFICATIONS.map(n => `<div class="notify-item"><b>${esc(n.title)}</b><span>${esc(n.message)}</span></div>`).join('') : '<div class="notify-empty">Belum ada notifikasi.</div>'}`;
-  document.body.appendChild(p);
-  $('clearNotifications')?.addEventListener('click', () => { NOTIFICATIONS = []; const e=$('notifyCount'); if(e){e.textContent=0;e.classList.add('hidden');} p.remove(); });
+async function loadDashboard(){
+  if(!TOKEN||Date.now()>TOKEN_EXP)return logout();
+  try{
+    const filters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};
+    const r=await apiPost({action:'dashboard',filters:JSON.stringify(filters),page:respPage,perPage:RESP_PER_PAGE});
+    DATA=r;renderDashboard(r);setOnline(true);
+  }catch(e){toast(e.message,'err');if(/sesi|akses/i.test(e.message))logout()}
 }
-function msg(id, text, ok) {
-  const e = $(id); if (!e) return;
-  e.textContent = text || '';
-  e.className = 'status ' + (ok === true ? 'ok' : ok === 'info' ? 'info' : 'err');
-  e.style.display = '';
+function destroyCharts(){Object.values(charts).forEach(c=>{try{c.destroy()}catch(_){}});charts={}}
+function chart(id,type,labels,data){
+  const c=$(id);if(!c||typeof Chart==='undefined')return;charts[id]=new Chart(c,{type,data:{labels,datasets:[{label:'Jumlah',data}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:type==='doughnut'}}}});
 }
-function clearMsg(id) { const e = $(id); if (e) { e.textContent = ''; e.className = 'status'; } }
-function setFieldError(id, text) {
-  const e = $('err-' + id);
-  if (e) { e.textContent = text || ''; e.classList.toggle('show', !!text); }
-  const inp = $(id);
-  if (inp) inp.classList.toggle('err', !!text);
+function countsToPair(o){o=o||{};const e=Object.entries(o);return {labels:e.map(x=>x[0]),data:e.map(x=>x[1])}}
+function renderDashboard(r){
+  const s=r.summary||{};$('kpiBox').innerHTML=[['Total Respons',s.total||0],['Master Alumni',s.totalMaster||0],['Belum Mengisi',s.belumMengisi||0],['Response Rate',(s.responseRate||0)+'%'],['Bekerja',s.bekerja||0],['Wirausaha',s.wirausaha||0],['Studi Lanjut',s.studi||0],['Organisasi',s.organisasi||0]].map(x=>`<div><b>${esc(x[1])}</b><span>${esc(x[0])}</span></div>`).join('');
+  destroyCharts();let c=r.charts||{},p;
+  p=countsToPair(c.statusCounts);chart('chStatus','doughnut',p.labels,p.data);p=countsToPair(c.yearCounts);chart('chTahun','bar',p.labels,p.data);p=countsToPair(c.programCounts);chart('chProdi','doughnut',p.labels,p.data);p=countsToPair(c.kesesuaianCounts);chart('chKesesuaian','bar',p.labels,p.data);
+  p=countsToPair(c.kompetensiDikuasaiAvg);chart('chKompetensi','bar',p.labels,p.data);p=countsToPair(c.kompetensiDibutuhkanAvg);chart('chKebutuhan','bar',p.labels,p.data);p=countsToPair(c.masaTungguBuckets);chart('chMasaTunggu','bar',p.labels,p.data);p=countsToPair(c.bidangCounts);chart('chBidang','bar',p.labels,p.data);p=countsToPair(c.organisasiCounts);chart('chOrganisasi','doughnut',p.labels,p.data);p=countsToPair(c.prestasiCounts);chart('chPrestasi','doughnut',p.labels,p.data);p=countsToPair(c.sistemKerjaCounts);chart('chSistemKerja','bar',p.labels,p.data);p=countsToPair(c.jenisPekerjaanCounts);chart('chJenisPekerjaan','bar',p.labels,p.data);
+  const recent=r.recent||[];$('recentTable').innerHTML='<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Status</th></tr>'+recent.map(x=>`<tr data-id="${esc(x.tracerId)}"><td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.status)}</td></tr>`).join('');
+  const items=r.items||[];$('respTable').innerHTML='<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Tahun Lulus</th><th>Status</th></tr>'+items.map(x=>`<tr data-id="${esc(x.tracerId)}"><td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.tahunLulus)}</td><td>${esc(x.status)}</td></tr>`).join('');
+  $('respInfo').textContent=`${r.pagination?.total||items.length} data · halaman ${r.pagination?.page||1}/${r.pagination?.totalPages||1}`;renderPagination(r.pagination);renderSaran(r.saranList||[]);renderAccreditation(r);
+  if(String(PROFILE?.role).toUpperCase()==='ADMIN'){renderUsers(r.users||[]);renderPeriode(r.periode||[]);renderAudit(r.audit||[])}
+  $$('#recentTable tr[data-id],#respTable tr[data-id]').forEach(e=>e.onclick=()=>showDetail(e.dataset.id));
 }
-function clearAllFieldErrors() {
-  $$('.field-error').forEach(e => { e.textContent = ''; e.classList.remove('show'); });
-  $$('input.err,select.err,textarea.err').forEach(e => e.classList.remove('err'));
+function renderPagination(p){const e=$('respPagination');if(!e||!p)return;e.innerHTML=`<button ${p.page<=1?'disabled':''} id="prevPage">←</button><span class="page-info">${p.page} / ${p.totalPages}</span><button ${p.page>=p.totalPages?'disabled':''} id="nextPage">→</button>`;$('prevPage')?.addEventListener('click',()=>{respPage--;loadDashboard()});$('nextPage')?.addEventListener('click',()=>{respPage++;loadDashboard()})}
+function renderSaran(a){$('saranList').innerHTML=a.length?a.map(x=>`<div class="acc-panel"><b>${esc(x.nama)}</b> · ${esc(x.programStudi)} · ${esc(x.tahunLulus)}<p>${esc(x.saran)}</p></div>`).join(''):'Belum ada masukan.'}
+function renderAccreditation(r){
+  const s=r.summary||{},c=r.charts||{};$('accListBANPT').innerHTML=[`Total respons: <b>${s.total||0}</b>`,`Response rate master alumni: <b>${s.responseRate||0}%</b>`,`Relevansi pekerjaan dianalisis melalui indikator kesesuaian dan hubungan bidang.`].map(x=>`<li>${x}</li>`).join('');
+  $('accListLAMSPAK').innerHTML=[`S1: <b>${s.s1||0}</b> respons`,`S2: <b>${s.s2||0}</b> respons`,`Kompetensi F1–F3 dan metode pembelajaran tersedia dalam analitik.`].map(x=>`<li>${x}</li>`).join('');
+  $('accListPDDIKTI').innerHTML=[`NIM, program studi, tahun lulus dan status pekerjaan tersedia dalam data tracer.`,`Tracer ID menjadi referensi penelusuran respons.`].map(x=>`<li>${x}</li>`).join('');
+  let p=countsToPair(c.relevansiCounts);chart('chAccRelevansi','bar',p.labels,p.data);p=countsToPair(c.masaTungguBuckets);chart('chAccMasaTunggu','bar',p.labels,p.data);
 }
-
-const RateLimiter = (() => {
-  const buckets = new Map();
-  function hit(key, max, windowMs) {
-    const now = Date.now();
-    const arr = (buckets.get(key) || []).filter(t => now - t < windowMs);
-    if (arr.length >= max) return { ok: false, retry: windowMs - (now - arr[0]) };
-    arr.push(now);
-    buckets.set(key, arr);
-    return { ok: true };
-  }
-  return { hit };
-})();
-
-function makeCsrfToken() {
-  const arr = new Uint8Array(24);
-  if (crypto && crypto.getRandomValues) crypto.getRandomValues(arr);
-  else for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
-  return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+async function showDetail(id){try{const r=await apiPost({action:'detail',tracerId:id});const x=r.item||{};openModal('Detail Respons',`<div class="tablewrap"><table class="table">${Object.entries(x).filter(([k,v])=>k!=='KOMPETENSI'&&v!=='').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table></div>`)}catch(e){toast(e.message,'err')}}
+async function exportData(format){try{const filters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};const r=await apiPost({action:'export',format,filters:JSON.stringify(filters)});const bin=atob(r.base64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([u],{type:r.mime}));a.download=r.filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Export berhasil.','ok')}catch(e){toast(e.message,'err')}}
+function openModal(title,body,actions=''){const root=$('modalRoot');root.innerHTML=`<div class="modal"><div class="box"><h3>${esc(title)} <button type="button" class="btn secondary sm" id="closeModal">Tutup</button></h3>${body}${actions}</div></div>`;$('closeModal').onclick=()=>root.innerHTML=''}
+function closeModal(){if($('modalRoot'))$('modalRoot').innerHTML=''}
+function renderUsers(users){
+  const e=$('userTable');if(!e)return;e.innerHTML='<tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th><th>Last Login</th><th>Aksi</th></tr>'+users.map(u=>`<tr><td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${esc(u.role)}</td><td>${esc(u.programStudi||'-')}</td><td>${u.aktif?'Ya':'Tidak'}</td><td>${esc(u.lastLogin||'-')}</td><td><button class="btn sm secondary" data-reset-user="${esc(u.username)}">Reset</button></td></tr>`).join('');$$('[data-reset-user]').forEach(b=>b.onclick=()=>resetPassword(b.dataset.resetUser))}
+function renderPeriode(a){const e=$('periodeTable');if(!e)return;e.innerHTML='<tr><th>ID</th><th>Nama</th><th>Status</th><th>Rentang</th><th>Buka</th><th>Tutup</th></tr>'+a.map(p=>`<tr><td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td><td>${esc(p.status)}</td><td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td><td>${esc(p.tglBuka||'-')}</td><td>${esc(p.tglTutup||'-')}</td></tr>`).join('')}
+function renderAudit(a){const e=$('auditTable');if(!e)return;e.innerHTML='<tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Ref</th><th>Detail</th></tr>'+a.map(x=>`<tr><td>${esc(x.timestamp)}</td><td>${esc(x.actor)}</td><td>${esc(x.action)}</td><td>${esc(x.ref)}</td><td>${esc(x.detail)}</td></tr>`).join('')}
+function userModal(u={}){
+  const roles=['ADMIN','KAPRODI_S1','KAPRODI_S2','WADEK','DEKAN','MAHASISWA'];
+  openModal(u.username?'Edit User':'Tambah User',`<div class="grid">
+  <div><label>Username</label><input id="mUser" value="${esc(u.username||'')}" ${u.username?'readonly':''}></div>
+  <div><label>Nama</label><input id="mNama" value="${esc(u.nama||'')}"></div>
+  <div><label>Role</label><select id="mRole">${roles.map(x=>`<option ${x===(u.role||'')?'selected':''}>${x}</option>`).join('')}</select></div>
+  <div><label>Program Studi</label><select id="mProdi"><option value="">—</option>${PROGRAMS.map(x=>`<option ${x===(u.programStudi||'')?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
+  <div><label>Password ${u.username?'(kosong = tetap)':''}</label><input id="mPwd" type="password" minlength="8"></div>
+  <div><label>Aktif</label><select id="mAktif"><option value="true" ${u.aktif!==false?'selected':''}>Ya</option><option value="false" ${u.aktif===false?'selected':''}>Tidak</option></select></div>
+  </div><div class="actions" style="margin-top:16px"><button class="btn" id="saveUser">Simpan</button></div>`);
+  $('saveUser').onclick=async()=>{try{await apiPost({action:'usersave',payload:JSON.stringify({username:val('mUser'),nama:val('mNama'),role:val('mRole'),programStudi:val('mProdi'),password:val('mPwd'),aktif:val('mAktif')})});closeModal();toast('User tersimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
 }
-let CSRF_TOKEN = sessionStorage.getItem('ts_csrf') || '';
-if (!CSRF_TOKEN) { CSRF_TOKEN = makeCsrfToken(); sessionStorage.setItem('ts_csrf', CSRF_TOKEN); }
-
-async function hmacSign(payload, key) {
-  try {
-    if (!crypto || !crypto.subtle) return '';
-    const enc = new TextEncoder();
-    const cryptoKey = await crypto.subtle.importKey('raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-    const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(payload));
-    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
-  } catch (_) { return ''; }
+function periodeModal(){
+  openModal('Tambah / Ubah Periode',`<div class="grid"><div><label>Periode ID</label><input id="pId" placeholder="PRD-2026"></div><div><label>Nama</label><input id="pNama"></div><div><label>Status</label><select id="pStatus"><option>BUKA</option><option>TUTUP</option></select></div><div><label>Tahun Min</label><input id="pMin" maxlength="4"></div><div><label>Tahun Max</label><input id="pMax" maxlength="4"></div><div><label>Tanggal Buka</label><input id="pBuka" type="date"></div><div><label>Tanggal Tutup</label><input id="pTutup" type="date"></div><div class="full"><label>Catatan</label><textarea id="pCatatan"></textarea></div></div><div class="actions"><button class="btn" id="savePeriode">Simpan</button></div>`);
+  $('savePeriode').onclick=async()=>{try{await apiPost({action:'periodesave',payload:JSON.stringify({periodeId:val('pId'),nama:val('pNama'),status:val('pStatus'),tahunMin:val('pMin'),tahunMax:val('pMax'),tglBuka:val('pBuka'),tglTutup:val('pTutup'),catatan:val('pCatatan')})});closeModal();toast('Periode tersimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
 }
-
-async function parseResponse(r) {
-  const text = await r.text();
-  let json;
-  try { json = JSON.parse(text); } catch (_) { throw new Error(`Respons server tidak valid (HTTP ${r.status}).`); }
-  if (!r.ok) throw new Error(json.error || `HTTP ${r.status}`);
-  return json;
+async function resetPassword(username){const np=prompt('Password baru untuk '+username+' (minimal 8 karakter). Kosongkan untuk default aman:');if(np===null)return;try{const r=await apiPost({action:'resetpassword',username,newPassword:np});toast(r.message+(r.defaultPassword?' Password default: '+r.defaultPassword:''),'ok');loadDashboard()}catch(e){toast(e.message,'err')}}
+function changePasswordModal(){openModal('Ubah Password',`<div class="grid"><div class="full"><label>Password Lama</label><input id="oldPwd" type="password"></div><div><label>Password Baru</label><input id="newPwd" type="password" minlength="8"></div><div><label>Konfirmasi</label><input id="newPwd2" type="password" minlength="8"></div></div><div class="actions"><button class="btn" id="savePwd">Ubah Password</button></div>`);$('savePwd').onclick=async()=>{if(val('newPwd')!==val('newPwd2'))return toast('Konfirmasi password tidak sama.','err');try{await apiPost({action:'changepassword',oldPassword:val('oldPwd'),newPassword:val('newPwd')});closeModal();toast('Password berhasil diubah.','ok')}catch(e){toast(e.message,'err')}}}
+function logout(){if(TOKEN){apiPost({action:'logout'}).catch(()=>{})}TOKEN='';TOKEN_EXP=0;PROFILE=null;sessionStorage.removeItem('ts_token');sessionStorage.removeItem('ts_token_exp');$('dashBox').classList.add('hidden');$('loginBox').classList.remove('hidden');toast('Logout berhasil.','info')}
+function showView(v){$$('main>section').forEach(e=>e.classList.toggle('hidden',e.id!=='view-'+v));$$('.tab').forEach(e=>e.classList.toggle('active',e.dataset.view===v))}
+function initConditionals(){
+  document.querySelectorAll('[data-conditional]').forEach(e=>e.addEventListener('change',()=>{const c=e.dataset.conditional,box=$(c+'Box')||$(c);if(box)box.classList.toggle('hidden',e.value!=='Lainnya'&&e.value!=='Ya')}));
+  $('statusPekerjaanUtama')?.addEventListener('change',e=>{$('bekerjaBox')?.classList.toggle('hidden',!['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(e.target.value));$('wirausahaBox')?.classList.toggle('hidden',!['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(e.target.value));});
+  $('ikutMagang')?.addEventListener('change',e=>$('magangBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('ikutOrganisasi')?.addEventListener('change',e=>$('organisasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('punyaPrestasi')?.addEventListener('change',e=>$('prestasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('melanjutkanStudi')?.addEventListener('change',e=>$('studiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));
 }
-async function fetchWithTimeout(url, opts = {}, timeout = REQ_TIMEOUT) {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeout);
-  try { return await fetch(url, Object.assign({}, opts, { signal: ctrl.signal })); }
-  finally { clearTimeout(timer); }
+function bindAdmin(){
+  $$('.subtab button').forEach(b=>b.onclick=()=>{$$('.subtab button').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.panel').forEach(p=>p.classList.toggle('hidden',p.dataset.panel!==b.dataset.panel))});
+  $('addUserBtn')?.addEventListener('click',()=>userModal());$('reloadUserBtn')?.addEventListener('click',loadDashboard);$('addPeriodeBtn')?.addEventListener('click',periodeModal);$('reloadPeriodeBtn')?.addEventListener('click',loadDashboard);$('reloadAuditBtn')?.addEventListener('click',loadDashboard);
+  $('doImportBtn')?.addEventListener('click',async()=>{try{const r=await apiPost({action:'masterimport',csv:$('csvImport').value});$('importResult').textContent=`Inserted ${r.inserted}, updated ${r.updated}, skipped ${r.skipped}.`;toast('Import selesai.','ok');loadDashboard()}catch(e){toast(e.message,'err')}});
+  $$('[data-export]').forEach(b=>b.onclick=()=>exportData(b.dataset.export));
+  $('accScopeBar')?.querySelectorAll('button').forEach(b=>b.onclick=()=>{$('accScopeBar').querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');loadDashboard()});
 }
-async function fetchRetry(url, opts = {}, timeout = REQ_TIMEOUT) {
-  let lastErr;
-  for (let attempt = 0; attempt <= MAX_RETRY; attempt++) {
-    try { return await fetchWithTimeout(url, opts, timeout); }
-    catch (err) {
-      lastErr = err;
-      const retryable = err.name === 'AbortError' || /network|fetch/i.test(err.message);
-      if (!retryable || attempt === MAX_RETRY) throw err;
-      await new Promise(r => setTimeout(r, 800 * (attempt + 1)));
-    }
-  }
-  throw lastErr;
-}
-async function get(params) {
-  const action = String(params?.action || 'default');
-  const cfg = RATE_CFG[action] || RATE_CFG.default;
-  const gate = RateLimiter.hit('get:' + action, cfg.max, cfg.win);
-  if (!gate.ok) throw new Error(`Terlalu banyak permintaan. Coba lagi dalam ${Math.ceil(gate.retry/1000)} detik.`);
-  const q = new URLSearchParams({ ...params, csrf: CSRF_TOKEN, _ts: String(Date.now()) });
-  const r = await fetchRetry(GAS_URL + '?' + q.toString(), { cache: 'no-store' });
-  return parseResponse(r);
-}
-async function post(data) {
-  const action = String(data?.action || 'default');
-  const cfg = RATE_CFG[action] || RATE_CFG.default;
-  const gate = RateLimiter.hit('post:' + action, cfg.max, cfg.win);
-  if (!gate.ok) throw new Error(`Terlalu banyak permintaan. Coba lagi dalam ${Math.ceil(gate.retry/1000)} detik.`);
-  const payloadStr = JSON.stringify(data || {});
-  const ts = Date.now();
-  const sig = await hmacSign(payloadStr + '|' + ts, CSRF_TOKEN);
-  const body = new URLSearchParams();
-  body.set('payload', payloadStr);
-  body.set('csrf', CSRF_TOKEN);
-  body.set('sig', sig);
-  body.set('_ts', String(ts));
-  body.set('v', APP_VERSION_STR);
-  const r = await fetchRetry(GAS_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-    body, cache: 'no-store'
-  });
-  return parseResponse(r);
-}
-function fillSelect(id, list, placeholder = 'Pilih') {
-  const e = $(id); if (!e) return;
-  e.innerHTML = `<option value="">${esc(placeholder)}</option>` + (list || []).map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
-}
-
-const KOMPETENSI_S1 = [
-  ['etikaIntegritas', 'Etika dan integritas profesional'],
-  ['keahlianBidang', 'Keahlian berdasarkan bidang ilmu komunikasi'],
-  ['komunikasiLisanTulisan', 'Kemampuan komunikasi lisan dan tulisan'],
-  ['teknologiDigital', 'Penguasaan teknologi informasi dan media digital'],
-  ['analisisKritis', 'Kemampuan analisis dan berpikir kritis'],
-  ['kerjaSamaTim', 'Kerja sama tim dan kepemimpinan'],
-  ['bahasaInggris', 'Bahasa Inggris profesional'],
-  ['risetKontenMedia', 'Kemampuan riset dan produksi konten media']
-];
-const KOMPETENSI_S2 = [
-  ['etikaIntegritas', 'Etika dan integritas akademik/profesional'],
-  ['keahlianBidang', 'Keahlian lanjutan bidang ilmu komunikasi'],
-  ['risetKomunikasi', 'Kemampuan riset komunikasi (kualitatif/kuantitatif)'],
-  ['teoriKontemporer', 'Penguasaan teori komunikasi kontemporer'],
-  ['publikasiIlmiah', 'Kemampuan menulis ilmiah dan publikasi'],
-  ['kepemimpinanManajemen', 'Kepemimpinan dan manajemen komunikasi strategis'],
-  ['bahasaInggris', 'Bahasa Inggris akademik/profesional'],
-  ['analisisKebijakan', 'Analisis kebijakan dan regulasi media'],
-  ['komunikasiLisanTulisan', 'Kemampuan komunikasi lisan dan tulisan'],
-  ['teknologiDigital', 'Penguasaan teknologi informasi dan media digital']
-];
-const METODE_S1 = [
-  ['kuliahTatapMuka', 'Perkuliahan tatap muka'],
-  ['praktikumLab', 'Praktikum/laboratorium media'],
-  ['magangPkl', 'Magang/PKL'],
-  ['projectBased', 'Pembelajaran berbasis proyek'],
-  ['diskusiPresentasi', 'Diskusi dan presentasi'],
-  ['daringBlended', 'Pembelajaran daring/blended learning']
-];
-const METODE_S2 = [
-  ['kuliahTatapMuka', 'Perkuliahan tatap muka'],
-  ['seminarLokakarya', 'Seminar dan lokakarya'],
-  ['penelitianMandiri', 'Penelitian mandiri/tesis'],
-  ['studiKasus', 'Studi kasus dan analisis kritis'],
-  ['publikasiIlmiah', 'Publikasi ilmiah'],
-  ['daringBlended', 'Pembelajaran daring/blended learning'],
-  ['magangProfesional', 'Magang/praktik profesional']
-];
-const ORGANISASI_PROFESI = [
-  'PRINDONESIA','PWI (Persatuan Wartawan Indonesia)','IJTI (Ikatan Jurnalis Televisi Indonesia)',
-  'AMSI (Asosiasi Media Siber Indonesia)','ASPIKOM (Asosiasi Pendidikan Ilmu Komunikasi)',
-  'Perhumas (Perhimpunan Hubungan Masyarakat Indonesia)','P3I (Perhimpunan Perusahaan Periklanan Indonesia)','Lainnya'
-];
-const JENIS_PRESTASI = [
-  'Juara kompetisi karya jurnalistik','Juara kompetisi periklanan/kreatif',
-  'Juara kompetisi PR/komunikasi strategis','Penghargaan profesional',
-  'Publikasi ilmiah','Prestasi akademik (cumlaude, dll.)','Lainnya'
-];
-
-function currentKompetensiList() { return getProgramLevel(val('programStudi')) === 'S2' ? KOMPETENSI_S2 : KOMPETENSI_S1; }
-function currentMetodeList() { return getProgramLevel(val('programStudi')) === 'S2' ? METODE_S2 : METODE_S1; }
-function buildRatings(target, list) {
-  const e = $(target); if (!e) return;
-  e.innerHTML = list.map(([key, label]) => `
-    <div style="margin:0 0 13px">
-      <label>${esc(label)} <span class="req">*</span></label>
-      <div class="radio-grid">${[1,2,3,4,5].map(n => `<label class="radio"><input type="radio" name="${target}_${key}" value="${n}" required> ${n}</label>`).join('')}</div>
-    </div>`).join('');
-}
-function radioGroup(target, key) { const el = document.querySelector(`input[name="${target}_${key}"]:checked`); return el ? el.value : ''; }
-function buildChecks(targetId, options) {
-  const el = $(targetId); if (!el) return;
-  el.innerHTML = options.map(x => `<label class="check-item"><input type="checkbox" name="${targetId}_item" value="${esc(x)}"><span>${esc(x)}</span></label>`).join('');
-}
-function checkedValues(id) { return [...document.querySelectorAll(`input[name="${id}_item"]:checked`)].map(x => x.value); }
-function rebuildRatingsForLevel() {
-  buildRatings('kompetensiDikuasai', currentKompetensiList());
-  buildRatings('kompetensiDibutuhkan', currentKompetensiList());
-  buildRatings('metodePembelajaran', currentMetodeList());
-}
-
-function updateNimTypeInfo() {
-  const box = $('nimTypeInfo'); if (!box) return;
-  const level = getProgramLevel(val('programStudi'));
-  if (level === 'S1') { box.className = 'nim-type'; box.textContent = '🎓 S1 Ilmu Komunikasi · NIM penanda 41'; return; }
-  if (level === 'S2') { box.className = 'nim-type s2'; box.textContent = '🎓 S2 Magister Ilmu Komunikasi · NIM penanda 03'; return; }
-  box.className = 'nim-type warn'; box.textContent = 'Pilih Program Studi untuk menampilkan format NIM.';
-}
-function clearNimVerification(hint = 'Masukkan NIM 9 digit lalu klik Verifikasi NIM.') {
-  VERIFIED_NIM = ''; VERIFIED_ALUMNI = null;
-  const n = $('nama'); if (n) { n.value = ''; n.readOnly = true; n.dataset.masterNim = ''; }
-  const h = $('nimHint'); if (h) h.textContent = hint;
-  const nh = $('namaHint'); if (nh) { nh.textContent = 'Nama akan otomatis diambil dari MASTER_ALUMNI berdasarkan NIM.'; nh.style.color = ''; }
-}
-/* FIX: hanya lock Prodi/Jenjang/Tahun. Email & WA tetap editable */
-function lockMasterFields(lock) {
-  ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(id => { const e = $(id); if (e) e.disabled = !!lock; });
-  /* email & whatsapp TETAP editable — user bisa memperbarui kontak */
-}
-function applyVerifiedAlumni(row, nim) {
-  const r = row, n = normalizeNim(nim);
-  if (!r || normalizeNim(r.nim) !== n) throw new Error('Baris MASTER_ALUMNI tidak cocok dengan NIM.');
-  if (!isValidFullName(r.nama)) throw new Error('Nama pada MASTER_ALUMNI tidak valid.');
-  VERIFIED_NIM = n; VERIFIED_ALUMNI = Object.assign({}, r, { nim: n });
-  const nEl = $('nama');
-  nEl.value = r.nama; nEl.readOnly = true; nEl.dataset.masterNim = n;
-  $('namaHint').textContent = `✓ Nama dikunci dari MASTER_ALUMNI NIM ${n}.`;
-  $('namaHint').style.color = 'var(--ok)';
-  if (r.programStudi) $('programStudi').value = r.programStudi;
-  if (r.jenjang) $('jenjang').value = r.jenjang;
-  if (r.tahunMasuk) $('tahunMasuk').value = r.tahunMasuk;
-  if (r.tahunLulus) $('tahunLulus').value = r.tahunLulus;
-  if (r.email && !$('email').value) $('email').value = r.email;
-  if (r.whatsapp && !$('whatsapp').value) $('whatsapp').value = r.whatsapp;
-  lockMasterFields(true);
-  updateNimTypeInfo(); updateLevelBanner(); showLevelGroup(); rebuildRatingsForLevel();
-}
-function updateLevelBanner() {
-  const banner = $('levelBanner'), badgeEl = $('levelBadge'), title = $('levelTitle'), desc = $('levelDesc'), hint = $('levelHint');
-  if (!banner) return;
-  const level = getProgramLevel(val('programStudi'));
-  if (!level) {
-    banner.classList.remove('show','s1','s2');
-    if (badgeEl) badgeEl.textContent = '—';
-    if (title) title.textContent = 'Menunggu Verifikasi NIM';
-    if (desc) desc.textContent = 'Verifikasi NIM terlebih dahulu untuk menentukan jenjang.';
-    if (hint) hint.textContent = 'Belum Terverifikasi';
-    return;
-  }
-  banner.classList.add('show');
-  banner.classList.toggle('s1', level === 'S1');
-  banner.classList.toggle('s2', level === 'S2');
-  if (badgeEl) badgeEl.textContent = level;
-  if (title) title.textContent = level === 'S2' ? '📘 Program Studi S2 Magister Ilmu Komunikasi' : '📗 Program Studi S1 Ilmu Komunikasi';
-  if (desc) desc.innerHTML = level === 'S2'
-    ? 'NIM penanda <code>03</code> · <code>yyyy03nnn</code>. Tugas akhir berupa <b>tesis</b>.'
-    : 'NIM penanda <code>41</code> · <code>yyyy41nnn</code>. Tugas akhir berupa <b>skripsi</b>.';
-  if (hint) hint.textContent = VERIFIED_NIM ? `✓ NIM ${VERIFIED_NIM} terverifikasi` : 'Menunggu verifikasi NIM';
-}
-function showLevelGroup() {
-  const level = getProgramLevel(val('programStudi'));
-  const g1 = $('groupS1'), g2 = $('groupS2');
-  if (g1) g1.classList.toggle('hidden', level !== 'S1');
-  if (g2) g2.classList.toggle('hidden', level !== 'S2');
-  const js = $('judulSkripsi'); if (js) js.required = (level === 'S1');
-  const jt = $('judulTesis'); if (jt) jt.required = (level === 'S2');
-}
-
-$('checkNimBtn')?.addEventListener('click', async () => {
-  const raw = val('nim'), nim = normalizeNim(raw);
-  if (raw !== nim || !/^\d{9}$/.test(nim)) return failValidation('NIM harus tepat 9 digit angka.', 'nim');
-  setFieldError('nim', '');
-  clearNimVerification('Sedang mencocokkan NIM…');
-  const b = $('checkNimBtn'); b.disabled = true; b.textContent = 'Memeriksa...';
-  try {
-    const r = await get({ action: 'checknim', nim });
-    if (!r?.ok) throw new Error(r?.error || 'NIM tidak ditemukan.');
-    if (r.sudahMengisi) throw new Error('NIM ini sudah pernah mengisi Tracer Study.');
-    const alumni = r.alumni || r.data || r.row;
-    if (!alumni) throw new Error('Data alumni tidak tersedia.');
-    applyVerifiedAlumni(alumni, nim);
-    const level = expectedNimLevel(nim);
-    const pl = getProgramLevel(alumni.programStudi || val('programStudi'));
-    if (level && pl && level !== pl) throw new Error(`Data master tidak konsisten: NIM ${level} tetapi Prodi ${pl}.`);
-    $('nimHint').textContent = `✓ NIM ${nim} terverifikasi.`;
-    b.textContent = '✓ Terverifikasi';
-    b.disabled = true;
-    toast('NIM berhasil diverifikasi.', 'ok');
-    addNotification('Verifikasi NIM berhasil', `${nim} · ${alumni.nama}`);
-  } catch (e) {
-    clearNimVerification(e.message);
-    setFieldError('nim', e.message);
-    toast(e.message, 'err');
-    b.disabled = false; b.textContent = 'Verifikasi NIM';
-  }
-});
-$('nim')?.addEventListener('input', () => {
-  $('nim').value = String($('nim').value).replace(/\D/g, '').slice(0, 9);
-  clearTimeout(nimInputTimer);
-  nimInputTimer = setTimeout(() => {
-    const n = normalizeNim(val('nim'));
-    if (n !== VERIFIED_NIM) {
-      lockMasterFields(false);
-      clearNimVerification('NIM berubah. Verifikasi ulang.');
-      setFieldError('nim', '');
-      const b = $('checkNimBtn'); if (b) { b.disabled = false; b.textContent = 'Verifikasi NIM'; }
-      showLevelGroup();
-    }
-  }, 300);
-});
-$('programStudi')?.addEventListener('change', () => { updateNimTypeInfo(); updateLevelBanner(); showLevelGroup(); });
-
-['tahunMasuk','tahunLulus','tahunPrestasi','tahunBergabungOrg','tahunMulaiStudi'].forEach(id => {
-  $(id)?.addEventListener('input', () => {
-    const el = $(id);
-    el.value = String(el.value).replace(/\D/g, '').slice(0, 4);
-  });
-});
-
-$('ipk')?.addEventListener('input', () => {
-  const el = $('ipk');
-  let v = String(el.value).replace(/,/g, '.').replace(/[^0-9.]/g, '');
-  const parts = v.split('.');
-  if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
-  if (parts[0] && parts[0].length > 1) {
-    v = parts[0].slice(0, 1) + (parts[1] !== undefined ? '.' + parts[1].slice(0, 2) : '');
-  }
-  el.value = v.slice(0, 4);
-});
-$('ipk')?.addEventListener('blur', () => {
-  const el = $('ipk');
-  let v = el.value.trim().replace(',', '.');
-  if (!v) return;
-  const n = Number(v);
-  if (Number.isFinite(n) && n >= 0 && n <= 4) el.value = n.toFixed(2);
-});
-
-const CONDITIONAL_MAP = {
-  bekerja: {
-    box: 'bekerjaBox',
-    show: v => {
-      if (!v) return false;
-      if (/^Melanjutkan pendidikan$/i.test(v)) return false;
-      if (/^Belum bekerja/i.test(v)) return false;
-      return /Bekerja|Wiraswasta|Berwirausaha|Lainnya/i.test(v);
-    },
-    required: ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja']
-  },
-  wirausaha: {
-    box: 'wirausahaBox',
-    show: v => /Berwirausaha/i.test(v) && !/^Belum bekerja/i.test(v),
-    required: []
-  },
-  statusPekerjaanLain: { box: 'statusPekerjaanLainBox', show: v => v === 'Lainnya', required: ['statusPekerjaanLain'] },
-  bidangLainnya:  { box: 'bidangLainnyaBox',  show: v => v === 'Lainnya', required: ['bidangIndustriLain'] },
-  caraLainnya:    { box: 'caraLainnyaBox',    show: v => v === 'Lainnya', required: ['caraDapatKerjaLain'] },
-  konsentrasiS1Lain: { box: 'konsentrasiS1LainBox', show: v => v === 'Lainnya', required: ['konsentrasiS1Lain'] },
-  konsentrasiS2Lain: { box: 'konsentrasiS2LainBox', show: v => v === 'Lainnya', required: ['konsentrasiS2Lain'] },
-  ikutMagang:     { box: 'magangBox',     show: v => v === 'Ya', required: ['kontribusiMagang','magangBantuKerja'] },
-  organisasi:     { box: 'organisasiBox', show: v => v === 'Ya', required: [] },
-  prestasi:       { box: 'prestasiBox',   show: v => v === 'Ya', required: [] },
-  studi:          { box: 'studiBox',      show: v => v === 'Ya', required: [] },
-  jenjangStudiLanjutLain: { box: 'jenjangStudiLanjutLainBox', show: v => v === 'Lainnya', required: ['jenjangStudiLanjutLain'] },
-  biayaStudiLanjutLain:   { box: 'biayaStudiLanjutLainBox',   show: v => v === 'Lainnya', required: ['biayaStudiLanjutLain'] }
-};
-
-const ID_TO_COND = {
-  'statusPekerjaanUtama': 'bekerja',
-  'statusPekerjaanLain': 'statusPekerjaanLain',
-  'bidangIndustri': 'bidangLainnya',
-  'caraDapatKerja': 'caraLainnya',
-  'konsentrasiS1': 'konsentrasiS1Lain',
-  'konsentrasiS2': 'konsentrasiS2Lain',
-  'ikutMagang': 'ikutMagang',
-  'ikutOrganisasi': 'organisasi',
-  'punyaPrestasi': 'prestasi',
-  'melanjutkanStudi': 'studi',
-  'jenjangStudiLanjut': 'jenjangStudiLanjutLain',
-  'biayaStudiLanjut': 'biayaStudiLanjutLain'
-};
-
-function applyConditionalByKey(key) {
-  const cfg = CONDITIONAL_MAP[key]; if (!cfg) return;
-  const box = $(cfg.box); if (!box) return;
-  let triggerId = null;
-  Object.keys(ID_TO_COND).forEach(id => { if (ID_TO_COND[id] === key) triggerId = id; });
-  const v = triggerId ? val(triggerId) : '';
-  const show = cfg.show(v);
-  box.classList.toggle('hidden', !show);
-  cfg.required.forEach(x => { const e = $(x); if (e) e.required = show; });
-  if (!show) {
-    box.querySelectorAll('input[type=text],input[type=number],input[type=date],select,textarea').forEach(el => {
-      if (el.id && !el.readOnly) el.value = '';
-    });
-    cfg.required.forEach(x => { const e = $(x); if (e) e.required = false; });
-  }
-}
-
-Object.keys(ID_TO_COND).forEach(id => {
-  $(id)?.addEventListener('change', () => {
-    applyConditionalByKey(ID_TO_COND[id]);
-    applyConditionalByKey('wirausaha');
-  });
-});
-
-document.addEventListener('change', e => {
-  if (e.target && e.target.name === 'organisasiProfesi_item') {
-    const anyLainnya = checkedValues('organisasiProfesi').indexOf('Lainnya') >= 0;
-    $('orgLainBox')?.classList.toggle('hidden', !anyLainnya);
-    if (!anyLainnya) { const el = $('organisasiProfesiLain'); if (el) el.value = ''; }
-  }
-  if (e.target && e.target.name === 'jenisPrestasi_item') {
-    const anyLainnya = checkedValues('jenisPrestasi').indexOf('Lainnya') >= 0;
-    $('prestasiLainBox')?.classList.toggle('hidden', !anyLainnya);
-    if (!anyLainnya) { const el = $('jenisPrestasiLain'); if (el) el.value = ''; }
-  }
-});
-
-$('statusPekerjaanUtama')?.addEventListener('change', () => {
-  const v = val('statusPekerjaanUtama');
-  const studi = /melanjutkan pendidikan/i.test(v) && !/^Belum bekerja/i.test(v);
-  const el = $('melanjutkanStudi');
-  if (el && studi && !el.value) {
-    el.value = 'Ya';
-    el.dispatchEvent(new Event('change'));
-    toast('Status "melanjutkan pendidikan" terdeteksi — Bagian G otomatis terisi "Ya".', 'info');
-  }
-});
-
-function updateSteps() {
-  $$('.step').forEach(s => s.classList.toggle('active', Number(s.dataset.step) === step));
-  $$('#stepIndicator button').forEach((b, i) => {
-    const n = i + 1;
-    b.classList.toggle('active', n === step);
-    b.classList.toggle('done', n < step);
-  });
-  const b = $('bar'); if (b) b.style.width = (step / TOTAL_STEPS * 100) + '%';
-  if (step === TOTAL_STEPS) renderSummary();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-$$('#stepIndicator button').forEach(b => b.addEventListener('click', () => {
-  const target = Number(b.dataset.goto);
-  if (target > step) {
-    for (let s = step; s < target; s++) {
-      if (!validateStepByNumber(s)) { step = s; updateSteps(); return; }
-    }
-  }
-  step = target;
-  updateSteps();
-}));
-
-function focusErr(id) {
-  const e = $(id); if (!e) return false;
-  const el = e.focus ? e : e.querySelector('input,select,textarea');
-  if (el && el.focus) el.focus();
-  const box = e.closest('.step') || e;
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  return false;
-}
-
-function validateStepByNumber(s) {
-  const box = document.querySelector(`.step[data-step="${s}"]`);
-  if (!box) return false;
-
-  if (s === 1) {
-    const nim = normalizeNim(val('nim'));
-    if (!/^\d{9}$/.test(nim)) { setFieldError('nim','NIM harus tepat 9 digit.'); return focusErr('nim'); }
-    if (VERIFIED_NIM !== nim || !VERIFIED_ALUMNI) { setFieldError('nim','Verifikasi NIM terlebih dahulu.'); return focusErr('nim'); }
-    if ($('nama').dataset.masterNim !== nim) { setFieldError('nim','Nama harus dari MASTER_ALUMNI dengan NIM yang sama.'); return focusErr('nim'); }
-    const nl = expectedNimLevel(nim), pl = getProgramLevel(val('programStudi'));
-    if (pl !== nl) { setFieldError('programStudi',`Program Studi ${pl||'-'} tidak sesuai NIM ${nl}.`); return focusErr('programStudi'); }
-
-    if (!isYear(val('tahunMasuk'))) { setFieldError('tahunMasuk','Tahun masuk harus 4 digit.'); return focusErr('tahunMasuk'); }
-    if (!isYear(val('tahunLulus'))) { setFieldError('tahunLulus','Tahun lulus harus 4 digit.'); return focusErr('tahunLulus'); }
-    const tm = Number(val('tahunMasuk')), tl = Number(val('tahunLulus'));
-    const nowYear = getCurrentYear();
-    if (tm > nowYear + 1) { setFieldError('tahunMasuk', `Tahun masuk tidak boleh > ${nowYear + 1}.`); return focusErr('tahunMasuk'); }
-    if (tl > nowYear + 1) { setFieldError('tahunLulus', `Tahun lulus tidak boleh > ${nowYear + 1}.`); return focusErr('tahunLulus'); }
-    if (tl < tm) { setFieldError('tahunLulus','Tahun lulus tidak boleh sebelum tahun masuk.'); return focusErr('tahunLulus'); }
-    const maxRentang = nl === 'S2' ? 6 : 10;
-    if (tl - tm > maxRentang) { setFieldError('tahunLulus', `Rentang studi ${tl - tm} tahun melebihi batas wajar ${maxRentang} tahun untuk ${nl}.`); return focusErr('tahunLulus'); }
-
-    const ipkRaw = val('ipk').replace(',', '.');
-    const ipk = Number(ipkRaw);
-    if (!ipkRaw) { setFieldError('ipk','IPK wajib diisi.'); return focusErr('ipk'); }
-    if (!Number.isFinite(ipk) || ipk < 0 || ipk > 4) { setFieldError('ipk', `IPK "${val('ipk')}" tidak valid. Masukkan angka 0.00–4.00.`); return focusErr('ipk'); }
-
-    if (!isEmail(val('email'))) { setFieldError('email','Format email tidak valid.'); return focusErr('email'); }
-    if (!isPhoneID(val('whatsapp'))) { setFieldError('whatsapp','WhatsApp harus 10–15 digit angka.'); return focusErr('whatsapp'); }
-
-    const tgl = val('tanggalLahir');
-    if (tgl) {
-      const yLahir = Number(tgl.slice(0,4));
-      if (isFinite(yLahir) && (tm - yLahir) < 15) {
-        setFieldError('tanggalLahir', `Usia masuk kuliah minimal 15 tahun (lahir ${yLahir}, masuk ${tm}).`);
-        return focusErr('tanggalLahir');
-      }
-    }
-
-    if (nl === 'S1') {
-      if (!val('judulSkripsi') || val('judulSkripsi').length < 8) { setFieldError('judulSkripsi','Judul skripsi wajib, min 8 karakter.'); return focusErr('judulSkripsi'); }
-      if (!val('konsentrasiS1')) { setFieldError('konsentrasiS1','Konsentrasi wajib dipilih.'); return focusErr('konsentrasiS1'); }
-      if (val('konsentrasiS1') === 'Lainnya' && !val('konsentrasiS1Lain')) { setFieldError('konsentrasiS1Lain','Sebutkan konsentrasi.'); return focusErr('konsentrasiS1Lain'); }
-    }
-    if (nl === 'S2') {
-      if (!val('judulTesis') || val('judulTesis').length < 8) { setFieldError('judulTesis','Judul tesis wajib, min 8 karakter.'); return focusErr('judulTesis'); }
-      if (!val('konsentrasiS2')) { setFieldError('konsentrasiS2','Konsentrasi wajib dipilih.'); return focusErr('konsentrasiS2'); }
-      if (val('konsentrasiS2') === 'Lainnya' && !val('konsentrasiS2Lain')) { setFieldError('konsentrasiS2Lain','Sebutkan konsentrasi.'); return focusErr('konsentrasiS2Lain'); }
-    }
-    return true;
-  }
-
-  if (s === 2) {
-    const sp = val('statusPekerjaanUtama');
-    if (!sp) { setFieldError('statusPekerjaanUtama','Status pekerjaan wajib dipilih.'); return focusErr('statusPekerjaanUtama'); }
-    if (VALID_STATUS_PEKERJAAN.indexOf(sp) < 0) { setFieldError('statusPekerjaanUtama','Pilih salah satu opsi.'); return focusErr('statusPekerjaanUtama'); }
-    if (sp === 'Lainnya' && !val('statusPekerjaanLain')) { setFieldError('statusPekerjaanLain','Sebutkan status Anda.'); return focusErr('statusPekerjaanLain'); }
-    if (CONDITIONAL_MAP.bekerja.show(sp)) {
-      if (!val('masaTungguKerja')) { setFieldError('masaTungguKerja','Wajib dipilih.'); return focusErr('masaTungguKerja'); }
-      if (!val('bidangIndustri')) { setFieldError('bidangIndustri','Wajib dipilih.'); return focusErr('bidangIndustri'); }
-      if (val('bidangIndustri') === 'Lainnya' && !val('bidangIndustriLain')) { setFieldError('bidangIndustriLain','Sebutkan bidang industri.'); return focusErr('bidangIndustriLain'); }
-      if (!val('kesesuaianPekerjaan')) { setFieldError('kesesuaianPekerjaan','Wajib dipilih.'); return focusErr('kesesuaianPekerjaan'); }
-      if (!val('caraDapatKerja')) { setFieldError('caraDapatKerja','Wajib dipilih.'); return focusErr('caraDapatKerja'); }
-      if (val('caraDapatKerja') === 'Lainnya' && !val('caraDapatKerjaLain')) { setFieldError('caraDapatKerjaLain','Sebutkan cara.'); return focusErr('caraDapatKerjaLain'); }
-    }
-    return true;
-  }
-
-  if (s === 3) {
-    if (!val('ikutMagang')) { setFieldError('ikutMagang','Pilih Ya atau Tidak.'); return focusErr('ikutMagang'); }
-    if (val('ikutMagang') === 'Ya') {
-      if (!val('kontribusiMagang')) { setFieldError('kontribusiMagang','Wajib dipilih.'); return focusErr('kontribusiMagang'); }
-      if (!val('magangBantuKerja')) { setFieldError('magangBantuKerja','Wajib dipilih.'); return focusErr('magangBantuKerja'); }
-    }
-    return true;
-  }
-
-  /* FIX: validasi "Lainnya" di Bagian D */
-  if (s === 4) {
-    if (!val('ikutOrganisasi')) { setFieldError('ikutOrganisasi','Pilih Ya atau Tidak.'); return focusErr('ikutOrganisasi'); }
-    if (val('ikutOrganisasi') === 'Ya') {
-      const orgs = checkedValues('organisasiProfesi');
-      if (orgs.length === 0) { setFieldError('organisasiProfesi','Pilih minimal satu organisasi.'); return focusErr('organisasiProfesi'); }
-      if (orgs.indexOf('Lainnya') >= 0 && !val('organisasiProfesiLain')) {
-        setFieldError('organisasiProfesiLain','Sebutkan organisasi lainnya.'); return focusErr('organisasiProfesiLain');
-      }
-    }
-    return true;
-  }
-
-  /* FIX: validasi "Lainnya" di Bagian E */
-  if (s === 5) {
-    if (!val('punyaPrestasi')) { setFieldError('punyaPrestasi','Pilih Ya atau Tidak.'); return focusErr('punyaPrestasi'); }
-    if (val('punyaPrestasi') === 'Ya') {
-      const pres = checkedValues('jenisPrestasi');
-      if (pres.length === 0) { setFieldError('jenisPrestasi','Pilih minimal satu jenis prestasi.'); return focusErr('jenisPrestasi'); }
-      if (pres.indexOf('Lainnya') >= 0 && !val('jenisPrestasiLain')) {
-        setFieldError('jenisPrestasiLain','Sebutkan jenis prestasi lainnya.'); return focusErr('jenisPrestasiLain');
-      }
-      if (val('tahunPrestasi') && !isYear(val('tahunPrestasi'))) {
-        setFieldError('tahunPrestasi','Tahun prestasi harus 4 digit.'); return focusErr('tahunPrestasi');
-      }
-    }
-    return true;
-  }
-
-  if (s === 6) {
-    for (const [k, l] of currentKompetensiList()) {
-      if (!radioGroup('kompetensiDikuasai', k)) { toast(`F1 — "${l}" belum diisi.`, 'err'); return false; }
-      if (!radioGroup('kompetensiDibutuhkan', k)) { toast(`F2 — "${l}" belum diisi.`, 'err'); return false; }
-    }
-    for (const [k, l] of currentMetodeList()) {
-      if (!radioGroup('metodePembelajaran', k)) { toast(`F3 — "${l}" belum diisi.`, 'err'); return false; }
-    }
-    if (!val('hubunganBidang')) { setFieldError('hubunganBidang','Wajib dipilih.'); return focusErr('hubunganBidang'); }
-    if (!val('tingkatPendidikanTepat')) { setFieldError('tingkatPendidikanTepat','Wajib dipilih.'); return focusErr('tingkatPendidikanTepat'); }
-    if (!val('kontribusiProdiKompetensi')) { setFieldError('kontribusiProdiKompetensi','Wajib dipilih.'); return focusErr('kontribusiProdiKompetensi'); }
-    if (!val('relevansiKurikulumKerja')) { setFieldError('relevansiKurikulumKerja','Wajib dipilih.'); return focusErr('relevansiKurikulumKerja'); }
-    return true;
-  }
-
-  if (s === 7) {
-    if (!val('melanjutkanStudi')) { setFieldError('melanjutkanStudi','Pilih Ya atau Tidak.'); return focusErr('melanjutkanStudi'); }
-    if (val('melanjutkanStudi') === 'Ya') {
-      if (val('jenjangStudiLanjut') === 'Lainnya' && !val('jenjangStudiLanjutLain')) { setFieldError('jenjangStudiLanjutLain','Sebutkan jenjang.'); return focusErr('jenjangStudiLanjutLain'); }
-      if (val('biayaStudiLanjut') === 'Lainnya' && !val('biayaStudiLanjutLain')) { setFieldError('biayaStudiLanjutLain','Sebutkan sumber biaya.'); return focusErr('biayaStudiLanjutLain'); }
-    }
-    return true;
-  }
-
-  if (s === 8) {
-    if (!$('consentData').checked) { setFieldError('consentData','Centang pernyataan kebenaran data.'); return focusErr('consentData'); }
-    return true;
-  }
-  return true;
-}
-
-function validateCurrentStep() {
-  const ok = validateStepByNumber(step);
-  if (!ok) {
-    const errBox = document.querySelector('.field-error.show');
-    const msgText = errBox ? errBox.textContent : 'Mohon lengkapi data dengan benar.';
-    msg('formStatus', msgText, false);
-    toast(msgText, 'err');
-  }
-  return ok;
-}
-function failValidation(text, fieldId = '') {
-  toast(text, 'err');
-  msg('formStatus', text, false);
-  if (fieldId) { setFieldError(fieldId, text); focusErr(fieldId); }
-  return false;
-}
-$$('.next').forEach(b => b.addEventListener('click', () => {
-  if (validateCurrentStep() && step < TOTAL_STEPS) { step++; updateSteps(); }
-}));
-$$('.prev').forEach(b => b.addEventListener('click', () => {
-  if (step > 1) { step--; updateSteps(); }
-}));
-
-$$('.char-counter').forEach(c => {
-  const forId = c.dataset.for;
-  const el = $(forId); if (!el) return;
-  const max = Number(el.getAttribute('maxlength')) || 1000;
-  const upd = () => {
-    const len = String(el.value || '').length;
-    c.textContent = `${len} / ${max}`;
-    c.classList.toggle('over', len > max);
-  };
-  el.addEventListener('input', upd); upd();
-});
-
-function renderSummary() {
-  const level = getProgramLevel(val('programStudi'));
-  const rows = [
-    ['NIM', VERIFIED_ALUMNI?.nim || val('nim')],
-    ['Nama', VERIFIED_ALUMNI?.nama || val('nama')],
-    ['Program Studi', VERIFIED_ALUMNI?.programStudi || val('programStudi')],
-    ['Jenjang', VERIFIED_ALUMNI?.jenjang || val('jenjang')],
-    ['Tahun Masuk', val('tahunMasuk')], ['Tahun Lulus', val('tahunLulus')],
-    ['IPK', val('ipk')], ['Email', val('email')], ['WhatsApp', val('whatsapp')],
-    ['Status Pekerjaan', val('statusPekerjaanUtama')],
-    ['Masa Tunggu Kerja', val('masaTungguKerja')],
-    ['Kesesuaian Pekerjaan', val('kesesuaianPekerjaan')],
-    ['Ikut Magang', val('ikutMagang')],
-    ['Ikut Organisasi Profesi', val('ikutOrganisasi')],
-    ['Punya Prestasi', val('punyaPrestasi')],
-    ['Hubungan Bidang', val('hubunganBidang')],
-    ['Melanjutkan Studi', val('melanjutkanStudi')]
-  ];
-  if (level === 'S1') rows.push(['Judul Skripsi', val('judulSkripsi') || '-'], ['Konsentrasi S1', val('konsentrasiS1') || '-']);
-  if (level === 'S2') rows.push(['Judul Tesis', val('judulTesis') || '-'], ['Konsentrasi S2', val('konsentrasiS2') || '-']);
-  const badgeHtml = `<p>Jenjang: ${badgeJenjang(level)} · Program Studi: <b>${esc(VERIFIED_ALUMNI?.programStudi || '-')}</b></p>`;
-  setHtml('summaryBox', `<h4>Ringkasan Data</h4>${badgeHtml}<ul class="tree">${rows.map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v || '-')}</span></li>`).join('')}</ul>`);
-}
-
-function collectPayload() {
-  const level = getProgramLevel(val('programStudi'));
-  const kompList = currentKompetensiList();
-  const metList = currentMetodeList();
-  const kompetensiDikuasai = {}, kompetensiDibutuhkan = {}, metodePembelajaranVal = {};
-  kompList.forEach(([k]) => {
-    kompetensiDikuasai[k] = radioGroup('kompetensiDikuasai', k);
-    kompetensiDibutuhkan[k] = radioGroup('kompetensiDibutuhkan', k);
-  });
-  metList.forEach(([k]) => { metodePembelajaranVal[k] = radioGroup('metodePembelajaran', k); });
-
-  const bekerja = CONDITIONAL_MAP.bekerja.show(val('statusPekerjaanUtama'));
-  const wirausaha = CONDITIONAL_MAP.wirausaha.show(val('statusPekerjaanUtama'));
-  const magang = val('ikutMagang') === 'Ya';
-  const org = val('ikutOrganisasi') === 'Ya';
-  const prestasi = val('punyaPrestasi') === 'Ya';
-  const studi = val('melanjutkanStudi') === 'Ya';
-
-  let ipkNorm = val('ipk').replace(',', '.');
-  const ipkN = Number(ipkNorm);
-  if (Number.isFinite(ipkN) && ipkN >= 0 && ipkN <= 4) ipkNorm = ipkN.toFixed(2);
-
-  /* FIX: conditional konsentrasiS1Lain/S2Lain */
-  const konsS1Lain = level === 'S1' && val('konsentrasiS1') === 'Lainnya' ? clampStr(val('konsentrasiS1Lain'), 100) : '';
-  const konsS2Lain = level === 'S2' && val('konsentrasiS2') === 'Lainnya' ? clampStr(val('konsentrasiS2Lain'), 100) : '';
-  /* FIX: conditional organisasiLain */
-  const orgLain = org && checkedValues('organisasiProfesi').indexOf('Lainnya') >= 0 ? clampStr(val('organisasiProfesiLain'), 200) : '';
-  /* FIX: conditional prestasiLain */
-  const prestasiLain = prestasi && checkedValues('jenisPrestasi').indexOf('Lainnya') >= 0 ? clampStr(val('jenisPrestasiLain'), 200) : '';
-  /* FIX: conditional jenjang/biaya lain */
-  const jenjangLain = studi && val('jenjangStudiLanjut') === 'Lainnya' ? clampStr(val('jenjangStudiLanjutLain'), 100) : '';
-  const biayaLain = studi && val('biayaStudiLanjut') === 'Lainnya' ? clampStr(val('biayaStudiLanjutLain'), 100) : '';
-  /* FIX: conditional statusLain, bidangLain, caraLain */
-  const statusLain = val('statusPekerjaanUtama') === 'Lainnya' ? clampStr(val('statusPekerjaanLain'), 200) : '';
-  const bidangLain = bekerja && val('bidangIndustri') === 'Lainnya' ? clampStr(val('bidangIndustriLain'), 150) : '';
-  const caraLain = bekerja && val('caraDapatKerja') === 'Lainnya' ? clampStr(val('caraDapatKerjaLain'), 150) : '';
-
-  return {
-    nim: clampStr(val('nim'), 9),
-    nama: clampStr(VERIFIED_ALUMNI?.nama || '', 120),
-    programStudi: clampStr(val('programStudi'), 60),
-    jenjang: clampStr(val('jenjang'), 4),
-    level,
-    tahunMasuk: clampStr(val('tahunMasuk'), 4), tahunLulus: clampStr(val('tahunLulus'), 4),
-    ipk: clampStr(ipkNorm, 5), jenisKelamin: clampStr(val('jenisKelamin'), 20),
-    tempatLahir: clampStr(val('tempatLahir'), 60), tanggalLahir: clampStr(val('tanggalLahir'), 10),
-    email: clampStr(val('email'), 120), whatsapp: clampStr(val('whatsapp'), 15),
-    alamatDomisili: clampStr(val('alamatDomisili'), 500),
-    alamatTetap: clampStr(val('alamatTetap'), 500),
-    judulSkripsi: level === 'S1' ? clampStr(val('judulSkripsi'), 1000) : '',
-    konsentrasiS1: level === 'S1' ? clampStr(val('konsentrasiS1'), 60) : '',
-    konsentrasiS1Lain: konsS1Lain,
-    pembimbingSkripsi: level === 'S1' ? clampStr(val('pembimbingSkripsi'), 120) : '',
-    judulTesis: level === 'S2' ? clampStr(val('judulTesis'), 1000) : '',
-    konsentrasiS2: level === 'S2' ? clampStr(val('konsentrasiS2'), 60) : '',
-    konsentrasiS2Lain: konsS2Lain,
-    pembimbingTesis: level === 'S2' ? clampStr(val('pembimbingTesis'), 120) : '',
-    statusPekerjaanUtama: clampStr(val('statusPekerjaanUtama'), 60),
-    statusPekerjaanLain: statusLain,
-    masaTungguKerja: bekerja ? clampStr(val('masaTungguKerja'), 20) : '',
-    namaPerusahaan: bekerja ? clampStr(val('namaPerusahaan'), 150) : '',
-    bidangIndustri: bekerja ? clampStr(val('bidangIndustri'), 80) : '',
-    bidangIndustriLain: bidangLain,
-    jabatan: bekerja ? clampStr(val('jabatan'), 100) : '',
-    jenisPekerjaan: bekerja ? clampStr(val('jenisPekerjaan'), 40) : '',
-    sistemKerja: bekerja ? clampStr(val('sistemKerja'), 40) : '',
-    ukuranOrganisasi: bekerja ? clampStr(val('ukuranOrganisasi'), 40) : '',
-    provinsiKerja: bekerja ? clampStr(val('provinsiKerja'), 60) : '',
-    kotaKerja: bekerja ? clampStr(val('kotaKerja'), 60) : '',
-    negaraKerja: bekerja ? clampStr(val('negaraKerja'), 60) : '',
-    penghasilanRange: bekerja ? clampStr(val('penghasilanRange'), 30) : '',
-    websitePerusahaan: bekerja ? clampStr(val('websitePerusahaan'), 150) : '',
-    tanggalMulaiKerja: bekerja ? clampStr(val('tanggalMulaiKerja'), 10) : '',
-    kesesuaianPekerjaan: bekerja ? clampStr(val('kesesuaianPekerjaan'), 30) : '',
-    caraDapatKerja: bekerja ? clampStr(val('caraDapatKerja'), 60) : '',
-    caraDapatKerjaLain: caraLain,
-    namaUsaha: wirausaha ? clampStr(val('namaUsaha'), 150) : '',
-    bidangUsaha: wirausaha ? clampStr(val('bidangUsaha'), 100) : '',
-    jumlahTenagaKerja: wirausaha ? clampStr(val('jumlahTenagaKerja'), 20) : '',
-    omzetRange: wirausaha ? clampStr(val('omzetRange'), 40) : '',
-    statusLegalitas: wirausaha ? clampStr(val('statusLegalitas'), 40) : '',
-    lokasiUsaha: wirausaha ? clampStr(val('lokasiUsaha'), 150) : '',
-    ikutMagang: clampStr(val('ikutMagang'), 5),
-    tempatMagang: magang ? clampStr(val('tempatMagang'), 150) : '',
-    durasiMagang: magang ? clampStr(val('durasiMagang'), 20) : '',
-    kontribusiMagang: magang ? clampStr(val('kontribusiMagang'), 30) : '',
-    magangBantuKerja: magang ? clampStr(val('magangBantuKerja'), 30) : '',
-    kerjaDiTempatMagang: magang ? clampStr(val('kerjaDiTempatMagang'), 40) : '',
-    penekananMagangKurikulum: magang ? clampStr(val('penekananMagangKurikulum'), 30) : '',
-    saranMagang: magang ? clampStr(val('saranMagang'), 1000) : '',
-    ikutOrganisasi: clampStr(val('ikutOrganisasi'), 5),
-    organisasiProfesi: org ? checkedValues('organisasiProfesi').map(v => clampStr(v, 120)) : [],
-    organisasiProfesiLain: orgLain,
-    tahunBergabungOrg: org ? clampStr(val('tahunBergabungOrg'), 4) : '',
-    peranOrganisasi: org ? clampStr(val('peranOrganisasi'), 100) : '',
-    tingkatKeterlibatan: org ? clampStr(val('tingkatKeterlibatan'), 30) : '',
-    manfaatOrganisasi: org ? clampStr(val('manfaatOrganisasi'), 30) : '',
-    fasilitasiOrganisasi: org ? clampStr(val('fasilitasiOrganisasi'), 40) : '',
-    punyaPrestasi: clampStr(val('punyaPrestasi'), 5),
-    jenisPrestasi: prestasi ? checkedValues('jenisPrestasi').map(v => clampStr(v, 120)) : [],
-    jenisPrestasiLain: prestasiLain,
-    namaPrestasiSpesifik: prestasi ? clampStr(val('namaPrestasiSpesifik'), 200) : '',
-    penyelenggaraPrestasi: prestasi ? clampStr(val('penyelenggaraPrestasi'), 150) : '',
-    urlBuktiPrestasi: prestasi ? clampStr(val('urlBuktiPrestasi'), 250) : '',
-    kategoriPrestasi: prestasi ? clampStr(val('kategoriPrestasi'), 40) : '',
-    tingkatPrestasi: prestasi ? clampStr(val('tingkatPrestasi'), 40) : '',
-    tahunPrestasi: prestasi ? clampStr(val('tahunPrestasi'), 4) : '',
-    peranProdiPrestasi: prestasi ? clampStr(val('peranProdiPrestasi'), 30) : '',
-    pernahNarasumber: prestasi ? clampStr(val('pernahNarasumber'), 40) : '',
-    kompetensiDikuasai, kompetensiDibutuhkan, metodePembelajaran: metodePembelajaranVal,
-    hubunganBidang: clampStr(val('hubunganBidang'), 30),
-    tingkatPendidikanTepat: clampStr(val('tingkatPendidikanTepat'), 40),
-    kontribusiProdiKompetensi: clampStr(val('kontribusiProdiKompetensi'), 40),
-    relevansiKurikulumKerja: clampStr(val('relevansiKurikulumKerja'), 40),
-    melanjutkanStudi: clampStr(val('melanjutkanStudi'), 5),
-    jenjangStudiLanjut: studi ? clampStr(val('jenjangStudiLanjut'), 30) : '',
-    jenjangStudiLanjutLain: jenjangLain,
-    ptStudiLanjut: studi ? clampStr(val('ptStudiLanjut'), 150) : '',
-    prodiStudiLanjut: studi ? clampStr(val('prodiStudiLanjut'), 150) : '',
-    tahunMulaiStudi: studi ? clampStr(val('tahunMulaiStudi'), 4) : '',
-    biayaStudiLanjut: studi ? clampStr(val('biayaStudiLanjut'), 40) : '',
-    biayaStudiLanjutLain: biayaLain,
-    studiDukungKarier: studi ? clampStr(val('studiDukungKarier'), 30) : '',
-    alasanStudiLanjut: studi ? clampStr(val('alasanStudiLanjut'), 500) : '',
-    saranKurikulum: clampStr(val('saranKurikulum'), 2000),
-    kompetensiTambahan: clampStr(val('kompetensiTambahan'), 1500),
-    fasilitasiKarier: clampStr(val('fasilitasiKarier'), 30),
-    bersediaMentor: clampStr(val('bersediaMentor'), 10),
-    bersediaLowongan: clampStr(val('bersediaLowongan'), 10),
-    kontakProfesional: clampStr(val('kontakProfesional'), 200),
-    rekomendasiAlumniIndustri: clampStr(val('rekomendasiAlumniIndustri'), 500),
-    kesanPesan: clampStr(val('kesanPesan'), 2000),
-    consentData: !!$('consentData').checked,
-    consentContact: !!$('consentContact').checked,
-    _v: APP_VERSION_STR,
-    _ts: new Date().toISOString()
-  };
-}
-
-$('tracerForm')?.addEventListener('submit', async e => {
-  e.preventDefault();
-  clearAllFieldErrors();
-  for (let s = 1; s <= TOTAL_STEPS; s++) {
-    if (!validateStepByNumber(s)) { step = s; updateSteps(); validateCurrentStep(); return; }
-  }
-  const btn = e.submitter || document.querySelector('#tracerForm button[type="submit"]');
-  btn.disabled = true; btn.textContent = 'Mengirim...';
-  try {
-    const payload = collectPayload();
-    const r = await post({ action: 'submit', formData: JSON.stringify(payload) });
-    if (!r.ok) throw new Error(r.error || 'Gagal menyimpan tracer.');
-    const id = r.tracerId || r.id || '';
-    formSubmitted = true;
-    msg('formStatus', `✓ Berhasil dikirim. Tracer ID: ${id}. Simpan ID tersebut.`, true);
-    toast(`Tracer Study berhasil dikirim: ${id}`, 'ok');
-    addNotification('Pengisian berhasil', `Tracer ID ${id}`);
-    $('trackingId').value = id;
-    resetForm();
-    setTimeout(() => showView('tracking'), 1200);
-  } catch (err) {
-    const em = err.message === 'timeout' ? 'Timeout — server sedang cold start. Coba lagi.' : err.message;
-    msg('formStatus', em, false); toast(em, 'err');
-  } finally { btn.disabled = false; btn.textContent = 'Kirim Tracer Study ✓'; }
-});
-
-/* FIX: reset orgLainBox & prestasiLainBox juga */
-function resetForm() {
-  $('tracerForm').reset();
-  step = 1;
-  formSubmitted = false;
-  ['groupS1','groupS2'].forEach(id => $(id)?.classList.add('hidden'));
-  ['judulSkripsi','judulTesis'].forEach(id => { const e = $(id); if (e) e.required = false; });
-  Object.keys(CONDITIONAL_MAP).forEach(k => applyConditionalByKey(k));
-  $('orgLainBox')?.classList.add('hidden');
-  $('prestasiLainBox')?.classList.add('hidden');
-  lockMasterFields(false);
-  clearNimVerification('Form siap digunakan kembali.');
-  clearAllFieldErrors();
-  updateNimTypeInfo(); updateLevelBanner(); showLevelGroup();
-  rebuildRatingsForLevel();
-  $$('.char-counter').forEach(c => { const el = $(c.dataset.for); if (el) c.textContent = `0 / ${el.getAttribute('maxlength') || 1000}`; });
-  const b = $('checkNimBtn'); if (b) { b.disabled = false; b.textContent = 'Verifikasi NIM'; }
+async function init(){
+  populateProgramFields();buildChecks('organisasiProfesi',ORGANISASI_PROFESI);buildChecks('jenisPrestasi',JENIS_PRESTASI);rebuildRatingsForLevel();initConditionals();bindAdmin();
+  $$('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+  $$('[data-goto]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.goto);if(n<=step||validateStep(step)){step=n;updateSteps()}});
+  $$('.next').forEach(b=>b.onclick=()=>{if(validateStep(step)){step=Math.min(TOTAL_STEPS,step+1);updateSteps()}});
+  $$('.prev').forEach(b=>b.onclick=()=>{step=Math.max(1,step-1);updateSteps()});
+  $('tracerForm').onsubmit=e=>{e.preventDefault();submitTracer()};
+  $('checkNimBtn').onclick=async()=>{const nim=normalizeNim(val('nim'));if(!/^\d{9}$/.test(nim))return fail('nim','NIM harus 9 digit.');try{const r=await apiGet({action:'checknim',nim});if(r.sudahMengisi)throw Error('NIM sudah memiliki respons tracer.');applyVerifiedAlumni(r.alumni,nim);toast('NIM terverifikasi.','ok')}catch(e){clearNimVerification();toast(e.message,'err')}};
+  $('loginBtn').onclick=login;$('logoutBtn').onclick=logout;$('refreshBtn').onclick=loadDashboard;$('ubahPassBtn').onclick=changePasswordModal;
+  $('applyFilter').onclick=()=>{respPage=1;loadDashboard()};$('resetFilter').onclick=()=>{['fPeriode','fTahun','fProdi','fQ'].forEach(id=>$(id).value='');respPage=1;loadDashboard()};
+  $('togglePass').onclick=()=>{$('password').type=$('password').type==='password'?'text':'password'};
+  $('trackBtn').onclick=async()=>{try{const r=await apiGet({action:'lookup',tracerId:val('trackingId')});$('trackResult').innerHTML=`<div class="status ok">Tracer ID: ${esc(r.data?.tracerId||r.tracerId||'-')} · Status: ${esc(r.data?.status||'-')} · NIM: ${esc(r.data?.nim||'-')} · Nama: ${esc(r.data?.nama||'-')}</div>`}catch(e){msg('trackResult',e.message,false)}};
+  try{await loadMeta();setOnline(true)}catch(e){setOnline(false);toast('Backend belum dapat dihubungi.','err')}
+  if(TOKEN&&Date.now()<TOKEN_EXP){try{const r=await apiPost({action:'dashboard',filters:'{}',page:1,perPage:RESP_PER_PAGE});PROFILE=r.profile;showDashboard()}catch(_){logout()}}
   updateSteps();
 }
-
-$('trackBtn')?.addEventListener('click', async () => {
-  const id = val('trackingId').toUpperCase();
-  if (!id || !/^TS-\d{4}-\d{6}$/.test(id)) return toast('Format Tracer ID: TS-YYYY-NNNNNN', 'err');
-  const b = $('trackBtn'); b.disabled = true; b.textContent = 'Memeriksa...';
-  setHtml('trackResult', '');
-  try {
-    const r = await get({ action: 'lookup', tracerId: id });
-    if (!r.ok) throw new Error(r.error || 'Tracer ID tidak ditemukan.');
-    const d = r.data || r.item || r;
-    setHtml('trackResult', `<div class="card" style="margin-top:16px"><h3>✓ Data Ditemukan</h3>
-      <ul class="tree">
-        <li><b>Tracer ID</b><span>${esc(d.tracerId || id)}</span></li>
-        <li><b>NIM</b><span>${esc(d.nim || '-')}</span></li>
-        <li><b>Nama</b><span>${esc(d.nama || '-')}</span></li>
-        <li><b>Program Studi</b><span>${esc(d.programStudi || '-')}</span></li>
-        <li><b>Jenjang</b><span>${badgeJenjang(d.jenjang)}</span></li>
-        <li><b>Tahun Lulus</b><span>${esc(d.tahunLulus || '-')}</span></li>
-      </ul></div>`);
-  } catch (e) { setHtml('trackResult', `<div class="status err" style="display:block">${esc(e.message)}</div>`); }
-  finally { b.disabled = false; b.textContent = 'Cek'; }
-});
-
-$$('.tab').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
-function showView(v) {
-  $$('main > section').forEach(s => s.classList.add('hidden'));
-  $('view-' + v)?.classList.remove('hidden');
-  $$('.tab').forEach(b => b.classList.toggle('active', b.dataset.view === v));
-  if (v === 'admin' && TOKEN && !DATA) loadDashboard().catch(() => {});
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-async function pingServer() {
-  const dot = $('connDot'), txt = $('connText');
-  if (!dot || !txt) return;
-  try {
-    const r = await get({ action: 'health' });
-    online = true; dot.className = 'conn-dot ok';
-    txt.textContent = 'Online' + (r.version ? ' · v' + r.version : '');
-  } catch (e) { online = false; dot.className = 'conn-dot err'; txt.textContent = 'Server tidak terhubung'; }
-}
-
-$('togglePass')?.addEventListener('click', () => {
-  const p = $('password'); p.type = p.type === 'password' ? 'text' : 'password';
-  $('togglePass').textContent = p.type === 'password' ? '👁️' : '🙈';
-});
-$('loginBtn')?.addEventListener('click', async () => {
-  const b = $('loginBtn'); b.disabled = true; b.textContent = 'Memproses...';
-  try {
-    const u = val('username'), p = $('password').value;
-    if (!u || !p) throw new Error('Username dan password wajib diisi.');
-    if (u.length > 64 || p.length > 128) throw new Error('Input terlalu panjang.');
-    const r = await post({ action: 'login', username: u, password: p });
-    if (!r.ok) throw new Error(r.error || 'Login gagal.');
-    TOKEN = r.token || ''; PROFILE = r.profile || null;
-    TOKEN_EXP = Date.now() + SESSION_MAX_AGE;
-    if (!TOKEN) throw new Error('Token login tidak diterima server.');
-    sessionStorage.setItem('ts_token', TOKEN);
-    sessionStorage.setItem('ts_token_exp', String(TOKEN_EXP));
-    $('password').value = '';
-    await loadDashboard();
-  } catch (e) { msg('adminStatus', e.message, false); toast(e.message, 'err'); }
-  finally { b.disabled = false; b.textContent = 'Masuk →'; }
-});
-$('logoutBtn')?.addEventListener('click', async () => {
-  if (!confirm('Logout dari dashboard?')) return;
-  try { await post({ action: 'logout', token: TOKEN }); } catch (_) {}
-  TOKEN = ''; PROFILE = null; DATA = null; TOKEN_EXP = 0;
-  sessionStorage.removeItem('ts_token');
-  sessionStorage.removeItem('ts_token_exp');
-  $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
-  const fProdi = $('fProdi'); if (fProdi) { fProdi.disabled = false; fProdi.value = ''; }
-  $('ubahPassBtn')?.classList.add('hidden');
-  $$('.admin-only').forEach(el => el.classList.add('hidden'));
-});
-function ensureSession() {
-  if (TOKEN && TOKEN_EXP && Date.now() > TOKEN_EXP) {
-    TOKEN = ''; PROFILE = null; DATA = null;
-    sessionStorage.removeItem('ts_token');
-    sessionStorage.removeItem('ts_token_exp');
-    toast('Sesi berakhir. Silakan login kembali.', 'err');
-    $('loginBox')?.classList.remove('hidden');
-    $('dashBox')?.classList.add('hidden');
-    $('ubahPassBtn')?.classList.add('hidden');
-    return false;
-  }
-  return true;
-}
-setInterval(ensureSession, 60000);
-
-/* Tombol Ubah Password */
-$('ubahPassBtn')?.addEventListener('click', () => {
-  const html = `
-    <div class="modal" id="passModal">
-      <div class="box" style="max-width:520px">
-        <h3>🔑 Ubah Password <button type="button" class="btn secondary sm" onclick="document.getElementById('passModal').remove()">✕</button></h3>
-        <div class="grid">
-          <div class="full"><label for="oldPass">Password Lama</label><input id="oldPass" type="password" maxlength="128"></div>
-          <div class="full"><label for="newPass">Password Baru (min 8 karakter)</label><input id="newPass" type="password" maxlength="128"></div>
-          <div class="full"><label for="newPass2">Konfirmasi Password Baru</label><input id="newPass2" type="password" maxlength="128"></div>
-        </div>
-        <div class="actions" style="margin-top:16px">
-          <button type="button" class="btn secondary" onclick="document.getElementById('passModal').remove()">Batal</button>
-          <button type="button" class="btn" id="doChangePass">Simpan</button>
-        </div>
-      </div>
-    </div>`;
-  $('modalRoot').innerHTML = html;
-  $('doChangePass')?.addEventListener('click', async () => {
-    const op = $('oldPass').value, np = $('newPass').value, np2 = $('newPass2').value;
-    if (!op || !np) return toast('Password lama & baru wajib diisi.', 'err');
-    if (np.length < 8) return toast('Password baru minimal 8 karakter.', 'err');
-    if (np !== np2) return toast('Konfirmasi password tidak cocok.', 'err');
-    try {
-      const r = await post({ action: 'changePassword', token: TOKEN, oldPassword: op, newPassword: np });
-      if (!r.ok) throw new Error(r.error || 'Gagal ubah password.');
-      toast('Password berhasil diubah.', 'ok');
-      $('passModal').remove();
-    } catch (e) { toast(e.message, 'err'); }
-  });
-});
-
-function currentFilters() { return { periodeId: val('fPeriode'), tahun: val('fTahun'), programStudi: val('fProdi'), q: val('fQ'), scope: accScope }; }
-$('refreshBtn')?.addEventListener('click', () => { respPage = 1; loadDashboard().catch(() => {}); });
-$('applyFilter')?.addEventListener('click', () => { respPage = 1; loadDashboard().catch(() => {}); });
-$('resetFilter')?.addEventListener('click', () => {
-  ['fPeriode','fTahun','fProdi','fQ'].forEach(id => { if ($(id)) $(id).value = ''; });
-  respPage = 1; loadDashboard().catch(() => {});
-});
-$$('#adminTabs button').forEach(b => b.addEventListener('click', () => {
-  $$('#adminTabs button').forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
-  $$('#dashBox .panel').forEach(p => p.classList.toggle('hidden', p.dataset.panel !== b.dataset.panel));
-  const p = b.dataset.panel;
-  if (p === 'overview') renderOverview();
-  if (p === 'responden') renderResponden();
-  if (p === 'analitik') renderAnalitik();
-  if (p === 'akreditasi') renderAkreditasi();
-  if (p === 'adminpanel') renderAdminPanel();
-}));
-$$('#accScopeBar button').forEach(b => b.addEventListener('click', () => {
-  $$('#accScopeBar button').forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
-  accScope = b.dataset.scope;
-  loadDashboard().catch(() => {});
-}));
-
-/* FIX: deteksi KAPRODI S1/S2 via PROFILE.programStudi */
-function applyRoleUI() {
-  const role = (PROFILE?.role || '').toUpperCase();
-  const prodi = PROFILE?.programStudi || '';
-  const isAdmin = role === 'ADMIN';
-  const isKaprodi = role === 'KAPRODI';
-  const isKaprodiS1 = isKaprodi && /S1/i.test(prodi);
-  const isKaprodiS2 = isKaprodi && /S2|Magister/i.test(prodi);
-  const isWadek = role === 'WADEK';
-  const isDekan = role === 'DEKAN';
-  const banner = $('roleBanner'), icon = $('rbIcon'), title = $('rbTitle'), desc = $('rbDesc'), scope = $('rbScope');
-  if (banner) {
-    let cls = '';
-    if (isAdmin) cls = 'admin';
-    else if (isKaprodiS1) cls = 'kaprodi-s1';
-    else if (isKaprodiS2) cls = 'kaprodi-s2';
-    else if (isWadek) cls = 'wadek';
-    else if (isDekan) cls = 'dekan';
-    banner.className = 'role-banner ' + cls;
-    if (icon) icon.textContent = isAdmin ? '🛡️' : isKaprodiS1 ? '📗' : isKaprodiS2 ? '📘' : isWadek ? '🎯' : isDekan ? '👑' : '👤';
-    if (title) title.textContent = isAdmin ? 'Dashboard Admin' :
-      isKaprodiS1 ? 'Dashboard Kaprodi S1 Ilmu Komunikasi' :
-      isKaprodiS2 ? 'Dashboard Kaprodi S2 Magister Ilmu Komunikasi' :
-      isWadek ? 'Dashboard Wakil Dekan — Fakultas Ilmu Komunikasi' :
-      isDekan ? 'Dashboard Dekan — Fakultas Ilmu Komunikasi' : 'Dashboard';
-    if (desc) desc.textContent = isAdmin ? 'Akses penuh ke seluruh data tracer study S1 & S2.' :
-      isKaprodiS1 ? 'Analitik & data akreditasi khusus Program Studi S1 Ilmu Komunikasi.' :
-      isKaprodiS2 ? 'Analitik & data akreditasi khusus Program Studi S2 Magister Ilmu Komunikasi.' :
-      isWadek ? 'Analitik agregat Fakultas Ilmu Komunikasi (S1 + S2).' :
-      isDekan ? 'Visi strategis Fakultas & Universitas — indikator akreditasi institusi.' : 'Dashboard.';
-    if (scope) scope.textContent = isAdmin ? 'Semua Data' :
-      isKaprodiS1 ? 'Prodi S1' : isKaprodiS2 ? 'Prodi S2' :
-      isWadek ? 'Fakultas' : isDekan ? 'Fakultas & Universitas' : 'Semua';
-  }
-  const pb = $('profileBadge');
-  if (pb) {
-    let cls = '';
-    if (isAdmin) cls = 'role-admin';
-    else if (isKaprodiS1) cls = 'role-kaprodi-s1';
-    else if (isKaprodiS2) cls = 'role-kaprodi-s2';
-    else if (isWadek) cls = 'role-wadek';
-    else if (isDekan) cls = 'role-dekan';
-    pb.className = 'role-badge ' + cls;
-    const lbl = isKaprodiS1 ? 'KAPRODI S1' : isKaprodiS2 ? 'KAPRODI S2' : role;
-    pb.textContent = `${PROFILE?.username || ''} · ${lbl || 'USER'}`;
-  }
-  const fProdi = $('fProdi');
-  if (fProdi) {
-    if (isKaprodi && PROFILE?.programStudi) {
-      fProdi.value = PROFILE.programStudi;
-      fProdi.disabled = true;
-    } else {
-      fProdi.disabled = false;
-    }
-  }
-  /* Tampilkan/sembunyikan admin panel */
-  $$('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
-  /* Tampilkan tombol Ubah Password jika login */
-  if (PROFILE) $('ubahPassBtn')?.classList.remove('hidden');
-}
-
-async function loadDashboard() {
-  if (!TOKEN) return;
-  if (!ensureSession()) return;
-  const reqId = ++dashboardReqId;
-  $('loginBox').classList.add('hidden'); $('dashBox').classList.remove('hidden');
-  msg('adminStatus', 'Memuat data dashboard…', 'info');
-  try {
-    const r = await post({
-      action: 'dashboard',
-      token: TOKEN,
-      filters: JSON.stringify(currentFilters()),
-      page: respPage,
-      perPage: RESP_PER_PAGE,
-      scope: accScope
-    });
-    if (reqId !== dashboardReqId) return;
-    if (!r.ok) throw new Error(r.error || 'Gagal memuat dashboard.');
-    DATA = r; PROFILE = r.profile || PROFILE;
-    applyRoleUI(); buildFilterOptions();
-    renderOverview(); renderResponden();
-    const activeTab = document.querySelector('#adminTabs button.active')?.dataset.panel;
-    if (activeTab === 'analitik') renderAnalitik();
-    if (activeTab === 'akreditasi') renderAkreditasi();
-    if (activeTab === 'adminpanel') renderAdminPanel();
-    clearMsg('adminStatus');
-  } catch (e) {
-    if (reqId !== dashboardReqId) return;
-    msg('adminStatus', e.message, false);
-    if (/token|sesi|auth|login/i.test(e.message)) {
-      TOKEN = ''; PROFILE = null; DATA = null;
-      sessionStorage.removeItem('ts_token');
-      sessionStorage.removeItem('ts_token_exp');
-      $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
-      $('ubahPassBtn')?.classList.add('hidden');
-    }
-  }
-}
-function buildFilterOptions() {
-  const d = DATA || {};
-  const keep = (id, arr) => { const e = $(id); if (!e) return; const cur = e.value;
-    e.innerHTML = '<option value="">Semua</option>' + (arr || []).map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); e.value = cur; };
-  keep('fTahun', Object.keys(d.charts?.yearCounts || {}).filter(k => /^\d{4}$/.test(k)).sort().reverse());
-  keep('fProdi', Object.keys(d.charts?.programCounts || {}));
-  const fp = $('fPeriode');
-  if (fp && META && Array.isArray(META.periodeList)) {
-    const cur = fp.value;
-    fp.innerHTML = '<option value="">Semua</option>' + META.periodeList.map(p => `<option value="${esc(p.periodeId)}">${esc(p.nama)}</option>`).join('');
-    fp.value = cur;
-  }
-}
-function renderOverview() {
-  const s = DATA?.summary || {};
-  setHtml('kpiBox', `
-    <div><span class="kpi-icon">👥</span><span>Total Responden</span><b>${s.total ?? 0}</b></div>
-    <div><span class="kpi-icon">📚</span><span>Master Alumni</span><b>${s.totalMaster ?? 0}</b></div>
-    <div><span class="kpi-icon">📗</span><span>S1</span><b>${s.s1 ?? 0}</b></div>
-    <div><span class="kpi-icon">📘</span><span>S2</span><b>${s.s2 ?? 0}</b></div>
-    <div><span class="kpi-icon">💼</span><span>Bekerja</span><b>${s.bekerja ?? 0}</b></div>
-    <div><span class="kpi-icon">🏢</span><span>Wirausaha</span><b>${s.wirausaha ?? 0}</b></div>
-    <div><span class="kpi-icon">🎓</span><span>Studi Lanjut</span><b>${s.studi ?? 0}</b></div>
-    <div><span class="kpi-icon">🤝</span><span>Ikut Organisasi</span><b>${s.organisasi ?? 0}</b></div>
-    <div><span class="kpi-icon">🏆</span><span>Punya Prestasi</span><b>${s.prestasi ?? 0}</b></div>`);
-  const c = DATA?.charts || {};
-  mkBar('chStatus', c.statusCounts); mkBar('chTahun', c.yearCounts);
-  mkDoughnut('chProdi', c.programCounts); mkBar('chKesesuaian', c.kesesuaianCounts);
-  const rows = (DATA.recent || []).map(r => `<tr data-tid="${esc(r.tracerId)}">
-    <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
-    <td>${badgeJenjang(r.jenjang)}</td>
-    <td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td></tr>`).join('');
-  setHtml('recentTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Jenjang</th><th>Prodi</th><th>Lulus</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="6">Belum ada data.</td></tr>'}</tbody>`);
-  /* Klik baris → buka detail */
-  $('recentTable')?.querySelectorAll('tr[data-tid]').forEach(tr => {
-    tr.addEventListener('click', () => showDetail(tr.dataset.tid));
-  });
-}
-function renderResponden() {
-  const items = DATA?.items || [];
-  const pg = DATA?.pagination || { page: 1, perPage: RESP_PER_PAGE, total: items.length, totalPages: 1 };
-  const rows = items.map(r => `<tr data-tid="${esc(r.tracerId)}">
-    <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
-    <td>${badgeJenjang(r.jenjang)}</td>
-    <td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td></tr>`).join('');
-  setHtml('respTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Jenjang</th><th>Prodi</th><th>Lulus</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="6">Tidak ada data.</td></tr>'}</tbody>`);
-  setHtml('respInfo', `Menampilkan ${items.length} dari ${pg.total} responden`);
-  const p = $('respPagination');
-  if (p) {
-    if (pg.totalPages <= 1) { p.innerHTML = ''; return; }
-    p.innerHTML = `
-      <button ${pg.page <= 1 ? 'disabled' : ''} data-page="${pg.page - 1}">← Sebelumnya</button>
-      <span class="page-info">Halaman ${pg.page} / ${pg.totalPages}</span>
-      <button ${pg.page >= pg.totalPages ? 'disabled' : ''} data-page="${pg.page + 1}">Berikutnya →</button>`;
-    p.querySelectorAll('button[data-page]').forEach(b => b.addEventListener('click', () => {
-      const target = Number(b.dataset.page);
-      if (target >= 1 && target <= pg.totalPages) { respPage = target; loadDashboard().catch(() => {}); }
-    }));
-  }
-  $('respTable')?.querySelectorAll('tr[data-tid]').forEach(tr => {
-    tr.addEventListener('click', () => showDetail(tr.dataset.tid));
-  });
-}
-
-/* FIX: Modal detail responden */
-async function showDetail(tracerId) {
-  try {
-    const r = await post({ action: 'detail', token: TOKEN, tracerId });
-    if (!r.ok) throw new Error(r.error || 'Gagal memuat detail.');
-    const it = r.item || {};
-    const komp = it.KOMPETENSI || {};
-    const renderTree = obj => Object.entries(obj || {}).map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v || '-')}</span></li>`).join('');
-    const kompF1 = renderTree(komp.F1_DIKUASAI);
-    const kompF2 = renderTree(komp.F2_DIBUTUHKAN);
-    const kompF3 = renderTree(komp.F3_METODE);
-    const html = `
-      <div class="modal" id="detailModal">
-        <div class="box">
-          <h3>Detail Responden <button type="button" class="btn secondary sm" onclick="document.getElementById('detailModal').remove()">✕</button></h3>
-          <p><b>${esc(it.TRACER_ID || tracerId)}</b> · ${badgeJenjang(it.JENJANG)} · ${esc(it.NAMA || '-')}</p>
-          <div class="form-section-title">A — Data Pribadi</div>
-          <ul class="tree">
-            <li><b>NIM</b><span>${esc(it.NIM || '-')}</span></li>
-            <li><b>Program Studi</b><span>${esc(it.PROGRAM_STUDI || '-')}</span></li>
-            <li><b>Tahun Masuk / Lulus</b><span>${esc(it.TAHUN_MASUK || '-')} → ${esc(it.TAHUN_LULUS || '-')}</span></li>
-            <li><b>IPK</b><span>${esc(it.IPK || '-')}</span></li>
-            <li><b>Email / WhatsApp</b><span>${esc(it.EMAIL || '-')} / ${esc(it.WHATSAPP || '-')}</span></li>
-            <li><b>Alamat Domisili</b><span>${esc(it.ALAMAT_DOMISILI || '-')}</span></li>
-          </ul>
-          <div class="form-section-title">B — Pekerjaan</div>
-          <ul class="tree">
-            <li><b>Status</b><span>${esc(it.STATUS_PEKERJAAN_UTAMA || '-')}</span></li>
-            <li><b>Masa Tunggu</b><span>${esc(it.MASA_TUNGGU_KERJA || '-')}</span></li>
-            <li><b>Perusahaan</b><span>${esc(it.NAMA_PERUSAHAAN || '-')}</span></li>
-            <li><b>Bidang Industri</b><span>${esc(it.BIDANG_INDUSTRI || '-')}</span></li>
-            <li><b>Jabatan</b><span>${esc(it.JABATAN || '-')}</span></li>
-            <li><b>Sistem Kerja</b><span>${esc(it.SISTEM_KERJA || '-')}</span></li>
-            <li><b>Penghasilan</b><span>${esc(it.PENGHASILAN_RANGE || '-')}</span></li>
-            <li><b>Kesesuaian</b><span>${esc(it.KESESUAIAN_PEKERJAAN || '-')}</span></li>
-            <li><b>Lokasi Kerja</b><span>${esc([it.KOTA_KERJA, it.PROVINSI_KERJA, it.NEGARA_KERJA].filter(Boolean).join(', ') || '-')}</span></li>
-          </ul>
-          <div class="form-section-title">F1 — Kompetensi Dikuasai</div>
-          <ul class="tree">${kompF1 || '<li><i>Belum ada data</i></li>'}</ul>
-          <div class="form-section-title">F2 — Kompetensi Dibutuhkan</div>
-          <ul class="tree">${kompF2 || '<li><i>Belum ada data</i></li>'}</ul>
-          <div class="form-section-title">F3 — Metode Pembelajaran</div>
-          <ul class="tree">${kompF3 || '<li><i>Belum ada data</i></li>'}</ul>
-          <div class="form-section-title">H — Umpan Balik</div>
-          <ul class="tree">
-            <li><b>Saran Kurikulum</b><span style="white-space:pre-wrap">${esc(it.SARAN_KURIKULUM || '-')}</span></li>
-            <li><b>Kompetensi Tambahan</b><span style="white-space:pre-wrap">${esc(it.KOMPETENSI_TAMBAHAN || '-')}</span></li>
-            <li><b>Kesan & Pesan</b><span style="white-space:pre-wrap">${esc(it.KESAN_PESAN || '-')}</span></li>
-          </ul>
-          <div class="actions" style="margin-top:16px">
-            <button type="button" class="btn secondary" onclick="document.getElementById('detailModal').remove()">Tutup</button>
-          </div>
-        </div>
-      </div>`;
-    $('modalRoot').innerHTML = html;
-  } catch (e) { toast(e.message, 'err'); }
-}
-
-function renderAnalitik() {
-  const c = DATA?.charts || {};
-  mkRadar('chKompetensi', c.kompetensiDikuasaiAvg || {}, currentKompetensiList());
-  mkRadar('chKebutuhan', c.kompetensiDibutuhkanAvg || {}, currentKompetensiList());
-  mkBar('chMasaTunggu', c.masaTungguBuckets);
-  mkHBar('chBidang', c.bidangCounts);
-  mkDoughnut('chOrganisasi', c.organisasiCounts);
-  mkDoughnut('chPrestasi', c.prestasiCounts);
-  mkDoughnut('chSistemKerja', c.sistemKerjaCounts);
-  mkDoughnut('chJenisPekerjaan', c.jenisPekerjaanCounts);
-  const s = DATA?.saranList || [];
-  setHtml('saranList', s.length ? s.map(x => `
-    <div style="border-bottom:1px solid var(--line);padding:10px 0">
-      <b>${esc(x.nama)}</b> ${badgeJenjang(x.jenjang)} <span class="hint">· ${esc(x.programStudi)} · ${esc(x.tahunLulus)}</span>
-      <p style="margin:6px 0;white-space:pre-wrap">${esc(x.saran || '-')}</p>
-    </div>`).join('') : 'Belum ada masukan.');
-}
-
-function renderAkreditasi() {
-  const d = DATA || {};
-  const sum = d.summary || {};
-  const ch = d.charts || {};
-  const scopeLabel = { all:'Semua', s1:'Prodi S1', s2:'Prodi S2', fak:'Fakultas', univ:'Universitas' }[accScope] || 'Semua';
-  const totalLulusan = sum.total || 0;
-  const masaTungguKurang3 = ch.masaTungguBuckets?.['< 3 bulan'] || 0;
-  const masaTunggu3to6 = ch.masaTungguBuckets?.['3–6 bulan'] || 0;
-  const pctCepat = totalLulusan ? Math.round(((masaTungguKurang3 + masaTunggu3to6) / totalLulusan) * 100) : 0;
-  const kesesuaianTinggi = (ch.kesesuaianCounts?.['Sangat sesuai'] || 0) + (ch.kesesuaianCounts?.['Sesuai'] || 0);
-  const pctKesesuaian = totalLulusan ? Math.round((kesesuaianTinggi / totalLulusan) * 100) : 0;
-
-  setHtml('accListBANPT', `
-    <li><b>Keterlacakan Lulusan (${scopeLabel}):</b> ${totalLulusan} responden terverifikasi.</li>
-    <li><b>Masa Tunggu Kerja &lt; 6 bulan:</b> ${pctCepat}% (${masaTungguKurang3 + masaTunggu3to6} dari ${totalLulusan}).</li>
-    <li><b>Kesesuaian Bidang Kerja Tinggi:</b> ${pctKesesuaian}% (${kesesuaianTinggi} dari ${totalLulusan}).</li>
-    <li><b>Kontribusi Kurikulum MBKM (Magang):</b> ${sum.magang || 0} alumni melaporkan magang.</li>
-    <li><b>Kontribusi Organisasi Profesi:</b> ${sum.organisasi || 0} alumni terlibat.</li>
-    <li><b>Prestasi Alumni:</b> ${sum.prestasi || 0} alumni dengan capaian prestasi.</li>`);
-  setHtml('accListLAMSPAK', `
-    <li><b>Kesesuaian Bidang Ilmu Komunikasi:</b> Evaluasi F4 &amp; B15 sebagai dasar revisi kurikulum.</li>
-    <li><b>Penguasaan Kompetensi (F1) vs Kebutuhan (F2):</b> Gap analysis radar kompetensi tersedia.</li>
-    <li><b>Metode Pembelajaran (F3):</b> Penekanan praktikum, magang, seminar, dan publikasi ilmiah.</li>
-    <li><b>Kolaborasi Organisasi Profesi:</b> PRINDONESIA, PWI, IJTI, AMSI, ASPIKOM, Perhumas, P3I.</li>
-    <li><b>Luaran Prestasi:</b> Kompetisi jurnalistik, periklanan, PR, publikasi ilmiah, penghargaan profesional.</li>
-    <li><b>Umpan Balik Kurikulum (H1):</b> ${(d.saranList || []).length} masukan terkumpul dari alumni.</li>`);
-  setHtml('accListPDDIKTI', `
-    <li><b>Siap ekspor CSV/XLSX</b> untuk pelaporan ke <code>tracerstudy.kemdikbud.go.id</code>.</li>
-    <li><b>Field wajib:</b> NIM, Nama, Program Studi, Jenjang, Tahun Lulus, IPK, Status Pekerjaan, Masa Tunggu, Kesesuaian.</li>
-    <li><b>Distribusi S1:</b> ${sum.s1 ?? 0} · <b>Distribusi S2:</b> ${sum.s2 ?? 0}.</li>
-    <li><b>Periode Pelaporan:</b> Data dapat difilter per tahun lulus &amp; program studi.</li>
-    <li><b>Standar Data:</b> Mengikuti kamus data Tracer Study Ditjen Belmawa Kemdiktisaintek.</li>`);
-  mkBar('chAccRelevansi', ch.relevansiCounts || {});
-  mkBar('chAccMasaTunggu', ch.masaTungguBuckets || {});
-}
-
-/* Admin Panel — manajemen user, periode, import, audit */
-function renderAdminPanel() {
-  if (!PROFILE || (PROFILE.role || '').toUpperCase() !== 'ADMIN') {
-    toast('Akses ditolak — hanya Admin.', 'err');
-    return;
-  }
-  loadUserTable();
-  loadPeriodeTable();
-  loadAuditTable();
-  $('addUserBtn')?.addEventListener('click', () => openUserForm(null), { once: true });
-  $('reloadUserBtn')?.addEventListener('click', loadUserTable, { once: true });
-  $('addPeriodeBtn')?.addEventListener('click', () => openPeriodeForm(null), { once: true });
-  $('reloadPeriodeBtn')?.addEventListener('click', loadPeriodeTable, { once: true });
-  $('doImportBtn')?.addEventListener('click', doImportCSV, { once: true });
-  $('reloadAuditBtn')?.addEventListener('click', loadAuditTable, { once: true });
-}
-
-async function loadUserTable() {
-  // Ambil via dashboard (yang sudah punya data.users jika admin)
-  try {
-    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
-    if (!r.ok) return;
-    // Data users hanya tersedia jika backend kirim. Kita cek:
-    const users = r.users || [];
-    if (!users.length) {
-      setHtml('userTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Daftar user tidak tersedia via endpoint saat ini. Kelola langsung di sheet USERS.</td></tr></tbody>`);
-      return;
-    }
-    const rows = users.map(u => `<tr>
-      <td>${esc(u.username)}</td><td>${esc(u.nama)}</td>
-      <td>${esc(u.role)}</td><td>${esc(u.programStudi || '-')}</td>
-      <td>${u.aktif ? '✅' : '❌'}</td>
-    </tr>`).join('');
-    setHtml('userTable', `<thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th></tr></thead><tbody>${rows}</tbody>`);
-  } catch (_) {}
-}
-function openUserForm() {
-  toast('Fitur tambah user: gunakan menu spreadsheet admin.', 'info');
-}
-async function loadPeriodeTable() {
-  try {
-    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
-    if (!r.ok) return;
-    const list = r.periode || [];
-    if (!list.length) {
-      setHtml('periodeTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Daftar periode tidak tersedia via endpoint. Kelola langsung di sheet PERIODE.</td></tr></tbody>`);
-      return;
-    }
-    const rows = list.map(p => `<tr>
-      <td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td>
-      <td>${esc(p.status)}</td><td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td>
-    </tr>`).join('');
-    setHtml('periodeTable', `<thead><tr><th>ID</th><th>Nama</th><th>Status</th><th>Rentang</th></tr></thead><tbody>${rows}</tbody>`);
-  } catch (_) {}
-}
-function openPeriodeForm() {
-  toast('Fitur tambah periode: gunakan menu spreadsheet admin.', 'info');
-}
-async function loadAuditTable() {
-  try {
-    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
-    if (!r.ok) return;
-    const list = r.audit || [];
-    if (!list.length) {
-      setHtml('auditTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Audit log tidak tersedia via endpoint. Lihat sheet AUDIT_LOG.</td></tr></tbody>`);
-      return;
-    }
-    const rows = list.map(a => `<tr>
-      <td>${esc((a.timestamp || '').slice(0, 19))}</td>
-      <td>${esc(a.actor)}</td><td>${esc(a.action)}</td>
-      <td>${esc(a.ref)}</td><td>${esc(a.detail)}</td>
-    </tr>`).join('');
-    setHtml('auditTable', `<thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Ref</th><th>Detail</th></tr></thead><tbody>${rows}</tbody>`);
-  } catch (_) {}
-}
-async function doImportCSV() {
-  const csv = val('csvImport');
-  if (!csv) return toast('Paste CSV terlebih dahulu.', 'err');
-  try {
-    const r = await post({ action: 'masterImport', token: TOKEN, csv });
-    if (!r.ok) throw new Error(r.error || 'Gagal import.');
-    setHtml('importResult', `✓ Inserted: ${r.inserted} · Updated: ${r.updated} · Skipped: ${r.skipped}`);
-    toast('Import selesai.', 'ok');
-  } catch (e) { setHtml('importResult', '✗ ' + e.message); toast(e.message, 'err'); }
-}
-
-function ensureChart() {
-  if (typeof Chart === 'undefined') {
-    toast('Chart.js belum tersedia. Tunggu beberapa detik lalu refresh.', 'err');
-    return false;
-  }
-  return true;
-}
-function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
-function chartBase(extra = {}) { return Object.assign({ responsive: true, maintainAspectRatio: false, animation: { duration: 400 }, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }, extra); }
-function mkBar(id, obj) { if (!ensureChart()) return; destroyChart(id); const e = $(id); if (!e || !obj) return; const labels = Object.keys(obj); charts[id] = new Chart(e, { type: 'bar', data: { labels, datasets: [{ data: labels.map(k => obj[k]), borderRadius: 7, backgroundColor: '#116149' }] }, options: chartBase() }); }
-function mkHBar(id, obj) { if (!ensureChart()) return; destroyChart(id); const e = $(id); if (!e || !obj) return; const a = Object.entries(obj).sort((x, y) => y[1] - x[1]).slice(0, 8); charts[id] = new Chart(e, { type: 'bar', data: { labels: a.map(x => x[0]), datasets: [{ data: a.map(x => x[1]), borderRadius: 7, backgroundColor: '#116149' }] }, options: chartBase({ indexAxis: 'y', scales: { x: { beginAtZero: true } } }) }); }
-function mkDoughnut(id, obj) { if (!ensureChart()) return; destroyChart(id); const e = $(id); if (!e || !obj) return; const labels = Object.keys(obj); charts[id] = new Chart(e, { type: 'doughnut', data: { labels, datasets: [{ data: labels.map(k => obj[k]), borderWidth: 2, borderColor: '#fff', backgroundColor: ['#116149','#0891b2','#7c3aed','#d97706','#be185d','#059669','#3b82f6','#ef4444','#f59e0b'] }] }, options: { responsive: true, maintainAspectRatio: false, animation: { duration: 400 }, plugins: { legend: { position: 'bottom' } } } }); }
-function mkRadar(id, obj, list) { if (!ensureChart()) return; destroyChart(id); const e = $(id); if (!e) return; const labels = list.map(x => x[1]); charts[id] = new Chart(e, { type: 'radar', data: { labels, datasets: [{ label: 'Rata-rata', data: list.map(([k]) => Number(obj[k] ?? 0)), backgroundColor: 'rgba(17,97,73,.15)', borderColor: '#116149', pointBackgroundColor: '#116149' }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 5, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } } }); }
-
-$$('[data-export]').forEach(b => b.addEventListener('click', async () => {
-  const fmt = b.dataset.export, old = b.textContent;
-  b.disabled = true; b.textContent = 'Menyiapkan...';
-  try {
-    const r = await post({ action: 'export', token: TOKEN, format: fmt, filters: JSON.stringify(currentFilters()) });
-    if (!r.ok) throw new Error(r.error || 'Export gagal.');
-    const bin = atob(r.base64);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    const blob = new Blob([bytes], { type: r.mime || 'application/octet-stream' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = r.filename; a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
-  } catch (e) { toast(e.message, 'err'); }
-  finally { b.disabled = false; b.textContent = old; }
-}));
-
-(async function boot() {
-  rebuildRatingsForLevel();
-  buildChecks('organisasiProfesi', ORGANISASI_PROFESI);
-  buildChecks('jenisPrestasi', JENIS_PRESTASI);
-  fillSelect('programStudi', ['S1 Ilmu Komunikasi','S2 Magister Ilmu Komunikasi'], 'Pilih');
-  fillSelect('jenjang', ['S1','S2'], 'Pilih');
-  Object.keys(CONDITIONAL_MAP).forEach(k => applyConditionalByKey(k));
-  pingServer();
-  setInterval(pingServer, 300000);
-  try {
-    const meta = await get({ action: 'meta' });
-    if (meta && meta.ok) {
-      META = meta;
-      fillSelect('programStudi', meta.programs || ['S1 Ilmu Komunikasi','S2 Magister Ilmu Komunikasi'], 'Pilih');
-      fillSelect('jenjang', meta.jenjang || ['S1','S2'], 'Pilih');
-      const p = meta.periodeAktif, box = $('periodeInfo');
-      if (box && p) {
-        box.className = 'status info'; box.style.display = 'block';
-        box.innerHTML = `Periode aktif: <b>${esc(p.nama)}</b> · Tahun lulus ${esc(p.tahunMin)}–${esc(p.tahunMax)}`;
-      }
-      const fp = $('fPeriode');
-      if (fp && Array.isArray(meta.periodeList)) {
-        fp.innerHTML = '<option value="">Semua</option>' + meta.periodeList.map(p => `<option value="${esc(p.periodeId)}">${esc(p.nama)}</option>`).join('');
-      }
-    }
-  } catch (_) {}
-  if (TOKEN && ensureSession()) loadDashboard().catch(() => {});
-  updateSteps(); updateLevelBanner(); showLevelGroup();
-})();
-
-$('notifyBtn')?.addEventListener('click', openNotifications);
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelector('.notify-panel')?.remove();
-    document.querySelector('.modal')?.remove();
-  }
-});
-window.addEventListener('beforeunload', e => {
-  if (formSubmitted) return;
-  if (!VERIFIED_NIM) return;
-  if ($('consentData')?.checked) return;
-  if (step < 5) return;
-  e.preventDefault(); e.returnValue = '';
-});
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
