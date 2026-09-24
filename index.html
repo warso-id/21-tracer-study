@@ -26,13 +26,13 @@ label{display:block;font-weight:700;margin-bottom:6px;font-size:14px}input,selec
 .step{display:none}.step.active{display:block;animation:fadeIn .3s}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.stepnav{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
 .radio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.radio{border:1px solid var(--line);padding:9px;border-radius:10px;font-weight:500;text-align:center;cursor:pointer;font-size:14px;transition:.15s}.radio:hover{background:#f1f7f4;border-color:var(--accent)}.radio:has(input:checked){background:#e9f4f0;border-color:var(--accent);color:var(--accent);font-weight:700}.radio input{width:auto;margin-right:4px}
 .check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check-item{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);padding:10px;border-radius:10px;background:#fff;cursor:pointer;transition:.15s}.check-item:hover{background:#f1f7f4;border-color:var(--accent)}.check-item:has(input:checked){background:#e9f4f0;border-color:var(--accent)}.check-item input{width:auto;margin-top:3px}
-.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;font-size:13.5px}.table th,.table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}.table th{background:#f1f7f4;position:sticky;top:0;font-size:12.5px;text-transform:uppercase;color:#33544a;z-index:1}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;font-size:13.5px}.table th,.table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}.table th{background:#f1f7f4;position:sticky;top:0;font-size:12.5px;text-transform:uppercase;color:#33544a;z-index:1}.table tbody tr{cursor:pointer;transition:.15s}.table tbody tr:hover{background:#f8fbfa}
 .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.kpi>div{padding:16px;background:#f1f7f4;border-radius:13px;border:1px solid #e0ece7;position:relative;overflow:hidden;transition:.2s}.kpi>div:hover{transform:translateY(-2px);box-shadow:0 6px 20px #17352a14}.kpi b{display:block;font-size:25px;line-height:1.2;color:var(--accent2)}.kpi span{font-size:12.5px;color:var(--muted);text-transform:uppercase}.kpi .kpi-icon{position:absolute;right:10px;top:10px;font-size:22px;opacity:.25}
 .chartbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;position:relative;min-height:280px}.chartbox h4{margin:0 0 10px;font-size:14px;color:#33544a}.chartbox canvas{max-height:240px}
 .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end}
 .badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:700;background:#e7efec;color:#164b3b}.badge.ok{background:#e6f6ec;color:var(--ok)}.badge.warn{background:#fdf3e7;color:var(--warn)}.badge.err{background:#fdeceb;color:var(--danger)}.badge.info{background:#eef4ff;color:var(--info)}.badge.s1{background:var(--s1-bg2);color:var(--s1-dark);border:1px solid var(--s1-border);font-weight:800}.badge.s2{background:var(--s2-bg2);color:var(--s2-dark);border:1px solid var(--s2-border);font-weight:800}
 .badge.role-kaprodi-s1{background:var(--s1-bg2);color:var(--s1-dark);border:1px solid var(--s1-border)}.badge.role-kaprodi-s2{background:var(--s2-bg2);color:var(--s2-dark);border:1px solid var(--s2-border)}.badge.role-admin{background:var(--admin-bg2);color:var(--admin-dark);border:1px solid var(--admin-border)}.badge.role-wadek{background:var(--wadek-bg2);color:var(--wadek-dark);border:1px solid var(--wadek-border)}.badge.role-dekan{background:var(--dekan-bg2);color:var(--dekan-dark);border:1px solid var(--dekan-border)}
-.modal{position:fixed;inset:0;background:#0b1a1588;display:flex;align-items:center;justify-content:center;z-index:60;padding:18px}.modal .box{background:#fff;border-radius:16px;max-width:820px;width:100%;max-height:88vh;overflow:auto;padding:22px}
+.modal{position:fixed;inset:0;background:#0b1a1588;display:flex;align-items:center;justify-content:center;z-index:60;padding:18px;animation:fadeIn .2s}.modal .box{background:#fff;border-radius:16px;max-width:900px;width:100%;max-height:88vh;overflow:auto;padding:22px}.modal .box h3{margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .tree{list-style:none;padding-left:0;margin:0;font-size:14px}.tree li{padding:5px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px;flex-wrap:wrap}.tree b{display:inline-block;min-width:220px;color:#33544a}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
 .subtab{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:10px}.subtab button{border:0;background:#eef4f1;color:#2a4a3f;padding:8px 13px;border-radius:99px;cursor:pointer;font-weight:700;font-size:13px;transition:.15s}.subtab button.active{background:var(--accent);color:#fff}
@@ -56,6 +56,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .char-counter{display:block;text-align:right;font-size:11.5px;color:var(--muted);margin-top:4px}.char-counter.over{color:var(--danger);font-weight:700}
 .help-inline{background:#eef4ff;border-left:3px solid var(--info);padding:10px 12px;border-radius:8px;font-size:12.5px;color:#1e3a8a;margin:10px 0;line-height:1.6}.sec-notice{background:#fff8e8;border-left:3px solid var(--warn);padding:10px 12px;border-radius:8px;font-size:12.5px;color:var(--warn);margin:10px 0}
 .pagination{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}.pagination button{border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:9px;cursor:pointer;font-weight:700;font-size:13px;color:#33544a}.pagination button:hover:not(:disabled){background:#f1f7f4;border-color:var(--accent);color:var(--accent)}.pagination button:disabled{opacity:.5;cursor:not-allowed}.pagination .page-info{font-size:13px;color:var(--muted);font-weight:700}
+.btn-ubah-pass{border:1px solid #ffffff33;background:#ffffff18;color:#fff;padding:8px 14px;border-radius:99px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s}.btn-ubah-pass:hover{background:#ffffff28}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}.actions,.stepnav{flex-direction:column}.actions .btn,.stepnav .btn{width:100%}header{padding:14px}main{padding:14px 10px}.card{padding:15px}.login-shell{grid-template-columns:1fr}.login-hero{display:none}.login-form{padding:26px 20px}.level-banner{flex-wrap:wrap}.level-hint{margin-left:0;width:100%;text-align:center}.step-indicator{grid-template-columns:repeat(4,1fr)}.grid4{grid-template-columns:1fr}.radio-grid{grid-template-columns:repeat(5,1fr)}}
 </style>
 </head>
@@ -69,6 +70,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       <p>Modul S1 Ilmu Komunikasi &amp; S2 Magister Ilmu Komunikasi · BAN-PT No. 36/2025 · LAMSPAK No. 5/2025 · PDDIKTI</p>
     </div>
     <div class="header-tools">
+      <button type="button" class="btn-ubah-pass hidden" id="ubahPassBtn" title="Ubah Password">🔑 Ubah Password</button>
       <button type="button" class="notify-btn" id="notifyBtn" title="Notifikasi" aria-label="Notifikasi">🔔<span class="notify-count hidden" id="notifyCount">0</span></button>
       <span class="conn-pill" id="connPill" title="Status koneksi"><span class="conn-dot check" id="connDot"></span><span id="connText">Menghubungkan…</span></span>
     </div>
@@ -265,8 +267,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div id="organisasiBox" class="conditional-box hidden">
           <p class="cb-title">📌 Detail Organisasi Profesi</p>
           <div class="grid">
-            <div class="full"><label>D2. Organisasi profesi yang Anda ikuti (boleh lebih dari satu)</label><div id="organisasiProfesi" class="check-grid"></div></div>
-            <div class="full hidden" id="orgLainBox"><label for="organisasiProfesiLain">Sebutkan organisasi lainnya</label><input id="organisasiProfesiLain" maxlength="200"></div>
+            <div class="full"><label>D2. Organisasi profesi yang Anda ikuti (boleh lebih dari satu)</label><div id="organisasiProfesi" class="check-grid"></div><span class="field-error" id="err-organisasiProfesi"></span></div>
+            <div class="full hidden" id="orgLainBox"><label for="organisasiProfesiLain">Sebutkan organisasi lainnya <span class="req">*</span></label><input id="organisasiProfesiLain" maxlength="200"><span class="field-error" id="err-organisasiProfesiLain"></span></div>
             <div><label for="tahunBergabungOrg">D3. Tahun mulai bergabung</label><input id="tahunBergabungOrg" inputmode="numeric" maxlength="4"></div>
             <div><label for="peranOrganisasi">D4. Peran/jabatan Anda dalam organisasi</label><input id="peranOrganisasi" maxlength="100"></div>
             <div><label for="tingkatKeterlibatan">D5. Tingkat keterlibatan Anda</label><select id="tingkatKeterlibatan"><option value="">Pilih</option><option>Sangat aktif</option><option>Aktif</option><option>Cukup aktif</option><option>Kurang aktif</option><option>Tidak aktif</option></select></div>
@@ -286,8 +288,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div id="prestasiBox" class="conditional-box hidden">
           <p class="cb-title">📌 Detail Prestasi</p>
           <div class="grid">
-            <div class="full"><label>E2. Prestasi yang pernah Anda raih (boleh lebih dari satu)</label><div id="jenisPrestasi" class="check-grid"></div></div>
-            <div class="full hidden" id="prestasiLainBox"><label for="jenisPrestasiLain">Sebutkan jenis prestasi lainnya</label><input id="jenisPrestasiLain" maxlength="200"></div>
+            <div class="full"><label>E2. Prestasi yang pernah Anda raih (boleh lebih dari satu)</label><div id="jenisPrestasi" class="check-grid"></div><span class="field-error" id="err-jenisPrestasi"></span></div>
+            <div class="full hidden" id="prestasiLainBox"><label for="jenisPrestasiLain">Sebutkan jenis prestasi lainnya <span class="req">*</span></label><input id="jenisPrestasiLain" maxlength="200"><span class="field-error" id="err-jenisPrestasiLain"></span></div>
             <div class="full"><label for="namaPrestasiSpesifik">E3. Nama prestasi spesifik</label><input id="namaPrestasiSpesifik" maxlength="200" placeholder="Contoh: Juara 1 Lomba Karya Jurnalistik Nasional"></div>
             <div><label for="penyelenggaraPrestasi">E4. Penyelenggara</label><input id="penyelenggaraPrestasi" maxlength="150" placeholder="Contoh: Kementerian Komunikasi"></div>
             <div><label for="kategoriPrestasi">E5. Kategori prestasi</label><select id="kategoriPrestasi"><option value="">Pilih</option><option>Akademik</option><option>Non-Akademik</option><option>Karya Kreatif</option><option>Profesional</option></select></div>
@@ -331,12 +333,12 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           <p class="cb-title">📌 Detail Studi Lanjut</p>
           <div class="grid">
             <div><label for="jenjangStudiLanjut">G2. Jenjang studi lanjut</label><select id="jenjangStudiLanjut" data-conditional="jenjangStudiLanjutLain"><option value="">Pilih</option><option>S2</option><option>S3</option><option>Profesi</option><option>Lainnya</option></select></div>
-            <div id="jenjangStudiLanjutLainBox" class="hidden"><label for="jenjangStudiLanjutLain">Sebutkan jenjang <span class="req">*</span></label><input id="jenjangStudiLanjutLain" maxlength="100"></div>
+            <div id="jenjangStudiLanjutLainBox" class="hidden"><label for="jenjangStudiLanjutLain">Sebutkan jenjang <span class="req">*</span></label><input id="jenjangStudiLanjutLain" maxlength="100"><span class="field-error" id="err-jenjangStudiLanjutLain"></span></div>
             <div><label for="ptStudiLanjut">G3. Nama Perguruan Tinggi</label><input id="ptStudiLanjut" maxlength="150"></div>
             <div><label for="prodiStudiLanjut">G4. Program Studi</label><input id="prodiStudiLanjut" maxlength="150"></div>
             <div><label for="tahunMulaiStudi">G5. Tahun mulai studi lanjut</label><input id="tahunMulaiStudi" inputmode="numeric" maxlength="4"></div>
             <div><label for="biayaStudiLanjut">G6. Sumber biaya studi lanjut</label><select id="biayaStudiLanjut" data-conditional="biayaStudiLanjutLain"><option value="">Pilih</option><option>Biaya sendiri/keluarga</option><option>Beasiswa</option><option>Perusahaan</option><option>Lainnya</option></select></div>
-            <div id="biayaStudiLanjutLainBox" class="hidden"><label for="biayaStudiLanjutLain">Sebutkan sumber biaya <span class="req">*</span></label><input id="biayaStudiLanjutLain" maxlength="100"></div>
+            <div id="biayaStudiLanjutLainBox" class="hidden"><label for="biayaStudiLanjutLain">Sebutkan sumber biaya <span class="req">*</span></label><input id="biayaStudiLanjutLain" maxlength="100"><span class="field-error" id="err-biayaStudiLanjutLain"></span></div>
             <div><label for="studiDukungKarier">G7. Studi lanjut mendukung karier Anda?</label><select id="studiDukungKarier"><option value="">Pilih</option><option>Sangat mendukung</option><option>Mendukung</option><option>Cukup mendukung</option><option>Kurang mendukung</option><option>Tidak mendukung</option></select></div>
             <div class="full"><label for="alasanStudiLanjut">G8. Alasan utama melanjutkan studi</label><textarea id="alasanStudiLanjut" maxlength="500" placeholder="Contoh: meningkatkan kompetensi, syarat jabatan, passion akademik..."></textarea><span class="char-counter" data-for="alasanStudiLanjut">0 / 500</span></div>
           </div>
@@ -418,13 +420,17 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       </div>
       <div class="toolbar" style="justify-content:space-between;align-items:center">
         <span id="profileBadge" class="role-badge"></span>
-        <div class="actions"><button id="refreshBtn" class="btn secondary sm">↻ Refresh</button><button id="logoutBtn" class="btn danger sm">Logout</button></div>
+        <div class="actions">
+          <button id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
+          <button id="logoutBtn" class="btn danger sm">Logout</button>
+        </div>
       </div>
       <div class="subtab" id="adminTabs">
         <button class="active" data-panel="overview">Ringkasan</button>
         <button data-panel="responden">Responden</button>
         <button data-panel="analitik">Analitik</button>
         <button data-panel="akreditasi">Akreditasi</button>
+        <button data-panel="adminpanel" class="admin-only">⚙️ Admin Panel</button>
       </div>
       <div class="card" style="background:#f8fbfa">
         <div class="filters">
@@ -483,19 +489,46 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
           <div class="chartbox"><h4>Masa Tunggu Kerja per Prodi</h4><canvas id="chAccMasaTunggu"></canvas></div>
         </div>
       </div>
+
+      <div class="panel hidden" data-panel="adminpanel">
+        <div class="grid" style="gap:16px">
+          <div class="card">
+            <h4>👥 Manajemen User</h4>
+            <div class="toolbar"><button class="btn sm" id="addUserBtn">+ Tambah User</button><button class="btn secondary sm" id="reloadUserBtn">↻ Reload</button></div>
+            <div class="tablewrap"><table class="table" id="userTable"></table></div>
+          </div>
+          <div class="card">
+            <h4>📅 Manajemen Periode</h4>
+            <div class="toolbar"><button class="btn sm" id="addPeriodeBtn">+ Tambah Periode</button><button class="btn secondary sm" id="reloadPeriodeBtn">↻ Reload</button></div>
+            <div class="tablewrap"><table class="table" id="periodeTable"></table></div>
+          </div>
+          <div class="card">
+            <h4>📥 Import Master Alumni (CSV)</h4>
+            <p class="hint">Format kolom: NIM, NAMA, PROGRAM_STUDI, JENJANG, TAHUN_MASUK, TAHUN_LULUS, EMAIL, WHATSAPP</p>
+            <textarea id="csvImport" maxlength="500000" placeholder="Paste CSV di sini..." style="min-height:150px;font-family:monospace;font-size:12px"></textarea>
+            <div class="toolbar" style="margin-top:10px"><button class="btn sm" id="doImportBtn">✓ Import CSV</button></div>
+            <div id="importResult" class="hint"></div>
+          </div>
+          <div class="card">
+            <h4>📜 Audit Log (200 terakhir)</h4>
+            <div class="toolbar"><button class="btn secondary sm" id="reloadAuditBtn">↻ Reload</button></div>
+            <div class="tablewrap" style="max-height:400px;overflow:auto"><table class="table" id="auditTable"></table></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v12.2.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v12.3.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
 'use strict';
-const APP_VERSION_STR = 'v12.2.0';
+const APP_VERSION_STR = 'v12.3.0';
 const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
 const GAS_URL = localStorage.getItem('ts_gas_url') || DEFAULT_GAS_URL;
 
@@ -792,15 +825,13 @@ function updateNimTypeInfo() {
 function clearNimVerification(hint = 'Masukkan NIM 9 digit lalu klik Verifikasi NIM.') {
   VERIFIED_NIM = ''; VERIFIED_ALUMNI = null;
   const n = $('nama'); if (n) { n.value = ''; n.readOnly = true; n.dataset.masterNim = ''; }
-  const em = $('email'); if (em) em.readOnly = false;
-  const wa = $('whatsapp'); if (wa) wa.readOnly = false;
   const h = $('nimHint'); if (h) h.textContent = hint;
   const nh = $('namaHint'); if (nh) { nh.textContent = 'Nama akan otomatis diambil dari MASTER_ALUMNI berdasarkan NIM.'; nh.style.color = ''; }
 }
+/* FIX: hanya lock Prodi/Jenjang/Tahun. Email & WA tetap editable */
 function lockMasterFields(lock) {
-  ['programStudi','jenjang','tahunMasuk','tahunLulus','email','whatsapp'].forEach(id => { const e = $(id); if (e) e.disabled = false; e && (e.readOnly = false); });
   ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(id => { const e = $(id); if (e) e.disabled = !!lock; });
-  ['email','whatsapp'].forEach(id => { const e = $(id); if (e) e.readOnly = !!lock; });
+  /* email & whatsapp TETAP editable — user bisa memperbarui kontak */
 }
 function applyVerifiedAlumni(row, nim) {
   const r = row, n = normalizeNim(nim);
@@ -936,13 +967,9 @@ const CONDITIONAL_MAP = {
     show: v => /Berwirausaha/i.test(v) && !/^Belum bekerja/i.test(v),
     required: []
   },
-  statusPekerjaanLain: {
-    box: 'statusPekerjaanLainBox',
-    show: v => v === 'Lainnya',
-    required: ['statusPekerjaanLain']
-  },
-  bidangLainnya: { box: 'bidangLainnyaBox', show: v => v === 'Lainnya', required: ['bidangIndustriLain'] },
-  caraLainnya:   { box: 'caraLainnyaBox',   show: v => v === 'Lainnya', required: ['caraDapatKerjaLain'] },
+  statusPekerjaanLain: { box: 'statusPekerjaanLainBox', show: v => v === 'Lainnya', required: ['statusPekerjaanLain'] },
+  bidangLainnya:  { box: 'bidangLainnyaBox',  show: v => v === 'Lainnya', required: ['bidangIndustriLain'] },
+  caraLainnya:    { box: 'caraLainnyaBox',    show: v => v === 'Lainnya', required: ['caraDapatKerjaLain'] },
   konsentrasiS1Lain: { box: 'konsentrasiS1LainBox', show: v => v === 'Lainnya', required: ['konsentrasiS1Lain'] },
   konsentrasiS2Lain: { box: 'konsentrasiS2LainBox', show: v => v === 'Lainnya', required: ['konsentrasiS2Lain'] },
   ikutMagang:     { box: 'magangBox',     show: v => v === 'Ya', required: ['kontribusiMagang','magangBantuKerja'] },
@@ -953,7 +980,6 @@ const CONDITIONAL_MAP = {
   biayaStudiLanjutLain:   { box: 'biayaStudiLanjutLainBox',   show: v => v === 'Lainnya', required: ['biayaStudiLanjutLain'] }
 };
 
-/* Map dari element id → key di CONDITIONAL_MAP */
 const ID_TO_COND = {
   'statusPekerjaanUtama': 'bekerja',
   'statusPekerjaanLain': 'statusPekerjaanLain',
@@ -972,7 +998,6 @@ const ID_TO_COND = {
 function applyConditionalByKey(key) {
   const cfg = CONDITIONAL_MAP[key]; if (!cfg) return;
   const box = $(cfg.box); if (!box) return;
-  /* Cari value pemicu dari elemen yang sesuai */
   let triggerId = null;
   Object.keys(ID_TO_COND).forEach(id => { if (ID_TO_COND[id] === key) triggerId = id; });
   const v = triggerId ? val(triggerId) : '';
@@ -987,28 +1012,26 @@ function applyConditionalByKey(key) {
   }
 }
 
-/* Bind change listener ke setiap element trigger */
 Object.keys(ID_TO_COND).forEach(id => {
   $(id)?.addEventListener('change', () => {
     applyConditionalByKey(ID_TO_COND[id]);
-    /* Wirausaha auto-show saat parent berubah */
     applyConditionalByKey('wirausaha');
   });
 });
 
-/* Checkbox organisasi → tampilkan input lainnya */
 document.addEventListener('change', e => {
   if (e.target && e.target.name === 'organisasiProfesi_item') {
     const anyLainnya = checkedValues('organisasiProfesi').indexOf('Lainnya') >= 0;
     $('orgLainBox')?.classList.toggle('hidden', !anyLainnya);
+    if (!anyLainnya) { const el = $('organisasiProfesiLain'); if (el) el.value = ''; }
   }
   if (e.target && e.target.name === 'jenisPrestasi_item') {
     const anyLainnya = checkedValues('jenisPrestasi').indexOf('Lainnya') >= 0;
     $('prestasiLainBox')?.classList.toggle('hidden', !anyLainnya);
+    if (!anyLainnya) { const el = $('jenisPrestasiLain'); if (el) el.value = ''; }
   }
 });
 
-/* Auto-sync G1 dari B1 (hanya isi jika kosong) */
 $('statusPekerjaanUtama')?.addEventListener('change', () => {
   const v = val('statusPekerjaanUtama');
   const studi = /melanjutkan pendidikan/i.test(v) && !/^Belum bekerja/i.test(v);
@@ -1081,7 +1104,6 @@ function validateStepByNumber(s) {
     if (!isEmail(val('email'))) { setFieldError('email','Format email tidak valid.'); return focusErr('email'); }
     if (!isPhoneID(val('whatsapp'))) { setFieldError('whatsapp','WhatsApp harus 10–15 digit angka.'); return focusErr('whatsapp'); }
 
-    /* Validasi umur masuk kuliah minimal 15 tahun */
     const tgl = val('tanggalLahir');
     if (tgl) {
       const yLahir = Number(tgl.slice(0,4));
@@ -1129,15 +1151,31 @@ function validateStepByNumber(s) {
     return true;
   }
 
+  /* FIX: validasi "Lainnya" di Bagian D */
   if (s === 4) {
     if (!val('ikutOrganisasi')) { setFieldError('ikutOrganisasi','Pilih Ya atau Tidak.'); return focusErr('ikutOrganisasi'); }
+    if (val('ikutOrganisasi') === 'Ya') {
+      const orgs = checkedValues('organisasiProfesi');
+      if (orgs.length === 0) { setFieldError('organisasiProfesi','Pilih minimal satu organisasi.'); return focusErr('organisasiProfesi'); }
+      if (orgs.indexOf('Lainnya') >= 0 && !val('organisasiProfesiLain')) {
+        setFieldError('organisasiProfesiLain','Sebutkan organisasi lainnya.'); return focusErr('organisasiProfesiLain');
+      }
+    }
     return true;
   }
 
+  /* FIX: validasi "Lainnya" di Bagian E */
   if (s === 5) {
     if (!val('punyaPrestasi')) { setFieldError('punyaPrestasi','Pilih Ya atau Tidak.'); return focusErr('punyaPrestasi'); }
-    if (val('punyaPrestasi') === 'Ya' && val('tahunPrestasi') && !isYear(val('tahunPrestasi'))) {
-      setFieldError('tahunPrestasi','Tahun prestasi harus 4 digit.'); return focusErr('tahunPrestasi');
+    if (val('punyaPrestasi') === 'Ya') {
+      const pres = checkedValues('jenisPrestasi');
+      if (pres.length === 0) { setFieldError('jenisPrestasi','Pilih minimal satu jenis prestasi.'); return focusErr('jenisPrestasi'); }
+      if (pres.indexOf('Lainnya') >= 0 && !val('jenisPrestasiLain')) {
+        setFieldError('jenisPrestasiLain','Sebutkan jenis prestasi lainnya.'); return focusErr('jenisPrestasiLain');
+      }
+      if (val('tahunPrestasi') && !isYear(val('tahunPrestasi'))) {
+        setFieldError('tahunPrestasi','Tahun prestasi harus 4 digit.'); return focusErr('tahunPrestasi');
+      }
     }
     return true;
   }
@@ -1254,6 +1292,21 @@ function collectPayload() {
   const ipkN = Number(ipkNorm);
   if (Number.isFinite(ipkN) && ipkN >= 0 && ipkN <= 4) ipkNorm = ipkN.toFixed(2);
 
+  /* FIX: conditional konsentrasiS1Lain/S2Lain */
+  const konsS1Lain = level === 'S1' && val('konsentrasiS1') === 'Lainnya' ? clampStr(val('konsentrasiS1Lain'), 100) : '';
+  const konsS2Lain = level === 'S2' && val('konsentrasiS2') === 'Lainnya' ? clampStr(val('konsentrasiS2Lain'), 100) : '';
+  /* FIX: conditional organisasiLain */
+  const orgLain = org && checkedValues('organisasiProfesi').indexOf('Lainnya') >= 0 ? clampStr(val('organisasiProfesiLain'), 200) : '';
+  /* FIX: conditional prestasiLain */
+  const prestasiLain = prestasi && checkedValues('jenisPrestasi').indexOf('Lainnya') >= 0 ? clampStr(val('jenisPrestasiLain'), 200) : '';
+  /* FIX: conditional jenjang/biaya lain */
+  const jenjangLain = studi && val('jenjangStudiLanjut') === 'Lainnya' ? clampStr(val('jenjangStudiLanjutLain'), 100) : '';
+  const biayaLain = studi && val('biayaStudiLanjut') === 'Lainnya' ? clampStr(val('biayaStudiLanjutLain'), 100) : '';
+  /* FIX: conditional statusLain, bidangLain, caraLain */
+  const statusLain = val('statusPekerjaanUtama') === 'Lainnya' ? clampStr(val('statusPekerjaanLain'), 200) : '';
+  const bidangLain = bekerja && val('bidangIndustri') === 'Lainnya' ? clampStr(val('bidangIndustriLain'), 150) : '';
+  const caraLain = bekerja && val('caraDapatKerja') === 'Lainnya' ? clampStr(val('caraDapatKerjaLain'), 150) : '';
+
   return {
     nim: clampStr(val('nim'), 9),
     nama: clampStr(VERIFIED_ALUMNI?.nama || '', 120),
@@ -1268,19 +1321,18 @@ function collectPayload() {
     alamatTetap: clampStr(val('alamatTetap'), 500),
     judulSkripsi: level === 'S1' ? clampStr(val('judulSkripsi'), 1000) : '',
     konsentrasiS1: level === 'S1' ? clampStr(val('konsentrasiS1'), 60) : '',
-    konsentrasiS1Lain: level === 'S1' ? clampStr(val('konsentrasiS1Lain'), 100) : '',
+    konsentrasiS1Lain: konsS1Lain,
     pembimbingSkripsi: level === 'S1' ? clampStr(val('pembimbingSkripsi'), 120) : '',
     judulTesis: level === 'S2' ? clampStr(val('judulTesis'), 1000) : '',
     konsentrasiS2: level === 'S2' ? clampStr(val('konsentrasiS2'), 60) : '',
-    konsentrasiS2Lain: level === 'S2' ? clampStr(val('konsentrasiS2Lain'), 100) : '',
+    konsentrasiS2Lain: konsS2Lain,
     pembimbingTesis: level === 'S2' ? clampStr(val('pembimbingTesis'), 120) : '',
-
     statusPekerjaanUtama: clampStr(val('statusPekerjaanUtama'), 60),
-    statusPekerjaanLain: val('statusPekerjaanUtama') === 'Lainnya' ? clampStr(val('statusPekerjaanLain'), 200) : '',
+    statusPekerjaanLain: statusLain,
     masaTungguKerja: bekerja ? clampStr(val('masaTungguKerja'), 20) : '',
     namaPerusahaan: bekerja ? clampStr(val('namaPerusahaan'), 150) : '',
     bidangIndustri: bekerja ? clampStr(val('bidangIndustri'), 80) : '',
-    bidangIndustriLain: bekerja && val('bidangIndustri') === 'Lainnya' ? clampStr(val('bidangIndustriLain'), 150) : '',
+    bidangIndustriLain: bidangLain,
     jabatan: bekerja ? clampStr(val('jabatan'), 100) : '',
     jenisPekerjaan: bekerja ? clampStr(val('jenisPekerjaan'), 40) : '',
     sistemKerja: bekerja ? clampStr(val('sistemKerja'), 40) : '',
@@ -1293,14 +1345,13 @@ function collectPayload() {
     tanggalMulaiKerja: bekerja ? clampStr(val('tanggalMulaiKerja'), 10) : '',
     kesesuaianPekerjaan: bekerja ? clampStr(val('kesesuaianPekerjaan'), 30) : '',
     caraDapatKerja: bekerja ? clampStr(val('caraDapatKerja'), 60) : '',
-    caraDapatKerjaLain: bekerja && val('caraDapatKerja') === 'Lainnya' ? clampStr(val('caraDapatKerjaLain'), 150) : '',
+    caraDapatKerjaLain: caraLain,
     namaUsaha: wirausaha ? clampStr(val('namaUsaha'), 150) : '',
     bidangUsaha: wirausaha ? clampStr(val('bidangUsaha'), 100) : '',
     jumlahTenagaKerja: wirausaha ? clampStr(val('jumlahTenagaKerja'), 20) : '',
     omzetRange: wirausaha ? clampStr(val('omzetRange'), 40) : '',
     statusLegalitas: wirausaha ? clampStr(val('statusLegalitas'), 40) : '',
     lokasiUsaha: wirausaha ? clampStr(val('lokasiUsaha'), 150) : '',
-
     ikutMagang: clampStr(val('ikutMagang'), 5),
     tempatMagang: magang ? clampStr(val('tempatMagang'), 150) : '',
     durasiMagang: magang ? clampStr(val('durasiMagang'), 20) : '',
@@ -1309,19 +1360,17 @@ function collectPayload() {
     kerjaDiTempatMagang: magang ? clampStr(val('kerjaDiTempatMagang'), 40) : '',
     penekananMagangKurikulum: magang ? clampStr(val('penekananMagangKurikulum'), 30) : '',
     saranMagang: magang ? clampStr(val('saranMagang'), 1000) : '',
-
     ikutOrganisasi: clampStr(val('ikutOrganisasi'), 5),
     organisasiProfesi: org ? checkedValues('organisasiProfesi').map(v => clampStr(v, 120)) : [],
-    organisasiProfesiLain: org && checkedValues('organisasiProfesi').indexOf('Lainnya') >= 0 ? clampStr(val('organisasiProfesiLain'), 200) : '',
+    organisasiProfesiLain: orgLain,
     tahunBergabungOrg: org ? clampStr(val('tahunBergabungOrg'), 4) : '',
     peranOrganisasi: org ? clampStr(val('peranOrganisasi'), 100) : '',
     tingkatKeterlibatan: org ? clampStr(val('tingkatKeterlibatan'), 30) : '',
     manfaatOrganisasi: org ? clampStr(val('manfaatOrganisasi'), 30) : '',
     fasilitasiOrganisasi: org ? clampStr(val('fasilitasiOrganisasi'), 40) : '',
-
     punyaPrestasi: clampStr(val('punyaPrestasi'), 5),
     jenisPrestasi: prestasi ? checkedValues('jenisPrestasi').map(v => clampStr(v, 120)) : [],
-    jenisPrestasiLain: prestasi && checkedValues('jenisPrestasi').indexOf('Lainnya') >= 0 ? clampStr(val('jenisPrestasiLain'), 200) : '',
+    jenisPrestasiLain: prestasiLain,
     namaPrestasiSpesifik: prestasi ? clampStr(val('namaPrestasiSpesifik'), 200) : '',
     penyelenggaraPrestasi: prestasi ? clampStr(val('penyelenggaraPrestasi'), 150) : '',
     urlBuktiPrestasi: prestasi ? clampStr(val('urlBuktiPrestasi'), 250) : '',
@@ -1330,24 +1379,21 @@ function collectPayload() {
     tahunPrestasi: prestasi ? clampStr(val('tahunPrestasi'), 4) : '',
     peranProdiPrestasi: prestasi ? clampStr(val('peranProdiPrestasi'), 30) : '',
     pernahNarasumber: prestasi ? clampStr(val('pernahNarasumber'), 40) : '',
-
     kompetensiDikuasai, kompetensiDibutuhkan, metodePembelajaran: metodePembelajaranVal,
     hubunganBidang: clampStr(val('hubunganBidang'), 30),
     tingkatPendidikanTepat: clampStr(val('tingkatPendidikanTepat'), 40),
     kontribusiProdiKompetensi: clampStr(val('kontribusiProdiKompetensi'), 40),
     relevansiKurikulumKerja: clampStr(val('relevansiKurikulumKerja'), 40),
-
     melanjutkanStudi: clampStr(val('melanjutkanStudi'), 5),
     jenjangStudiLanjut: studi ? clampStr(val('jenjangStudiLanjut'), 30) : '',
-    jenjangStudiLanjutLain: studi && val('jenjangStudiLanjut') === 'Lainnya' ? clampStr(val('jenjangStudiLanjutLain'), 100) : '',
+    jenjangStudiLanjutLain: jenjangLain,
     ptStudiLanjut: studi ? clampStr(val('ptStudiLanjut'), 150) : '',
     prodiStudiLanjut: studi ? clampStr(val('prodiStudiLanjut'), 150) : '',
     tahunMulaiStudi: studi ? clampStr(val('tahunMulaiStudi'), 4) : '',
     biayaStudiLanjut: studi ? clampStr(val('biayaStudiLanjut'), 40) : '',
-    biayaStudiLanjutLain: studi && val('biayaStudiLanjut') === 'Lainnya' ? clampStr(val('biayaStudiLanjutLain'), 100) : '',
+    biayaStudiLanjutLain: biayaLain,
     studiDukungKarier: studi ? clampStr(val('studiDukungKarier'), 30) : '',
     alasanStudiLanjut: studi ? clampStr(val('alasanStudiLanjut'), 500) : '',
-
     saranKurikulum: clampStr(val('saranKurikulum'), 2000),
     kompetensiTambahan: clampStr(val('kompetensiTambahan'), 1500),
     fasilitasiKarier: clampStr(val('fasilitasiKarier'), 30),
@@ -1356,7 +1402,6 @@ function collectPayload() {
     kontakProfesional: clampStr(val('kontakProfesional'), 200),
     rekomendasiAlumniIndustri: clampStr(val('rekomendasiAlumniIndustri'), 500),
     kesanPesan: clampStr(val('kesanPesan'), 2000),
-
     consentData: !!$('consentData').checked,
     consentContact: !!$('consentContact').checked,
     _v: APP_VERSION_STR,
@@ -1389,6 +1434,8 @@ $('tracerForm')?.addEventListener('submit', async e => {
     msg('formStatus', em, false); toast(em, 'err');
   } finally { btn.disabled = false; btn.textContent = 'Kirim Tracer Study ✓'; }
 });
+
+/* FIX: reset orgLainBox & prestasiLainBox juga */
 function resetForm() {
   $('tracerForm').reset();
   step = 1;
@@ -1396,6 +1443,8 @@ function resetForm() {
   ['groupS1','groupS2'].forEach(id => $(id)?.classList.add('hidden'));
   ['judulSkripsi','judulTesis'].forEach(id => { const e = $(id); if (e) e.required = false; });
   Object.keys(CONDITIONAL_MAP).forEach(k => applyConditionalByKey(k));
+  $('orgLainBox')?.classList.add('hidden');
+  $('prestasiLainBox')?.classList.add('hidden');
   lockMasterFields(false);
   clearNimVerification('Form siap digunakan kembali.');
   clearAllFieldErrors();
@@ -1477,6 +1526,8 @@ $('logoutBtn')?.addEventListener('click', async () => {
   sessionStorage.removeItem('ts_token_exp');
   $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
   const fProdi = $('fProdi'); if (fProdi) { fProdi.disabled = false; fProdi.value = ''; }
+  $('ubahPassBtn')?.classList.add('hidden');
+  $$('.admin-only').forEach(el => el.classList.add('hidden'));
 });
 function ensureSession() {
   if (TOKEN && TOKEN_EXP && Date.now() > TOKEN_EXP) {
@@ -1486,11 +1537,44 @@ function ensureSession() {
     toast('Sesi berakhir. Silakan login kembali.', 'err');
     $('loginBox')?.classList.remove('hidden');
     $('dashBox')?.classList.add('hidden');
+    $('ubahPassBtn')?.classList.add('hidden');
     return false;
   }
   return true;
 }
 setInterval(ensureSession, 60000);
+
+/* Tombol Ubah Password */
+$('ubahPassBtn')?.addEventListener('click', () => {
+  const html = `
+    <div class="modal" id="passModal">
+      <div class="box" style="max-width:520px">
+        <h3>🔑 Ubah Password <button type="button" class="btn secondary sm" onclick="document.getElementById('passModal').remove()">✕</button></h3>
+        <div class="grid">
+          <div class="full"><label for="oldPass">Password Lama</label><input id="oldPass" type="password" maxlength="128"></div>
+          <div class="full"><label for="newPass">Password Baru (min 8 karakter)</label><input id="newPass" type="password" maxlength="128"></div>
+          <div class="full"><label for="newPass2">Konfirmasi Password Baru</label><input id="newPass2" type="password" maxlength="128"></div>
+        </div>
+        <div class="actions" style="margin-top:16px">
+          <button type="button" class="btn secondary" onclick="document.getElementById('passModal').remove()">Batal</button>
+          <button type="button" class="btn" id="doChangePass">Simpan</button>
+        </div>
+      </div>
+    </div>`;
+  $('modalRoot').innerHTML = html;
+  $('doChangePass')?.addEventListener('click', async () => {
+    const op = $('oldPass').value, np = $('newPass').value, np2 = $('newPass2').value;
+    if (!op || !np) return toast('Password lama & baru wajib diisi.', 'err');
+    if (np.length < 8) return toast('Password baru minimal 8 karakter.', 'err');
+    if (np !== np2) return toast('Konfirmasi password tidak cocok.', 'err');
+    try {
+      const r = await post({ action: 'changePassword', token: TOKEN, oldPassword: op, newPassword: np });
+      if (!r.ok) throw new Error(r.error || 'Gagal ubah password.');
+      toast('Password berhasil diubah.', 'ok');
+      $('passModal').remove();
+    } catch (e) { toast(e.message, 'err'); }
+  });
+});
 
 function currentFilters() { return { periodeId: val('fPeriode'), tahun: val('fTahun'), programStudi: val('fProdi'), q: val('fQ'), scope: accScope }; }
 $('refreshBtn')?.addEventListener('click', () => { respPage = 1; loadDashboard().catch(() => {}); });
@@ -1508,19 +1592,23 @@ $$('#adminTabs button').forEach(b => b.addEventListener('click', () => {
   if (p === 'responden') renderResponden();
   if (p === 'analitik') renderAnalitik();
   if (p === 'akreditasi') renderAkreditasi();
+  if (p === 'adminpanel') renderAdminPanel();
 }));
 $$('#accScopeBar button').forEach(b => b.addEventListener('click', () => {
   $$('#accScopeBar button').forEach(x => x.classList.remove('active'));
   b.classList.add('active');
   accScope = b.dataset.scope;
-  loadDashboard().catch(() => {});  /* FIX: trigger server-side aggregation */
+  loadDashboard().catch(() => {});
 }));
 
+/* FIX: deteksi KAPRODI S1/S2 via PROFILE.programStudi */
 function applyRoleUI() {
   const role = (PROFILE?.role || '').toUpperCase();
+  const prodi = PROFILE?.programStudi || '';
   const isAdmin = role === 'ADMIN';
-  const isKaprodiS1 = role === 'KAPRODI_S1' || role === 'KAPRODI';
-  const isKaprodiS2 = role === 'KAPRODI_S2';
+  const isKaprodi = role === 'KAPRODI';
+  const isKaprodiS1 = isKaprodi && /S1/i.test(prodi);
+  const isKaprodiS2 = isKaprodi && /S2|Magister/i.test(prodi);
   const isWadek = role === 'WADEK';
   const isDekan = role === 'DEKAN';
   const banner = $('roleBanner'), icon = $('rbIcon'), title = $('rbTitle'), desc = $('rbDesc'), scope = $('rbScope');
@@ -1549,22 +1637,29 @@ function applyRoleUI() {
   }
   const pb = $('profileBadge');
   if (pb) {
-    const cls = {
-      ADMIN: 'role-admin', KAPRODI_S1: 'role-kaprodi-s1', KAPRODI_S2: 'role-kaprodi-s2',
-      KAPRODI: 'role-kaprodi-s1', WADEK: 'role-wadek', DEKAN: 'role-dekan'
-    }[role] || '';
+    let cls = '';
+    if (isAdmin) cls = 'role-admin';
+    else if (isKaprodiS1) cls = 'role-kaprodi-s1';
+    else if (isKaprodiS2) cls = 'role-kaprodi-s2';
+    else if (isWadek) cls = 'role-wadek';
+    else if (isDekan) cls = 'role-dekan';
     pb.className = 'role-badge ' + cls;
-    pb.textContent = `${PROFILE?.username || ''} · ${role || 'USER'}`;
+    const lbl = isKaprodiS1 ? 'KAPRODI S1' : isKaprodiS2 ? 'KAPRODI S2' : role;
+    pb.textContent = `${PROFILE?.username || ''} · ${lbl || 'USER'}`;
   }
   const fProdi = $('fProdi');
   if (fProdi) {
-    if ((isKaprodiS1 || isKaprodiS2) && PROFILE?.programStudi) {
+    if (isKaprodi && PROFILE?.programStudi) {
       fProdi.value = PROFILE.programStudi;
       fProdi.disabled = true;
     } else {
       fProdi.disabled = false;
     }
   }
+  /* Tampilkan/sembunyikan admin panel */
+  $$('.admin-only').forEach(el => el.classList.toggle('hidden', !isAdmin));
+  /* Tampilkan tombol Ubah Password jika login */
+  if (PROFILE) $('ubahPassBtn')?.classList.remove('hidden');
 }
 
 async function loadDashboard() {
@@ -1590,6 +1685,7 @@ async function loadDashboard() {
     const activeTab = document.querySelector('#adminTabs button.active')?.dataset.panel;
     if (activeTab === 'analitik') renderAnalitik();
     if (activeTab === 'akreditasi') renderAkreditasi();
+    if (activeTab === 'adminpanel') renderAdminPanel();
     clearMsg('adminStatus');
   } catch (e) {
     if (reqId !== dashboardReqId) return;
@@ -1599,6 +1695,7 @@ async function loadDashboard() {
       sessionStorage.removeItem('ts_token');
       sessionStorage.removeItem('ts_token_exp');
       $('loginBox').classList.remove('hidden'); $('dashBox').classList.add('hidden');
+      $('ubahPassBtn')?.classList.add('hidden');
     }
   }
 }
@@ -1630,17 +1727,21 @@ function renderOverview() {
   const c = DATA?.charts || {};
   mkBar('chStatus', c.statusCounts); mkBar('chTahun', c.yearCounts);
   mkDoughnut('chProdi', c.programCounts); mkBar('chKesesuaian', c.kesesuaianCounts);
-  const rows = (DATA.recent || []).map(r => `<tr>
+  const rows = (DATA.recent || []).map(r => `<tr data-tid="${esc(r.tracerId)}">
     <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
     <td>${badgeJenjang(r.jenjang)}</td>
     <td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td></tr>`).join('');
   setHtml('recentTable', `<thead><tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Jenjang</th><th>Prodi</th><th>Lulus</th></tr></thead>
     <tbody>${rows || '<tr><td colspan="6">Belum ada data.</td></tr>'}</tbody>`);
+  /* Klik baris → buka detail */
+  $('recentTable')?.querySelectorAll('tr[data-tid]').forEach(tr => {
+    tr.addEventListener('click', () => showDetail(tr.dataset.tid));
+  });
 }
 function renderResponden() {
   const items = DATA?.items || [];
   const pg = DATA?.pagination || { page: 1, perPage: RESP_PER_PAGE, total: items.length, totalPages: 1 };
-  const rows = items.map(r => `<tr>
+  const rows = items.map(r => `<tr data-tid="${esc(r.tracerId)}">
     <td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td>
     <td>${badgeJenjang(r.jenjang)}</td>
     <td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td></tr>`).join('');
@@ -1659,7 +1760,69 @@ function renderResponden() {
       if (target >= 1 && target <= pg.totalPages) { respPage = target; loadDashboard().catch(() => {}); }
     }));
   }
+  $('respTable')?.querySelectorAll('tr[data-tid]').forEach(tr => {
+    tr.addEventListener('click', () => showDetail(tr.dataset.tid));
+  });
 }
+
+/* FIX: Modal detail responden */
+async function showDetail(tracerId) {
+  try {
+    const r = await post({ action: 'detail', token: TOKEN, tracerId });
+    if (!r.ok) throw new Error(r.error || 'Gagal memuat detail.');
+    const it = r.item || {};
+    const komp = it.KOMPETENSI || {};
+    const renderTree = obj => Object.entries(obj || {}).map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v || '-')}</span></li>`).join('');
+    const kompF1 = renderTree(komp.F1_DIKUASAI);
+    const kompF2 = renderTree(komp.F2_DIBUTUHKAN);
+    const kompF3 = renderTree(komp.F3_METODE);
+    const html = `
+      <div class="modal" id="detailModal">
+        <div class="box">
+          <h3>Detail Responden <button type="button" class="btn secondary sm" onclick="document.getElementById('detailModal').remove()">✕</button></h3>
+          <p><b>${esc(it.TRACER_ID || tracerId)}</b> · ${badgeJenjang(it.JENJANG)} · ${esc(it.NAMA || '-')}</p>
+          <div class="form-section-title">A — Data Pribadi</div>
+          <ul class="tree">
+            <li><b>NIM</b><span>${esc(it.NIM || '-')}</span></li>
+            <li><b>Program Studi</b><span>${esc(it.PROGRAM_STUDI || '-')}</span></li>
+            <li><b>Tahun Masuk / Lulus</b><span>${esc(it.TAHUN_MASUK || '-')} → ${esc(it.TAHUN_LULUS || '-')}</span></li>
+            <li><b>IPK</b><span>${esc(it.IPK || '-')}</span></li>
+            <li><b>Email / WhatsApp</b><span>${esc(it.EMAIL || '-')} / ${esc(it.WHATSAPP || '-')}</span></li>
+            <li><b>Alamat Domisili</b><span>${esc(it.ALAMAT_DOMISILI || '-')}</span></li>
+          </ul>
+          <div class="form-section-title">B — Pekerjaan</div>
+          <ul class="tree">
+            <li><b>Status</b><span>${esc(it.STATUS_PEKERJAAN_UTAMA || '-')}</span></li>
+            <li><b>Masa Tunggu</b><span>${esc(it.MASA_TUNGGU_KERJA || '-')}</span></li>
+            <li><b>Perusahaan</b><span>${esc(it.NAMA_PERUSAHAAN || '-')}</span></li>
+            <li><b>Bidang Industri</b><span>${esc(it.BIDANG_INDUSTRI || '-')}</span></li>
+            <li><b>Jabatan</b><span>${esc(it.JABATAN || '-')}</span></li>
+            <li><b>Sistem Kerja</b><span>${esc(it.SISTEM_KERJA || '-')}</span></li>
+            <li><b>Penghasilan</b><span>${esc(it.PENGHASILAN_RANGE || '-')}</span></li>
+            <li><b>Kesesuaian</b><span>${esc(it.KESESUAIAN_PEKERJAAN || '-')}</span></li>
+            <li><b>Lokasi Kerja</b><span>${esc([it.KOTA_KERJA, it.PROVINSI_KERJA, it.NEGARA_KERJA].filter(Boolean).join(', ') || '-')}</span></li>
+          </ul>
+          <div class="form-section-title">F1 — Kompetensi Dikuasai</div>
+          <ul class="tree">${kompF1 || '<li><i>Belum ada data</i></li>'}</ul>
+          <div class="form-section-title">F2 — Kompetensi Dibutuhkan</div>
+          <ul class="tree">${kompF2 || '<li><i>Belum ada data</i></li>'}</ul>
+          <div class="form-section-title">F3 — Metode Pembelajaran</div>
+          <ul class="tree">${kompF3 || '<li><i>Belum ada data</i></li>'}</ul>
+          <div class="form-section-title">H — Umpan Balik</div>
+          <ul class="tree">
+            <li><b>Saran Kurikulum</b><span style="white-space:pre-wrap">${esc(it.SARAN_KURIKULUM || '-')}</span></li>
+            <li><b>Kompetensi Tambahan</b><span style="white-space:pre-wrap">${esc(it.KOMPETENSI_TAMBAHAN || '-')}</span></li>
+            <li><b>Kesan & Pesan</b><span style="white-space:pre-wrap">${esc(it.KESAN_PESAN || '-')}</span></li>
+          </ul>
+          <div class="actions" style="margin-top:16px">
+            <button type="button" class="btn secondary" onclick="document.getElementById('detailModal').remove()">Tutup</button>
+          </div>
+        </div>
+      </div>`;
+    $('modalRoot').innerHTML = html;
+  } catch (e) { toast(e.message, 'err'); }
+}
+
 function renderAnalitik() {
   const c = DATA?.charts || {};
   mkRadar('chKompetensi', c.kompetensiDikuasaiAvg || {}, currentKompetensiList());
@@ -1683,7 +1846,6 @@ function renderAkreditasi() {
   const sum = d.summary || {};
   const ch = d.charts || {};
   const scopeLabel = { all:'Semua', s1:'Prodi S1', s2:'Prodi S2', fak:'Fakultas', univ:'Universitas' }[accScope] || 'Semua';
-
   const totalLulusan = sum.total || 0;
   const masaTungguKurang3 = ch.masaTungguBuckets?.['< 3 bulan'] || 0;
   const masaTunggu3to6 = ch.masaTungguBuckets?.['3–6 bulan'] || 0;
@@ -1698,7 +1860,6 @@ function renderAkreditasi() {
     <li><b>Kontribusi Kurikulum MBKM (Magang):</b> ${sum.magang || 0} alumni melaporkan magang.</li>
     <li><b>Kontribusi Organisasi Profesi:</b> ${sum.organisasi || 0} alumni terlibat.</li>
     <li><b>Prestasi Alumni:</b> ${sum.prestasi || 0} alumni dengan capaian prestasi.</li>`);
-
   setHtml('accListLAMSPAK', `
     <li><b>Kesesuaian Bidang Ilmu Komunikasi:</b> Evaluasi F4 &amp; B15 sebagai dasar revisi kurikulum.</li>
     <li><b>Penguasaan Kompetensi (F1) vs Kebutuhan (F2):</b> Gap analysis radar kompetensi tersedia.</li>
@@ -1706,16 +1867,100 @@ function renderAkreditasi() {
     <li><b>Kolaborasi Organisasi Profesi:</b> PRINDONESIA, PWI, IJTI, AMSI, ASPIKOM, Perhumas, P3I.</li>
     <li><b>Luaran Prestasi:</b> Kompetisi jurnalistik, periklanan, PR, publikasi ilmiah, penghargaan profesional.</li>
     <li><b>Umpan Balik Kurikulum (H1):</b> ${(d.saranList || []).length} masukan terkumpul dari alumni.</li>`);
-
   setHtml('accListPDDIKTI', `
     <li><b>Siap ekspor CSV/XLSX</b> untuk pelaporan ke <code>tracerstudy.kemdikbud.go.id</code>.</li>
     <li><b>Field wajib:</b> NIM, Nama, Program Studi, Jenjang, Tahun Lulus, IPK, Status Pekerjaan, Masa Tunggu, Kesesuaian.</li>
     <li><b>Distribusi S1:</b> ${sum.s1 ?? 0} · <b>Distribusi S2:</b> ${sum.s2 ?? 0}.</li>
     <li><b>Periode Pelaporan:</b> Data dapat difilter per tahun lulus &amp; program studi.</li>
     <li><b>Standar Data:</b> Mengikuti kamus data Tracer Study Ditjen Belmawa Kemdiktisaintek.</li>`);
-
   mkBar('chAccRelevansi', ch.relevansiCounts || {});
   mkBar('chAccMasaTunggu', ch.masaTungguBuckets || {});
+}
+
+/* Admin Panel — manajemen user, periode, import, audit */
+function renderAdminPanel() {
+  if (!PROFILE || (PROFILE.role || '').toUpperCase() !== 'ADMIN') {
+    toast('Akses ditolak — hanya Admin.', 'err');
+    return;
+  }
+  loadUserTable();
+  loadPeriodeTable();
+  loadAuditTable();
+  $('addUserBtn')?.addEventListener('click', () => openUserForm(null), { once: true });
+  $('reloadUserBtn')?.addEventListener('click', loadUserTable, { once: true });
+  $('addPeriodeBtn')?.addEventListener('click', () => openPeriodeForm(null), { once: true });
+  $('reloadPeriodeBtn')?.addEventListener('click', loadPeriodeTable, { once: true });
+  $('doImportBtn')?.addEventListener('click', doImportCSV, { once: true });
+  $('reloadAuditBtn')?.addEventListener('click', loadAuditTable, { once: true });
+}
+
+async function loadUserTable() {
+  // Ambil via dashboard (yang sudah punya data.users jika admin)
+  try {
+    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
+    if (!r.ok) return;
+    // Data users hanya tersedia jika backend kirim. Kita cek:
+    const users = r.users || [];
+    if (!users.length) {
+      setHtml('userTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Daftar user tidak tersedia via endpoint saat ini. Kelola langsung di sheet USERS.</td></tr></tbody>`);
+      return;
+    }
+    const rows = users.map(u => `<tr>
+      <td>${esc(u.username)}</td><td>${esc(u.nama)}</td>
+      <td>${esc(u.role)}</td><td>${esc(u.programStudi || '-')}</td>
+      <td>${u.aktif ? '✅' : '❌'}</td>
+    </tr>`).join('');
+    setHtml('userTable', `<thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th></tr></thead><tbody>${rows}</tbody>`);
+  } catch (_) {}
+}
+function openUserForm() {
+  toast('Fitur tambah user: gunakan menu spreadsheet admin.', 'info');
+}
+async function loadPeriodeTable() {
+  try {
+    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
+    if (!r.ok) return;
+    const list = r.periode || [];
+    if (!list.length) {
+      setHtml('periodeTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Daftar periode tidak tersedia via endpoint. Kelola langsung di sheet PERIODE.</td></tr></tbody>`);
+      return;
+    }
+    const rows = list.map(p => `<tr>
+      <td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td>
+      <td>${esc(p.status)}</td><td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td>
+    </tr>`).join('');
+    setHtml('periodeTable', `<thead><tr><th>ID</th><th>Nama</th><th>Status</th><th>Rentang</th></tr></thead><tbody>${rows}</tbody>`);
+  } catch (_) {}
+}
+function openPeriodeForm() {
+  toast('Fitur tambah periode: gunakan menu spreadsheet admin.', 'info');
+}
+async function loadAuditTable() {
+  try {
+    const r = await post({ action: 'dashboard', token: TOKEN, filters: '{}', perPage: 10, page: 1 });
+    if (!r.ok) return;
+    const list = r.audit || [];
+    if (!list.length) {
+      setHtml('auditTable', `<thead><tr><th>Info</th></tr></thead><tbody><tr><td>Audit log tidak tersedia via endpoint. Lihat sheet AUDIT_LOG.</td></tr></tbody>`);
+      return;
+    }
+    const rows = list.map(a => `<tr>
+      <td>${esc((a.timestamp || '').slice(0, 19))}</td>
+      <td>${esc(a.actor)}</td><td>${esc(a.action)}</td>
+      <td>${esc(a.ref)}</td><td>${esc(a.detail)}</td>
+    </tr>`).join('');
+    setHtml('auditTable', `<thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Ref</th><th>Detail</th></tr></thead><tbody>${rows}</tbody>`);
+  } catch (_) {}
+}
+async function doImportCSV() {
+  const csv = val('csvImport');
+  if (!csv) return toast('Paste CSV terlebih dahulu.', 'err');
+  try {
+    const r = await post({ action: 'masterImport', token: TOKEN, csv });
+    if (!r.ok) throw new Error(r.error || 'Gagal import.');
+    setHtml('importResult', `✓ Inserted: ${r.inserted} · Updated: ${r.updated} · Skipped: ${r.skipped}`);
+    toast('Import selesai.', 'ok');
+  } catch (e) { setHtml('importResult', '✗ ' + e.message); toast(e.message, 'err'); }
 }
 
 function ensureChart() {
