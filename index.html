@@ -71,7 +71,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
     </div>
     <div class="header-tools">
       <button type="button" class="btn-ubah-pass hidden" id="ubahPassBtn" title="Ubah Password">🔑 Ubah Password</button>
-      
+      <button type="button" class="notify-btn" id="notifyBtn" title="Notifikasi" aria-label="Notifikasi">🔔<span class="notify-count hidden" id="notifyCount">0</span></button>
       <span class="conn-pill" id="connPill" title="Status koneksi"><span class="conn-dot check" id="connDot"></span><span id="connText">Menghubungkan…</span></span>
     </div>
   </div>
@@ -393,7 +393,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
             <div class="role-item"><div class="role-icon">📘</div><div><b>Kaprodi S2</b><small>Analitik S2 Magister Ilmu Komunikasi</small></div></div>
             <div class="role-item"><div class="role-icon">🎯</div><div><b>Wadek</b><small>Analitik Fakultas (S1 + S2)</small></div></div>
             <div class="role-item"><div class="role-icon">👑</div><div><b>Dekan</b><small>Visi Strategis Fakultas &amp; Universitas</small></div></div>
-            <div class="role-item"><div class="role-icon">🎓</div><div><b>Mahasiswa</b><small>Dashboard pribadi berdasarkan NIM</small></div></div>
           </div>
         </div>
         <div class="login-form">
@@ -451,7 +450,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
       <div class="panel hidden" data-panel="responden">
         <div class="toolbar">
           <button class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
-          <button class="btn secondary sm" data-export="xls">⬇ Export Excel</button>
+          <button class="btn secondary sm" data-export="xlsx">⬇ Export XLSX</button>
           <span class="hint" id="respInfo" style="margin-left:auto"></span>
         </div>
         <div class="tablewrap"><table class="table" id="respTable"></table></div>
@@ -525,290 +524,93 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v13.1.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v15.1.0 · Modul A–H S1 &amp; S2 · BAN-PT · LAMSPAK · PDDIKTI</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
-
 <script>
 'use strict';
-
-const APP_VERSION_STR='v13.1.0';
+const APP_VERSION_STR='v15.1.0';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbxErbOAfQSC89Uxiq9sdlDFm0ZavV6fzGn9wvRwTo_UIba9u4WBDWD5kUEUme51JUhwdA/exec';
-const GAS_URL=localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL;
-const TOTAL_STEPS=8, RESP_PER_PAGE=50, SESSION_MAX_AGE=12*60*60*1000;
-let TOKEN=sessionStorage.getItem('ts_token')||'';
-let TOKEN_EXP=Number(sessionStorage.getItem('ts_token_exp')||0);
-let PROFILE=null,META=null,DATA=null,step=1,charts={},VERIFIED_NIM='',VERIFIED_ALUMNI=null,respPage=1,formSubmitted=false,publicNonce='';
-const $=id=>document.getElementById(id), $$=s=>document.querySelectorAll(s), val=id=>$(id)?String($(id).value||'').trim():'';
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const normalizeNim=v=>String(v??'').replace(/\D/g,'').trim();
-const normalizeName=v=>String(v??'').replace(/\s+/g,' ').trim();
-const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-const isPhoneID=v=>/^\d{10,15}$/.test(v);
-const isYear=v=>/^(19|20)\d{2}$/.test(v);
-const PROGRAMS=['S1 Ilmu Komunikasi','S2 Magister Ilmu Komunikasi'];
-const STATUS=['Bekerja','Berwirausaha','Bekerja dan berwirausaha','Melanjutkan pendidikan','Bekerja sambil melanjutkan pendidikan','Berwirausaha sambil melanjutkan pendidikan','Belum bekerja dan sedang mencari pekerjaan','Belum bekerja dan tidak sedang mencari pekerjaan','Lainnya'];
+const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
+const TOTAL_STEPS=8, RESP_PER_PAGE=50;
+const VALID_STATUS_PEKERJAAN=['Bekerja','Berwirausaha','Bekerja dan berwirausaha','Melanjutkan pendidikan','Bekerja sambil melanjutkan pendidikan','Berwirausaha sambil melanjutkan pendidikan','Belum bekerja dan sedang mencari pekerjaan','Belum bekerja dan tidak sedang mencari pekerjaan','Lainnya'];
+const PROGRAMS_S1='S1 Ilmu Komunikasi',PROGRAMS_S2='S2 Magister Ilmu Komunikasi';
 const KOMPETENSI_S1=[['etikaIntegritas','Etika dan integritas profesional'],['keahlianBidang','Keahlian berdasarkan bidang ilmu komunikasi'],['komunikasiLisanTulisan','Kemampuan komunikasi lisan dan tulisan'],['teknologiDigital','Penguasaan teknologi informasi dan media digital'],['analisisKritis','Kemampuan analisis dan berpikir kritis'],['kerjaSamaTim','Kerja sama tim dan kepemimpinan'],['bahasaInggris','Bahasa Inggris profesional'],['risetKontenMedia','Kemampuan riset dan produksi konten media']];
 const KOMPETENSI_S2=[['etikaIntegritas','Etika dan integritas akademik/profesional'],['keahlianBidang','Keahlian lanjutan bidang ilmu komunikasi'],['risetKomunikasi','Kemampuan riset komunikasi'],['teoriKontemporer','Penguasaan teori komunikasi kontemporer'],['publikasiIlmiah','Kemampuan menulis ilmiah dan publikasi'],['kepemimpinanManajemen','Kepemimpinan dan manajemen komunikasi strategis'],['bahasaInggris','Bahasa Inggris akademik/profesional'],['analisisKebijakan','Analisis kebijakan dan regulasi media'],['komunikasiLisanTulisan','Kemampuan komunikasi lisan dan tulisan'],['teknologiDigital','Penguasaan teknologi informasi dan media digital']];
 const METODE_S1=[['kuliahTatapMuka','Perkuliahan tatap muka'],['praktikumLab','Praktikum/laboratorium media'],['magangPkl','Magang/PKL'],['projectBased','Pembelajaran berbasis proyek'],['diskusiPresentasi','Diskusi dan presentasi'],['daringBlended','Pembelajaran daring/blended learning']];
 const METODE_S2=[['kuliahTatapMuka','Perkuliahan tatap muka'],['seminarLokakarya','Seminar dan lokakarya'],['penelitianMandiri','Penelitian mandiri/tesis'],['studiKasus','Studi kasus dan analisis kritis'],['publikasiIlmiah','Publikasi ilmiah'],['daringBlended','Pembelajaran daring/blended learning'],['magangProfesional','Magang/praktik profesional']];
 const ORGANISASI_PROFESI=['PRINDONESIA','PWI (Persatuan Wartawan Indonesia)','IJTI (Ikatan Jurnalis Televisi Indonesia)','AMSI (Asosiasi Media Siber Indonesia)','ASPIKOM (Asosiasi Pendidikan Ilmu Komunikasi)','Perhumas (Perhimpunan Hubungan Masyarakat Indonesia)','P3I (Perhimpunan Perusahaan Periklanan Indonesia)','Lainnya'];
 const JENIS_PRESTASI=['Juara kompetisi karya jurnalistik','Juara kompetisi periklanan/kreatif','Juara kompetisi PR/komunikasi strategis','Penghargaan profesional','Publikasi ilmiah','Prestasi akademik (cumlaude, dll.)','Lainnya'];
-
-function toast(t,k='info'){const w=$('toastWrap');if(!w)return;const e=document.createElement('div');e.className='toast '+k;e.textContent=String(t).slice(0,400);w.appendChild(e);setTimeout(()=>e.remove(),4500)}
+let TOKEN=sessionStorage.getItem('ts_token')||'',TOKEN_EXP=Number(sessionStorage.getItem('ts_token_exp')||0),PROFILE=null,META=null,DATA=null,step=1,charts={},VERIFIED_NIM='',VERIFIED_ALUMNI=null,respPage=1,formSubmitted=false,dashboardReqId=0;
+const $=id=>document.getElementById(id),$$=s=>document.querySelectorAll(s),val=id=>$(id)?String($(id).value||'').trim():'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const normalizeNim=v=>String(v??'').replace(/\D/g,'').trim(),normalizeName=v=>String(v??'').replace(/\s+/g,' ').trim();
+const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),isPhoneID=v=>/^\d{10,15}$/.test(v),isYear=v=>/^(19|20)\d{2}$/.test(v);
+function toast(t,k='info'){const w=$('toastWrap');if(!w)return;const e=document.createElement('div');e.className='toast '+k;e.textContent=String(t).slice(0,500);w.appendChild(e);setTimeout(()=>e.remove(),5000)}
 function msg(id,t,ok){const e=$(id);if(!e)return;e.textContent=t||'';e.className='status '+(ok===true?'ok':ok==='info'?'info':'err');e.style.display=t?'block':'none'}
 function setFieldError(id,t){const e=$('err-'+id),i=$(id);if(e){e.textContent=t||'';e.classList.toggle('show',!!t)}if(i)i.classList.toggle('err',!!t)}
 function clearErrors(){$$('.field-error').forEach(e=>{e.textContent='';e.classList.remove('show')});$$('.err').forEach(e=>e.classList.remove('err'))}
-function fail(id,t){setFieldError(id,t);$(id)?.scrollIntoView({behavior:'smooth',block:'center'});return false}
-function expectedNimLevel(n){n=normalizeNim(n);if(!/^\d{9}$/.test(n))return'';return n.slice(4,6)==='41'?'S1':n.slice(4,6)==='03'?'S2':''}
+function expectedNimLevel(n){n=normalizeNim(n);if(!/^\d{9}$/.test(n))return'';if(n.slice(4,6)==='41')return'S1';if(n.slice(4,6)==='03')return'S2';return''}
 function getProgramLevel(v){v=String(v||'').toLowerCase();return v.includes('s2')||v.includes('magister')?'S2':v.includes('s1')?'S1':''}
-function getCurrentYear(){return new Date().getFullYear()}
-function checkedValues(id){return [...document.querySelectorAll(`input[name="${id}_item"]:checked`)].map(e=>e.value)}
-function radioGroup(target,key){const e=document.querySelector(`input[name="${target}_${key}"]:checked`);return e?e.value:''}
-function buildChecks(id,a){const e=$(id);if(e)e.innerHTML=(a||[]).map(x=>`<label class="check-item"><input type="checkbox" name="${id}_item" value="${esc(x)}"><span>${esc(x)}</span></label>`).join('')}
-function buildRatings(target,list){const e=$(target);if(!e)return;e.innerHTML=list.map(([k,l])=>`<div style="margin:0 0 13px"><label>${esc(l)} <span class="req">*</span></label><div class="radio-grid">${[1,2,3,4,5].map(n=>`<label class="radio"><input type="radio" name="${target}_${k}" value="${n}"> ${n}</label>`).join('')}</div></div>`).join('')}
+function roleMeta(r){return({ADMIN:['🛡️','Dashboard Admin','Akses penuh','Semua Data'],KAPRODI_S1:['📗','Dashboard Kaprodi S1','Analitik dan data S1','S1'],KAPRODI_S2:['📘','Dashboard Kaprodi S2','Analitik dan data S2','S2'],WADEK:['🎯','Dashboard Wakil Dekan','Monitoring fakultas','Fakultas'],DEKAN:['👑','Dashboard Dekan','Ringkasan strategis','Fakultas + Universitas'],MAHASISWA:['🎓','Dashboard Mahasiswa','Data tracer pribadi','Pribadi']})[r]||['👤','Dashboard','Akses terbatas','Terbatas']}
+function setOnline(ok,text){$('connDot')?.classList.toggle('ok',!!ok);$('connDot')?.classList.toggle('err',!ok);if($('connText'))$('connText').textContent=text||(ok?'Online':'Offline')}
+function encodeForm(obj){const p=new URLSearchParams();Object.entries(obj||{}).forEach(([k,v])=>{if(v===undefined||v===null)return;p.set(k,typeof v==='object'?JSON.stringify(v):String(v))});return p}
+async function parseResponse(r){const txt=await r.text();let j;try{j=JSON.parse(txt)}catch(_){throw new Error('Server tidak mengembalikan JSON. Pastikan URL GAS Web App adalah deployment /exec yang aktif.')}if(j.ok===false)throw new Error(j.error||'Permintaan gagal.');return j}
+async function apiPost(data){const p={...data,action:String(data?.action||'').trim()};if(!p.action)throw new Error('Parameter action wajib dikirim pada POST.');if(TOKEN)p.token=TOKEN;p._ts=p._ts||Date.now();const body=encodeForm(p);let r;try{r=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body,cache:'no-store',redirect:'follow',credentials:'omit'});}catch(e){setOnline(false,'Gagal koneksi');throw new Error('Failed to fetch. Periksa URL Web App GAS /exec, deployment aktif, dan akses Web App.');}const j=await parseResponse(r);setOnline(true);return j}
+async function apiGet(data){const q=new URLSearchParams();Object.entries(data||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null)q.set(k,typeof v==='object'?JSON.stringify(v):String(v))});q.set('action',String(data?.action||''));let r;try{r=await fetch(GAS_URL+'?'+q.toString(),{cache:'no-store',redirect:'follow',credentials:'omit'});}catch(e){setOnline(false,'Gagal koneksi');throw new Error('Failed to fetch. Periksa URL Web App GAS /exec dan deployment.')}const j=await parseResponse(r);setOnline(true);return j}
+function checkedValues(id){return Array.from(document.querySelectorAll('input[name="'+id+'_item"]:checked')).map(x=>x.value)}
+function radioGroup(group,key){const e=document.querySelector('input[name="'+group+'_'+CSS.escape(key)+'"]:checked');return e?Number(e.value):''}
 function currentKompetensiList(){return getProgramLevel(val('programStudi'))==='S2'?KOMPETENSI_S2:KOMPETENSI_S1}
 function currentMetodeList(){return getProgramLevel(val('programStudi'))==='S2'?METODE_S2:METODE_S1}
-function rebuildRatingsForLevel(){buildRatings('kompetensiDikuasai',currentKompetensiList());buildRatings('kompetensiDibutuhkan',currentKompetensiList());buildRatings('metodePembelajaran',currentMetodeList())}
-function populateProgramFields(){
-  const p=$('programStudi'),j=$('jenjang'); if(!p||!j)return;
-  p.innerHTML='<option value="">Pilih</option>'+PROGRAMS.map(x=>`<option>${esc(x)}</option>`).join('');
-  j.innerHTML='<option value="">Pilih</option><option>S1</option><option>S2</option>';
-}
-function updateLevelBanner(){
-  const l=getProgramLevel(val('programStudi')),b=$('levelBanner');if(!b)return;
-  b.classList.toggle('show',!!l);b.classList.toggle('s1',l==='S1');b.classList.toggle('s2',l==='S2');
-  $('levelBadge').textContent=l||'—';$('levelTitle').textContent=l==='S2'?'📘 Program Studi S2 Magister Ilmu Komunikasi':'📗 Program Studi S1 Ilmu Komunikasi';
-  $('levelDesc').innerHTML=l==='S2'?'NIM penanda <code>03</code> · tugas akhir <b>tesis</b>.':'NIM penanda <code>41</code> · tugas akhir <b>skripsi</b>.';
-  $('levelHint').textContent=VERIFIED_NIM?'✓ NIM '+VERIFIED_NIM:'Menunggu verifikasi NIM';
-}
-function showLevelGroup(){const l=getProgramLevel(val('programStudi'));$('groupS1')?.classList.toggle('hidden',l!=='S1');$('groupS2')?.classList.toggle('hidden',l!=='S2');if($('judulSkripsi'))$('judulSkripsi').required=l==='S1';if($('judulTesis'))$('judulTesis').required=l==='S2';}
-function clearNimVerification(){
-  VERIFIED_NIM='';VERIFIED_ALUMNI=null;
-  ['nama','programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).value=''});
-  if($('programStudi'))$('programStudi').disabled=true;if($('jenjang'))$('jenjang').disabled=true;
-  if($('nama'))$('nama').readOnly=true;updateLevelBanner();showLevelGroup();
-}
-function applyVerifiedAlumni(r,n){
-  VERIFIED_NIM=n;VERIFIED_ALUMNI=r;
-  $('nama').value=r.nama||'';$('nama').dataset.masterNim=n;
-  ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).value=r[k]||''});
-  if(r.email&&!val('email'))$('email').value=r.email;if(r.whatsapp&&!val('whatsapp'))$('whatsapp').value=r.whatsapp;
-  ['programStudi','jenjang','tahunMasuk','tahunLulus'].forEach(k=>{if($(k))$(k).disabled=true});$('nama').readOnly=true;
-  $('nimTypeInfo').className='nim-type '+(r.jenjang==='S2'?'s2':'');$('nimTypeInfo').textContent='✓ NIM terverifikasi · '+r.jenjang;
-  updateLevelBanner();showLevelGroup();rebuildRatingsForLevel();
-}
-function setOnline(ok){$('connDot')?.classList.toggle('ok',ok);$('connDot')?.classList.toggle('err',!ok);$('connDot')?.classList.remove('check');$('connText').textContent=ok?'Online':'Offline'}
-
-async function apiPost(data){
-  const p={...data,action:String(data.action||'')};
-  if(!p.action)throw Error('Parameter action wajib dikirim pada POST.');
-  if(TOKEN)p.token=TOKEN;
-  const r=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),cache:'no-store'});
-  const j=await r.json().catch(()=>({ok:false,error:'Respons server bukan JSON.'}));
-  if(!r.ok||j.ok===false)throw Error(j.error||'Permintaan gagal.');
-  return j;
-}
-async function apiGet(params){
-  const q=new URLSearchParams({...params,action:String(params.action||'')});
-  if(!q.get('action'))throw Error('Parameter action wajib dikirim.');
-  const r=await fetch(GAS_URL+'?'+q,{cache:'no-store'});
-  const j=await r.json().catch(()=>({ok:false,error:'Respons server bukan JSON.'}));
-  if(!r.ok||j.ok===false)throw Error(j.error||'Permintaan gagal.');
-  return j;
-}
-async function loadMeta(){
-  META=await apiGet({action:'meta'});
-  publicNonce=META.publicNonce||'';
-  const pi=META.periodeAktif;
-  msg('periodeInfo',pi?`Periode aktif: ${pi.nama} · rentang lulusan ${pi.tahunMin||'-'}–${pi.tahunMax||'-'}`:'Periode Tracer Study sedang ditutup.',!!pi);
-  if($('fPeriode'))$('fPeriode').innerHTML='<option value="">Semua</option>'+((META.periodeList||[]).map(x=>`<option value="${esc(x.periodeId)}">${esc(x.nama)}</option>`).join(''));
-  if($('fProdi'))$('fProdi').innerHTML='<option value="">Semua</option>'+PROGRAMS.map(x=>`<option>${esc(x)}</option>`).join('');
-  const years=new Set();(META.periodeList||[]).forEach(p=>{for(let y=Number(p.tahunMin);y<=Number(p.tahunMax);y++)if(y>1900&&y<2200)years.add(y)});
-  if($('fTahun'))$('fTahun').innerHTML='<option value="">Semua</option>'+[...years].sort((a,b)=>b-a).map(y=>`<option>${y}</option>`).join('');
-}
-function collectForm(){
-  const o={};$('tracerForm').querySelectorAll('input,select,textarea').forEach(e=>{
-    if(!e.id||e.disabled||e.type==='radio'||e.type==='checkbox')return;o[e.id]=e.value;
-  });
-  o.organisasiProfesi=checkedValues('organisasiProfesi');o.jenisPrestasi=checkedValues('jenisPrestasi');
-  o.kompetensiDikuasai={};o.kompetensiDibutuhkan={};o.metodePembelajaran={};
-  currentKompetensiList().forEach(([k])=>{o.kompetensiDikuasai[k]=radioGroup('kompetensiDikuasai',k);o.kompetensiDibutuhkan[k]=radioGroup('kompetensiDibutuhkan',k)});
-  currentMetodeList().forEach(([k])=>o.metodePembelajaran[k]=radioGroup('metodePembelajaran',k));
-  o.consentData=$('consentData')?.checked===true;o.consentContact=$('consentContact')?.checked===true;
-  o.level=getProgramLevel(o.programStudi);o._v=APP_VERSION_STR;return o;
-}
-function validateStep(n){
-  clearErrors();
-  if(n===1){
-    if(!/^\d{9}$/.test(VERIFIED_NIM))return fail('nim','Verifikasi NIM terlebih dahulu.');
-    if(getProgramLevel(val('programStudi'))!==expectedNimLevel(VERIFIED_NIM))return fail('programStudi','Program studi tidak sesuai pola NIM.');
-    if(!isYear(val('tahunMasuk')))return fail('tahunMasuk','Tahun masuk harus 4 digit.');
-    if(!isYear(val('tahunLulus')))return fail('tahunLulus','Tahun lulus harus 4 digit.');
-    if(Number(val('tahunLulus'))<Number(val('tahunMasuk')))return fail('tahunLulus','Tahun lulus tidak boleh sebelum tahun masuk.');
-    const ip=Number(val('ipk').replace(',','.'));if(!Number.isFinite(ip)||ip<0||ip>4)return fail('ipk','IPK harus 0.00–4.00.');
-    if(!isEmail(val('email')))return fail('email','Email tidak valid.');if(!isPhoneID(val('whatsapp')))return fail('whatsapp','WhatsApp harus 10–15 digit.');
-    const l=getProgramLevel(val('programStudi'));
-    if(l==='S1'){if(!val('judulSkripsi'))return fail('judulSkripsi','Judul skripsi wajib diisi.');if(!val('konsentrasiS1'))return fail('konsentrasiS1','Konsentrasi S1 wajib dipilih.');if(val('konsentrasiS1')==='Lainnya'&&!val('konsentrasiS1Lain'))return fail('konsentrasiS1Lain','Konsentrasi lainnya wajib diisi.')}
-    if(l==='S2'){if(!val('judulTesis'))return fail('judulTesis','Judul tesis wajib diisi.');if(!val('konsentrasiS2'))return fail('konsentrasiS2','Konsentrasi S2 wajib dipilih.');if(val('konsentrasiS2')==='Lainnya'&&!val('konsentrasiS2Lain'))return fail('konsentrasiS2Lain','Konsentrasi lainnya wajib diisi.')}
-  }
-  if(n===2){
-    const s=val('statusPekerjaanUtama');if(!s||!STATUS.includes(s))return fail('statusPekerjaanUtama','Status pekerjaan wajib dipilih.');
-    if(s==='Lainnya'&&!val('statusPekerjaanLain'))return fail('statusPekerjaanLain','Jelaskan status pekerjaan.');
-    const work=['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(s),biz=['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(s);
-    if(work){for(const k of ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.');if(val('bidangIndustri')==='Lainnya'&&!val('bidangIndustriLain'))return fail('bidangIndustriLain','Sebutkan bidang industri.');if(val('caraDapatKerja')==='Lainnya'&&!val('caraDapatKerjaLain'))return fail('caraDapatKerjaLain','Sebutkan cara mendapatkan pekerjaan.')}
-    if(biz&&!val('namaUsaha'))return fail('namaUsaha','Nama usaha wajib diisi untuk status wirausaha.');
-  }
-  if(n===3&&!val('ikutMagang'))return fail('ikutMagang','Pilih Ya/Tidak.');
-  if(n===3&&val('ikutMagang')==='Ya'){for(const k of ['kontribusiMagang','magangBantuKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.')}
-  if(n===4&&!val('ikutOrganisasi'))return fail('ikutOrganisasi','Pilih Ya/Tidak.');
-  if(n===4&&val('ikutOrganisasi')==='Ya'&&checkedValues('organisasiProfesi').length===0)return fail('organisasiProfesi','Pilih minimal satu organisasi profesi.');
-  if(n===4&&checkedValues('organisasiProfesi').includes('Lainnya')&&!val('organisasiProfesiLain'))return fail('organisasiProfesiLain','Sebutkan organisasi lainnya.');
-  if(n===5&&!val('punyaPrestasi'))return fail('punyaPrestasi','Pilih Ya/Tidak.');
-  if(n===5&&val('punyaPrestasi')==='Ya'&&checkedValues('jenisPrestasi').length===0)return fail('jenisPrestasi','Pilih minimal satu jenis prestasi.');
-  if(n===5&&checkedValues('jenisPrestasi').includes('Lainnya')&&!val('jenisPrestasiLain'))return fail('jenisPrestasiLain','Sebutkan jenis prestasi lainnya.');
-  if(n===6){
-    for(const [k] of currentKompetensiList())if(!radioGroup('kompetensiDikuasai',k)||!radioGroup('kompetensiDibutuhkan',k))return toast('Lengkapi seluruh penilaian F1–F2.','err'),false;
-    for(const [k] of currentMetodeList())if(!radioGroup('metodePembelajaran',k))return toast('Lengkapi seluruh penilaian F3.','err'),false;
-    for(const k of ['hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja'])if(!val(k))return fail(k,'Field ini wajib diisi.');
-  }
-  if(n===7){if(!val('melanjutkanStudi'))return fail('melanjutkanStudi','Pilih Ya/Tidak.');if(val('melanjutkanStudi')==='Ya'){if(!val('jenjangStudiLanjut'))return fail('jenjangStudiLanjut','Jenjang studi lanjut wajib dipilih.');if(val('jenjangStudiLanjut')==='Lainnya'&&!val('jenjangStudiLanjutLain'))return fail('jenjangStudiLanjutLain','Sebutkan jenjang studi lanjut.');if(val('biayaStudiLanjut')==='Lainnya'&&!val('biayaStudiLanjutLain'))return fail('biayaStudiLanjutLain','Sebutkan sumber biaya.');}}
-  if(n===8&&!$('consentData').checked)return fail('consentData','Persetujuan data wajib dicentang.');
-  return true;
-}
-function updateSteps(){
-  $$('.step').forEach(e=>e.classList.toggle('active',Number(e.dataset.step)===step));
-  $$('#stepIndicator button').forEach((e,i)=>{e.classList.toggle('active',i+1===step);e.classList.toggle('done',i+1<step)});
-  $('bar').style.width=(step/TOTAL_STEPS*100)+'%';if(step===8)renderSummary();scrollTo({top:0,behavior:'smooth'});
-}
-function renderSummary(){const d=collectForm();$('summaryBox').innerHTML='<h4>Ringkasan data yang akan dikirim</h4><div class="tablewrap"><table class="table">'+Object.entries(d).filter(([k,v])=>v!==''&&v!=null&&typeof v!=='object').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')+'</table></div>'}
-async function submitTracer(){
-  if(formSubmitted||!publicNonce)return;if(!validateStep(8))return;formSubmitted=true;
-  const b=document.querySelector('#tracerForm button[type=submit]');if(b)b.disabled=true;
-  try{
-    const payload=collectForm();
-    const r=await apiPost({action:'submit',formData:JSON.stringify(payload),publicNonce, _ts:Date.now()});
-    toast('Tracer Study berhasil disimpan.','ok');msg('formStatus',`Berhasil. Tracer ID: ${r.tracerId}`,true);
-    $('trackingId').value=r.tracerId;sessionStorage.setItem('last_tracer_id',r.tracerId);formSubmitted=true;
-  }catch(e){formSubmitted=false;if(b)b.disabled=false;toast(e.message,'err');try{await loadMeta()}catch(_){}}
-}
-function roleInfo(profile){
-  const r=String(profile?.role||'').toUpperCase();
-  if(r==='ADMIN')return ['🛡️','Dashboard Admin','Akses penuh sistem','Semua Data','admin'];
-  if(r==='KAPRODI_S1'||(r==='KAPRODI'&&getProgramLevel(profile.programStudi)==='S1'))return ['📗','Dashboard Kaprodi S1','Analitik dan data S1','S1','kaprodi-s1'];
-  if(r==='KAPRODI_S2'||(r==='KAPRODI'&&getProgramLevel(profile.programStudi)==='S2'))return ['📘','Dashboard Kaprodi S2','Analitik dan data S2','S2','kaprodi-s2'];
-  if(r==='WADEK')return ['🎯','Dashboard Wakil Dekan','Monitoring fakultas','Fakultas','wadek'];
-  if(r==='DEKAN')return ['👑','Dashboard Dekan','Ringkasan strategis','Fakultas + Universitas','dekan'];
-  if(r==='MAHASISWA')return ['🎓','Dashboard Mahasiswa','Profil dan status tracer','Pribadi','mahasiswa'];
-  return ['👤','Dashboard','Akses terbatas','Terbatas',''];
-}
-function isStaff(){return ['ADMIN','KAPRODI_S1','KAPRODI_S2','KAPRODI','WADEK','DEKAN'].includes(String(PROFILE?.role||'').toUpperCase())}
-function showDashboard(){
-  $('ubahPassBtn')?.classList.remove('hidden');
-  const m=roleInfo(PROFILE);$('loginBox').classList.add('hidden');$('dashBox').classList.remove('hidden');
-  $('rbIcon').textContent=m[0];$('rbTitle').textContent=m[1];$('rbDesc').textContent=m[2];$('rbScope').textContent=m[3];
-  $('profileBadge').textContent=PROFILE.username+' · '+m[1].replace('Dashboard ','');
-  $('profileBadge').className='role-badge badge role-'+m[4];
-  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',String(PROFILE.role).toUpperCase()!=='ADMIN'));
-  $$('.staff-only').forEach(e=>e.classList.toggle('hidden',!isStaff()));
-  if(!isStaff()){$('.filters')?.classList.add('hidden');$$('[data-export]').forEach(e=>e.classList.add('hidden'));$('adminTabs')?.classList.add('hidden');}
-  else{$('.filters')?.classList.remove('hidden');$('adminTabs')?.classList.remove('hidden');}
-  loadDashboard();
-}
-async function login(){
-  const u=val('username'),p=val('password');if(!u||!p)return toast('Username dan password wajib diisi.','err');
-  try{const r=await apiPost({action:'login',username:u,password:p,ua:navigator.userAgent.slice(0,200)});TOKEN=r.token;TOKEN_EXP=Date.now()+SESSION_MAX_AGE;PROFILE=r.profile;sessionStorage.setItem('ts_token',TOKEN);sessionStorage.setItem('ts_token_exp',String(TOKEN_EXP));showDashboard();toast('Login berhasil.','ok');if(r.profile?.mustChangePassword)setTimeout(()=>{toast('Password awal/yang direset wajib diganti.','info');changePasswordModal()},250)}
-  catch(e){toast(e.message,'err')}
-}
-async function loadDashboard(){
-  if(!TOKEN||Date.now()>TOKEN_EXP)return logout();
-  try{
-    const filters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};
-    const r=await apiPost({action:'dashboard',filters:JSON.stringify(filters),page:respPage,perPage:RESP_PER_PAGE});
-    DATA=r;renderDashboard(r);setOnline(true);
-  }catch(e){toast(e.message,'err');if(/sesi|akses/i.test(e.message))logout()}
-}
-function destroyCharts(){Object.values(charts).forEach(c=>{try{c.destroy()}catch(_){}});charts={}}
-function chart(id,type,labels,data){
-  const c=$(id);if(!c||typeof Chart==='undefined')return;charts[id]=new Chart(c,{type,data:{labels,datasets:[{label:'Jumlah',data}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:type==='doughnut'}}}});
-}
-function countsToPair(o){o=o||{};const e=Object.entries(o);return {labels:e.map(x=>x[0]),data:e.map(x=>x[1])}}
-function renderDashboard(r){
-  const s=r.summary||{};$('kpiBox').innerHTML=[['Total Respons',s.total||0],['Master Alumni',s.totalMaster||0],['Belum Mengisi',s.belumMengisi||0],['Response Rate',(s.responseRate||0)+'%'],['Bekerja',s.bekerja||0],['Wirausaha',s.wirausaha||0],['Studi Lanjut',s.studi||0],['Organisasi',s.organisasi||0]].map(x=>`<div><b>${esc(x[1])}</b><span>${esc(x[0])}</span></div>`).join('');
-  destroyCharts();let c=r.charts||{},p;
-  p=countsToPair(c.statusCounts);chart('chStatus','doughnut',p.labels,p.data);p=countsToPair(c.yearCounts);chart('chTahun','bar',p.labels,p.data);p=countsToPair(c.programCounts);chart('chProdi','doughnut',p.labels,p.data);p=countsToPair(c.kesesuaianCounts);chart('chKesesuaian','bar',p.labels,p.data);
-  p=countsToPair(c.kompetensiDikuasaiAvg);chart('chKompetensi','bar',p.labels,p.data);p=countsToPair(c.kompetensiDibutuhkanAvg);chart('chKebutuhan','bar',p.labels,p.data);p=countsToPair(c.masaTungguBuckets);chart('chMasaTunggu','bar',p.labels,p.data);p=countsToPair(c.bidangCounts);chart('chBidang','bar',p.labels,p.data);p=countsToPair(c.organisasiCounts);chart('chOrganisasi','doughnut',p.labels,p.data);p=countsToPair(c.prestasiCounts);chart('chPrestasi','doughnut',p.labels,p.data);p=countsToPair(c.sistemKerjaCounts);chart('chSistemKerja','bar',p.labels,p.data);p=countsToPair(c.jenisPekerjaanCounts);chart('chJenisPekerjaan','bar',p.labels,p.data);
-  const recent=r.recent||[];$('recentTable').innerHTML='<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Status</th></tr>'+recent.map(x=>`<tr data-id="${esc(x.tracerId)}"><td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.status)}</td></tr>`).join('');
-  const items=r.items||[];$('respTable').innerHTML='<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Tahun Lulus</th><th>Status</th></tr>'+items.map(x=>`<tr data-id="${esc(x.tracerId)}"><td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.tahunLulus)}</td><td>${esc(x.status)}</td></tr>`).join('');
-  $('respInfo').textContent=`${r.pagination?.total||items.length} data · halaman ${r.pagination?.page||1}/${r.pagination?.totalPages||1}`;renderPagination(r.pagination);renderSaran(r.saranList||[]);renderAccreditation(r);
-  if(String(PROFILE?.role).toUpperCase()==='ADMIN'){renderUsers(r.users||[]);renderPeriode(r.periode||[]);renderAudit(r.audit||[])}
-  $$('#recentTable tr[data-id],#respTable tr[data-id]').forEach(e=>e.onclick=()=>showDetail(e.dataset.id));
-}
-function renderPagination(p){const e=$('respPagination');if(!e||!p)return;e.innerHTML=`<button ${p.page<=1?'disabled':''} id="prevPage">←</button><span class="page-info">${p.page} / ${p.totalPages}</span><button ${p.page>=p.totalPages?'disabled':''} id="nextPage">→</button>`;$('prevPage')?.addEventListener('click',()=>{respPage--;loadDashboard()});$('nextPage')?.addEventListener('click',()=>{respPage++;loadDashboard()})}
-function renderSaran(a){$('saranList').innerHTML=a.length?a.map(x=>`<div class="acc-panel"><b>${esc(x.nama)}</b> · ${esc(x.programStudi)} · ${esc(x.tahunLulus)}<p>${esc(x.saran)}</p></div>`).join(''):'Belum ada masukan.'}
-function renderAccreditation(r){
-  const s=r.summary||{},c=r.charts||{};$('accListBANPT').innerHTML=[`Total respons: <b>${s.total||0}</b>`,`Response rate master alumni: <b>${s.responseRate||0}%</b>`,`Relevansi pekerjaan dianalisis melalui indikator kesesuaian dan hubungan bidang.`].map(x=>`<li>${x}</li>`).join('');
-  $('accListLAMSPAK').innerHTML=[`S1: <b>${s.s1||0}</b> respons`,`S2: <b>${s.s2||0}</b> respons`,`Kompetensi F1–F3 dan metode pembelajaran tersedia dalam analitik.`].map(x=>`<li>${x}</li>`).join('');
-  $('accListPDDIKTI').innerHTML=[`NIM, program studi, tahun lulus dan status pekerjaan tersedia dalam data tracer.`,`Tracer ID menjadi referensi penelusuran respons.`].map(x=>`<li>${x}</li>`).join('');
-  let p=countsToPair(c.relevansiCounts);chart('chAccRelevansi','bar',p.labels,p.data);p=countsToPair(c.masaTungguBuckets);chart('chAccMasaTunggu','bar',p.labels,p.data);
-}
-async function showDetail(id){try{const r=await apiPost({action:'detail',tracerId:id});const x=r.item||{};openModal('Detail Respons',`<div class="tablewrap"><table class="table">${Object.entries(x).filter(([k,v])=>k!=='KOMPETENSI'&&v!=='').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table></div>`)}catch(e){toast(e.message,'err')}}
-async function exportData(format){try{const filters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};const r=await apiPost({action:'export',format,filters:JSON.stringify(filters)});const bin=atob(r.base64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([u],{type:r.mime}));a.download=r.filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Export berhasil.','ok')}catch(e){toast(e.message,'err')}}
-function openModal(title,body,actions=''){const root=$('modalRoot');root.innerHTML=`<div class="modal"><div class="box"><h3>${esc(title)} <button type="button" class="btn secondary sm" id="closeModal">Tutup</button></h3>${body}${actions}</div></div>`;$('closeModal').onclick=()=>root.innerHTML=''}
-function closeModal(){if($('modalRoot'))$('modalRoot').innerHTML=''}
-function renderUsers(users){
-  const e=$('userTable');if(!e)return;e.innerHTML='<tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th><th>Last Login</th><th>Aksi</th></tr>'+users.map(u=>`<tr><td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${esc(u.role)}</td><td>${esc(u.programStudi||'-')}</td><td>${u.aktif?'Ya':'Tidak'}</td><td>${esc(u.lastLogin||'-')}</td><td><button class="btn sm secondary" data-reset-user="${esc(u.username)}">Reset</button></td></tr>`).join('');$$('[data-reset-user]').forEach(b=>b.onclick=()=>resetPassword(b.dataset.resetUser))}
-function renderPeriode(a){const e=$('periodeTable');if(!e)return;e.innerHTML='<tr><th>ID</th><th>Nama</th><th>Status</th><th>Rentang</th><th>Buka</th><th>Tutup</th></tr>'+a.map(p=>`<tr><td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td><td>${esc(p.status)}</td><td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td><td>${esc(p.tglBuka||'-')}</td><td>${esc(p.tglTutup||'-')}</td></tr>`).join('')}
-function renderAudit(a){const e=$('auditTable');if(!e)return;e.innerHTML='<tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Ref</th><th>Detail</th></tr>'+a.map(x=>`<tr><td>${esc(x.timestamp)}</td><td>${esc(x.actor)}</td><td>${esc(x.action)}</td><td>${esc(x.ref)}</td><td>${esc(x.detail)}</td></tr>`).join('')}
-function userModal(u={}){
-  const roles=['ADMIN','KAPRODI_S1','KAPRODI_S2','WADEK','DEKAN','MAHASISWA'];
-  openModal(u.username?'Edit User':'Tambah User',`<div class="grid">
-  <div><label>Username</label><input id="mUser" value="${esc(u.username||'')}" ${u.username?'readonly':''}></div>
-  <div><label>Nama</label><input id="mNama" value="${esc(u.nama||'')}"></div>
-  <div><label>Role</label><select id="mRole">${roles.map(x=>`<option ${x===(u.role||'')?'selected':''}>${x}</option>`).join('')}</select></div>
-  <div><label>Program Studi</label><select id="mProdi"><option value="">—</option>${PROGRAMS.map(x=>`<option ${x===(u.programStudi||'')?'selected':''}>${esc(x)}</option>`).join('')}</select></div>
-  <div><label>Password ${u.username?'(kosong = tetap)':''}</label><input id="mPwd" type="password" minlength="8"></div>
-  <div><label>Aktif</label><select id="mAktif"><option value="true" ${u.aktif!==false?'selected':''}>Ya</option><option value="false" ${u.aktif===false?'selected':''}>Tidak</option></select></div>
-  </div><div class="actions" style="margin-top:16px"><button class="btn" id="saveUser">Simpan</button></div>`);
-  $('saveUser').onclick=async()=>{try{await apiPost({action:'usersave',payload:JSON.stringify({username:val('mUser'),nama:val('mNama'),role:val('mRole'),programStudi:val('mProdi'),password:val('mPwd'),aktif:val('mAktif')})});closeModal();toast('User tersimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
-}
-function periodeModal(){
-  openModal('Tambah / Ubah Periode',`<div class="grid"><div><label>Periode ID</label><input id="pId" placeholder="PRD-2026"></div><div><label>Nama</label><input id="pNama"></div><div><label>Status</label><select id="pStatus"><option>BUKA</option><option>TUTUP</option></select></div><div><label>Tahun Min</label><input id="pMin" maxlength="4"></div><div><label>Tahun Max</label><input id="pMax" maxlength="4"></div><div><label>Tanggal Buka</label><input id="pBuka" type="date"></div><div><label>Tanggal Tutup</label><input id="pTutup" type="date"></div><div class="full"><label>Catatan</label><textarea id="pCatatan"></textarea></div></div><div class="actions"><button class="btn" id="savePeriode">Simpan</button></div>`);
-  $('savePeriode').onclick=async()=>{try{await apiPost({action:'periodesave',payload:JSON.stringify({periodeId:val('pId'),nama:val('pNama'),status:val('pStatus'),tahunMin:val('pMin'),tahunMax:val('pMax'),tglBuka:val('pBuka'),tglTutup:val('pTutup'),catatan:val('pCatatan')})});closeModal();toast('Periode tersimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
-}
-async function resetPassword(username){const np=prompt('Password baru untuk '+username+' (minimal 8 karakter). Kosongkan untuk default aman:');if(np===null)return;try{const r=await apiPost({action:'resetpassword',username,newPassword:np});toast(r.message+(r.defaultPassword?' Password default: '+r.defaultPassword:''),'ok');loadDashboard()}catch(e){toast(e.message,'err')}}
-function changePasswordModal(){openModal('Ubah Password',`<div class="grid"><div class="full"><label>Password Lama</label><input id="oldPwd" type="password"></div><div><label>Password Baru</label><input id="newPwd" type="password" minlength="8"></div><div><label>Konfirmasi</label><input id="newPwd2" type="password" minlength="8"></div></div><div class="actions"><button class="btn" id="savePwd">Ubah Password</button></div>`);$('savePwd').onclick=async()=>{if(val('newPwd')!==val('newPwd2'))return toast('Konfirmasi password tidak sama.','err');try{await apiPost({action:'changepassword',oldPassword:val('oldPwd'),newPassword:val('newPwd')});closeModal();toast('Password berhasil diubah.','ok')}catch(e){toast(e.message,'err')}}}
-function logout(){if(TOKEN){apiPost({action:'logout'}).catch(()=>{})}TOKEN='';TOKEN_EXP=0;PROFILE=null;sessionStorage.removeItem('ts_token');sessionStorage.removeItem('ts_token_exp');$('dashBox').classList.add('hidden');$('loginBox').classList.remove('hidden');toast('Logout berhasil.','info')}
-function showView(v){$$('main>section').forEach(e=>e.classList.toggle('hidden',e.id!=='view-'+v));$$('.tab').forEach(e=>e.classList.toggle('active',e.dataset.view===v))}
-function initConditionals(){
-  document.querySelectorAll('[data-conditional]').forEach(e=>e.addEventListener('change',()=>{const c=e.dataset.conditional,box=$(c+'Box')||$(c);if(box)box.classList.toggle('hidden',e.value!=='Lainnya'&&e.value!=='Ya')}));
-  $('statusPekerjaanUtama')?.addEventListener('change',e=>{$('bekerjaBox')?.classList.toggle('hidden',!['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(e.target.value));$('wirausahaBox')?.classList.toggle('hidden',!['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(e.target.value));});
-  $('ikutMagang')?.addEventListener('change',e=>$('magangBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('ikutOrganisasi')?.addEventListener('change',e=>$('organisasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('punyaPrestasi')?.addEventListener('change',e=>$('prestasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('melanjutkanStudi')?.addEventListener('change',e=>$('studiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));
-}
-function bindAdmin(){
-  $$('.subtab button').forEach(b=>b.onclick=()=>{$$('.subtab button').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.panel').forEach(p=>p.classList.toggle('hidden',p.dataset.panel!==b.dataset.panel))});
-  $('addUserBtn')?.addEventListener('click',()=>userModal());$('reloadUserBtn')?.addEventListener('click',loadDashboard);$('addPeriodeBtn')?.addEventListener('click',periodeModal);$('reloadPeriodeBtn')?.addEventListener('click',loadDashboard);$('reloadAuditBtn')?.addEventListener('click',loadDashboard);
-  $('doImportBtn')?.addEventListener('click',async()=>{try{const r=await apiPost({action:'masterimport',csv:$('csvImport').value});$('importResult').textContent=`Inserted ${r.inserted}, updated ${r.updated}, skipped ${r.skipped}.`;toast('Import selesai.','ok');loadDashboard()}catch(e){toast(e.message,'err')}});
-  $$('[data-export]').forEach(b=>b.onclick=()=>exportData(b.dataset.export));
-  $('accScopeBar')?.querySelectorAll('button').forEach(b=>b.onclick=()=>{$('accScopeBar').querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');loadDashboard()});
-}
-async function init(){
-  populateProgramFields();buildChecks('organisasiProfesi',ORGANISASI_PROFESI);buildChecks('jenisPrestasi',JENIS_PRESTASI);rebuildRatingsForLevel();initConditionals();bindAdmin();
-  $$('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));
-  $$('[data-goto]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.goto);if(n<=step||validateStep(step)){step=n;updateSteps()}});
-  $$('.next').forEach(b=>b.onclick=()=>{if(validateStep(step)){step=Math.min(TOTAL_STEPS,step+1);updateSteps()}});
-  $$('.prev').forEach(b=>b.onclick=()=>{step=Math.max(1,step-1);updateSteps()});
-  $('tracerForm').onsubmit=e=>{e.preventDefault();submitTracer()};
-  $('checkNimBtn').onclick=async()=>{const nim=normalizeNim(val('nim'));if(!/^\d{9}$/.test(nim))return fail('nim','NIM harus 9 digit.');try{const r=await apiGet({action:'checknim',nim});if(r.sudahMengisi)throw Error('NIM sudah memiliki respons tracer.');applyVerifiedAlumni(r.alumni,nim);toast('NIM terverifikasi.','ok')}catch(e){clearNimVerification();toast(e.message,'err')}};
-  $('loginBtn').onclick=login;$('logoutBtn').onclick=logout;$('refreshBtn').onclick=loadDashboard;$('ubahPassBtn').onclick=changePasswordModal;
-  $('applyFilter').onclick=()=>{respPage=1;loadDashboard()};$('resetFilter').onclick=()=>{['fPeriode','fTahun','fProdi','fQ'].forEach(id=>$(id).value='');respPage=1;loadDashboard()};
-  $('togglePass').onclick=()=>{$('password').type=$('password').type==='password'?'text':'password'};
-  $('trackBtn').onclick=async()=>{try{const r=await apiGet({action:'lookup',tracerId:val('trackingId')});$('trackResult').innerHTML=`<div class="status ok">Tracer ID: ${esc(r.data?.tracerId||r.tracerId||'-')} · Status: ${esc(r.data?.status||'-')} · NIM: ${esc(r.data?.nim||'-')} · Nama: ${esc(r.data?.nama||'-')}</div>`}catch(e){msg('trackResult',e.message,false)}};
-  try{await loadMeta();setOnline(true)}catch(e){setOnline(false);toast('Backend belum dapat dihubungi.','err')}
-  if(TOKEN&&Date.now()<TOKEN_EXP){try{const r=await apiPost({action:'dashboard',filters:'{}',page:1,perPage:RESP_PER_PAGE});PROFILE=r.profile;showDashboard()}catch(_){logout()}}
-  updateSteps();
-}
+function buildChecks(id,list){const e=$(id);if(e)e.innerHTML=(list||[]).map(x=>`<label class="check-item"><input type="checkbox" name="${id}_item" value="${esc(x)}"><span>${esc(x)}</span></label>`).join('')}
+function buildRatings(id,list){const e=$(id);if(!e)return;e.innerHTML=(list||[]).map(([k,l])=>`<div style="margin:0 0 13px"><label>${esc(l)} <span class="req">*</span></label><div class="radio-grid">${[1,2,3,4,5].map(n=>`<label class="radio"><input type="radio" name="${id}_${esc(k)}" value="${n}"> ${n}</label>`).join('')}</div></div>`).join('')}
+function rebuildRatings(){buildRatings('kompetensiDikuasai',currentKompetensiList());buildRatings('kompetensiDibutuhkan',currentKompetensiList());buildRatings('metodePembelajaran',currentMetodeList())}
+function updateLevel(){const l=getProgramLevel(val('programStudi'));if($('levelBanner')){$('levelBanner').classList.toggle('show',!!l);$('levelBadge').textContent=l||'—';$('levelTitle').textContent=l==='S2'?'📘 Program Studi S2 Magister Ilmu Komunikasi':'📗 Program Studi S1 Ilmu Komunikasi';$('levelDesc').innerHTML=l==='S2'?'NIM penanda <code>03</code> · tugas akhir <b>tesis</b>.':'NIM penanda <code>41</code> · tugas akhir <b>skripsi</b>.';$('levelHint').textContent=VERIFIED_NIM?'✓ NIM '+VERIFIED_NIM:'Menunggu verifikasi NIM'}}
+function applyVerifiedAlumni(a,nim){VERIFIED_NIM=nim;VERIFIED_ALUMNI=a||{};['nama','programStudi','jenjang','tahunMasuk','tahunLulus','email','whatsapp'].forEach(k=>{if($(k))$(k).value=a?.[k]||''});$('nama').readOnly=true;$('programStudi').disabled=true;$('jenjang').disabled=true;updateLevel();rebuildRatings();}
+function clearNimVerification(){VERIFIED_NIM='';VERIFIED_ALUMNI=null;$('nama').value='';$('programStudi').value='';$('jenjang').value='';$('tahunMasuk').value='';$('tahunLulus').value='';$('nama').readOnly=true;updateLevel();rebuildRatings()}
+function collectForm(){const o={};const schemaFields=Object.values(META?.fieldSchema?.sections||{}).flat();schemaFields.forEach(id=>{const e=$(id);if(!e)return;if(e.type==='checkbox'||e.type==='radio')return;o[id]=e.value??''});o.organisasiProfesi=checkedValues('organisasiProfesi');o.jenisPrestasi=checkedValues('jenisPrestasi');o.kompetensiDikuasai={};o.kompetensiDibutuhkan={};o.metodePembelajaran={};currentKompetensiList().forEach(([k])=>{o.kompetensiDikuasai[k]=radioGroup('kompetensiDikuasai',k);o.kompetensiDibutuhkan[k]=radioGroup('kompetensiDibutuhkan',k)});currentMetodeList().forEach(([k])=>o.metodePembelajaran[k]=radioGroup('metodePembelajaran',k));o.consentData=!!$('consentData')?.checked;o.consentContact=!!$('consentContact')?.checked;o.level=getProgramLevel(o.programStudi);o.periodeId=META?.periodeAktif?.periodeId||'';o._v=APP_VERSION_STR;return o}
+function conditionalStatus(){const s=val('statusPekerjaanUtama');const work=['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(s),biz=['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(s);$('bekerjaBox')?.classList.toggle('hidden',!work);$('wirausahaBox')?.classList.toggle('hidden',!biz)}
+function initConditionals(){document.querySelectorAll('[data-conditional]').forEach(e=>e.addEventListener('change',()=>{const c=e.dataset.conditional,box=$(c+'Box')||$(c);if(box)box.classList.toggle('hidden',e.value!=='Lainnya'&&e.value!=='Ya')}));$('statusPekerjaanUtama')?.addEventListener('change',conditionalStatus);$('ikutMagang')?.addEventListener('change',e=>$('magangBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('ikutOrganisasi')?.addEventListener('change',e=>$('organisasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('punyaPrestasi')?.addEventListener('change',e=>$('prestasiBox')?.classList.toggle('hidden',e.target.value!=='Ya'));$('melanjutkanStudi')?.addEventListener('change',e=>$('studiBox')?.classList.toggle('hidden',e.target.value!=='Ya'))}
+function validateStep(n){clearErrors();const p=collectForm();if(n===1){if(!/^\d{9}$/.test(VERIFIED_NIM))return fail('nim','Verifikasi NIM terlebih dahulu.');const lvl=getProgramLevel(p.programStudi);if(lvl!==expectedNimLevel(VERIFIED_NIM))return fail('programStudi','Program studi tidak sesuai pola NIM.');if(!isYear(p.tahunMasuk)||!isYear(p.tahunLulus))return fail('tahunMasuk','Tahun masuk/lulus harus 4 digit.');if(Number(p.tahunLulus)<Number(p.tahunMasuk))return fail('tahunLulus','Tahun lulus tidak boleh sebelum tahun masuk.');const ip=Number(String(p.ipk).replace(',','.'));if(!Number.isFinite(ip)||ip<0||ip>4)return fail('ipk','IPK harus 0.00–4.00.');if(!isEmail(p.email))return fail('email','Email tidak valid.');if(!isPhoneID(p.whatsapp))return fail('whatsapp','WhatsApp harus 10–15 digit.');if(lvl==='S1'&&(!p.judulSkripsi||!p.konsentrasiS1))return fail('judulSkripsi','Judul skripsi dan konsentrasi wajib diisi.');if(lvl==='S2'&&(!p.judulTesis||!p.konsentrasiS2))return fail('judulTesis','Judul tesis dan konsentrasi wajib diisi.');}
+if(n===2){if(!VALID_STATUS_PEKERJAAN.includes(p.statusPekerjaanUtama))return fail('statusPekerjaanUtama','Status pekerjaan wajib dipilih.');if(['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(p.statusPekerjaanUtama)){for(const k of ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja'])if(!p[k])return fail(k,'Field ini wajib diisi.')}if(['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(p.statusPekerjaanUtama)&&!p.namaUsaha)return fail('namaUsaha','Nama usaha wajib diisi.');}
+if(n===3&&p.ikutMagang==='Ya'){for(const k of ['tempatMagang','durasiMagang','kontribusiMagang','magangBantuKerja'])if(!p[k])return fail(k,'Field ini wajib diisi.')}
+if(n===4&&p.ikutOrganisasi==='Ya'&&!p.organisasiProfesi.length)return fail('organisasiProfesi','Pilih minimal satu organisasi.');
+if(n===5&&p.punyaPrestasi==='Ya'&&!p.jenisPrestasi.length)return fail('jenisPrestasi','Pilih minimal satu jenis prestasi.');
+if(n===6){for(const [k] of currentKompetensiList())if(!p.kompetensiDikuasai[k]||!p.kompetensiDibutuhkan[k])return toast('Lengkapi seluruh penilaian F1 dan F2.','err'),false;for(const [k] of currentMetodeList())if(!p.metodePembelajaran[k])return toast('Lengkapi seluruh penilaian F3.','err'),false;for(const k of ['hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja'])if(!p[k])return fail(k,'Field evaluasi wajib diisi.')}
+if(n===7&&p.melanjutkanStudi==='Ya'){for(const k of ['jenjangStudiLanjut','ptStudiLanjut','prodiStudiLanjut','tahunMulaiStudi','biayaStudiLanjut'])if(!p[k])return fail(k,'Field studi lanjut wajib diisi.')}
+if(n===8&&!p.consentData)return fail('consentData','Persetujuan data wajib dicentang.');return true}
+function fail(id,t){setFieldError(id,t);$(id)?.scrollIntoView({behavior:'smooth',block:'center'});return false}
+function updateSteps(){$$('.step').forEach(e=>e.classList.toggle('active',Number(e.dataset.step)===step));$$('#stepIndicator button').forEach((e,i)=>{e.classList.toggle('active',i+1===step);e.classList.toggle('done',i+1<step)});$('bar').style.width=(step/TOTAL_STEPS*100)+'%';if(step===8)renderSummary();scrollTo({top:0,behavior:'smooth'})}
+function renderSummary(){const d=collectForm();const order=['nim','nama','programStudi','jenjang','tahunMasuk','tahunLulus','ipk','statusPekerjaanUtama','ikutMagang','ikutOrganisasi','punyaPrestasi','hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja','melanjutkanStudi','email','whatsapp'];$('summaryBox').innerHTML='<h4>Ringkasan Pengisian</h4><div class="tablewrap"><table class="table">'+order.map(k=>`<tr><th>${esc(k)}</th><td>${esc(typeof d[k]==='object'?JSON.stringify(d[k]):d[k]??'')}</td></tr>`).join('')+'</table></div>'}
+async function submitTracer(){if(formSubmitted||!validateStep(8))return;formSubmitted=true;const b=$('#tracerForm button[type=submit]');if(b)b.disabled=true;try{const payload=collectForm();const r=await apiPost({action:'submit',formData:JSON.stringify(payload),publicNonce:META?.publicNonce||'',_ts:Date.now()});msg('formStatus',`Berhasil. Tracer ID: ${r.tracerId}`,true);toast('Tracer Study berhasil disimpan.','ok');$('trackingId').value=r.tracerId;sessionStorage.setItem('last_tracer_id',r.tracerId)}catch(e){formSubmitted=false;if(b)b.disabled=false;toast(e.message,'err');msg('formStatus',e.message,false)}}
+function showView(v){$$('main>section').forEach(e=>e.classList.toggle('hidden',e.id!=='view-'+v));$$('.tab').forEach(e=>e.classList.toggle('active',e.dataset.view===v));if(v==='admin'&&PROFILE)showDashboard()}
+function populateMeta(){if(!META)return;const ps=$('programStudi'),jn=$('jenjang');ps.innerHTML='<option value="">Pilih</option>'+[PROGRAMS_S1,PROGRAMS_S2].map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');jn.innerHTML='<option value="">Pilih</option><option value="S1">S1</option><option value="S2">S2</option>';if($('periodeInfo'))$('periodeInfo').textContent=META.periodeAktif?`${META.periodeAktif.nama} · Tahun lulus ${META.periodeAktif.tahunMin||'-'}–${META.periodeAktif.tahunMax||'-'}`:'Periode sedang ditutup';const fp=$('fProdi');if(fp)fp.innerHTML='<option value="">Semua</option>'+[PROGRAMS_S1,PROGRAMS_S2].map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');const ft=$('fTahun');if(ft){const y=[];for(let i=new Date().getFullYear();i>=new Date().getFullYear()-10;i--)y.push(i);ft.innerHTML='<option value="">Semua</option>'+y.map(x=>`<option>${x}</option>`).join('')}const fper=$('fPeriode');if(fper)fper.innerHTML='<option value="">Semua</option>'+((META.periodeList||[]).map(x=>`<option value="${esc(x.periodeId)}">${esc(x.nama)}</option>`).join(''))}
+async function loadMeta(){try{META=await apiGet({action:'meta'});populateMeta();rebuildRatings();setOnline(true)}catch(e){setOnline(false,'Server gagal');toast(e.message,'err')}}
+async function checkNim(){const nim=normalizeNim(val('nim'));if(!/^\d{9}$/.test(nim))return fail('nim','NIM harus 9 digit.');try{const r=await apiGet({action:'checknim',nim});if(r.sudahMengisi)throw new Error('NIM sudah memiliki respons tracer.');applyVerifiedAlumni(r.alumni,nim);toast('NIM terverifikasi dan data master ditemukan.','ok')}catch(e){clearNimVerification();toast(e.message,'err')}}
+async function login(){const username=val('username').toLowerCase(),password=val('password');if(!username||!password)return toast('Username dan password wajib diisi.','err');try{const r=await apiPost({action:'login',username,password,ua:navigator.userAgent.slice(0,180),_ts:Date.now()});TOKEN=r.token;TOKEN_EXP=Number(r.expiredAt||0);PROFILE=r.profile;sessionStorage.setItem('ts_token',TOKEN);sessionStorage.setItem('ts_token_exp',String(TOKEN_EXP));showDashboard();toast('Login berhasil.','ok');if(r.mustChangePassword)changePasswordModal(true)}catch(e){toast(e.message,'err')}}
+function roleAllowsPanel(panel){if(panel==='adminpanel')return PROFILE?.role==='ADMIN';return true}
+function switchPanel(name){if(!roleAllowsPanel(name))return;$$('#adminTabs button').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));$$('#dashBox .panel').forEach(p=>p.classList.toggle('hidden',p.dataset.panel!==name))}
+async function loadDashboard(){if(!TOKEN||!PROFILE)return logout();if(TOKEN_EXP&&Date.now()>TOKEN_EXP)return logout();const req=++dashboardReqId;try{const filters={periode:val('fPeriode'),tahun:val('fTahun'),prodi:val('fProdi'),q:val('fQ')};const r=await apiPost({action:'dashboard',filters:JSON.stringify(filters),page:respPage,perPage:RESP_PER_PAGE});if(req!==dashboardReqId)return;DATA=r;renderDashboard(r)}catch(e){if(/sesi|session|login/i.test(e.message))logout();toast(e.message,'err')}}
+function renderDashboard(r){const s=r.summary||{};$('kpiBox').innerHTML=[['Total Respons',s.total||0],['Bekerja',s.bekerja||0],['Wirausaha',s.wirausaha||0],['Melanjutkan Studi',s.studi||0],['Belum Bekerja',s.belum||0]].map(x=>`<div><b>${x[1]}</b><span>${x[0]}</span></div>`).join('');const rows=r.items||[];$('recentTable').innerHTML='<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Status</th></tr>'+((r.recent||[]).map(x=>`<tr><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.status)}</td></tr>`).join('')||'<tr><td colspan="4">Belum ada data.</td></tr>');$('respTable').innerHTML='<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Tahun</th><th>Status</th><th>Aksi</th></tr>'+((rows.map(x=>`<tr><td>${esc(x.tracerId)}</td><td>${esc(x.nim)}</td><td>${esc(x.nama)}</td><td>${esc(x.programStudi)}</td><td>${esc(x.tahunLulus)}</td><td>${esc(x.status)}</td><td><button class="btn secondary sm" onclick="viewDetail('${esc(x.tracerId)}')">Detail</button></td></tr>`).join(''))||'<tr><td colspan="7">Tidak ada data.</td></tr>');$('respInfo').textContent=`${rows.length} dari ${r.pagination?.total||0} data`;renderPagination(r.pagination||{});renderCharts(r.charts||{});renderSaran(r.saranList||[]);renderAdmin(r)}
+function renderPagination(p){const e=$('respPagination');if(!e)return;e.innerHTML=`<button class="btn secondary sm" ${p.page<=1?'disabled':''} data-p="${Math.max(1,(p.page||1)-1)}">←</button><span> Halaman ${p.page||1} / ${p.totalPages||1} </span><button class="btn secondary sm" ${p.page>=(p.totalPages||1)?'disabled':''} data-p="${Math.min(p.totalPages||1,(p.page||1)+1)}">→</button>`;e.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{respPage=Number(b.dataset.p);loadDashboard()})}
+function chart(id,type,labels,data){if(typeof Chart==='undefined'||!$(id))return;if(charts[id])charts[id].destroy();charts[id]=new Chart($(id),{type,data:{labels,datasets:[{label:'Data',data}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}})}
+function renderCharts(c){const make=(id,o)=>{o=o||{};const a=Object.keys(o),b=a.map(k=>o[k]);if(a.length)chart(id,'bar',a,b)};make('chStatus',c.status);make('chTahun',c.tahun);make('chProdi',c.prodi);make('chKesesuaian',c.kesesuaian);make('chKompetensi',c.kompetensi);make('chKebutuhan',c.kebutuhan);make('chMasaTunggu',c.masaTunggu);make('chBidang',c.bidang);make('chOrganisasi',c.organisasi);make('chPrestasi',c.prestasi);make('chSistemKerja',c.sistemKerja);make('chJenisPekerjaan',c.jenisPekerjaan);make('chAccRelevansi',c.relevansi);make('chAccMasaTunggu',c.masaTunggu)}
+function renderSaran(list){const e=$('saranList');if(e)e.innerHTML=(list||[]).slice(0,30).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Belum ada saran.</li>'}
+function renderAdmin(r){if(PROFILE?.role!=='ADMIN')return;const ut=$('userTable');if(ut)ut.innerHTML='<tr><th>Username</th><th>Nama</th><th>Role</th><th>Prodi</th><th>Aktif</th><th>Force Password</th><th>Login</th><th>Aksi</th></tr>'+((r.users||[]).map(u=>`<tr><td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${esc(u.role)}</td><td>${esc(u.programStudi)}</td><td>${u.aktif?'Ya':'Tidak'}</td><td>${u.mustChangePassword?'Ya':'Tidak'}</td><td>${esc(u.lastLogin||'-')}</td><td><button class="btn secondary sm" onclick="resetUserPassword('${esc(u.username)}')">Reset Password</button></td></tr>`).join('')||'<tr><td colspan="8">Belum ada user.</td></tr>');const pt=$('periodeTable');if(pt)pt.innerHTML='<tr><th>ID</th><th>Nama</th><th>Status</th><th>Min</th><th>Max</th></tr>'+((r.periode||[]).map(p=>`<tr><td>${esc(p.periodeId)}</td><td>${esc(p.nama)}</td><td>${esc(p.status)}</td><td>${esc(p.tahunMin)}</td><td>${esc(p.tahunMax)}</td></tr>`).join('')||'<tr><td colspan="5">Belum ada periode.</td></tr>');const at=$('auditTable');if(at)at.innerHTML='<tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Ref</th><th>Detail</th></tr>'+((r.audit||[]).map(a=>`<tr><td>${esc(a.timestamp)}</td><td>${esc(a.actor)}</td><td>${esc(a.action)}</td><td>${esc(a.ref)}</td><td>${esc(a.detail)}</td></tr>`).join('')||'<tr><td colspan="5">Belum ada audit.</td></tr>')}
+function showDashboard(){const m=roleMeta(PROFILE?.role);$('loginBox').classList.add('hidden');$('dashBox').classList.remove('hidden');$('rbIcon').textContent=m[0];$('rbTitle').textContent=m[1];$('rbDesc').textContent=m[2];$('rbScope').textContent=m[3];$('profileBadge').textContent=(PROFILE?.nama||PROFILE?.username||'')+' · '+PROFILE.role;$$('.admin-only').forEach(e=>e.classList.toggle('hidden',PROFILE.role!=='ADMIN'));switchPanel('overview');loadDashboard()}
+async function logout(){try{if(TOKEN)await apiPost({action:'logout'})}catch(_){}TOKEN='';TOKEN_EXP=0;PROFILE=null;sessionStorage.removeItem('ts_token');sessionStorage.removeItem('ts_token_exp');$('dashBox')?.classList.add('hidden');$('loginBox')?.classList.remove('hidden');toast('Logout berhasil.','info')}
+async function viewDetail(id){try{const r=await apiPost({action:'detail',tracerId:id});const item=r.item||{};const box=$('modalRoot');box.innerHTML=`<div class="modal-backdrop"><div class="modal"><button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button><h3>Detail ${esc(item.TRACER_ID)}</h3><div class="tablewrap"><table class="table">${Object.entries(item).filter(([k])=>k!=='KOMPETENSI').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table></div></div></div>`}catch(e){toast(e.message,'err')}}
+function changePasswordModal(force=false){const root=$('modalRoot');root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>🔐 ${force?'Wajib Ganti Password':'Ganti Password'}</h3><p>${force?'Password awal harus diganti sebelum melanjutkan.':'Masukkan password baru Anda.'}</p><input id="oldPwd" type="password" placeholder="Password lama"><input id="newPwd" type="password" placeholder="Password baru minimal 8 karakter"><input id="newPwd2" type="password" placeholder="Ulangi password baru"><div class="actions"><button class="btn secondary" onclick="this.closest('.modal-backdrop').remove()">Batal</button><button class="btn" onclick="submitChangePassword(${force})">Simpan</button></div></div></div>`}
+async function submitChangePassword(force){const oldPwd=val('oldPwd'),newPwd=val('newPwd'),newPwd2=val('newPwd2');if(newPwd.length<8||newPwd!==newPwd2)return toast('Password baru minimal 8 karakter dan harus sama.','err');try{await apiPost({action:'changepassword',oldPassword:oldPwd,newPassword:newPwd});$('modalRoot').innerHTML='';toast('Password berhasil diubah.','ok')}catch(e){toast(e.message,'err')}}
+async function resetUserPassword(username){const pwd=prompt('Masukkan password baru minimal 8 karakter untuk '+username+':');if(!pwd)return;if(pwd.length<8)return toast('Password minimal 8 karakter.','err');try{await apiPost({action:'resetpassword',username,newPassword:pwd});toast('Password berhasil direset.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
+async function exportData(format){try{const filters={periode:val('fPeriode'),tahun:val('fTahun'),prodi:val('fProdi'),q:val('fQ')};const r=await apiPost({action:'export',format,filters:JSON.stringify(filters)});const a=document.createElement('a');a.href='data:'+r.mime+';base64,'+r.base64;a.download=r.filename;a.click();toast('Export selesai.','ok')}catch(e){toast(e.message,'err')}}
+async function saveUser(){const username=val('newUsername'),nama=val('newNama'),role=val('newRole'),programStudi=val('newProgram'),password=val('newPassword'),aktif=$('newAktif')?.checked??true;try{await apiPost({action:'usersave',payload:JSON.stringify({username,nama,role,programStudi,password,aktif})});toast('User berhasil disimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
+async function savePeriode(){const payload={periodeId:val('newPeriodeId'),nama:val('newPeriodeNama'),status:val('newPeriodeStatus'),tahunMin:val('newPeriodeMin'),tahunMax:val('newPeriodeMax'),tglBuka:val('newPeriodeBuka'),tglTutup:val('newPeriodeTutup'),catatan:val('newPeriodeCatatan')};try{await apiPost({action:'periodesave',payload:JSON.stringify(payload)});toast('Periode berhasil disimpan.','ok');loadDashboard()}catch(e){toast(e.message,'err')}}
+function openAdminModal(type){const root=$('modalRoot');if(type==='user'){root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>Tambah User</h3><input id="newUsername" placeholder="Username"><input id="newNama" placeholder="Nama"><select id="newRole"><option value="ADMIN">ADMIN</option><option value="KAPRODI_S1">KAPRODI_S1</option><option value="KAPRODI_S2">KAPRODI_S2</option><option value="WADEK">WADEK</option><option value="DEKAN">DEKAN</option><option value="MAHASISWA">MAHASISWA</option></select><input id="newProgram" placeholder="Program Studi"><input id="newPassword" type="password" placeholder="Password minimal 8 karakter"><label><input id="newAktif" type="checkbox" checked> Aktif</label><div class="actions"><button class="btn secondary" onclick="$('modalRoot').innerHTML=''">Batal</button><button class="btn" onclick="saveUser();$('modalRoot').innerHTML=''">Simpan</button></div></div></div>`}else{root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>Tambah/Update Periode</h3><input id="newPeriodeId" placeholder="PRD-2026"><input id="newPeriodeNama" placeholder="Nama periode"><select id="newPeriodeStatus"><option>BUKA</option><option>TUTUP</option></select><input id="newPeriodeMin" placeholder="Tahun min"><input id="newPeriodeMax" placeholder="Tahun max"><input id="newPeriodeBuka" type="date"><input id="newPeriodeTutup" type="date"><textarea id="newPeriodeCatatan" placeholder="Catatan"></textarea><div class="actions"><button class="btn secondary" onclick="$('modalRoot').innerHTML=''">Batal</button><button class="btn" onclick="savePeriode();$('modalRoot').innerHTML=''">Simpan</button></div></div></div>`}}
+function initAdmin(){if($('ubahPassBtn'))$('ubahPassBtn').onclick=()=>changePasswordModal(false);$('notifyBtn')?.addEventListener('click',()=>toast('Notifikasi akan muncul setelah ada aksi sistem.','info'));$('loginBtn').onclick=login;$('logoutBtn').onclick=logout;$('refreshBtn').onclick=loadDashboard;$('applyFilter').onclick=()=>{respPage=1;loadDashboard()};$('resetFilter').onclick=()=>{['fPeriode','fTahun','fProdi','fQ'].forEach(id=>$(id).value='');respPage=1;loadDashboard()};$('togglePass').onclick=()=>{$('password').type=$('password').type==='password'?'text':'password'};$$('#adminTabs button').forEach(b=>b.onclick=()=>switchPanel(b.dataset.panel));$$('[data-export]').forEach(b=>b.onclick=()=>exportData(b.dataset.export==='xlsx'?'xls':b.dataset.export));$('addUserBtn')?.addEventListener('click',()=>openAdminModal('user'));$('addPeriodeBtn')?.addEventListener('click',()=>openAdminModal('periode'));$('reloadUserBtn')?.addEventListener('click',loadDashboard);$('reloadPeriodeBtn')?.addEventListener('click',loadDashboard);$('reloadAuditBtn')?.addEventListener('click',loadDashboard);$('doImportBtn')?.addEventListener('click',async()=>{const f=$('csvImport')?.files?.[0];if(!f)return toast('Pilih file CSV terlebih dahulu.','err');const text=await f.text();try{const r=await apiPost({action:'masterimport',csv:text});$('importResult').textContent=`Insert: ${r.inserted}, Update: ${r.updated}, Skip: ${r.skipped}`;loadDashboard()}catch(e){toast(e.message,'err')}})}
+function initForm(){buildChecks('organisasiProfesi',ORGANISASI_PROFESI);buildChecks('jenisPrestasi',JENIS_PRESTASI);rebuildRatings();initConditionals();$$('.next').forEach(b=>b.onclick=()=>{if(validateStep(step)){step=Math.min(TOTAL_STEPS,step+1);updateSteps()}});$$('.prev').forEach(b=>b.onclick=()=>{step=Math.max(1,step-1);updateSteps()});$$('#stepIndicator button').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.step);if(n<=step||validateStep(step)){step=n;updateSteps()}});$('tracerForm').onsubmit=e=>{e.preventDefault();submitTracer()};$('checkNimBtn').onclick=checkNim;$('trackBtn').onclick=async()=>{try{const r=await apiGet({action:'lookup',tracerId:val('trackingId')});const d=r.data||{};$('trackResult').innerHTML=`<div class="status ok">Tracer ID: ${esc(d.tracerId)} · NIM: ${esc(d.nim)} · Nama: ${esc(d.nama)} · Status: ${esc(d.status||'Tersimpan')}</div>`}catch(e){msg('trackResult',e.message,false)}};showView('form')}
+async function init(){initForm();initAdmin();$$('.tab').forEach(b=>b.onclick=()=>showView(b.dataset.view));await loadMeta();if(TOKEN&&TOKEN_EXP&&Date.now()<TOKEN_EXP){try{const r=await apiPost({action:'dashboard',filters:'{}',page:1,perPage:RESP_PER_PAGE});PROFILE=r.profile;showDashboard()}catch(_){logout()}}else if(TOKEN){logout()}setInterval(()=>{if(TOKEN&&TOKEN_EXP&&Date.now()>TOKEN_EXP)logout()},30000)}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
