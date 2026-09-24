@@ -144,7 +144,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px}
         <div class="grid">
           <div><label for="tahunMasuk">Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2020"><span class="field-error" id="err-tahunMasuk"></span></div>
           <div><label for="tahunLulus">Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4" minlength="4" pattern="\d{4}" placeholder="contoh: 2024"><span class="field-error" id="err-tahunLulus"></span></div>
-          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="4" pattern="[0-4](\.[0-9]{1,2})?" placeholder="contoh: 3.45" required><span class="field-error" id="err-ipk"></span></div>
+          <div><label for="ipk">IPK Akhir (0.00–4.00) <span class="req">*</span></label><input id="ipk" inputmode="decimal" maxlength="5" pattern="[0-4](\.[0-9]{1,2})?" placeholder="contoh: 3.45" required autocomplete="off"><span class="field-error" id="err-ipk"></span></div>
           <div><label for="jenisKelamin">Jenis Kelamin</label><select id="jenisKelamin"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
           <div><label for="tempatLahir">Tempat Lahir</label><input id="tempatLahir" maxlength="60"></div>
           <div><label for="tanggalLahir">Tanggal Lahir</label><input id="tanggalLahir" type="date" max="2010-12-31" min="1950-01-01"></div>
@@ -843,6 +843,16 @@ $('programStudi')?.addEventListener('change', () => { updateNimTypeInfo(); updat
   });
 });
 
+  /* FIX BUG IPK: sanitasi otomatis — koma→titik, hanya digit & satu titik */
+$('ipk')?.addEventListener('input', () => {
+  const el = $('ipk');
+  let v = String(el.value).replace(/,/g, '.').replace(/[^0-9.]/g, '');
+  const parts = v.split('.');
+  if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+  // Batasi: 1 digit integer + 1 titik + 2 digit desimal
+  if (parts[0] && parts[0].length > 1) v = parts[0].slice(0, 1) + (parts[1] !== undefined ? '.' + parts[1].slice(0, 2) : '');
+  el.value = v.slice(0, 4);
+});
 const CONDITIONAL_MAP = {
   statusPekerjaanUtama: { box: 'bekerjaBox', show: v => /Bekerja|Wiraswasta/i.test(v), required: ['masaTungguKerja','bidangIndustri','kesesuaianPekerjaan','caraDapatKerja'] },
   ikutMagang:           { box: 'magangBox',   show: v => v === 'Ya', required: ['kontribusiMagang','magangBantuKerja'] },
@@ -925,8 +935,13 @@ function validateStepByNumber(s) {
       return focusErr('tahunLulus');
     }
 
-    const ipk = Number(val('ipk'));
-    if (!val('ipk') || !Number.isFinite(ipk) || ipk < 0 || ipk > 4) { setFieldError('ipk','IPK harus antara 0.00 dan 4.00.'); return focusErr('ipk'); }
+    const ipkRaw = val('ipk').replace(',', '.');
+const ipk = Number(ipkRaw);
+if (!ipkRaw) { setFieldError('ipk','IPK wajib diisi.'); return focusErr('ipk'); }
+if (!Number.isFinite(ipk) || ipk < 0 || ipk > 4) {
+  setFieldError('ipk', `IPK "${val('ipk')}" tidak valid. Masukkan angka 0.00–4.00 (contoh: 3.45).`);
+  return focusErr('ipk');
+}
     if (!isEmail(val('email'))) { setFieldError('email','Format email tidak valid.'); return focusErr('email'); }
     if (!isPhoneID(val('whatsapp'))) { setFieldError('whatsapp','Nomor WhatsApp harus 10–15 digit angka.'); return focusErr('whatsapp'); }
     if (nl === 'S1') {
