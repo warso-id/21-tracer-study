@@ -137,8 +137,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .login-hero{background:linear-gradient(135deg,#0c4d3a,#167456);color:#fff;padding:42px 36px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
 .login-hero h2{margin:0 0 10px;font-size:28px;color:#fff}
 .login-form{padding:42px 36px;display:flex;flex-direction:column;justify-content:center}
-.role-banner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 22px;border-radius:16px;margin-bottom:20px;border:2px solid var(--line);background:#fbfdfc;box-shadow:0 4px 12px rgba(0,0,0,.02)}
-.role-banner .rb-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;background:#fff;color:var(--accent);box-shadow:0 4px 12px rgba(0,0,0,.05)}
 .hero-mhs{background:linear-gradient(135deg,var(--mhs),#a855f7);color:#fff;border-radius:20px;padding:32px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(124,58,237,.2)}
 .hero-mhs h2{margin:0 0 12px;font-size:26px;color:#fff}
 .hero-badges span{background:rgba(255,255,255,.2);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:700;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)}
@@ -152,26 +150,31 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .spinner{display:inline-block;width:1.2em;height:1.2em;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
 .btn-loading{pointer-events:none;opacity:.8}
 .cascade-info{background:#eef4ff;border-left:3px solid var(--info);padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--info)}
-.role-welcome{background:var(--admin-bg);border-left:4px solid var(--admin-border);padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;color:var(--admin-dark)}
-.role-welcome.kaprodi-s1{background:var(--s1-bg);border-color:var(--s1-border);color:var(--s1-dark)}
-.role-welcome.kaprodi-s2{background:var(--s2-bg);border-color:var(--s2-border);color:var(--s2-dark)}
-.role-welcome.wadek{background:var(--wadek-bg);border-color:var(--wadek-border);color:var(--wadek-dark)}
-.role-welcome.dekan{background:var(--dekan-bg);border-color:var(--dekan-border);color:var(--dekan-dark)}
-.scope-banner{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:700;border:2px solid var(--line);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.03)}
-.scope-banner.admin{background:var(--admin-bg);border-color:var(--admin-border);color:var(--admin-dark)}
-.scope-banner.dekan{background:var(--dekan-bg);border-color:var(--dekan-border);color:var(--dekan-dark)}
-.scope-banner.wadek{background:var(--wadek-bg);border-color:var(--wadek-border);color:var(--wadek-dark)}
-.scope-banner.kaprodi-s1{background:var(--s1-bg);border-color:var(--s1-border);color:var(--s1-dark)}
-.scope-banner.kaprodi-s2{background:var(--s2-bg);border-color:var(--s2-border);color:var(--s2-dark)}
-.scope-banner.mhs{background:var(--mhs-bg);border-color:var(--mhs-border);color:var(--mhs-dark)}
-.scope-banner .sb-icon{font-size:22px}
-.scope-banner .sb-meta{margin-left:auto;font-size:12px;opacity:.85;font-weight:600}
 .dropzone{border:2px dashed #cbd7d2;border-radius:12px;padding:24px;text-align:center;background:#fff;cursor:pointer;transition:all .2s}
 .dropzone:hover,.dropzone.drag{border-color:var(--accent);background:#eef7f3;transform:translateY(-2px);box-shadow:0 4px 12px rgba(17,97,73,.08)}
 .dropzone p{pointer-events:none;margin:0 0 6px}
 .dropzone b{color:var(--accent2)}
-.empty-state{padding:32px 24px;text-align:center;color:var(--muted);font-size:14px;background:#f9fbfa;border-radius:12px;border:1px dashed var(--line)}
+.empty-state{padding:32px 24px;text-align:center;color:var(--muted);font-size:14px;background:#f9fbfa;border-radius:12px;border:1px dashed var(--line);grid-column:1/-1}
 .empty-state .es-icon{font-size:42px;margin-bottom:8px;opacity:.5}
+
+/* ============================================================
+ * [FIX-D] DASH-HEADER — konsolidasi role-banner + scope-banner + role-welcome
+ * ============================================================ */
+.dash-header{display:flex;align-items:center;gap:18px;padding:20px 24px;background:linear-gradient(135deg,#f8fbfa,#eef6f2);border:2px solid var(--line);border-radius:18px;margin-bottom:20px;box-shadow:0 4px 16px rgba(23,53,42,.06);flex-wrap:wrap;transition:background .3s,border-color .3s}
+.dash-header.kaprodi-s1{background:linear-gradient(135deg,var(--s1-bg),var(--s1-bg2));border-color:var(--s1-border)}
+.dash-header.kaprodi-s2{background:linear-gradient(135deg,var(--s2-bg),var(--s2-bg2));border-color:var(--s2-border)}
+.dash-header.admin{background:linear-gradient(135deg,var(--admin-bg),#fef3c7);border-color:var(--admin-border)}
+.dash-header.dekan{background:linear-gradient(135deg,var(--dekan-bg),#fee2e2);border-color:var(--dekan-border)}
+.dash-header.wadek{background:linear-gradient(135deg,var(--wadek-bg),#dbeafe);border-color:var(--wadek-border)}
+.dash-header.mhs{background:linear-gradient(135deg,var(--mhs-bg),#ede9fe);border-color:var(--mhs-border)}
+.dash-header .dh-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.06);flex:0 0 auto}
+.dash-header .dh-info{flex:1;min-width:220px}
+.dash-header .dh-info h3{margin:0 0 4px;font-size:19px;color:var(--accent2)}
+.dash-header .dh-info p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.dash-header .dh-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.dash-header .dh-tags .badge{font-size:11.5px}
+.dash-header .dh-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.login-shell{grid-template-columns:1fr}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}
@@ -183,8 +186,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   .step-indicator button{flex:0 0 85px;scroll-snap-align:start}
   .login-hero{display:none}.login-form{padding:30px 24px}
   .radio-grid{grid-template-columns:repeat(5,1fr)}
-  .scope-banner{flex-wrap:wrap}
-  .scope-banner .sb-meta{margin-left:0;width:100%}
+  .dash-header{padding:16px}
+  .dash-header .dh-icon{width:52px;height:52px;font-size:26px}
+  .dash-header .dh-info h3{font-size:16px}
+  .dash-header .dh-actions{width:100%;justify-content:stretch}
+  .dash-header .dh-actions .btn{flex:1}
 }
 </style>
 </head>
@@ -969,7 +975,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   </div>
 </section>
 
-<!-- ADMIN VIEW -->
+<!-- ============================================================
+     ADMIN VIEW — [FIX-D] dengan dash-header terpadu
+     ============================================================ -->
 <section id="view-admin" class="hidden">
   <div class="card">
     <h2>Dashboard Pimpinan &amp; Admin</h2>
@@ -1000,24 +1008,18 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
     </div>
 
     <div id="dashBox" class="hidden">
-      <div class="role-banner">
-        <div class="rb-icon" id="rbIcon">🛡️</div>
-        <div><h3 id="rbTitle">Dashboard Utama</h3><p id="rbDesc">Ringkasan Eksekutif.</p></div>
-        <span class="badge ok" id="rbScope" style="margin-left:auto;font-size:13px;padding:6px 14px">Akses Data</span>
-      </div>
 
-      <!-- SCOPE BANNER — [FIX-B] visual scope per role -->
-      <div id="scopeBanner" class="scope-banner hidden">
-        <span class="sb-icon" id="scopeIcon">🛡️</span>
-        <span id="scopeText">Scope data</span>
-        <span class="sb-meta" id="scopeMeta"></span>
-      </div>
-
-      <div id="roleWelcomeMsg" class="role-welcome hidden"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
-        <span id="profileBadge" class="badge info" style="font-size:13px;padding:8px 16px"></span>
-        <div class="actions">
-          <button id="refreshBtn" class="btn secondary sm">↻ Refresh Data</button>
+      <!-- [FIX-D] DASH-HEADER tunggal menggantikan 4 banner redundan -->
+      <div class="dash-header" id="dashHeader">
+        <div class="dh-icon" id="dhIcon">🛡️</div>
+        <div class="dh-info">
+          <h3 id="dhTitle">Dashboard</h3>
+          <p id="dhDesc">Memuat…</p>
+          <div class="dh-tags" id="dhTags"></div>
+        </div>
+        <div class="dh-actions">
+          <span class="badge info" id="profileBadge"></span>
+          <button id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
           <button id="logoutBtn" class="btn danger sm">Keluar</button>
         </div>
       </div>
@@ -1069,7 +1071,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
         <div class="tablewrap"><table class="table" id="respTable"></table></div>
-        <div id="respPagination" style="display:flex;justify-content:center;gap:8px;margin-top:20px;align-items:center;font-weight:600"></div>
+        <div id="respPagination" style="display:flex;justify-content:center;gap:8px;margin-top:20px;align-items:center;font-weight:600;flex-wrap:wrap"></div>
       </div>
 
       <div class="panel hidden" data-panel="analitik">
@@ -1129,7 +1131,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             </div>
           </div>
           <div class="tablewrap"><table class="table" id="masterTable"></table></div>
-          <div id="masterPagination" style="margin-top:16px;text-align:center"></div>
+          <div id="masterPagination" style="margin-top:16px;text-align:center;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;align-items:center;font-weight:600"></div>
         </div>
       </div>
 
@@ -1137,9 +1139,12 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="card">
           <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
             <h3>🔔 Target Reminder Responden</h3>
-            <button class="btn sm" id="reloadReminderBtn">Muat Data Belum Isi</button>
+            <div class="actions">
+              <button class="btn secondary sm" id="exportReminderBtn">⬇ Export CSV</button>
+              <button class="btn sm" id="reloadReminderBtn">Muat Data Belum Isi</button>
+            </div>
           </div>
-          <p class="hint">Alumni yang belum berpartisipasi pada periode ini (sesuai scope Anda).</p>
+          <p class="hint">Alumni yang belum berpartisipasi pada periode ini (sesuai scope Anda). Setiap kali dimuat/diexport akan tercatat di sheet <code>REMINDER_LOG</code>.</p>
           <div class="tablewrap"><table class="table" id="reminderTable"></table></div>
         </div>
       </div>
@@ -1154,6 +1159,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <button class="btn sm" id="addPeriodeBtn" style="margin-top:12px">+ Tambah/Ubah Periode</button>
         </div>
         <div class="card"><h3>📜 Log Audit Terbaru</h3><div class="tablewrap"><table class="table" id="auditTable"></table></div></div>
+        <div class="card"><h3>🔔 Log Reminder Terbaru</h3><div class="tablewrap"><table class="table" id="reminderLogTable"></table></div></div>
       </div>
     </div>
   </div>
@@ -1161,7 +1167,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v16.3.3-production · Secured &amp; Optimized</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v16.3.5-production · Secured &amp; Optimized</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -1171,10 +1177,10 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 /* ============================================================
  *  KONSTANTA
  * ============================================================ */
-const APP_VERSION_STR='v16.3.3-production';
+const APP_VERSION_STR='v16.3.5-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
-const TOTAL_STEPS=8, RESP_PER_PAGE=50;
+const TOTAL_STEPS=8, RESP_PER_PAGE=50, MASTER_PER_PAGE=50;
 
 /* ============================================================
  *  DATA HIRARKI
@@ -1264,41 +1270,40 @@ const KOMPETENSI_S2={
   metode:['kuliahTatapMuka','seminarLokakarya','penelitianMandiri','studiKasus','publikasiIlmiah','daringBlended','magangProfesional']
 };
 const KOMPETENSI_LABELS={
-  etikaIntegritas:'Etika & integritas profesional',
-  keahlianBidang:'Keahlian bidang komunikasi',
-  komunikasiLisanTulisan:'Komunikasi lisan & tulisan',
-  teknologiDigital:'Teknologi & media digital',
-  analisisKritis:'Analisis & berpikir kritis',
-  kerjaSamaTim:'Kerja sama tim & kepemimpinan',
-  bahasaInggris:'Bahasa Inggris',
-  risetKontenMedia:'Riset & produksi konten',
-  risetKomunikasi:'Riset komunikasi',
-  teoriKontemporer:'Teori komunikasi kontemporer',
-  publikasiIlmiah:'Publikasi ilmiah',
-  kepemimpinanManajemen:'Kepemimpinan & manajemen',
-  analisisKebijakan:'Analisis kebijakan media',
-  kuliahTatapMuka:'Perkuliahan tatap muka',
-  praktikumLab:'Praktikum laboratorium',
-  magangPkl:'Magang/PKL',
-  projectBased:'Pembelajaran berbasis proyek',
-  diskusiPresentasi:'Diskusi & presentasi',
-  daringBlended:'Daring/blended learning',
-  seminarLokakarya:'Seminar & lokakarya',
-  penelitianMandiri:'Penelitian mandiri/tesis',
-  studiKasus:'Studi kasus',
+  etikaIntegritas:'Etika & integritas profesional',keahlianBidang:'Keahlian bidang komunikasi',
+  komunikasiLisanTulisan:'Komunikasi lisan & tulisan',teknologiDigital:'Teknologi & media digital',
+  analisisKritis:'Analisis & berpikir kritis',kerjaSamaTim:'Kerja sama tim & kepemimpinan',
+  bahasaInggris:'Bahasa Inggris',risetKontenMedia:'Riset & produksi konten',
+  risetKomunikasi:'Riset komunikasi',teoriKontemporer:'Teori komunikasi kontemporer',
+  publikasiIlmiah:'Publikasi ilmiah',kepemimpinanManajemen:'Kepemimpinan & manajemen',
+  analisisKebijakan:'Analisis kebijakan media',kuliahTatapMuka:'Perkuliahan tatap muka',
+  praktikumLab:'Praktikum laboratorium',magangPkl:'Magang/PKL',
+  projectBased:'Pembelajaran berbasis proyek',diskusiPresentasi:'Diskusi & presentasi',
+  daringBlended:'Daring/blended learning',seminarLokakarya:'Seminar & lokakarya',
+  penelitianMandiri:'Penelitian mandiri/tesis',studiKasus:'Studi kasus',
   magangProfesional:'Magang profesional'
 };
 
-/* ============================================================
- *  SCOPE MAP — [FIX-B] Definisi scope per role
- * ============================================================ */
-const SCOPE_MAP = {
-  'ADMIN':      {icon:'🛡️', cls:'admin',      label:'Full Access (S1 + S2)',        meta:'Kontrol penuh sistem'},
-  'DEKAN':      {icon:'👑', cls:'dekan',      label:'Fakultas Ilmu Komunikasi (S1 + S2)', meta:'Scope: Seluruh Fakultas'},
-  'WADEK':      {icon:'🎯', cls:'wadek',      label:'Fakultas Ilmu Komunikasi (S1 + S2)', meta:'Scope: Seluruh Fakultas'},
-  'KAPRODI_S1': {icon:'📗', cls:'kaprodi-s1', label:'Prodi S1 Ilmu Komunikasi',     meta:'Scope: Hanya data S1'},
-  'KAPRODI_S2': {icon:'📘', cls:'kaprodi-s2', label:'Prodi S2 Magister Ilmu Komunikasi', meta:'Scope: Hanya data S2'},
-  'MAHASISWA':  {icon:'🎓', cls:'mhs',        label:'Data Pribadi Anda',            meta:'Scope: Hanya data sendiri'}
+/* [FIX-D] MAP role → tampilan dash-header */
+const DASH_MAP = {
+  'ADMIN':      {cls:'admin',      icon:'🛡️', title:'Pusat Kendali Admin',
+                 desc:'Kontrol penuh data alumni, konfigurasi sistem, dan audit log.',
+                 tags:['Full Access','S1 + S2','Kelola User','Upload Master']},
+  'DEKAN':      {cls:'dekan',      icon:'👑', title:'Dashboard Dekanat',
+                 desc:'Ringkasan eksekutif fakultas — pencapaian IKU & sebaran karier alumni.',
+                 tags:['Fakultas','S1 + S2','Ringkasan Eksekutif']},
+  'WADEK':      {cls:'wadek',      icon:'🎯', title:'Dashboard Wakil Dekan',
+                 desc:'Monitoring partisipasi alumni & response rate untuk akreditasi.',
+                 tags:['Fakultas','S1 + S2','Monitoring']},
+  'KAPRODI_S1': {cls:'kaprodi-s1', icon:'📗', title:'Dashboard Kaprodi S1',
+                 desc:'Evaluasi kurikulum & karier alumni S1 Ilmu Komunikasi.',
+                 tags:['Scope: Prodi S1','Hanya data S1','Kurikulum S1']},
+  'KAPRODI_S2': {cls:'kaprodi-s2', icon:'📘', title:'Dashboard Kaprodi S2',
+                 desc:'Dampak magister pada karier alumni S2 Magister Ilmu Komunikasi.',
+                 tags:['Scope: Prodi S2','Hanya data S2','Kurikulum S2']},
+  'MAHASISWA':  {cls:'mhs',        icon:'🎓', title:'Dashboard Mahasiswa',
+                 desc:'Data pribadi Anda saja.',
+                 tags:['Scope: Pribadi','Data Sendiri']}
 };
 
 /* ============================================================
@@ -1325,10 +1330,6 @@ function setFieldError(id,t){const e=$('err-'+id),i=$(id);if(e){e.textContent=t|
 function clearErrors(){$$('.field-error').forEach(e=>{e.textContent='';e.classList.remove('show')});$$('.err').forEach(e=>e.classList.remove('err'))}
 function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('hidden'))return false;n=n.parentElement}return true}
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
-function showEmptyState(containerId,icon,text){
-  const el=$(containerId);if(!el)return;
-  el.innerHTML=`<div class="empty-state"><div class="es-icon">${icon||'📭'}</div><div>${esc(text||'Belum ada data pada scope Anda.')}</div></div>`;
-}
 
 /* ============================================================
  *  API LAYER
@@ -1602,13 +1603,11 @@ function validateStep(n){
 
   if(n===3){
     if(val('ikutMagang')==='Ya'){['tempatMagang','durasiMagang','kontribusiMagang','magangBantuKerja'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}})}
-
     if(val('ikutOrganisasi')==='Ya'){
       const chosen=collectChecked('organisasiProfesi');
       if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}
       if(chosen.includes('Lainnya') && !val('organisasiProfesiLain')){setFieldError('organisasiProfesiLain','Wajib diisi.');ok=false}
     }
-
     if(val('punyaPrestasi')==='Ya'){
       const chosen=collectChecked('jenisPrestasi');
       if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}
@@ -1794,7 +1793,7 @@ function collectPayload(){
     kesanPesan:val('kesanPesan'),
     consentData:!!($('consentData')&&$('consentData').checked),
     consentContact:!!($('consentContact')&&$('consentContact').checked),
-    periodeId:(META&&META.periodeAktif&&META.periodeAktif.id)||(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
+    periodeId:(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
     responseSchema:'QUESTION_BANK+OPTION_BANK+ROUTE_RULES+RESPONSE',
     questionBank:{
       programId: jenjang==='S2'?'S2_MIK':'S1_ILKOM',
@@ -1874,7 +1873,7 @@ async function lookupTracer(){
 }
 
 /* ============================================================
- *  LOGIN & DASHBOARD
+ *  LOGIN & LOGOUT
  * ============================================================ */
 async function login(){
   const username=val('username').toLowerCase(),password=val('password');
@@ -1901,59 +1900,31 @@ async function doLogout(){
 }
 
 /* ============================================================
- *  SHOW DASHBOARD — [FIX-B] dengan scope banner per role
+ *  [FIX-D] SHOW DASHBOARD — dash-header tunggal menggantikan 4 banner
  * ============================================================ */
-function applyRoleVisibility(role){
-  const isAdmin=role==='ADMIN';
-  const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
-  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
-  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
-}
-
-function renderScopeBanner(role){
-  const el=$('scopeBanner');if(!el)return;
-  const map=SCOPE_MAP[role];
-  if(!map){el.classList.add('hidden');return}
-  el.className='scope-banner '+map.cls;
-  $('scopeIcon').textContent=map.icon;
-  $('scopeText').textContent='📌 '+map.label;
-  $('scopeMeta').textContent=map.meta;
-  el.classList.remove('hidden');
-}
-
 function showDashboard(){
   $('loginBox').classList.add('hidden');
   $('dashBox').classList.remove('hidden');
   $('ubahPassBtn')&&$('ubahPassBtn').classList.remove('hidden');
   const role=PROFILE?.role||'ADMIN';
-  let title='Dashboard',scope='—',icon='🛡️',desc='Ringkasan Eksekutif.';
-  const welc=$('roleWelcomeMsg');welc.className='role-welcome hidden';
+  const m=DASH_MAP[role]||DASH_MAP.ADMIN;
 
-  if(role==='ADMIN'){
-    title='Pusat Kendali Admin';scope='Full Access';icon='🛡️';desc='Kontrol penuh data & konfigurasi.';
-    welc.innerHTML='👋 <b>Halo Admin,</b> kelola data alumni, unggah Master, dan awasi sistem.';welc.className='role-welcome';
-  } else if(role==='DEKAN'){
-    title='Dashboard Dekanat';scope='Fakultas (S1+S2)';icon='👑';desc='Ringkasan eksekutif fakultas.';
-    welc.innerHTML='👑 <b>Selamat Datang Pimpinan Fakultas,</b> ringkasan pencapaian IKU dan sebaran karier alumni.';welc.className='role-welcome dekan';
-  } else if(role==='WADEK'){
-    title='Dashboard Wakil Dekan';scope='Fakultas (S1+S2)';icon='🎯';desc='Monitoring partisipasi alumni.';
-    welc.innerHTML='🎯 <b>Selamat Datang,</b> pantau Response Rate untuk target akreditasi.';welc.className='role-welcome wadek';
-  } else if(role==='KAPRODI_S1'){
-    title='Dashboard Kaprodi S1';scope='Prodi S1';icon='📗';desc='Evaluasi kurikulum & karier alumni S1.';
-    welc.innerHTML='📗 <b>Halo Kaprodi S1,</b> Anda hanya melihat data mahasiswa <b>S1 Ilmu Komunikasi</b>.';welc.className='role-welcome kaprodi-s1';
-  } else if(role==='KAPRODI_S2'){
-    title='Dashboard Kaprodi S2';scope='Prodi S2';icon='📘';desc='Dampak magister pada karier alumni.';
-    welc.innerHTML='📘 <b>Halo Kaprodi S2,</b> Anda hanya melihat data mahasiswa <b>S2 Magister Ilmu Komunikasi</b>.';welc.className='role-welcome kaprodi-s2';
-  }
+  // Set dash-header kelas + konten
+  const hdr=$('dashHeader');
+  if(hdr) hdr.className='dash-header '+m.cls;
+  $('dhIcon').textContent=m.icon;
+  $('dhTitle').textContent=m.title;
+  $('dhDesc').textContent=m.desc;
+  $('dhTags').innerHTML=m.tags.map(t=>`<span class="badge info">${esc(t)}</span>`).join('');
+  $('profileBadge').textContent=(PROFILE?.nama||'Pengguna')+' · '+role;
 
-  $('rbTitle').textContent=title;$('rbDesc').textContent=desc;$('rbScope').textContent=scope;
-  $('rbIcon').textContent=icon;
-  $('profileBadge').textContent=(PROFILE?.nama||'Pengguna')+' ('+role+')';
+  // Role visibility untuk subtab
+  const isAdmin=role==='ADMIN';
+  const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
+  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
+  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
 
-  applyRoleVisibility(role);
-  renderScopeBanner(role);
-
-  // Lock filter Program Studi untuk kaprodi sesuai scope
+  // Lock filter Program Studi untuk kaprodi
   const fProdi=$('fProdi');
   if(fProdi){
     if(role==='KAPRODI_S1'){fProdi.value='S1 Ilmu Komunikasi';fProdi.disabled=true}
@@ -1967,12 +1938,16 @@ function showDashboard(){
   else accScope='all';
   $$('#accScopeBar button').forEach(b=>b.classList.toggle('active',b.dataset.scope===accScope));
 
+  // Default tab: overview
   $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
   const firstTab=document.querySelector('#adminTabs button[data-panel="overview"]');
   if(firstTab)firstTab.classList.add('active');
   $$('.panel').forEach(p=>p.classList.add('hidden'));
   const overviewPanel=document.querySelector('.panel[data-panel="overview"]');
   if(overviewPanel)overviewPanel.classList.remove('hidden');
+
+  // Reset pagination
+  respPage=1;masterPage=1;
 
   loadDashboardData();
 }
@@ -1996,19 +1971,34 @@ function drawBarChart(canvasId,dataObj,label,color){
 }
 
 /* ============================================================
- *  KPI & INSIGHT — robust terhadap data kosong
+ *  [FIX-H] RENDER KPI dengan empty state informatif
  * ============================================================ */
 function renderKpi(s){
   const box=$('kpiBox');if(!box)return;
-  if(!s){box.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><div>Tidak ada data pada scope Anda</div></div>';return}
+  if(!s){box.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><div>Belum ada data</div></div>';return}
+
+  const total=s.total||0,totalMaster=s.totalMaster||0;
+  const belumIsi=s.belumMengisi||0;
+
+  // Empty state khusus saat belum ada submission
+  if(total===0&&totalMaster===0){
+    box.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><div><b>Belum ada Master Alumni</b><br>Silakan upload Master Alumni melalui panel <b>Master Alumni</b> atau <b>Pengaturan</b>.</div></div>';
+    return;
+  }
+  if(total===0&&totalMaster>0){
+    box.innerHTML=`<div class="empty-state"><div class="es-icon">⏳</div><div><b>Belum ada responden</b><br>${totalMaster} alumni terdaftar · 0 sudah mengisi · ${totalMaster} belum mengisi.<br>Gunakan panel <b>🔔 Reminder</b> untuk mengirim pengingat.</div></div>`;
+    return;
+  }
+
   box.innerHTML=`
     <div><span class="kpi-icon">🎯</span><b>${s.responseRate||0}%</b><span>Response Rate</span></div>
-    <div><span class="kpi-icon">💼</span><b>${s.total?Math.round(s.bekerja/s.total*100):0}%</b><span>Bekerja</span></div>
+    <div><span class="kpi-icon">💼</span><b>${total?Math.round(s.bekerja/total*100):0}%</b><span>Bekerja</span></div>
     <div><span class="kpi-icon">⏳</span><b>${s.avgMasaTunggu||'-'}</b><span>Masa Tunggu</span></div>
     <div><span class="kpi-icon">🏆</span><b>${s.prestasi||0}</b><span>Berprestasi</span></div>`;
+
   const ins=$('summaryInsight');
   if(ins) ins.innerHTML=`
-    <div class="card" style="padding:12px 16px"><b>${s.total||0}</b> dari <b>${s.totalMaster||0}</b> alumni terisi (${s.belumMengisi||0} belum)</div>
+    <div class="card" style="padding:12px 16px"><b>${total}</b> dari <b>${totalMaster}</b> alumni terisi (${belumIsi} belum)</div>
     <div class="card" style="padding:12px 16px">Relevansi: <b>${s.relevansiRate||0}%</b></div>
     <div class="card" style="padding:12px 16px">Wirausaha: <b>${s.wirausaha||0}</b> · Magang: <b>${s.magang||0}</b> · Organisasi: <b>${s.organisasi||0}</b></div>`;
 }
@@ -2061,19 +2051,21 @@ function renderReminderTable(items){
     `<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Email</th><th>WhatsApp</th></tr>`+
     items.map(x=>`<tr><td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td><td>${esc(x.EMAIL)}</td><td>${esc(x.WHATSAPP)}</td></tr>`).join('');
 }
-function renderAdminPanel(users,periode,audit){
+function renderAdminPanel(users,periode,audit,reminderLog){
   $('usersTable')&&($('usersTable').innerHTML=`<tr><th>Username</th><th>Nama</th><th>Role</th><th>Aktif</th></tr>`+
     (users||[]).map(u=>`<tr><td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${esc(u.role)}</td><td>${u.aktif?'✅':'❌'}</td></tr>`).join(''));
   $('periodeTable')&&($('periodeTable').innerHTML=`<tr><th>Periode</th><th>Status</th><th>Tahun</th></tr>`+
     (periode||[]).map(p=>`<tr><td>${esc(p.nama)}</td><td>${esc(p.status)}</td><td>${esc(p.tahunMin)}–${esc(p.tahunMax)}</td></tr>`).join(''));
   $('auditTable')&&($('auditTable').innerHTML=`<tr><th>Waktu</th><th>Aktor</th><th>Aksi</th></tr>`+
     (audit||[]).slice(0,20).map(a=>`<tr><td>${esc(a.timestamp)}</td><td>${esc(a.actor)}</td><td>${esc(a.action)}</td></tr>`).join(''));
+  $('reminderLogTable')&&($('reminderLogTable').innerHTML=`<tr><th>Waktu</th><th>Aktor</th><th>Channel</th><th>Total</th></tr>`+
+    (reminderLog||[]).slice(0,20).map(r=>`<tr><td>${esc(r.timestamp)}</td><td>${esc(r.actor)}</td><td>${esc(r.channel)}</td><td>${esc(r.total)}</td></tr>`).join(''));
   $('addUserBtn')&&($('addUserBtn').onclick=openUserModal);
   $('addPeriodeBtn')&&($('addPeriodeBtn').onclick=openPeriodeModal);
 }
 
 /* ============================================================
- *  LOAD DASHBOARD — [FIX-B] filter scope diterapkan konsisten
+ *  [FIX-F] LOAD DASHBOARD dengan try/catch per render
  * ============================================================ */
 async function loadDashboardData(){
   const btn=$('refreshBtn');const oldText=btn?btn.innerHTML:'';
@@ -2081,19 +2073,25 @@ async function loadDashboardData(){
   try{
     const filters=Object.assign({},dashFilters,{scope:accScope});
     const r=await apiPost({action:'dashboard',filters,page:respPage,perPage:RESP_PER_PAGE});
-    renderKpi(r.summary);
-    renderCharts(r.charts);
-    updateTahunFilterFromData(r.charts&&r.charts.yearCounts);
-    renderRecentTable(r.recent);
-    renderRespTable(r.items,r.pagination);
-    renderAccreditation(r.accreditation);
-    if(r.master)renderMasterTable(r.master.items||[]);
-    if(r.reminder)renderReminderTable(r.reminder.items||[]);
+    console.log('[Dashboard] Response:', r);
+
+    const safeRender=(label,fn)=>{try{fn()}catch(e){console.error('Render error ['+label+']:',e);}};
+
+    safeRender('KPI',    ()=>renderKpi(r.summary));
+    safeRender('Charts', ()=>renderCharts(r.charts));
+    safeRender('Tahun',  ()=>updateTahunFilterFromData(r.charts&&r.charts.yearCounts));
+    safeRender('Recent', ()=>renderRecentTable(r.recent));
+    safeRender('Resp',   ()=>renderRespTable(r.items,r.pagination));
+    safeRender('Accred', ()=>renderAccreditation(r.accreditation));
+    if(r.master)    safeRender('Master',   ()=>renderMasterTable(r.master.items||[]));
+    if(r.reminder)  safeRender('Reminder', ()=>renderReminderTable(r.reminder.items||[]));
     if(PROFILE&&PROFILE.role==='ADMIN'){
-      renderAdminPanel(r.users||[],r.periode||[],r.audit||[]);
-      loadMasterStats();
+      safeRender('Admin', ()=>renderAdminPanel(r.users||[],r.periode||[],r.audit||[],r.reminderLog||[]));
+      safeRender('Stats', ()=>loadMasterStats());
+      if(r.debug) console.log('[Dashboard Debug]', r.debug);
     }
   }catch(e){
+    console.error('[Dashboard] Error:', e);
     toast('Gagal memuat data: '+e.message,'err');
     if(/sesi/i.test(e.message))doLogout();
   }
@@ -2116,9 +2114,16 @@ async function exportResponden(format){
     downloadBase64(r.filename,r.base64,r.mime);
   }catch(e){toast(e.message,'err')}
 }
+async function exportReminder(){
+  try{
+    const r=await apiPost({action:'export',format:'csv',target:'reminder',filters:Object.assign({},dashFilters,{scope:accScope})});
+    downloadBase64(r.filename,r.base64,'text/csv');
+    toast('Reminder CSV berhasil diunduh.','ok');
+  }catch(e){toast(e.message,'err')}
+}
 async function reloadMaster(){
   try{
-    const r=await apiPost({action:'masterlist',page:masterPage,perPage:50,filters:Object.assign({},dashFilters,{scope:accScope})});
+    const r=await apiPost({action:'masterlist',page:masterPage,perPage:MASTER_PER_PAGE,filters:Object.assign({},dashFilters,{scope:accScope})});
     renderMasterTable(r.items);
     renderMasterPagination(r);
   }catch(e){toast(e.message,'err')}
@@ -2137,7 +2142,18 @@ async function reloadReminder(){
 }
 function renderMasterPagination(r){
   const box=$('masterPagination');if(!box||!r)return;
-  box.innerHTML=`<span class="badge info" style="padding:8px 14px">Total ${r.total} · Sudah ${r.sudah} · Belum ${r.belum} · Hal ${r.page}/${r.totalPages}</span>`;
+  const page=r.page||1,totalPages=r.totalPages||1;
+  box.innerHTML=`
+    <span class="badge info" style="padding:8px 14px">Total ${r.total||0} · Sudah ${r.sudah||0} · Belum ${r.belum||0}</span>
+    <button class="btn secondary sm" ${page<=1?'disabled':''} id="masterFirst">« Pertama</button>
+    <button class="btn secondary sm" ${page<=1?'disabled':''} id="masterPrev">‹ Prev</button>
+    <span>Hal ${page} / ${totalPages}</span>
+    <button class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterNext">Next ›</button>
+    <button class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterLast">Terakhir »</button>`;
+  $('masterFirst')&&($('masterFirst').onclick=()=>{masterPage=1;reloadMaster()});
+  $('masterPrev')&&($('masterPrev').onclick=()=>{masterPage=Math.max(1,page-1);reloadMaster()});
+  $('masterNext')&&($('masterNext').onclick=()=>{masterPage=page+1;reloadMaster()});
+  $('masterLast')&&($('masterLast').onclick=()=>{masterPage=totalPages;reloadMaster()});
 }
 
 /* ============================================================
@@ -2186,6 +2202,7 @@ async function doMasterUpload(){
     msg('uploadStatus',`✅ ${r.message||('Inserted='+(r.inserted||0)+' Updated='+(r.updated||0)+' Skipped='+(r.skipped||0))}`,true);
     toast('Upload Master Alumni berhasil.','ok');
     _uploadFile=null;$('fileUpload').value='';$('doUploadBtn').disabled=true;
+    masterPage=1;
     await reloadMaster();await loadMasterStats();
   }catch(e){msg('uploadStatus',e.message,false);toast(e.message,'err')}
   finally{btn.innerHTML=old;btn.disabled=false}
@@ -2293,21 +2310,22 @@ function bindEvents(){
   $('loginBtn').onclick=login;
   $('logoutBtn').onclick=doLogout;
   $('ubahPassBtn')&&($('ubahPassBtn').onclick=openChangePasswordModal);
-  $('refreshBtn').onclick=loadDashboardData;
+  $('refreshBtn').onclick=()=>{respPage=1;loadDashboardData()};
   $('togglePass').onclick=()=>{const p=$('password');p.type=p.type==='password'?'text':'password'};
 
+  /* [FIX-J] Tab switching — auto-reload panel reminder & master */
   $$('#adminTabs button').forEach(b=>b.onclick=()=>{
     $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
     $$('.panel').forEach(p=>p.classList.add('hidden'));
     const panel=document.querySelector(`[data-panel="${b.dataset.panel}"]`);if(panel)panel.classList.remove('hidden');
-    if(b.dataset.panel==='masteralumni'){reloadMaster();loadMasterStats()}
+    if(b.dataset.panel==='masteralumni'){masterPage=1;reloadMaster();loadMasterStats();}
     if(b.dataset.panel==='reminder')reloadReminder();
   });
 
   $('applyFilter').onclick=()=>{
     dashFilters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};
-    respPage=1;loadDashboardData();
+    respPage=1;masterPage=1;loadDashboardData();
   };
   $('resetFilter').onclick=()=>{
     $('fPeriode').value='';$('fTahun').value='';$('fQ').value='';
@@ -2315,13 +2333,14 @@ function bindEvents(){
     if(role==='KAPRODI_S1')$('fProdi').value='S1 Ilmu Komunikasi';
     else if(role==='KAPRODI_S2')$('fProdi').value='S2 Magister Ilmu Komunikasi';
     else $('fProdi').value='';
-    dashFilters={};respPage=1;loadDashboardData();
+    dashFilters={};respPage=1;masterPage=1;loadDashboardData();
   };
 
   $$('[data-export]').forEach(b=>b.onclick=()=>exportResponden(b.dataset.export));
-  $('reloadMasterBtn')&&($('reloadMasterBtn').onclick=reloadMaster);
+  $('reloadMasterBtn')&&($('reloadMasterBtn').onclick=()=>{masterPage=1;reloadMaster()});
   $('exportMasterBtn')&&($('exportMasterBtn').onclick=exportMaster);
   $('reloadReminderBtn')&&($('reloadReminderBtn').onclick=reloadReminder);
+  $('exportReminderBtn')&&($('exportReminderBtn').onclick=exportReminder);
 
   $$('#accScopeBar button').forEach(b=>b.onclick=async()=>{
     $$('#accScopeBar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
