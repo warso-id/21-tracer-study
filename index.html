@@ -157,10 +157,21 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .role-welcome.kaprodi-s2{background:var(--s2-bg);border-color:var(--s2-border);color:var(--s2-dark)}
 .role-welcome.wadek{background:var(--wadek-bg);border-color:var(--wadek-border);color:var(--wadek-dark)}
 .role-welcome.dekan{background:var(--dekan-bg);border-color:var(--dekan-border);color:var(--dekan-dark)}
+.scope-banner{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:700;border:2px solid var(--line);background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.03)}
+.scope-banner.admin{background:var(--admin-bg);border-color:var(--admin-border);color:var(--admin-dark)}
+.scope-banner.dekan{background:var(--dekan-bg);border-color:var(--dekan-border);color:var(--dekan-dark)}
+.scope-banner.wadek{background:var(--wadek-bg);border-color:var(--wadek-border);color:var(--wadek-dark)}
+.scope-banner.kaprodi-s1{background:var(--s1-bg);border-color:var(--s1-border);color:var(--s1-dark)}
+.scope-banner.kaprodi-s2{background:var(--s2-bg);border-color:var(--s2-border);color:var(--s2-dark)}
+.scope-banner.mhs{background:var(--mhs-bg);border-color:var(--mhs-border);color:var(--mhs-dark)}
+.scope-banner .sb-icon{font-size:22px}
+.scope-banner .sb-meta{margin-left:auto;font-size:12px;opacity:.85;font-weight:600}
 .dropzone{border:2px dashed #cbd7d2;border-radius:12px;padding:24px;text-align:center;background:#fff;cursor:pointer;transition:all .2s}
 .dropzone:hover,.dropzone.drag{border-color:var(--accent);background:#eef7f3;transform:translateY(-2px);box-shadow:0 4px 12px rgba(17,97,73,.08)}
 .dropzone p{pointer-events:none;margin:0 0 6px}
 .dropzone b{color:var(--accent2)}
+.empty-state{padding:32px 24px;text-align:center;color:var(--muted);font-size:14px;background:#f9fbfa;border-radius:12px;border:1px dashed var(--line)}
+.empty-state .es-icon{font-size:42px;margin-bottom:8px;opacity:.5}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.login-shell{grid-template-columns:1fr}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}
@@ -172,6 +183,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   .step-indicator button{flex:0 0 85px;scroll-snap-align:start}
   .login-hero{display:none}.login-form{padding:30px 24px}
   .radio-grid{grid-template-columns:repeat(5,1fr)}
+  .scope-banner{flex-wrap:wrap}
+  .scope-banner .sb-meta{margin-left:0;width:100%}
 }
 </style>
 </head>
@@ -237,9 +250,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
     <form id="tracerForm" novalidate autocomplete="off">
 
-      <!-- ============================================================
-           STEP 1 — A. DATA PRIBADI
-           ============================================================ -->
+      <!-- STEP 1 — A. DATA PRIBADI -->
       <div class="step active" data-step="1">
         <h3>Bagian A — Data Pribadi</h3>
 
@@ -301,7 +312,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
         <div class="form-section-title">🎓 Data Akademik Khusus</div>
 
-        <!-- ===== S1 GROUP ===== -->
         <div id="groupS1" class="hidden" style="border:2px solid var(--s1-border);border-radius:12px;padding:16px;background:var(--s1-bg)">
           <p style="font-weight:800;color:var(--s1-dark);margin:0 0 12px;text-transform:uppercase">Khusus S1 Ilmu Komunikasi</p>
           <div class="grid">
@@ -324,7 +334,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- ===== S2 GROUP ===== -->
         <div id="groupS2" class="hidden" style="border:2px solid var(--s2-border);border-radius:12px;padding:16px;background:var(--s2-bg)">
           <p style="font-weight:800;color:var(--s2-dark);margin:0 0 12px;text-transform:uppercase">Khusus S2 Magister Ilmu Komunikasi</p>
           <div class="grid">
@@ -361,9 +370,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn next" style="margin-left:auto">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 2 — B. PEKERJAAN
-           ============================================================ -->
+      <!-- STEP 2 — B. PEKERJAAN -->
       <div class="step" data-step="2">
         <h3>Bagian B — Status &amp; Pekerjaan</h3>
         <div class="grid">
@@ -381,7 +388,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- ============ BLOCK: BEKERJA ============ -->
         <div id="bekerjaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">📌 Detail Pekerjaan</h4>
 
@@ -502,7 +508,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- ============ BLOCK: WIRAUSAHA ============ -->
         <div id="wirausahaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">🚀 Detail Wirausaha</h4>
           <div class="grid">
@@ -553,7 +558,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- ============ BLOCK: BELUM BEKERJA ============ -->
         <div id="belumKerjaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">🔍 Pencarian Kerja</h4>
           <div class="grid">
@@ -592,9 +596,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 3 — C. PENGALAMAN & PRESTASI
-           ============================================================ -->
+      <!-- STEP 3 — C. PENGALAMAN & PRESTASI -->
       <div class="step" data-step="3">
         <h3>Bagian C — Pengalaman &amp; Prestasi</h3>
 
@@ -656,7 +658,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
               <div id="organisasiProfesi" class="check-grid"></div>
               <span class="field-error" id="err-organisasiProfesi"></span>
             </div>
-            <!-- [FIX-2] Input teks untuk "Lainnya" pada checkbox organisasi -->
             <div id="organisasiProfesiLainBox" class="full hidden">
               <label for="organisasiProfesiLain">Sebutkan organisasi profesi lainnya <span class="req">*</span></label>
               <input id="organisasiProfesiLain" maxlength="200">
@@ -703,7 +704,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
               <div id="jenisPrestasi" class="check-grid"></div>
               <span class="field-error" id="err-jenisPrestasi"></span>
             </div>
-            <!-- [FIX-2] Input teks untuk "Lainnya" pada checkbox prestasi -->
             <div id="jenisPrestasiLainBox" class="full hidden">
               <label for="jenisPrestasiLain">Sebutkan jenis prestasi lainnya <span class="req">*</span></label>
               <input id="jenisPrestasiLain" maxlength="200">
@@ -742,9 +742,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 4 — D. KOMPETENSI & KURIKULUM
-           ============================================================ -->
+      <!-- STEP 4 — D. KOMPETENSI & KURIKULUM -->
       <div class="step" data-step="4">
         <h3>Bagian D — Kompetensi &amp; Relevansi Kurikulum</h3>
         <div class="cascade-info"><b>Petunjuk:</b> Nilai penguasaan (F1) &amp; kebutuhan (F2) menggunakan skala 1 (Sangat Rendah) sampai 5 (Sangat Tinggi). Daftar kompetensi otomatis menyesuaikan jenjang (S1/S2).</div>
@@ -796,9 +794,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 5 — E. KEPUASAN & KONTRIBUSI
-           ============================================================ -->
+      <!-- STEP 5 — E. KEPUASAN & KONTRIBUSI -->
       <div class="step" data-step="5">
         <h3>Bagian E — Kepuasan &amp; Kontribusi Alumni</h3>
 
@@ -856,9 +852,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 6 — F. STUDI LANJUT
-           ============================================================ -->
+      <!-- STEP 6 — F. STUDI LANJUT -->
       <div class="step" data-step="6">
         <h3>Bagian F — Studi Lanjut</h3>
         <div class="grid">
@@ -915,9 +909,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 7 — G. SARAN & MASUKAN
-           ============================================================ -->
+      <!-- STEP 7 — G. SARAN & MASUKAN -->
       <div class="step" data-step="7">
         <h3>Bagian G — Saran &amp; Masukan</h3>
         <p class="hint">Masukan Anda sangat berharga untuk peningkatan mutu FIKOM UPDM (B). Minimal isi 1 saran.</p>
@@ -936,9 +928,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
-      <!-- ============================================================
-           STEP 8 — H. KONFIRMASI & KIRIM
-           ============================================================ -->
+      <!-- STEP 8 — H. KONFIRMASI & KIRIM -->
       <div class="step" data-step="8">
         <h3>Bagian H — Konfirmasi &amp; Pengiriman</h3>
         <div class="card" style="background:#f9fcfb">
@@ -966,9 +956,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   </div>
 </section>
 
-<!-- ============================================================
-     TRACKING VIEW
-     ============================================================ -->
+<!-- TRACKING VIEW -->
 <section id="view-tracking" class="hidden">
   <div class="card">
     <h2>Cek Tracer ID</h2>
@@ -981,9 +969,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   </div>
 </section>
 
-<!-- ============================================================
-     ADMIN VIEW
-     ============================================================ -->
+<!-- ADMIN VIEW -->
 <section id="view-admin" class="hidden">
   <div class="card">
     <h2>Dashboard Pimpinan &amp; Admin</h2>
@@ -1019,9 +1005,15 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div><h3 id="rbTitle">Dashboard Utama</h3><p id="rbDesc">Ringkasan Eksekutif.</p></div>
         <span class="badge ok" id="rbScope" style="margin-left:auto;font-size:13px;padding:6px 14px">Akses Data</span>
       </div>
+
+      <!-- SCOPE BANNER — [FIX-B] visual scope per role -->
+      <div id="scopeBanner" class="scope-banner hidden">
+        <span class="sb-icon" id="scopeIcon">🛡️</span>
+        <span id="scopeText">Scope data</span>
+        <span class="sb-meta" id="scopeMeta"></span>
+      </div>
+
       <div id="roleWelcomeMsg" class="role-welcome hidden"></div>
-      <!-- [FIX-HTML-1] Scope banner dinamis per role -->
-      <div id="scopeBanner" class="role-welcome hidden" style="font-weight:700"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <span id="profileBadge" class="badge info" style="font-size:13px;padding:8px 16px"></span>
         <div class="actions">
@@ -1147,7 +1139,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             <h3>🔔 Target Reminder Responden</h3>
             <button class="btn sm" id="reloadReminderBtn">Muat Data Belum Isi</button>
           </div>
-          <p class="hint">Alumni yang belum berpartisipasi pada periode ini.</p>
+          <p class="hint">Alumni yang belum berpartisipasi pada periode ini (sesuai scope Anda).</p>
           <div class="tablewrap"><table class="table" id="reminderTable"></table></div>
         </div>
       </div>
@@ -1298,6 +1290,18 @@ const KOMPETENSI_LABELS={
 };
 
 /* ============================================================
+ *  SCOPE MAP — [FIX-B] Definisi scope per role
+ * ============================================================ */
+const SCOPE_MAP = {
+  'ADMIN':      {icon:'🛡️', cls:'admin',      label:'Full Access (S1 + S2)',        meta:'Kontrol penuh sistem'},
+  'DEKAN':      {icon:'👑', cls:'dekan',      label:'Fakultas Ilmu Komunikasi (S1 + S2)', meta:'Scope: Seluruh Fakultas'},
+  'WADEK':      {icon:'🎯', cls:'wadek',      label:'Fakultas Ilmu Komunikasi (S1 + S2)', meta:'Scope: Seluruh Fakultas'},
+  'KAPRODI_S1': {icon:'📗', cls:'kaprodi-s1', label:'Prodi S1 Ilmu Komunikasi',     meta:'Scope: Hanya data S1'},
+  'KAPRODI_S2': {icon:'📘', cls:'kaprodi-s2', label:'Prodi S2 Magister Ilmu Komunikasi', meta:'Scope: Hanya data S2'},
+  'MAHASISWA':  {icon:'🎓', cls:'mhs',        label:'Data Pribadi Anda',            meta:'Scope: Hanya data sendiri'}
+};
+
+/* ============================================================
  *  STATE GLOBAL
  * ============================================================ */
 let TOKEN=sessionStorage.getItem('ts_token')||'';
@@ -1321,6 +1325,10 @@ function setFieldError(id,t){const e=$('err-'+id),i=$(id);if(e){e.textContent=t|
 function clearErrors(){$$('.field-error').forEach(e=>{e.textContent='';e.classList.remove('show')});$$('.err').forEach(e=>e.classList.remove('err'))}
 function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('hidden'))return false;n=n.parentElement}return true}
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
+function showEmptyState(containerId,icon,text){
+  const el=$(containerId);if(!el)return;
+  el.innerHTML=`<div class="empty-state"><div class="es-icon">${icon||'📭'}</div><div>${esc(text||'Belum ada data pada scope Anda.')}</div></div>`;
+}
 
 /* ============================================================
  *  API LAYER
@@ -1377,7 +1385,6 @@ async function loadMeta(){
     renderCheckGrid('organisasiProfesi',['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
     renderCheckGrid('jenisPrestasi',['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
     renderCheckGrid('jenisBantuanKarier',BANTUAN_KARIER_OPTS);
-    /* [FIX-2] Aktifkan toggle "Lainnya" untuk checkbox groups */
     bindCheckboxLainnya('organisasiProfesi','organisasiProfesiLainBox');
     bindCheckboxLainnya('jenisPrestasi','jenisPrestasiLainBox');
   }catch(e){toast('Gagal memuat metadata: '+e.message,'err')}
@@ -1482,7 +1489,7 @@ async function checkNim(){
 }
 
 /* ============================================================
- *  DYNAMIC "LAINNYA" BOX (untuk select)
+ *  DYNAMIC "LAINNYA" BOX
  * ============================================================ */
 function ensureLainBox(anchorEl,fieldId,labelText){
   let box=document.getElementById(fieldId+'Box');
@@ -1494,8 +1501,6 @@ function ensureLainBox(anchorEl,fieldId,labelText){
   }
   return box;
 }
-
-/* [FIX-2] Toggle "Lainnya" untuk checkbox groups */
 function bindCheckboxLainnya(containerId, boxId){
   const el=$(containerId);
   if(!el) return;
@@ -1895,20 +1900,24 @@ async function doLogout(){
   toast('Berhasil keluar.','ok');
 }
 
-/* [FIX-HTML-2] Banner scope dinamis per role */
+/* ============================================================
+ *  SHOW DASHBOARD — [FIX-B] dengan scope banner per role
+ * ============================================================ */
+function applyRoleVisibility(role){
+  const isAdmin=role==='ADMIN';
+  const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
+  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
+  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
+}
+
 function renderScopeBanner(role){
-  const el = document.getElementById('scopeBanner');
-  if(!el) return;
-  const map = {
-    'ADMIN':      {t:'🛡️ SCOPE: Full Access (S1 + S2)', c:'admin'},
-    'DEKAN':      {t:'👑 SCOPE: Fakultas (S1 + S2)', c:'dekan'},
-    'WADEK':      {t:'🎯 SCOPE: Fakultas (S1 + S2)', c:'wadek'},
-    'KAPRODI_S1': {t:'📗 SCOPE: Prodi S1 Ilmu Komunikasi', c:'kaprodi-s1'},
-    'KAPRODI_S2': {t:'📘 SCOPE: Prodi S2 Magister Ilmu Komunikasi', c:'kaprodi-s2'}
-  };
-  const info = map[role] || {t:'Scope tidak dikenali', c:''};
-  el.className = 'role-welcome ' + info.c;
-  el.textContent = info.t;
+  const el=$('scopeBanner');if(!el)return;
+  const map=SCOPE_MAP[role];
+  if(!map){el.classList.add('hidden');return}
+  el.className='scope-banner '+map.cls;
+  $('scopeIcon').textContent=map.icon;
+  $('scopeText').textContent='📌 '+map.label;
+  $('scopeMeta').textContent=map.meta;
   el.classList.remove('hidden');
 }
 
@@ -1920,20 +1929,43 @@ function showDashboard(){
   let title='Dashboard',scope='—',icon='🛡️',desc='Ringkasan Eksekutif.';
   const welc=$('roleWelcomeMsg');welc.className='role-welcome hidden';
 
-  if(role==='ADMIN'){title='Pusat Kendali Admin';scope='Full Access';icon='🛡️';desc='Kontrol penuh data & konfigurasi.';welc.innerHTML='👋 <b>Halo Admin,</b> kelola data alumni, unggah Master, dan awasi sistem.';welc.className='role-welcome'}
-  else if(role==='DEKAN'){title='Dashboard Dekanat';scope='Fakultas (S1+S2)';icon='👑';desc='Ringkasan eksekutif fakultas.';welc.innerHTML='👑 <b>Selamat Datang Pimpinan Fakultas,</b> ringkasan pencapaian IKU dan sebaran karier alumni.';welc.className='role-welcome dekan'}
-  else if(role==='WADEK'){title='Dashboard Wakil Dekan';scope='Fakultas';icon='🎯';desc='Monitoring partisipasi alumni.';welc.innerHTML='🎯 <b>Selamat Datang,</b> pantau Response Rate untuk target akreditasi.';welc.className='role-welcome wadek'}
-  else if(role==='KAPRODI_S1'){title='Dashboard Kaprodi S1';scope='Prodi S1';icon='📗';desc='Evaluasi kurikulum & karier alumni S1.';welc.innerHTML='📗 <b>Halo Kaprodi S1,</b> evaluasi kurikulum dan pantau relevansi lulusan.';welc.className='role-welcome kaprodi-s1'}
-  else if(role==='KAPRODI_S2'){title='Dashboard Kaprodi S2';scope='Prodi S2';icon='📘';desc='Dampak magister pada karier alumni.';welc.innerHTML='📘 <b>Halo Kaprodi S2,</b> lihat dampak program magister terhadap karier alumni.';welc.className='role-welcome kaprodi-s2'}
+  if(role==='ADMIN'){
+    title='Pusat Kendali Admin';scope='Full Access';icon='🛡️';desc='Kontrol penuh data & konfigurasi.';
+    welc.innerHTML='👋 <b>Halo Admin,</b> kelola data alumni, unggah Master, dan awasi sistem.';welc.className='role-welcome';
+  } else if(role==='DEKAN'){
+    title='Dashboard Dekanat';scope='Fakultas (S1+S2)';icon='👑';desc='Ringkasan eksekutif fakultas.';
+    welc.innerHTML='👑 <b>Selamat Datang Pimpinan Fakultas,</b> ringkasan pencapaian IKU dan sebaran karier alumni.';welc.className='role-welcome dekan';
+  } else if(role==='WADEK'){
+    title='Dashboard Wakil Dekan';scope='Fakultas (S1+S2)';icon='🎯';desc='Monitoring partisipasi alumni.';
+    welc.innerHTML='🎯 <b>Selamat Datang,</b> pantau Response Rate untuk target akreditasi.';welc.className='role-welcome wadek';
+  } else if(role==='KAPRODI_S1'){
+    title='Dashboard Kaprodi S1';scope='Prodi S1';icon='📗';desc='Evaluasi kurikulum & karier alumni S1.';
+    welc.innerHTML='📗 <b>Halo Kaprodi S1,</b> Anda hanya melihat data mahasiswa <b>S1 Ilmu Komunikasi</b>.';welc.className='role-welcome kaprodi-s1';
+  } else if(role==='KAPRODI_S2'){
+    title='Dashboard Kaprodi S2';scope='Prodi S2';icon='📘';desc='Dampak magister pada karier alumni.';
+    welc.innerHTML='📘 <b>Halo Kaprodi S2,</b> Anda hanya melihat data mahasiswa <b>S2 Magister Ilmu Komunikasi</b>.';welc.className='role-welcome kaprodi-s2';
+  }
 
   $('rbTitle').textContent=title;$('rbDesc').textContent=desc;$('rbScope').textContent=scope;
   $('rbIcon').textContent=icon;
   $('profileBadge').textContent=(PROFILE?.nama||'Pengguna')+' ('+role+')';
 
-  const isAdmin=role==='ADMIN';
-  const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
-  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
-  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
+  applyRoleVisibility(role);
+  renderScopeBanner(role);
+
+  // Lock filter Program Studi untuk kaprodi sesuai scope
+  const fProdi=$('fProdi');
+  if(fProdi){
+    if(role==='KAPRODI_S1'){fProdi.value='S1 Ilmu Komunikasi';fProdi.disabled=true}
+    else if(role==='KAPRODI_S2'){fProdi.value='S2 Magister Ilmu Komunikasi';fProdi.disabled=true}
+    else {fProdi.disabled=false}
+  }
+
+  // Set acc scope default sesuai role
+  if(role==='KAPRODI_S1')accScope='s1';
+  else if(role==='KAPRODI_S2')accScope='s2';
+  else accScope='all';
+  $$('#accScopeBar button').forEach(b=>b.classList.toggle('active',b.dataset.scope===accScope));
 
   $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
   const firstTab=document.querySelector('#adminTabs button[data-panel="overview"]');
@@ -1942,33 +1974,42 @@ function showDashboard(){
   const overviewPanel=document.querySelector('.panel[data-panel="overview"]');
   if(overviewPanel)overviewPanel.classList.remove('hidden');
 
-  /* [FIX-HTML-2] Render banner scope sesuai role */
-  renderScopeBanner(role);
   loadDashboardData();
 }
 
+/* ============================================================
+ *  CHARTS
+ * ============================================================ */
 function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
 function drawBarChart(canvasId,dataObj,label,color){
   const el=$(canvasId);if(!el||typeof Chart==='undefined')return;
   destroyChart(canvasId);
   const labels=Object.keys(dataObj||{}),data=labels.map(k=>dataObj[k]);
+  if(!labels.length){
+    const ctx=el.getContext('2d');
+    ctx.clearRect(0,0,el.width,el.height);
+    ctx.font='14px system-ui';ctx.fillStyle='#66736d';ctx.textAlign='center';
+    ctx.fillText('Belum ada data pada scope ini',el.width/2,60);
+    return;
+  }
   charts[canvasId]=new Chart(el.getContext('2d'),{type:'bar',data:{labels,datasets:[{label,data,backgroundColor:color||'#116149'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
 }
 
-/* [FIX-HTML-3] RenderKpi robust terhadap data kosong/null */
+/* ============================================================
+ *  KPI & INSIGHT — robust terhadap data kosong
+ * ============================================================ */
 function renderKpi(s){
-  const box = $('kpiBox');
-  if(!box) return;
-  if(!s){ box.innerHTML='<div><b>0</b><span>Tidak ada data pada scope Anda</span></div>'; return; }
+  const box=$('kpiBox');if(!box)return;
+  if(!s){box.innerHTML='<div class="empty-state"><div class="es-icon">📭</div><div>Tidak ada data pada scope Anda</div></div>';return}
   box.innerHTML=`
-    <div><span class="kpi-icon">🎯</span><b>${s.responseRate}%</b><span>Response Rate</span></div>
+    <div><span class="kpi-icon">🎯</span><b>${s.responseRate||0}%</b><span>Response Rate</span></div>
     <div><span class="kpi-icon">💼</span><b>${s.total?Math.round(s.bekerja/s.total*100):0}%</b><span>Bekerja</span></div>
-    <div><span class="kpi-icon">⏳</span><b>${s.avgMasaTunggu}</b><span>Masa Tunggu</span></div>
+    <div><span class="kpi-icon">⏳</span><b>${s.avgMasaTunggu||'-'}</b><span>Masa Tunggu</span></div>
     <div><span class="kpi-icon">🏆</span><b>${s.prestasi||0}</b><span>Berprestasi</span></div>`;
-  const ins = $('summaryInsight');
+  const ins=$('summaryInsight');
   if(ins) ins.innerHTML=`
-    <div class="card" style="padding:12px 16px"><b>${s.total}</b> dari <b>${s.totalMaster}</b> alumni terisi (${s.belumMengisi} belum)</div>
-    <div class="card" style="padding:12px 16px">Relevansi: <b>${s.relevansiRate}%</b></div>
+    <div class="card" style="padding:12px 16px"><b>${s.total||0}</b> dari <b>${s.totalMaster||0}</b> alumni terisi (${s.belumMengisi||0} belum)</div>
+    <div class="card" style="padding:12px 16px">Relevansi: <b>${s.relevansiRate||0}%</b></div>
     <div class="card" style="padding:12px 16px">Wirausaha: <b>${s.wirausaha||0}</b> · Magang: <b>${s.magang||0}</b> · Organisasi: <b>${s.organisasi||0}</b></div>`;
 }
 
@@ -1983,15 +2024,16 @@ function renderCharts(c){
   drawBarChart('chBidang',c.bidangCounts,'Jumlah','#d97706');
   drawBarChart('chOrganisasi',c.organisasiCounts,'Jumlah','#7c3aed');
 }
+
 function renderRecentTable(rows){
   const t=$('recentTable');if(!t)return;
-  if(!rows||!rows.length){t.innerHTML='<tr><td>Belum ada data.</td></tr>';return}
+  if(!rows||!rows.length){t.innerHTML='<tr><td>Belum ada data pada scope Anda.</td></tr>';return}
   t.innerHTML=`<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Status</th></tr>`+
     rows.map(r=>`<tr><td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td><td>${esc(r.programStudi)}</td><td>${esc(r.status)}</td></tr>`).join('');
 }
 function renderRespTable(rows,pagination){
   const t=$('respTable');if(!t)return;
-  t.innerHTML=(!rows||!rows.length)?'<tr><td>Tidak ada data.</td></tr>':
+  t.innerHTML=(!rows||!rows.length)?'<tr><td>Tidak ada data pada scope Anda.</td></tr>':
     `<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Tahun Lulus</th><th>Status</th></tr>`+
     rows.map(r=>`<tr><td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td><td>${esc(r.programStudi)}</td><td>${esc(r.tahunLulus)}</td><td>${esc(r.status)}</td></tr>`).join('');
   $('respInfo')&&($('respInfo').textContent=pagination?`Total ${pagination.total} data · Hal ${pagination.page}/${pagination.totalPages}`:'');
@@ -2029,11 +2071,16 @@ function renderAdminPanel(users,periode,audit){
   $('addUserBtn')&&($('addUserBtn').onclick=openUserModal);
   $('addPeriodeBtn')&&($('addPeriodeBtn').onclick=openPeriodeModal);
 }
+
+/* ============================================================
+ *  LOAD DASHBOARD — [FIX-B] filter scope diterapkan konsisten
+ * ============================================================ */
 async function loadDashboardData(){
   const btn=$('refreshBtn');const oldText=btn?btn.innerHTML:'';
   if(btn){btn.innerHTML='<span class="spinner" style="border-width:2px"></span> Memuat...';btn.disabled=true}
   try{
-    const r=await apiPost({action:'dashboard',filters:Object.assign({},dashFilters,{scope:accScope}),page:respPage,perPage:RESP_PER_PAGE});
+    const filters=Object.assign({},dashFilters,{scope:accScope});
+    const r=await apiPost({action:'dashboard',filters,page:respPage,perPage:RESP_PER_PAGE});
     renderKpi(r.summary);
     renderCharts(r.charts);
     updateTahunFilterFromData(r.charts&&r.charts.yearCounts);
@@ -2063,10 +2110,35 @@ function downloadBase64(filename,base64,mime){
   const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),4000);
 }
-async function exportResponden(format){try{const r=await apiPost({action:'export',format,filters:dashFilters});downloadBase64(r.filename,r.base64,r.mime)}catch(e){toast(e.message,'err')}}
-async function reloadMaster(){try{const r=await apiPost({action:'masterlist',page:masterPage,perPage:50,filters:dashFilters});renderMasterTable(r.items)}catch(e){toast(e.message,'err')}}
-async function exportMaster(){try{const r=await apiPost({action:'masterlist',export:'csv',filters:dashFilters});downloadBase64(r.filename,r.base64,'text/csv')}catch(e){toast(e.message,'err')}}
-async function reloadReminder(){try{const r=await apiPost({action:'reminderlist',filters:dashFilters});renderReminderTable(r.items)}catch(e){toast(e.message,'err')}}
+async function exportResponden(format){
+  try{
+    const r=await apiPost({action:'export',format,filters:Object.assign({},dashFilters,{scope:accScope})});
+    downloadBase64(r.filename,r.base64,r.mime);
+  }catch(e){toast(e.message,'err')}
+}
+async function reloadMaster(){
+  try{
+    const r=await apiPost({action:'masterlist',page:masterPage,perPage:50,filters:Object.assign({},dashFilters,{scope:accScope})});
+    renderMasterTable(r.items);
+    renderMasterPagination(r);
+  }catch(e){toast(e.message,'err')}
+}
+async function exportMaster(){
+  try{
+    const r=await apiPost({action:'masterlist',export:'csv',filters:Object.assign({},dashFilters,{scope:accScope})});
+    downloadBase64(r.filename,r.base64,'text/csv');
+  }catch(e){toast(e.message,'err')}
+}
+async function reloadReminder(){
+  try{
+    const r=await apiPost({action:'reminderlist',filters:Object.assign({},dashFilters,{scope:accScope})});
+    renderReminderTable(r.items);
+  }catch(e){toast(e.message,'err')}
+}
+function renderMasterPagination(r){
+  const box=$('masterPagination');if(!box||!r)return;
+  box.innerHTML=`<span class="badge info" style="padding:8px 14px">Total ${r.total} · Sudah ${r.sudah} · Belum ${r.belum} · Hal ${r.page}/${r.totalPages}</span>`;
+}
 
 /* ============================================================
  *  MASTER UPLOAD (ADMIN)
@@ -2233,8 +2305,18 @@ function bindEvents(){
     if(b.dataset.panel==='reminder')reloadReminder();
   });
 
-  $('applyFilter').onclick=()=>{dashFilters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};respPage=1;loadDashboardData()};
-  $('resetFilter').onclick=()=>{$('fPeriode').value='';$('fTahun').value='';$('fProdi').value='';$('fQ').value='';dashFilters={};respPage=1;loadDashboardData()};
+  $('applyFilter').onclick=()=>{
+    dashFilters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};
+    respPage=1;loadDashboardData();
+  };
+  $('resetFilter').onclick=()=>{
+    $('fPeriode').value='';$('fTahun').value='';$('fQ').value='';
+    const role=PROFILE?.role;
+    if(role==='KAPRODI_S1')$('fProdi').value='S1 Ilmu Komunikasi';
+    else if(role==='KAPRODI_S2')$('fProdi').value='S2 Magister Ilmu Komunikasi';
+    else $('fProdi').value='';
+    dashFilters={};respPage=1;loadDashboardData();
+  };
 
   $$('[data-export]').forEach(b=>b.onclick=()=>exportResponden(b.dataset.export));
   $('reloadMasterBtn')&&($('reloadMasterBtn').onclick=reloadMaster);
