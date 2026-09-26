@@ -2342,10 +2342,17 @@ function bindEvents(){
   $('reloadReminderBtn')&&($('reloadReminderBtn').onclick=reloadReminder);
   $('exportReminderBtn')&&($('exportReminderBtn').onclick=exportReminder);
 
-  $$('#accScopeBar button').forEach(b=>b.onclick=async()=>{
+  /* [FIX-K] Toggle scope (Semua/Prodi S1/Prodi S2/Fakultas) sebelumnya hanya
+   * memuat ulang daftar IKU Akreditasi — Ringkasan, Data Responden, Grafik
+   * Analitik, Reminder dan Master Alumni tidak ikut berubah sehingga terlihat
+   * tidak konsisten/tidak "live" per role. Sekarang scope memicu refresh
+   * penuh dashboard, dan backend (_masterListInternal/_reminderListInternal)
+   * sudah ikut menghormati scope ini. */
+  $$('#accScopeBar button').forEach(b=>b.onclick=()=>{
     $$('#accScopeBar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
     accScope=b.dataset.scope;
-    try{const r=await apiPost({action:'dashboard',filters:Object.assign({},dashFilters,{scope:accScope})});renderAccreditation(r.accreditation)}catch(e){toast(e.message,'err')}
+    respPage=1;masterPage=1;
+    loadDashboardData();
   });
 
   $('trackBtn').onclick=lookupTracer;
