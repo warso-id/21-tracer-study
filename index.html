@@ -238,7 +238,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
     <form id="tracerForm" novalidate autocomplete="off">
 
       <!-- ============================================================
-           STEP 1 — A. DATA PRIBADI (Identitas + Alamat cascade + Akademik S1/S2)
+           STEP 1 — A. DATA PRIBADI
            ============================================================ -->
       <div class="step active" data-step="1">
         <h3>Bagian A — Data Pribadi</h3>
@@ -300,12 +300,19 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
 
         <div class="form-section-title">🎓 Data Akademik Khusus</div>
+
+        <!-- ===== S1 GROUP ===== -->
         <div id="groupS1" class="hidden" style="border:2px solid var(--s1-border);border-radius:12px;padding:16px;background:var(--s1-bg)">
           <p style="font-weight:800;color:var(--s1-dark);margin:0 0 12px;text-transform:uppercase">Khusus S1 Ilmu Komunikasi</p>
           <div class="grid">
-            <div class="full"><label for="judulSkripsi">Judul Skripsi <span class="req">*</span></label><textarea id="judulSkripsi" maxlength="1000"></textarea><span class="field-error" id="err-judulSkripsi"></span></div>
-            <div><label for="konsentrasiS1">Konsentrasi Studi S1 <span class="req">*</span></label>
-              <select id="konsentrasiS1" data-conditional="konsentrasiS1Lain">
+            <div class="full">
+              <label for="judulSkripsi">Judul Skripsi <span class="req">*</span></label>
+              <textarea id="judulSkripsi" required maxlength="1000"></textarea>
+              <span class="field-error" id="err-judulSkripsi"></span>
+            </div>
+            <div>
+              <label for="konsentrasiS1">Konsentrasi Studi S1 <span class="req">*</span></label>
+              <select id="konsentrasiS1" required data-conditional="konsentrasiS1Lain">
                 <option value="">Pilih</option>
                 <option>Jurnalistik</option><option>Periklanan</option><option>Hubungan Masyarakat</option>
                 <option>Penyiaran</option><option>Media Digital</option><option>Lainnya</option>
@@ -316,12 +323,19 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             <div><label for="pembimbingSkripsi">Dosen Pembimbing Skripsi</label><input id="pembimbingSkripsi" maxlength="120"></div>
           </div>
         </div>
+
+        <!-- ===== S2 GROUP ===== -->
         <div id="groupS2" class="hidden" style="border:2px solid var(--s2-border);border-radius:12px;padding:16px;background:var(--s2-bg)">
           <p style="font-weight:800;color:var(--s2-dark);margin:0 0 12px;text-transform:uppercase">Khusus S2 Magister Ilmu Komunikasi</p>
           <div class="grid">
-            <div class="full"><label for="judulTesis">Judul Tesis <span class="req">*</span></label><textarea id="judulTesis" maxlength="1000"></textarea><span class="field-error" id="err-judulTesis"></span></div>
-            <div><label for="konsentrasiS2">Konsentrasi Studi S2 <span class="req">*</span></label>
-              <select id="konsentrasiS2" data-conditional="konsentrasiS2Lain">
+            <div class="full">
+              <label for="judulTesis">Judul Tesis <span class="req">*</span></label>
+              <textarea id="judulTesis" required maxlength="1000"></textarea>
+              <span class="field-error" id="err-judulTesis"></span>
+            </div>
+            <div>
+              <label for="konsentrasiS2">Konsentrasi Studi S2 <span class="req">*</span></label>
+              <select id="konsentrasiS2" required data-conditional="konsentrasiS2Lain">
                 <option value="">Pilih</option>
                 <option>Komunikasi Strategis</option><option>Media dan Digital</option>
                 <option>Komunikasi Politik</option><option>Komunikasi Korporat</option><option>Lainnya</option>
@@ -348,7 +362,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       </div>
 
       <!-- ============================================================
-           STEP 2 — B. PEKERJAAN (Conditional by status + cascade)
+           STEP 2 — B. PEKERJAAN
            ============================================================ -->
       <div class="step" data-step="2">
         <h3>Bagian B — Status &amp; Pekerjaan</h3>
@@ -637,9 +651,16 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
         <div id="organisasiBox" class="hidden" style="margin-top:12px;padding:16px;border:1px solid #dce5e1;border-radius:12px;background:#f9fcfb">
           <div class="grid">
-            <div class="full"><label>D2. Organisasi yang diikuti (Pilih minimal 1) <span class="req">*</span></label>
+            <div class="full">
+              <label>D2. Organisasi yang diikuti (Pilih minimal 1) <span class="req">*</span></label>
               <div id="organisasiProfesi" class="check-grid"></div>
               <span class="field-error" id="err-organisasiProfesi"></span>
+            </div>
+            <!-- [FIX-2] Input teks untuk "Lainnya" pada checkbox organisasi -->
+            <div id="organisasiProfesiLainBox" class="full hidden">
+              <label for="organisasiProfesiLain">Sebutkan organisasi profesi lainnya <span class="req">*</span></label>
+              <input id="organisasiProfesiLain" maxlength="200">
+              <span class="field-error" id="err-organisasiProfesiLain"></span>
             </div>
             <div><label for="tahunBergabungOrg">D3. Tahun mulai bergabung</label><input id="tahunBergabungOrg" inputmode="numeric" maxlength="4"></div>
             <div><label for="peranOrganisasi">D4. Peran dalam organisasi</label>
@@ -677,9 +698,16 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
         <div id="prestasiBox" class="hidden" style="margin-top:12px;padding:16px;border:1px solid #dce5e1;border-radius:12px;background:#f9fcfb">
           <div class="grid">
-            <div class="full"><label>E2. Prestasi diraih (Pilih minimal 1) <span class="req">*</span></label>
+            <div class="full">
+              <label>E2. Prestasi diraih (Pilih minimal 1) <span class="req">*</span></label>
               <div id="jenisPrestasi" class="check-grid"></div>
               <span class="field-error" id="err-jenisPrestasi"></span>
+            </div>
+            <!-- [FIX-2] Input teks untuk "Lainnya" pada checkbox prestasi -->
+            <div id="jenisPrestasiLainBox" class="full hidden">
+              <label for="jenisPrestasiLain">Sebutkan jenis prestasi lainnya <span class="req">*</span></label>
+              <input id="jenisPrestasiLain" maxlength="200">
+              <span class="field-error" id="err-jenisPrestasiLain"></span>
             </div>
             <div><label for="namaPrestasiSpesifik">E3. Nama prestasi spesifik</label><input id="namaPrestasiSpesifik" maxlength="200"></div>
             <div><label for="penyelenggaraPrestasi">E4. Penyelenggara</label><input id="penyelenggaraPrestasi" maxlength="150"></div>
@@ -1139,7 +1167,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v16.2.0-production · Secured &amp; Optimized</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v16.3.2-production · Secured &amp; Optimized</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -1149,13 +1177,13 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 /* ============================================================
  *  KONSTANTA
  * ============================================================ */
-const APP_VERSION_STR='v16.2.0-production';
+const APP_VERSION_STR='v16.3.2-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
 const TOTAL_STEPS=8, RESP_PER_PAGE=50;
 
 /* ============================================================
- *  DATA HIRARKI (untuk dropdown bertingkat)
+ *  DATA HIRARKI
  * ============================================================ */
 const WILAYAH={
   'DKI Jakarta':['Jakarta Pusat','Jakarta Selatan','Jakarta Barat','Jakarta Timur','Jakarta Utara','Kepulauan Seribu'],
@@ -1293,7 +1321,7 @@ function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('h
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
 
 /* ============================================================
- *  API LAYER (base64)
+ *  API LAYER
  * ============================================================ */
 function b64EncodeUnicode(str){return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(_,p)=>String.fromCharCode('0x'+p)))}
 function toWireParams(data){const p={...data};Object.keys(p).forEach(k=>{if(p[k]!==undefined&&p[k]!==null&&typeof p[k]==='object')p[k]=JSON.stringify(p[k])});return p}
@@ -1347,6 +1375,9 @@ async function loadMeta(){
     renderCheckGrid('organisasiProfesi',['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
     renderCheckGrid('jenisPrestasi',['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
     renderCheckGrid('jenisBantuanKarier',BANTUAN_KARIER_OPTS);
+    /* [FIX-2] Aktifkan toggle "Lainnya" untuk checkbox groups */
+    bindCheckboxLainnya('organisasiProfesi','organisasiProfesiLainBox');
+    bindCheckboxLainnya('jenisPrestasi','jenisPrestasiLainBox');
   }catch(e){toast('Gagal memuat metadata: '+e.message,'err')}
 }
 function populateFilterSelects(){
@@ -1449,7 +1480,7 @@ async function checkNim(){
 }
 
 /* ============================================================
- *  DYNAMIC "LAINNYA" BOX
+ *  DYNAMIC "LAINNYA" BOX (untuk select)
  * ============================================================ */
 function ensureLainBox(anchorEl,fieldId,labelText){
   let box=document.getElementById(fieldId+'Box');
@@ -1460,6 +1491,25 @@ function ensureLainBox(anchorEl,fieldId,labelText){
     wrapper.insertAdjacentElement('afterend',box);
   }
   return box;
+}
+
+/* [FIX-2] Toggle "Lainnya" untuk checkbox groups */
+function bindCheckboxLainnya(containerId, boxId){
+  const el=$(containerId);
+  if(!el) return;
+  const handler = () => {
+    const box = $(boxId);
+    if(!box) return;
+    const hasLainnya = [...el.querySelectorAll('input[type=checkbox]:checked')]
+      .some(c => String(c.value).trim().toLowerCase() === 'lainnya');
+    box.classList.toggle('hidden', !hasLainnya);
+    if(!hasLainnya){
+      const inp = box.querySelector('input[type=text], input:not([type])');
+      if(inp) inp.value = '';
+    }
+  };
+  el.addEventListener('change', handler);
+  handler(); // sinkronkan state awal
 }
 
 /* ============================================================
@@ -1519,9 +1569,21 @@ function validateStep(n){
     if(isNaN(ipk)||ipk<0||ipk>4){setFieldError('ipk','IPK 0.00–4.00.');ok=false}
     const email=val('email');if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setFieldError('email','Email tidak valid.');ok=false}
     const wa=val('whatsapp');if(wa&&!/^\d{10,15}$/.test(wa)){setFieldError('whatsapp','WA 10–15 digit.');ok=false}
+
+    /* [FIX-1] Data akademik khusus — wajib diisi sesuai jenjang */
+    const jj = val('jenjang');
+    if(jj === 'S1'){
+      if(!val('judulSkripsi')){setFieldError('judulSkripsi','Judul skripsi wajib diisi.');ok=false}
+      if(!val('konsentrasiS1')){setFieldError('konsentrasiS1','Konsentrasi wajib dipilih.');ok=false}
+    } else if(jj === 'S2'){
+      if(!val('judulTesis')){setFieldError('judulTesis','Judul tesis wajib diisi.');ok=false}
+      if(!val('konsentrasiS2')){setFieldError('konsentrasiS2','Konsentrasi wajib dipilih.');ok=false}
+    }
+
     if(val('konsentrasiS1')==='Lainnya'&&!val('konsentrasiS1Lain')){setFieldError('konsentrasiS1Lain','Wajib diisi.');ok=false}
     if(val('konsentrasiS2')==='Lainnya'&&!val('konsentrasiS2Lain')){setFieldError('konsentrasiS2Lain','Wajib diisi.');ok=false}
   }
+
   if(n===2){
     const sp=val('statusPekerjaanUtama');
     const work=['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(sp);
@@ -1532,11 +1594,25 @@ function validateStep(n){
     }
     if(biz&&!val('namaUsaha')){setFieldError('namaUsaha','Wajib diisi.');ok=false}
   }
+
   if(n===3){
     if(val('ikutMagang')==='Ya'){['tempatMagang','durasiMagang','kontribusiMagang','magangBantuKerja'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}})}
-    if(val('ikutOrganisasi')==='Ya'){const chosen=collectChecked('organisasiProfesi');if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}}
-    if(val('punyaPrestasi')==='Ya'){const chosen=collectChecked('jenisPrestasi');if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}}
+
+    if(val('ikutOrganisasi')==='Ya'){
+      const chosen=collectChecked('organisasiProfesi');
+      if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}
+      /* [FIX-2] Wajib isi "Lainnya" bila dipilih */
+      if(chosen.includes('Lainnya') && !val('organisasiProfesiLain')){setFieldError('organisasiProfesiLain','Wajib diisi.');ok=false}
+    }
+
+    if(val('punyaPrestasi')==='Ya'){
+      const chosen=collectChecked('jenisPrestasi');
+      if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}
+      /* [FIX-2] Wajib isi "Lainnya" bila dipilih */
+      if(chosen.includes('Lainnya') && !val('jenisPrestasiLain')){setFieldError('jenisPrestasiLain','Wajib diisi.');ok=false}
+    }
   }
+
   if(n===4){
     const jenjang=val('jenjang')||'S1';
     const ck=jenjang==='S2'?KOMPETENSI_S2:KOMPETENSI_S1;
@@ -1544,10 +1620,12 @@ function validateStep(n){
     if(ck.dikuasai.some(k=>!dk[k])||ck.dikuasai.some(k=>!db[k])||ck.metode.some(k=>!mp[k])){toast('Lengkapi seluruh penilaian F1–F3.','err');ok=false}
     ['hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}});
   }
+
   if(n===5){
     const kf=collectRatingGrid('kepuasanFikom');
     if(KEPUASAN_ITEMS.some(x=>!kf[x.key])){toast('Lengkapi seluruh penilaian kepuasan.','err');ok=false}
   }
+
   if(n===6){
     if(val('melanjutkanStudi')==='Ya'){
       ['jenjangStudiLanjut','ptStudiLanjut','prodiStudiLanjut','tahunMulaiStudi','biayaStudiLanjut'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}});
@@ -1555,13 +1633,16 @@ function validateStep(n){
       if(val('biayaStudiLanjut')==='Lainnya'&&!val('biayaStudiLanjutLain')){setFieldError('biayaStudiLanjutLain','Wajib diisi.');ok=false}
     }
   }
+
   if(n===7){
     const anySaran=['keunggulanFikom','halPerluDiperbaiki','saranKurikulum','saranPembelajaran','saranLayanan','saranMahasiswa','saranDosen','saranProgramStudi','saranFakultas','kesanPesan'].some(id=>val(id));
     if(!anySaran)toast('Mohon isi minimal satu saran/masukan untuk FIKOM.','warn');
   }
+
   if(n===8){
     if(!$('consentData').checked){setFieldError('consentData','Wajib dicentang.');ok=false}
   }
+
   if(ok)saveLocalDraft();
   return ok;
 }
@@ -1594,7 +1675,7 @@ function renderSummary(){
 }
 
 /* ============================================================
- *  PAYLOAD — sinkron dengan backend `buildResponsesRow`
+ *  PAYLOAD
  * ============================================================ */
 function collectPayload(){
   const jenjang=val('jenjang');
@@ -1611,7 +1692,6 @@ function collectPayload(){
     alamatTetap:val('alamatTetap'),
     judulSkripsi:val('judulSkripsi'),konsentrasiS1:val('konsentrasiS1'),konsentrasiS1Lain:val('konsentrasiS1Lain'),pembimbingSkripsi:val('pembimbingSkripsi'),
     judulTesis:val('judulTesis'),konsentrasiS2:val('konsentrasiS2'),konsentrasiS2Lain:val('konsentrasiS2Lain'),pembimbingTesis:val('pembimbingTesis'),
-    // A2. S2 khusus (data sebelumnya)
     jenjangSebelumnya:val('jenjangSebelumnya'),prodiSebelumnya:val('prodiSebelumnya'),
     ptSebelumnya:val('ptSebelumnya'),pendidikanSebelumnyaKomunikasi:val('pendidikanSebelumnyaKomunikasi'),
     // B. Pekerjaan
@@ -1846,13 +1926,11 @@ function showDashboard(){
   $('rbIcon').textContent=icon;
   $('profileBadge').textContent=(PROFILE?.nama||'Pengguna')+' ('+role+')';
 
-  // Role gating tabs
   const isAdmin=role==='ADMIN';
   const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
   $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
   $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
 
-  // Reset ke tab overview
   $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
   const firstTab=document.querySelector('#adminTabs button[data-panel="overview"]');
   if(firstTab)firstTab.classList.add('active');
@@ -2103,7 +2181,7 @@ function bindEvents(){
   $('tracerForm').onsubmit=(e)=>{e.preventDefault();submitTracer()};
   $('checkNimBtn').onclick=checkNim;
 
-  // Conditional "Lainnya"
+  // Conditional "Lainnya" (untuk select)
   document.querySelectorAll('[data-conditional]').forEach(el=>{
     el.addEventListener('change',()=>{const box=document.getElementById(el.dataset.conditional+'Box');if(box)box.classList.toggle('hidden',el.value!=='Lainnya')});
   });
