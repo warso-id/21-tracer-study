@@ -151,14 +151,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .step-indicator .si-num{display:block;font-size:16px;margin-bottom:4px;font-weight:900}
 .spinner{display:inline-block;width:1.2em;height:1.2em;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
 .btn-loading{pointer-events:none;opacity:.8}
-.qgroup{border:1px solid var(--line);border-radius:14px;background:#fff;margin:14px 0;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.02)}
-.qgroup>summary{cursor:pointer;padding:16px 18px;font-weight:800;background:#f4f8f6;transition:background .2s;list-style:none}
-.qgroup>summary:hover{background:#eaf4ef}
-.qgroup>summary::-webkit-details-marker{display:none}
-.qsub{padding:16px 18px;border-top:1px solid var(--line)}
-.qitem{padding:14px 0;border-top:1px dashed #d9e4df}
-.qitem:first-child{border-top:0}
-.q-hidden{display:none!important}
 .cascade-info{background:#eef4ff;border-left:3px solid var(--info);padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--info)}
 .role-welcome{background:var(--admin-bg);border-left:4px solid var(--admin-border);padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;color:var(--admin-dark)}
 .role-welcome.kaprodi-s1{background:var(--s1-bg);border-color:var(--s1-border);color:var(--s1-dark)}
@@ -207,7 +199,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
 <main class="wrap">
 
-<!-- ============ FORM VIEW ============ -->
+<!-- ============================================================
+     FORM VIEW
+     ============================================================ -->
 <section id="view-form">
   <div class="hero-mhs">
     <h2>🎓 Tracer Study Alumni FIKOM</h2>
@@ -219,7 +213,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
   <div class="card">
     <h2>Isi Tracer Study</h2>
-    <p class="hint">Formulir telah dioptimalkan: pertanyaan duplikat otomatis terisi dari data sebelumnya. Dropdown bertingkat memandu pengisian lebih cepat &amp; akurat.</p>
+    <p class="hint">Formulir dioptimalkan: pertanyaan otomatis menyesuaikan jenjang &amp; status Anda. Dropdown bertingkat memandu pengisian lebih cepat &amp; akurat.</p>
     <div id="periodeInfo" class="status info" style="display:none"></div>
     <div id="formStatus" class="status"></div>
 
@@ -238,16 +232,17 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
     <div id="levelBanner" class="level-banner">
       <span class="level-badge" id="levelBadge">—</span>
       <div class="level-info"><h4 id="levelTitle">Menunggu Verifikasi NIM</h4><p id="levelDesc">Verifikasi NIM terlebih dahulu untuk menentukan jenjang Anda.</p></div>
-      <span class="badge warn" id="levelHint" style="margin-left:auto;padding:6px 12px;font-size:12px;">Belum Terverifikasi</span>
+      <span class="badge warn" id="levelHint" style="margin-left:auto;padding:6px 12px;font-size:12px">Belum Terverifikasi</span>
     </div>
 
     <form id="tracerForm" novalidate autocomplete="off">
 
       <!-- ============================================================
-           STEP 1 — A. DATA PRIBADI (+ cascade Provinsi→Kota)
+           STEP 1 — A. DATA PRIBADI (Identitas + Alamat cascade + Akademik S1/S2)
            ============================================================ -->
       <div class="step active" data-step="1">
         <h3>Bagian A — Data Pribadi</h3>
+
         <div class="form-section-title">🔐 Verifikasi NIM</div>
         <div class="cascade-info"><b>Cara Verifikasi:</b> Masukkan NIM 9 digit (<code>yyyy41nnn</code> S1 atau <code>yyyy03nnn</code> S2), klik <b>Verifikasi NIM</b>. Nama akan otomatis terisi.</div>
         <div class="grid">
@@ -277,7 +272,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <div class="form-section-title">📋 Data Pribadi</div>
+        <div class="form-section-title">📋 Data Personal</div>
         <div class="grid">
           <div><label for="tahunMasuk">Tahun Masuk <span class="req">*</span></label><input id="tahunMasuk" required inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="contoh: 2020"><span class="field-error" id="err-tahunMasuk"></span></div>
           <div><label for="tahunLulus">Tahun Lulus <span class="req">*</span></label><input id="tahunLulus" required inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="contoh: 2024"><span class="field-error" id="err-tahunLulus"></span></div>
@@ -289,25 +284,34 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <div><label for="whatsapp">No. WhatsApp <span class="req">*</span></label><input id="whatsapp" required inputmode="numeric" maxlength="15" minlength="10" pattern="\d{10,15}" placeholder="08xxxxxxxxxx"><span class="field-error" id="err-whatsapp"></span></div>
         </div>
 
-        <div class="form-section-title">🏠 Alamat (Dropdown Bertingkat)</div>
+        <div class="form-section-title">🏠 Alamat Domisili (Dropdown Bertingkat)</div>
         <div class="cascade-info">📍 Pilih <b>Provinsi</b> → daftar <b>Kota/Kabupaten</b> akan muncul otomatis.</div>
         <div class="grid">
-          <div><label for="provinsiDomisili">Provinsi Domisili</label>
+          <div>
+            <label for="provinsiDomisili">Provinsi Domisili</label>
             <select id="provinsiDomisili"><option value="">Pilih Provinsi</option></select>
           </div>
-          <div><label for="kotaDomisili">Kota/Kabupaten Domisili</label>
-            <select id="kotaDomisili"><option value="">Pilih Provinsi terlebih dahulu</option></select>
+          <div>
+            <label for="kotaDomisili">Kota/Kabupaten Domisili</label>
+            <select id="kotaDomisili" disabled><option value="">Pilih Provinsi terlebih dahulu</option></select>
           </div>
           <div class="full"><label for="alamatDomisili">Alamat Detail Domisili</label><textarea id="alamatDomisili" maxlength="500" placeholder="Jalan, nomor, RT/RW, kelurahan, kecamatan, kode pos"></textarea></div>
           <div class="full"><label for="alamatTetap">Alamat Tetap (KTP)</label><textarea id="alamatTetap" maxlength="500" placeholder="Kosongkan jika sama dengan domisili"></textarea></div>
         </div>
 
-        <div class="form-section-title">🎓 Data Akademik</div>
+        <div class="form-section-title">🎓 Data Akademik Khusus</div>
         <div id="groupS1" class="hidden" style="border:2px solid var(--s1-border);border-radius:12px;padding:16px;background:var(--s1-bg)">
           <p style="font-weight:800;color:var(--s1-dark);margin:0 0 12px;text-transform:uppercase">Khusus S1 Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulSkripsi">Judul Skripsi <span class="req">*</span></label><textarea id="judulSkripsi" maxlength="1000"></textarea><span class="field-error" id="err-judulSkripsi"></span></div>
-            <div><label for="konsentrasiS1">Konsentrasi Studi S1 <span class="req">*</span></label><select id="konsentrasiS1" data-conditional="konsentrasiS1Lain"><option value="">Pilih</option><option>Jurnalistik</option><option>Periklanan</option><option>Hubungan Masyarakat</option><option>Penyiaran</option><option>Media Digital</option><option>Lainnya</option></select><span class="field-error" id="err-konsentrasiS1"></span></div>
+            <div><label for="konsentrasiS1">Konsentrasi Studi S1 <span class="req">*</span></label>
+              <select id="konsentrasiS1" data-conditional="konsentrasiS1Lain">
+                <option value="">Pilih</option>
+                <option>Jurnalistik</option><option>Periklanan</option><option>Hubungan Masyarakat</option>
+                <option>Penyiaran</option><option>Media Digital</option><option>Lainnya</option>
+              </select>
+              <span class="field-error" id="err-konsentrasiS1"></span>
+            </div>
             <div id="konsentrasiS1LainBox" class="hidden"><label for="konsentrasiS1Lain">Sebutkan konsentrasi <span class="req">*</span></label><input id="konsentrasiS1Lain" maxlength="100"><span class="field-error" id="err-konsentrasiS1Lain"></span></div>
             <div><label for="pembimbingSkripsi">Dosen Pembimbing Skripsi</label><input id="pembimbingSkripsi" maxlength="120"></div>
           </div>
@@ -316,16 +320,35 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <p style="font-weight:800;color:var(--s2-dark);margin:0 0 12px;text-transform:uppercase">Khusus S2 Magister Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulTesis">Judul Tesis <span class="req">*</span></label><textarea id="judulTesis" maxlength="1000"></textarea><span class="field-error" id="err-judulTesis"></span></div>
-            <div><label for="konsentrasiS2">Konsentrasi Studi S2 <span class="req">*</span></label><select id="konsentrasiS2" data-conditional="konsentrasiS2Lain"><option value="">Pilih</option><option>Komunikasi Strategis</option><option>Media dan Digital</option><option>Komunikasi Politik</option><option>Komunikasi Korporat</option><option>Lainnya</option></select><span class="field-error" id="err-konsentrasiS2"></span></div>
+            <div><label for="konsentrasiS2">Konsentrasi Studi S2 <span class="req">*</span></label>
+              <select id="konsentrasiS2" data-conditional="konsentrasiS2Lain">
+                <option value="">Pilih</option>
+                <option>Komunikasi Strategis</option><option>Media dan Digital</option>
+                <option>Komunikasi Politik</option><option>Komunikasi Korporat</option><option>Lainnya</option>
+              </select>
+              <span class="field-error" id="err-konsentrasiS2"></span>
+            </div>
             <div id="konsentrasiS2LainBox" class="hidden"><label for="konsentrasiS2Lain">Sebutkan konsentrasi <span class="req">*</span></label><input id="konsentrasiS2Lain" maxlength="100"><span class="field-error" id="err-konsentrasiS2Lain"></span></div>
             <div><label for="pembimbingTesis">Dosen Pembimbing Tesis</label><input id="pembimbingTesis" maxlength="120"></div>
+            <div class="full"><label for="jenjangSebelumnya">Jenjang pendidikan sebelumnya</label>
+              <select id="jenjangSebelumnya">
+                <option value="">Pilih</option>
+                <option>D3</option><option>D4</option><option>S1</option><option>Profesi</option><option>Lainnya</option>
+              </select>
+            </div>
+            <div><label for="prodiSebelumnya">Program studi sebelumnya</label><input id="prodiSebelumnya" maxlength="150"></div>
+            <div><label for="ptSebelumnya">Perguruan tinggi sebelumnya</label><input id="ptSebelumnya" maxlength="150"></div>
+            <div><label for="pendidikanSebelumnyaKomunikasi">Apakah dari Ilmu Komunikasi?</label>
+              <select id="pendidikanSebelumnyaKomunikasi"><option value="">Pilih</option><option>Ya</option><option>Tidak</option></select>
+            </div>
           </div>
         </div>
+
         <div class="stepnav"><button type="button" class="btn next" style="margin-left:auto">Lanjut →</button></div>
       </div>
 
       <!-- ============================================================
-           STEP 2 — B. STATUS & PEKERJAAN (cascade Industri→Sub, Level→Jabatan)
+           STEP 2 — B. PEKERJAAN (Conditional by status + cascade)
            ============================================================ -->
       <div class="step" data-step="2">
         <h3>Bagian B — Status &amp; Pekerjaan</h3>
@@ -344,28 +367,37 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- BLOCK: BEKERJA -->
+        <!-- ============ BLOCK: BEKERJA ============ -->
         <div id="bekerjaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">📌 Detail Pekerjaan</h4>
+
           <div class="form-subsection">🚀 Pekerjaan Pertama</div>
           <div class="grid">
             <div><label for="masaTungguKerja">B2. Masa tunggu mendapat pekerjaan pertama <span class="req">*</span></label>
-              <select id="masaTungguKerja"><option value="">Pilih</option><option>&lt; 3 bulan</option><option>3–6 bulan</option><option>6–12 bulan</option><option>&gt; 12 bulan</option></select>
+              <select id="masaTungguKerja"><option value="">Pilih</option>
+                <option>&lt; 3 bulan</option><option>3–6 bulan</option><option>6–12 bulan</option><option>&gt; 12 bulan</option>
+              </select>
               <span class="field-error" id="err-masaTungguKerja"></span>
             </div>
             <div><label for="caraDapatKerja">B3. Cara mendapatkan pekerjaan pertama <span class="req">*</span></label>
-              <select id="caraDapatKerja" data-conditional="caraLainnya"><option value="">Pilih</option>
+              <select id="caraDapatKerja" data-conditional="caraDapatKerjaLain">
+                <option value="">Pilih</option>
                 <option>Iklan/media</option><option>Relasi/jejaring</option><option>Bursa kerja kampus</option>
                 <option>Magang/PKL</option><option>Menciptakan lapangan kerja sendiri</option><option>Lainnya</option>
               </select>
               <span class="field-error" id="err-caraDapatKerja"></span>
             </div>
-            <div id="caraLainnyaBox" class="hidden"><label for="caraDapatKerjaLain">Sebutkan cara <span class="req">*</span></label><input id="caraDapatKerjaLain" maxlength="150"><span class="field-error" id="err-caraDapatKerjaLain"></span></div>
+            <div id="caraDapatKerjaLainBox" class="hidden"><label for="caraDapatKerjaLain">Sebutkan cara <span class="req">*</span></label><input id="caraDapatKerjaLain" maxlength="150"><span class="field-error" id="err-caraDapatKerjaLain"></span></div>
             <div><label for="jumlahPerusahaanDilamar">B4. Jumlah perusahaan yang dihubungi sebelum kerja pertama</label>
-              <select id="jumlahPerusahaanDilamar"><option value="">Pilih</option><option>0 (langsung direkrut)</option><option>1–5</option><option>6–10</option><option>11–20</option><option>&gt; 20</option></select>
+              <select id="jumlahPerusahaanDilamar"><option value="">Pilih</option>
+                <option>0 (langsung direkrut)</option><option>1–5</option><option>6–10</option><option>11–20</option><option>&gt; 20</option>
+              </select>
             </div>
-            <div><label for="pekerjaanPertamaSesuai">B5. Apakah pekerjaan pertama berkaitan dengan Ilmu Komunikasi?</label>
-              <select id="pekerjaanPertamaSesuai"><option value="">Pilih</option><option>Sangat sesuai</option><option>Sesuai</option><option>Cukup sesuai</option><option>Kurang sesuai</option><option>Tidak sesuai</option></select>
+            <div><label for="pekerjaanPertamaSesuai">B5. Pekerjaan pertama sesuai bidang Ilmu Komunikasi?</label>
+              <select id="pekerjaanPertamaSesuai"><option value="">Pilih</option>
+                <option>Sangat sesuai</option><option>Sesuai</option><option>Cukup sesuai</option>
+                <option>Kurang sesuai</option><option>Tidak sesuai</option>
+              </select>
             </div>
           </div>
 
@@ -378,79 +410,124 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
               <span class="field-error" id="err-industriKategori"></span>
             </div>
             <div><label for="industriSub">B9. Sub-kategori industri</label>
-              <select id="industriSub"><option value="">Pilih kategori terlebih dahulu</option></select>
+              <select id="industriSub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
             </div>
-            <div class="full hidden" id="bidangLainnyaBox"><label for="bidangIndustriLain">Sebutkan bidang industri <span class="req">*</span></label><input id="bidangIndustriLain" maxlength="150"><span class="field-error" id="err-bidangIndustriLain"></span></div>
             <div><label for="levelJabatan">B10. Level jabatan</label>
               <select id="levelJabatan"><option value="">Pilih level</option></select>
             </div>
             <div><label for="jabatanSpesifik">B11. Jabatan spesifik</label>
-              <select id="jabatanSpesifik"><option value="">Pilih level terlebih dahulu</option></select>
+              <select id="jabatanSpesifik" disabled><option value="">Pilih level terlebih dahulu</option></select>
             </div>
             <div><label for="jenisPekerjaan">B12. Jenis pekerjaan</label>
-              <select id="jenisPekerjaan"><option value="">Pilih</option><option>Full-time</option><option>Part-time</option><option>Kontrak</option><option>Freelance</option><option>Internship</option><option>Outsourcing</option></select>
+              <select id="jenisPekerjaan"><option value="">Pilih</option>
+                <option>Full-time</option><option>Part-time</option><option>Kontrak</option>
+                <option>Freelance</option><option>Internship</option><option>Outsourcing</option>
+              </select>
             </div>
             <div><label for="sistemKerja">B13. Sistem kerja</label>
-              <select id="sistemKerja"><option value="">Pilih</option><option>WFO (Work From Office)</option><option>WFH (Work From Home)</option><option>Hybrid</option><option>Remote</option></select>
+              <select id="sistemKerja"><option value="">Pilih</option>
+                <option>WFO (Work From Office)</option><option>WFH (Work From Home)</option>
+                <option>Hybrid</option><option>Remote</option>
+              </select>
             </div>
             <div><label for="ukuranOrganisasi">B14. Ukuran organisasi</label>
-              <select id="ukuranOrganisasi"><option value="">Pilih</option><option>Startup (&lt;20 karyawan)</option><option>Kecil (20–99)</option><option>Menengah (100–499)</option><option>Besar (500–999)</option><option>Enterprise (≥1000)</option></select>
+              <select id="ukuranOrganisasi"><option value="">Pilih</option>
+                <option>Startup (&lt;20 karyawan)</option><option>Kecil (20–99)</option>
+                <option>Menengah (100–499)</option><option>Besar (500–999)</option><option>Enterprise (≥1000)</option>
+              </select>
             </div>
             <div><label for="penghasilanRange">B15. Kisaran pendapatan per bulan</label>
-              <select id="penghasilanRange"><option value="">Pilih</option><option>&lt; Rp2 juta</option><option>Rp2–3 juta</option><option>&gt;Rp3–5 juta</option><option>&gt;Rp5–7,5 juta</option><option>&gt;Rp7,5–10 juta</option><option>&gt;Rp10–15 juta</option><option>&gt;Rp15 juta</option><option>Tidak ingin menjawab</option></select>
+              <select id="penghasilanRange"><option value="">Pilih</option>
+                <option>&lt; Rp2 juta</option><option>Rp2–3 juta</option><option>&gt;Rp3–5 juta</option>
+                <option>&gt;Rp5–7,5 juta</option><option>&gt;Rp7,5–10 juta</option>
+                <option>&gt;Rp10–15 juta</option><option>&gt;Rp15 juta</option>
+                <option>Tidak ingin menjawab</option>
+              </select>
             </div>
             <div><label for="provinsiKerja">B16. Provinsi tempat kerja</label>
               <select id="provinsiKerja"><option value="">Pilih provinsi</option></select>
             </div>
             <div><label for="kotaKerja">B17. Kota/Kabupaten tempat kerja</label>
-              <select id="kotaKerja"><option value="">Pilih provinsi terlebih dahulu</option></select>
+              <select id="kotaKerja" disabled><option value="">Pilih provinsi terlebih dahulu</option></select>
             </div>
             <div><label for="kesesuaianPekerjaan">B18. Kesesuaian pekerjaan dengan Ilmu Komunikasi <span class="req">*</span></label>
-              <select id="kesesuaianPekerjaan"><option value="">Pilih</option><option>Sangat sesuai</option><option>Sesuai</option><option>Cukup sesuai</option><option>Kurang sesuai</option><option>Tidak sesuai</option></select>
+              <select id="kesesuaianPekerjaan"><option value="">Pilih</option>
+                <option>Sangat sesuai</option><option>Sesuai</option><option>Cukup sesuai</option>
+                <option>Kurang sesuai</option><option>Tidak sesuai</option>
+              </select>
               <span class="field-error" id="err-kesesuaianPekerjaan"></span>
             </div>
-            <div><label for="tahunMulaiKerja">B19. Tahun mulai bekerja di posisi ini</label>
-              <input id="tahunMulaiKerja" inputmode="numeric" maxlength="4" placeholder="contoh: 2023">
-            </div>
+            <div><label for="tahunMulaiKerja">B19. Tahun mulai di posisi ini</label><input id="tahunMulaiKerja" inputmode="numeric" maxlength="4" placeholder="contoh: 2023"></div>
           </div>
 
-          <div class="form-subsection">📈 Perkembangan Karier (S1 Q033–Q035)</div>
+          <div class="form-subsection">📈 Perkembangan Karier</div>
           <div class="grid">
             <div><label for="jumlahPindahKerja">Berapa kali berpindah pekerjaan sejak lulus?</label>
-              <select id="jumlahPindahKerja"><option value="">Pilih</option><option>Tidak pernah</option><option>1 kali</option><option>2 kali</option><option>3 kali</option><option>4 kali</option><option>&gt;4 kali</option></select>
+              <select id="jumlahPindahKerja"><option value="">Pilih</option>
+                <option>Tidak pernah</option><option>1 kali</option><option>2 kali</option>
+                <option>3 kali</option><option>4 kali</option><option>&gt;4 kali</option>
+              </select>
             </div>
             <div><label for="pernahPromosi">Apakah pernah mendapat promosi?</label>
-              <select id="pernahPromosi"><option value="">Pilih</option><option>Ya, ≥2 kali</option><option>Ya, 1 kali</option><option>Belum pernah</option></select>
+              <select id="pernahPromosi"><option value="">Pilih</option>
+                <option>Ya, ≥2 kali</option><option>Ya, 1 kali</option><option>Belum pernah</option>
+              </select>
             </div>
             <div class="full"><label for="fikomBantuKarier">Seberapa besar pendidikan FIKOM membantu perkembangan karier?</label>
-              <select id="fikomBantuKarier"><option value="">Pilih</option><option>Sangat besar</option><option>Besar</option><option>Cukup besar</option><option>Kurang</option><option>Tidak sama sekali</option></select>
+              <select id="fikomBantuKarier"><option value="">Pilih</option>
+                <option>Sangat besar</option><option>Besar</option><option>Cukup besar</option>
+                <option>Kurang</option><option>Tidak sama sekali</option>
+              </select>
             </div>
-            <div class="full"><label for="relevansiPendidikanKomunikasi">Seberapa relevan pendidikan Ilmu Komunikasi dengan pekerjaan Anda saat ini?</label>
-              <select id="relevansiPendidikanKomunikasi"><option value="">Pilih</option><option>Sangat relevan</option><option>Relevan</option><option>Cukup relevan</option><option>Kurang relevan</option><option>Tidak relevan</option></select>
+            <div class="full"><label for="relevansiPendidikanKomunikasi">Relevansi pendidikan Ilmu Komunikasi dengan pekerjaan saat ini</label>
+              <select id="relevansiPendidikanKomunikasi"><option value="">Pilih</option>
+                <option>Sangat relevan</option><option>Relevan</option><option>Cukup relevan</option>
+                <option>Kurang relevan</option><option>Tidak relevan</option>
+              </select>
             </div>
           </div>
         </div>
 
-        <!-- BLOCK: WIRAUSAHA -->
+        <!-- ============ BLOCK: WIRAUSAHA ============ -->
         <div id="wirausahaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">🚀 Detail Wirausaha</h4>
           <div class="grid">
             <div class="full"><label for="namaUsaha">Nama Usaha <span class="req">*</span></label><input id="namaUsaha" maxlength="150"><span class="field-error" id="err-namaUsaha"></span></div>
             <div><label for="bidangUsaha">Bidang Usaha</label>
-              <select id="bidangUsaha"><option value="">Pilih</option><option>Media</option><option>Komunikasi</option><option>Periklanan</option><option>Public Relations</option><option>Event Organizer</option><option>Digital Marketing</option><option>Content Creator</option><option>Production House</option><option>Jurnalistik</option><option>Pendidikan</option><option>Kuliner</option><option>Perdagangan</option><option>Jasa</option><option>Teknologi</option><option>Industri Kreatif</option><option>Lainnya</option></select>
+              <select id="bidangUsaha"><option value="">Pilih</option>
+                <option>Media</option><option>Komunikasi</option><option>Periklanan</option>
+                <option>Public Relations</option><option>Event Organizer</option>
+                <option>Digital Marketing</option><option>Content Creator</option>
+                <option>Production House</option><option>Jurnalistik</option>
+                <option>Pendidikan</option><option>Kuliner</option><option>Perdagangan</option>
+                <option>Jasa</option><option>Teknologi</option><option>Industri Kreatif</option><option>Lainnya</option>
+              </select>
             </div>
             <div><label for="tahunMulaiUsaha">Tahun mulai usaha</label><input id="tahunMulaiUsaha" inputmode="numeric" maxlength="4" placeholder="contoh: 2022"></div>
             <div><label for="posisiUsaha">Posisi dalam usaha</label>
-              <select id="posisiUsaha"><option value="">Pilih</option><option>Founder</option><option>Co-Founder</option><option>Owner</option><option>Manager</option><option>Partner</option><option>Freelancer</option><option>Lainnya</option></select>
+              <select id="posisiUsaha"><option value="">Pilih</option>
+                <option>Founder</option><option>Co-Founder</option><option>Owner</option>
+                <option>Manager</option><option>Partner</option><option>Freelancer</option><option>Lainnya</option>
+              </select>
             </div>
             <div><label for="jumlahTenagaKerja">Jumlah tenaga kerja</label>
-              <select id="jumlahTenagaKerja"><option value="">Pilih</option><option>0 (solo)</option><option>1–2</option><option>3–5</option><option>6–10</option><option>11–20</option><option>&gt;20</option></select>
+              <select id="jumlahTenagaKerja"><option value="">Pilih</option>
+                <option>0 (solo)</option><option>1–2</option><option>3–5</option>
+                <option>6–10</option><option>11–20</option><option>&gt;20</option>
+              </select>
             </div>
             <div><label for="statusLegalitas">Status legalitas usaha</label>
-              <select id="statusLegalitas"><option value="">Pilih</option><option>Belum berbadan hukum</option><option>CV</option><option>PT</option><option>PT Perorangan</option><option>Yayasan</option><option>Koperasi</option><option>Lainnya</option></select>
+              <select id="statusLegalitas"><option value="">Pilih</option>
+                <option>Belum berbadan hukum</option><option>CV</option><option>PT</option>
+                <option>PT Perorangan</option><option>Yayasan</option><option>Koperasi</option><option>Lainnya</option>
+              </select>
             </div>
             <div><label for="omzetRange">Kisaran omzet per bulan</label>
-              <select id="omzetRange"><option value="">Pilih</option><option>&lt; Rp2 juta</option><option>Rp2–5 juta</option><option>&gt;Rp5–10 juta</option><option>&gt;Rp10–25 juta</option><option>&gt;Rp25–50 juta</option><option>&gt;Rp50 juta</option><option>Tidak ingin menjawab</option></select>
+              <select id="omzetRange"><option value="">Pilih</option>
+                <option>&lt; Rp2 juta</option><option>Rp2–5 juta</option><option>&gt;Rp5–10 juta</option>
+                <option>&gt;Rp10–25 juta</option><option>&gt;Rp25–50 juta</option>
+                <option>&gt;Rp50 juta</option><option>Tidak ingin menjawab</option>
+              </select>
             </div>
             <div><label for="lokasiUsaha">Lokasi usaha</label><input id="lokasiUsaha" maxlength="150" placeholder="Kota/Provinsi"></div>
             <div class="full"><label for="usahaBerkaitanKomunikasi">Apakah usaha berkaitan dengan Ilmu Komunikasi?</label>
@@ -462,27 +539,37 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
-        <!-- BLOCK: BELUM BEKERJA -->
+        <!-- ============ BLOCK: BELUM BEKERJA ============ -->
         <div id="belumKerjaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">🔍 Pencarian Kerja</h4>
           <div class="grid">
             <div><label for="sedangMencariKerja">Apakah sedang mencari pekerjaan?</label>
-              <select id="sedangMencariKerja"><option value="">Pilih</option><option>Ya, aktif mencari</option><option>Ya, pasif</option><option>Tidak</option></select>
+              <select id="sedangMencariKerja"><option value="">Pilih</option>
+                <option>Ya, aktif mencari</option><option>Ya, pasif</option><option>Tidak</option>
+              </select>
             </div>
             <div><label for="lamaMencariKerja">Sudah berapa lama mencari pekerjaan?</label>
-              <select id="lamaMencariKerja"><option value="">Pilih</option><option>&lt;3 bulan</option><option>3–6 bulan</option><option>7–12 bulan</option><option>1–2 tahun</option><option>&gt;2 tahun</option></select>
+              <select id="lamaMencariKerja"><option value="">Pilih</option>
+                <option>&lt;3 bulan</option><option>3–6 bulan</option><option>7–12 bulan</option>
+                <option>1–2 tahun</option><option>&gt;2 tahun</option>
+              </select>
             </div>
             <div><label for="jumlahLamaran">Jumlah lamaran yang sudah dikirim</label>
-              <select id="jumlahLamaran"><option value="">Pilih</option><option>0</option><option>1–5</option><option>6–10</option><option>11–20</option><option>&gt;20</option></select>
+              <select id="jumlahLamaran"><option value="">Pilih</option>
+                <option>0</option><option>1–5</option><option>6–10</option><option>11–20</option><option>&gt;20</option>
+              </select>
             </div>
-            <div><label for="jumlahWawancara">Jumlah wawancara yang sudah diikuti</label>
-              <select id="jumlahWawancara"><option value="">Pilih</option><option>0</option><option>1–2</option><option>3–5</option><option>6–10</option><option>&gt;10</option></select>
+            <div><label for="jumlahWawancara">Jumlah wawancara yang diikuti</label>
+              <select id="jumlahWawancara"><option value="">Pilih</option>
+                <option>0</option><option>1–2</option><option>3–5</option><option>6–10</option><option>&gt;10</option>
+              </select>
             </div>
             <div class="full"><label for="hambatanCariKerja">Hambatan utama memperoleh pekerjaan</label><textarea id="hambatanCariKerja" maxlength="500"></textarea></div>
             <div><label for="butuhBantuanKarier">Membutuhkan bantuan karier dari FIKOM?</label>
               <select id="butuhBantuanKarier"><option value="">Pilih</option><option>Ya</option><option>Tidak</option></select>
             </div>
-            <div class="full"><label>Jenis bantuan yang dibutuhkan (bisa pilih beberapa)</label>
+            <div class="full">
+              <label>Jenis bantuan yang dibutuhkan (bisa pilih beberapa)</label>
               <div id="jenisBantuanKarier" class="check-grid"></div>
             </div>
           </div>
@@ -492,7 +579,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       </div>
 
       <!-- ============================================================
-           STEP 3 — C. PENGALAMAN (Magang + Organisasi + Prestasi)
+           STEP 3 — C. PENGALAMAN & PRESTASI
            ============================================================ -->
       <div class="step" data-step="3">
         <h3>Bagian C — Pengalaman &amp; Prestasi</h3>
@@ -508,22 +595,34 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <div class="grid">
             <div class="full"><label for="tempatMagang">C2. Tempat magang <span class="req">*</span></label><input id="tempatMagang" maxlength="150"><span class="field-error" id="err-tempatMagang"></span></div>
             <div><label for="durasiMagang">C3. Durasi magang <span class="req">*</span></label>
-              <select id="durasiMagang"><option value="">Pilih</option><option>&lt; 1 bulan</option><option>1–3 bulan</option><option>3–6 bulan</option><option>&gt; 6 bulan</option></select>
+              <select id="durasiMagang"><option value="">Pilih</option>
+                <option>&lt; 1 bulan</option><option>1–3 bulan</option><option>3–6 bulan</option><option>&gt; 6 bulan</option>
+              </select>
               <span class="field-error" id="err-durasiMagang"></span>
             </div>
             <div><label for="kontribusiMagang">C4. Kontribusi kesiapan kerja <span class="req">*</span></label>
-              <select id="kontribusiMagang"><option value="">Pilih</option><option>Sangat besar</option><option>Besar</option><option>Cukup besar</option><option>Kurang</option><option>Tidak sama sekali</option></select>
+              <select id="kontribusiMagang"><option value="">Pilih</option>
+                <option>Sangat besar</option><option>Besar</option><option>Cukup besar</option>
+                <option>Kurang</option><option>Tidak sama sekali</option>
+              </select>
               <span class="field-error" id="err-kontribusiMagang"></span>
             </div>
             <div><label for="magangBantuKerja">C5. Membantu dapat kerja pertama? <span class="req">*</span></label>
-              <select id="magangBantuKerja"><option value="">Pilih</option><option>Sangat membantu</option><option>Membantu</option><option>Cukup membantu</option><option>Kurang membantu</option><option>Tidak membantu</option></select>
+              <select id="magangBantuKerja"><option value="">Pilih</option>
+                <option>Sangat membantu</option><option>Membantu</option><option>Cukup membantu</option>
+                <option>Kurang membantu</option><option>Tidak membantu</option>
+              </select>
               <span class="field-error" id="err-magangBantuKerja"></span>
             </div>
-            <div><label for="kerjaDiTempatMagang">C6. Apakah Anda direkrut di tempat magang?</label>
-              <select id="kerjaDiTempatMagang"><option value="">Pilih</option><option>Ya, direkrut langsung</option><option>Tidak, tapi mendapat referensi</option><option>Tidak</option></select>
+            <div><label for="kerjaDiTempatMagang">C6. Apakah direkrut di tempat magang?</label>
+              <select id="kerjaDiTempatMagang"><option value="">Pilih</option>
+                <option>Ya, direkrut langsung</option><option>Tidak, tapi mendapat referensi</option><option>Tidak</option>
+              </select>
             </div>
             <div><label for="penekananMagangKurikulum">C7. Apakah magang cukup ditekankan di kurikulum?</label>
-              <select id="penekananMagangKurikulum"><option value="">Pilih</option><option>Sudah cukup</option><option>Perlu ditambah</option><option>Perlu dikurangi</option></select>
+              <select id="penekananMagangKurikulum"><option value="">Pilih</option>
+                <option>Sudah cukup</option><option>Perlu ditambah</option><option>Perlu dikurangi</option>
+              </select>
             </div>
             <div class="full"><label for="saranMagang">C8. Saran untuk program magang</label><textarea id="saranMagang" maxlength="1000" placeholder="Masukan singkat"></textarea></div>
           </div>
@@ -544,16 +643,27 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             </div>
             <div><label for="tahunBergabungOrg">D3. Tahun mulai bergabung</label><input id="tahunBergabungOrg" inputmode="numeric" maxlength="4"></div>
             <div><label for="peranOrganisasi">D4. Peran dalam organisasi</label>
-              <select id="peranOrganisasi"><option value="">Pilih</option><option>Anggota</option><option>Pengurus</option><option>Ketua/Bidang</option><option>Dewan Penasihat</option><option>Lainnya</option></select>
+              <select id="peranOrganisasi"><option value="">Pilih</option>
+                <option>Anggota</option><option>Pengurus</option><option>Ketua/Bidang</option>
+                <option>Dewan Penasihat</option><option>Lainnya</option>
+              </select>
             </div>
             <div><label for="tingkatKeterlibatan">D5. Tingkat keterlibatan</label>
-              <select id="tingkatKeterlibatan"><option value="">Pilih</option><option>Sangat aktif</option><option>Aktif</option><option>Kadang-kadang</option><option>Pasif</option></select>
+              <select id="tingkatKeterlibatan"><option value="">Pilih</option>
+                <option>Sangat aktif</option><option>Aktif</option><option>Kadang-kadang</option><option>Pasif</option>
+              </select>
             </div>
             <div><label for="manfaatOrganisasi">D6. Manfaat organisasi bagi karier</label>
-              <select id="manfaatOrganisasi"><option value="">Pilih</option><option>Sangat bermanfaat</option><option>Bermanfaat</option><option>Cukup</option><option>Kurang</option><option>Tidak bermanfaat</option></select>
+              <select id="manfaatOrganisasi"><option value="">Pilih</option>
+                <option>Sangat bermanfaat</option><option>Bermanfaat</option><option>Cukup</option>
+                <option>Kurang</option><option>Tidak bermanfaat</option>
+              </select>
             </div>
             <div><label for="fasilitasiOrganisasi">D7. Fasilitasi dari organisasi</label>
-              <select id="fasilitasiOrganisasi"><option value="">Pilih</option><option>Networking</option><option>Pelatihan</option><option>Sertifikasi</option><option>Publikasi</option><option>Lainnya</option></select>
+              <select id="fasilitasiOrganisasi"><option value="">Pilih</option>
+                <option>Networking</option><option>Pelatihan</option><option>Sertifikasi</option>
+                <option>Publikasi</option><option>Lainnya</option>
+              </select>
             </div>
           </div>
         </div>
@@ -574,18 +684,29 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             <div><label for="namaPrestasiSpesifik">E3. Nama prestasi spesifik</label><input id="namaPrestasiSpesifik" maxlength="200"></div>
             <div><label for="penyelenggaraPrestasi">E4. Penyelenggara</label><input id="penyelenggaraPrestasi" maxlength="150"></div>
             <div><label for="kategoriPrestasi">E5. Kategori prestasi</label>
-              <select id="kategoriPrestasi"><option value="">Pilih</option><option>Akademik</option><option>Non-akademik</option><option>Olahraga</option><option>Seni</option><option>Teknologi</option><option>Lainnya</option></select>
+              <select id="kategoriPrestasi"><option value="">Pilih</option>
+                <option>Akademik</option><option>Non-akademik</option><option>Olahraga</option>
+                <option>Seni</option><option>Teknologi</option><option>Lainnya</option>
+              </select>
             </div>
             <div><label for="tingkatPrestasi">E6. Tingkat prestasi</label>
-              <select id="tingkatPrestasi"><option value="">Pilih</option><option>Regional</option><option>Nasional</option><option>Internasional</option></select>
+              <select id="tingkatPrestasi"><option value="">Pilih</option>
+                <option>Regional</option><option>Nasional</option><option>Internasional</option>
+              </select>
             </div>
             <div><label for="tahunPrestasi">E7. Tahun prestasi</label><input id="tahunPrestasi" inputmode="numeric" maxlength="4"></div>
             <div class="full"><label for="urlBuktiPrestasi">E8. URL bukti prestasi (opsional)</label><input id="urlBuktiPrestasi" maxlength="250" placeholder="https://..."></div>
             <div><label for="peranProdiPrestasi">E9. Peran prodi pada prestasi</label>
-              <select id="peranProdiPrestasi"><option value="">Pilih</option><option>Sangat mendukung</option><option>Mendukung</option><option>Cukup</option><option>Kurang</option><option>Tidak mendukung</option></select>
+              <select id="peranProdiPrestasi"><option value="">Pilih</option>
+                <option>Sangat mendukung</option><option>Mendukung</option><option>Cukup</option>
+                <option>Kurang</option><option>Tidak mendukung</option>
+              </select>
             </div>
             <div><label for="pernahNarasumber">E10. Pernah jadi narasumber publik?</label>
-              <select id="pernahNarasumber"><option value="">Pilih</option><option>Ya, sering</option><option>Ya, beberapa kali</option><option>Pernah sekali</option><option>Belum pernah</option></select>
+              <select id="pernahNarasumber"><option value="">Pilih</option>
+                <option>Ya, sering</option><option>Ya, beberapa kali</option>
+                <option>Pernah sekali</option><option>Belum pernah</option>
+              </select>
             </div>
           </div>
         </div>
@@ -594,11 +715,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       </div>
 
       <!-- ============================================================
-           STEP 4 — D. KOMPETENSI & KURIKULUM (F + Q090–Q100)
+           STEP 4 — D. KOMPETENSI & KURIKULUM
            ============================================================ -->
       <div class="step" data-step="4">
         <h3>Bagian D — Kompetensi &amp; Relevansi Kurikulum</h3>
-        <div class="cascade-info"><b>Petunjuk:</b> Nilai penguasaan (F1) &amp; kebutuhan (F2) menggunakan skala 1 (Sangat Rendah) sampai 5 (Sangat Tinggi).</div>
+        <div class="cascade-info"><b>Petunjuk:</b> Nilai penguasaan (F1) &amp; kebutuhan (F2) menggunakan skala 1 (Sangat Rendah) sampai 5 (Sangat Tinggi). Daftar kompetensi otomatis menyesuaikan jenjang (S1/S2).</div>
 
         <div class="card"><h4>F1. Penguasaan Kompetensi Lulus</h4><div id="kompetensiDikuasai"></div></div>
         <div class="card"><h4>F2. Kebutuhan Kompetensi Kerja</h4><div id="kompetensiDibutuhkan"></div></div>
@@ -607,24 +728,36 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="form-section-title">📊 Evaluasi Kurikulum (F4–F7)</div>
         <div class="grid">
           <div class="full"><label for="hubunganBidang">F4. Hubungan bidang studi dengan pekerjaan <span class="req">*</span></label>
-            <select id="hubunganBidang" required><option value="">Pilih</option><option>Sangat Erat</option><option>Erat</option><option>Cukup Erat</option><option>Kurang Erat</option><option>Tidak Sama Sekali</option></select>
+            <select id="hubunganBidang" required><option value="">Pilih</option>
+              <option>Sangat Erat</option><option>Erat</option><option>Cukup Erat</option>
+              <option>Kurang Erat</option><option>Tidak Sama Sekali</option>
+            </select>
             <span class="field-error" id="err-hubunganBidang"></span>
           </div>
           <div class="full"><label for="tingkatPendidikanTepat">F5. Tingkat pendidikan paling tepat untuk pekerjaan <span class="req">*</span></label>
-            <select id="tingkatPendidikanTepat" required><option value="">Pilih</option><option>Setingkat Lebih Tinggi</option><option>Tingkat yang Sama</option><option>Setingkat Lebih Rendah</option><option>Tidak Perlu Pendidikan Tinggi</option></select>
+            <select id="tingkatPendidikanTepat" required><option value="">Pilih</option>
+              <option>Setingkat Lebih Tinggi</option><option>Tingkat yang Sama</option>
+              <option>Setingkat Lebih Rendah</option><option>Tidak Perlu Pendidikan Tinggi</option>
+            </select>
             <span class="field-error" id="err-tingkatPendidikanTepat"></span>
           </div>
           <div class="full"><label for="kontribusiProdiKompetensi">F6. Kontribusi Prodi pada kompetensi <span class="req">*</span></label>
-            <select id="kontribusiProdiKompetensi" required><option value="">Pilih</option><option>Sangat besar</option><option>Besar</option><option>Cukup besar</option><option>Kurang</option><option>Tidak sama sekali</option></select>
+            <select id="kontribusiProdiKompetensi" required><option value="">Pilih</option>
+              <option>Sangat besar</option><option>Besar</option><option>Cukup besar</option>
+              <option>Kurang</option><option>Tidak sama sekali</option>
+            </select>
             <span class="field-error" id="err-kontribusiProdiKompetensi"></span>
           </div>
           <div class="full"><label for="relevansiKurikulumKerja">F7. Relevansi kurikulum dengan kerja <span class="req">*</span></label>
-            <select id="relevansiKurikulumKerja" required><option value="">Pilih</option><option>Sangat relevan</option><option>Relevan</option><option>Cukup relevan</option><option>Kurang relevan</option><option>Tidak relevan</option></select>
+            <select id="relevansiKurikulumKerja" required><option value="">Pilih</option>
+              <option>Sangat relevan</option><option>Relevan</option><option>Cukup relevan</option>
+              <option>Kurang relevan</option><option>Tidak relevan</option>
+            </select>
             <span class="field-error" id="err-relevansiKurikulumKerja"></span>
           </div>
         </div>
 
-        <div class="form-section-title">📚 Penilaian Mata Kuliah &amp; Kompetensi (S1 Q097–Q100 / S2 Q162–Q165)</div>
+        <div class="form-section-title">📚 Penilaian Mata Kuliah &amp; Kompetensi</div>
         <div class="grid">
           <div class="full"><label for="mataKuliahBermanfaat">Mata kuliah paling bermanfaat</label><textarea id="mataKuliahBermanfaat" maxlength="500"></textarea></div>
           <div class="full"><label for="mataKuliahPerluUpdate">Mata kuliah yang perlu diperbarui</label><textarea id="mataKuliahPerluUpdate" maxlength="500"></textarea></div>
@@ -636,7 +769,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       </div>
 
       <!-- ============================================================
-           STEP 5 — E. KEPUASAN & KONTRIBUSI ALUMNI (Q110–Q132)
+           STEP 5 — E. KEPUASAN & KONTRIBUSI
            ============================================================ -->
       <div class="step" data-step="5">
         <h3>Bagian E — Kepuasan &amp; Kontribusi Alumni</h3>
@@ -647,28 +780,46 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="form-section-title">🤝 Kontribusi &amp; Keterlibatan Alumni</div>
         <div class="grid">
           <div><label for="frekuensiKomunikasiFikom">Frekuensi komunikasi dengan FIKOM</label>
-            <select id="frekuensiKomunikasiFikom"><option value="">Pilih</option><option>Sangat sering</option><option>Sering</option><option>Kadang-kadang</option><option>Jarang</option><option>Tidak pernah</option></select>
+            <select id="frekuensiKomunikasiFikom"><option value="">Pilih</option>
+              <option>Sangat sering</option><option>Sering</option>
+              <option>Kadang-kadang</option><option>Jarang</option><option>Tidak pernah</option>
+            </select>
           </div>
           <div><label for="ikutKegiatanAlumni">Mengikuti kegiatan alumni?</label>
-            <select id="ikutKegiatanAlumni"><option value="">Pilih</option><option>Ya, rutin</option><option>Ya, kadang</option><option>Jarang</option><option>Belum pernah</option></select>
+            <select id="ikutKegiatanAlumni"><option value="">Pilih</option>
+              <option>Ya, rutin</option><option>Ya, kadang</option>
+              <option>Jarang</option><option>Belum pernah</option>
+            </select>
           </div>
           <div><label for="bersediaNarasumber">Bersedia menjadi narasumber?</label>
-            <select id="bersediaNarasumber"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaNarasumber"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div><label for="bersediaMentor">Bersedia menjadi mentor?</label>
-            <select id="bersediaMentor"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaMentor"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div><label for="bersediaTempatMagang">Bersedia menyediakan tempat magang?</label>
-            <select id="bersediaTempatMagang"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaTempatMagang"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div><label for="bersediaLowongan">Bersedia membuka peluang kerja?</label>
-            <select id="bersediaLowongan"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaLowongan"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div><label for="bersediaKolaborasi">Bersedia berkolaborasi penelitian?</label>
-            <select id="bersediaKolaborasi"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaKolaborasi"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div><label for="bersediaKurikulum">Bersedia membantu pengembangan kurikulum?</label>
-            <select id="bersediaKurikulum"><option value="">Pilih</option><option>Ya</option><option>Mungkin</option><option>Tidak</option></select>
+            <select id="bersediaKurikulum"><option value="">Pilih</option>
+              <option>Ya</option><option>Mungkin</option><option>Tidak</option>
+            </select>
           </div>
           <div class="full"><label for="kontakProfesional">Kontak profesional (LinkedIn/IG/email)</label><input id="kontakProfesional" maxlength="200"></div>
           <div class="full"><label for="rekomendasiAlumniIndustri">Rekomendasi alumni/industri untuk direkrut FIKOM</label><textarea id="rekomendasiAlumniIndustri" maxlength="500"></textarea></div>
@@ -683,36 +834,54 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       <div class="step" data-step="6">
         <h3>Bagian F — Studi Lanjut</h3>
         <div class="grid">
-          <div class="full"><label for="melanjutkanStudi">G1. Melanjutkan studi? <span class="req">*</span></label>
+          <div class="full"><label for="melanjutkanStudi">F1. Melanjutkan studi? <span class="req">*</span></label>
             <select id="melanjutkanStudi" required><option value="">Pilih</option><option>Ya</option><option>Tidak</option></select>
             <span class="field-error" id="err-melanjutkanStudi"></span>
           </div>
         </div>
         <div id="studiBox" class="hidden" style="margin-top:12px;padding:16px;border:1px solid #dce5e1;border-radius:12px;background:#f9fcfb">
           <div class="grid">
-            <div><label for="jenjangStudiLanjut">G2. Jenjang <span class="req">*</span></label>
-              <select id="jenjangStudiLanjut"><option value="">Pilih</option><option>S2</option><option>S3</option><option>Profesi</option><option>Sertifikasi</option><option>Non-degree</option><option>Lainnya</option></select>
+            <div><label for="jenjangStudiLanjut">F2. Jenjang <span class="req">*</span></label>
+              <select id="jenjangStudiLanjut" data-conditional="jenjangStudiLanjutLain">
+                <option value="">Pilih</option>
+                <option>S2</option><option>S3</option><option>Profesi</option>
+                <option>Sertifikasi</option><option>Non-degree</option><option>Lainnya</option>
+              </select>
               <span class="field-error" id="err-jenjangStudiLanjut"></span>
             </div>
-            <div><label for="ptStudiLanjut">G3. Perguruan Tinggi <span class="req">*</span></label><input id="ptStudiLanjut" maxlength="150"><span class="field-error" id="err-ptStudiLanjut"></span></div>
-            <div class="full"><label for="prodiStudiLanjut">G4. Program Studi <span class="req">*</span></label><input id="prodiStudiLanjut" maxlength="150"><span class="field-error" id="err-prodiStudiLanjut"></span></div>
-            <div><label for="negaraStudiLanjut">G5. Negara</label><input id="negaraStudiLanjut" maxlength="60" placeholder="Indonesia"></div>
-            <div><label for="tahunMulaiStudi">G6. Tahun Mulai <span class="req">*</span></label><input id="tahunMulaiStudi" inputmode="numeric" maxlength="4"><span class="field-error" id="err-tahunMulaiStudi"></span></div>
-            <div><label for="statusStudiLanjut">G7. Status studi</label>
-              <select id="statusStudiLanjut"><option value="">Pilih</option><option>Berlangsung</option><option>Lulus</option><option>Berhenti</option><option>Cuti</option></select>
+            <div id="jenjangStudiLanjutLainBox" class="hidden"><label for="jenjangStudiLanjutLain">Sebutkan jenjang <span class="req">*</span></label><input id="jenjangStudiLanjutLain" maxlength="100"><span class="field-error" id="err-jenjangStudiLanjutLain"></span></div>
+            <div><label for="ptStudiLanjut">F3. Perguruan Tinggi <span class="req">*</span></label><input id="ptStudiLanjut" maxlength="150"><span class="field-error" id="err-ptStudiLanjut"></span></div>
+            <div class="full"><label for="prodiStudiLanjut">F4. Program Studi <span class="req">*</span></label><input id="prodiStudiLanjut" maxlength="150"><span class="field-error" id="err-prodiStudiLanjut"></span></div>
+            <div><label for="negaraStudiLanjut">F5. Negara</label><input id="negaraStudiLanjut" maxlength="60" placeholder="Indonesia"></div>
+            <div><label for="tahunMulaiStudi">F6. Tahun Mulai <span class="req">*</span></label><input id="tahunMulaiStudi" inputmode="numeric" maxlength="4"><span class="field-error" id="err-tahunMulaiStudi"></span></div>
+            <div><label for="statusStudiLanjut">F7. Status studi</label>
+              <select id="statusStudiLanjut"><option value="">Pilih</option>
+                <option>Berlangsung</option><option>Lulus</option>
+                <option>Berhenti</option><option>Cuti</option>
+              </select>
             </div>
-            <div><label for="biayaStudiLanjut">G8. Sumber Biaya <span class="req">*</span></label>
-              <select id="biayaStudiLanjut" data-conditional="biayaStudiLanjutLain"><option value="">Pilih</option><option>Biaya sendiri/keluarga</option><option>Beasiswa</option><option>Perusahaan</option><option>Lainnya</option></select>
+            <div><label for="biayaStudiLanjut">F8. Sumber Biaya <span class="req">*</span></label>
+              <select id="biayaStudiLanjut" data-conditional="biayaStudiLanjutLain">
+                <option value="">Pilih</option>
+                <option>Biaya sendiri/keluarga</option><option>Beasiswa</option>
+                <option>Perusahaan</option><option>Lainnya</option>
+              </select>
               <span class="field-error" id="err-biayaStudiLanjut"></span>
             </div>
             <div id="biayaStudiLanjutLainBox" class="hidden"><label for="biayaStudiLanjutLain">Sebutkan sumber biaya <span class="req">*</span></label><input id="biayaStudiLanjutLain" maxlength="100"><span class="field-error" id="err-biayaStudiLanjutLain"></span></div>
-            <div><label for="keterkaitanStudiKomunikasi">G9. Keterkaitan studi dengan Ilmu Komunikasi</label>
-              <select id="keterkaitanStudiKomunikasi"><option value="">Pilih</option><option>Sangat erat</option><option>Erat</option><option>Cukup</option><option>Kurang</option><option>Tidak sama sekali</option></select>
+            <div><label for="keterkaitanStudiKomunikasi">F9. Keterkaitan studi dengan Ilmu Komunikasi</label>
+              <select id="keterkaitanStudiKomunikasi"><option value="">Pilih</option>
+                <option>Sangat erat</option><option>Erat</option>
+                <option>Cukup</option><option>Kurang</option><option>Tidak sama sekali</option>
+              </select>
             </div>
-            <div><label for="studiDukungKarier">G10. Studi mendukung karier?</label>
-              <select id="studiDukungKarier"><option value="">Pilih</option><option>Sangat mendukung</option><option>Mendukung</option><option>Cukup</option><option>Kurang</option><option>Tidak</option></select>
+            <div><label for="studiDukungKarier">F10. Studi mendukung karier?</label>
+              <select id="studiDukungKarier"><option value="">Pilih</option>
+                <option>Sangat mendukung</option><option>Mendukung</option>
+                <option>Cukup</option><option>Kurang</option><option>Tidak</option>
+              </select>
             </div>
-            <div class="full"><label for="alasanStudiLanjut">G11. Alasan utama melanjutkan studi</label><textarea id="alasanStudiLanjut" maxlength="500"></textarea></div>
+            <div class="full"><label for="alasanStudiLanjut">F11. Alasan utama melanjutkan studi</label><textarea id="alasanStudiLanjut" maxlength="500"></textarea></div>
           </div>
         </div>
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
@@ -723,7 +892,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
            ============================================================ -->
       <div class="step" data-step="7">
         <h3>Bagian G — Saran &amp; Masukan</h3>
-        <p class="hint">Masukan Anda sangat berharga untuk peningkatan mutu FIKOM UPDM (B).</p>
+        <p class="hint">Masukan Anda sangat berharga untuk peningkatan mutu FIKOM UPDM (B). Minimal isi 1 saran.</p>
         <div class="grid">
           <div class="full"><label for="keunggulanFikom">Keunggulan utama FIKOM</label><textarea id="keunggulanFikom" maxlength="1000"></textarea></div>
           <div class="full"><label for="halPerluDiperbaiki">Hal yang perlu diperbaiki</label><textarea id="halPerluDiperbaiki" maxlength="1000"></textarea></div>
@@ -740,7 +909,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       </div>
 
       <!-- ============================================================
-           STEP 8 — H. KONFIRMASI
+           STEP 8 — H. KONFIRMASI & KIRIM
            ============================================================ -->
       <div class="step" data-step="8">
         <h3>Bagian H — Konfirmasi &amp; Pengiriman</h3>
@@ -758,7 +927,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
         <div id="summaryBox" class="card"></div>
         <div style="background:#fff8e8;border-left:4px solid var(--warn);padding:14px;border-radius:10px;font-size:13px;color:var(--warn);margin:16px 0;font-weight:500">
-          🔒 <b>Keamanan Pengiriman:</b> Sistem dilindungi dari pengiriman ganda. Jika server sedang padat, sistem akan mencoba ulang otomatis (auto-retry).
+          🔒 <b>Keamanan Pengiriman:</b> Sistem dilindungi dari pengiriman ganda. Jika server padat, sistem akan mencoba ulang otomatis (auto-retry).
         </div>
         <div class="stepnav">
           <button type="button" class="btn secondary prev">← Kembali Edit</button>
@@ -769,7 +938,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   </div>
 </section>
 
-<!-- ============ TRACKING VIEW ============ -->
+<!-- ============================================================
+     TRACKING VIEW
+     ============================================================ -->
 <section id="view-tracking" class="hidden">
   <div class="card">
     <h2>Cek Tracer ID</h2>
@@ -782,7 +953,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   </div>
 </section>
 
-<!-- ============ ADMIN VIEW ============ -->
+<!-- ============================================================
+     ADMIN VIEW
+     ============================================================ -->
 <section id="view-admin" class="hidden">
   <div class="card">
     <h2>Dashboard Pimpinan &amp; Admin</h2>
@@ -818,7 +991,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div><h3 id="rbTitle">Dashboard Utama</h3><p id="rbDesc">Ringkasan Eksekutif.</p></div>
         <span class="badge ok" id="rbScope" style="margin-left:auto;font-size:13px;padding:6px 14px">Akses Data</span>
       </div>
-      <div id="roleWelcomeMsg" class="hidden"></div>
+      <div id="roleWelcomeMsg" class="role-welcome hidden"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <span id="profileBadge" class="badge info" style="font-size:13px;padding:8px 16px"></span>
         <div class="actions">
@@ -974,7 +1147,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 'use strict';
 
 /* ============================================================
- * KONSTANTA GLOBAL
+ *  KONSTANTA
  * ============================================================ */
 const APP_VERSION_STR='v16.2.0-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
@@ -982,9 +1155,9 @@ const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().repla
 const TOTAL_STEPS=8, RESP_PER_PAGE=50;
 
 /* ============================================================
- * DATA HIRARKI (Dropdown Bertingkat)
+ *  DATA HIRARKI (untuk dropdown bertingkat)
  * ============================================================ */
-const WILAYAH = {
+const WILAYAH={
   'DKI Jakarta':['Jakarta Pusat','Jakarta Selatan','Jakarta Barat','Jakarta Timur','Jakarta Utara','Kepulauan Seribu'],
   'Jawa Barat':['Kota Bandung','Kota Bekasi','Kota Bogor','Kota Depok','Kota Cimahi','Kota Sukabumi','Kota Tasikmalaya','Kab. Bandung','Kab. Bogor','Kab. Bekasi','Kab. Cianjur','Kab. Garut','Kab. Karawang','Kab. Subang','Kab. Sukabumi','Kab. Purwakarta','Kab. Bandung Barat'],
   'Jawa Tengah':['Kota Semarang','Kota Surakarta','Kota Magelang','Kota Salatiga','Kota Pekalongan','Kota Tegal','Kab. Banyumas','Kab. Cilacap','Kab. Kudus','Kab. Jepara','Kab. Semarang','Kab. Sukoharjo','Kab. Klaten','Kab. Magelang'],
@@ -1019,8 +1192,7 @@ const WILAYAH = {
   'Papua Barat':['Kota Sorong','Kab. Manokwari','Kab. Fakfak'],
   'Luar Negeri':['Malaysia','Singapura','Brunei','Thailand','Vietnam','Filipina','Australia','Selandia Baru','Jepang','Korea Selatan','China','India','Uni Emirat Arab','Arab Saudi','Inggris','Belanda','Jerman','Prancis','Amerika Serikat','Kanada','Lainnya']
 };
-
-const INDUSTRI_TREE = {
+const INDUSTRI_TREE={
   'Media & Penyiaran':['Media Cetak','Media Online','TV','Radio','Production House','Media Luar Ruang (OOH)','Agensi Berita'],
   'Periklanan & PR':['Creative Agency','Media Buying','Digital Agency','Public Relations Firm','Event Organizer','Brand Consultancy'],
   'Corporate Communication':['Perusahaan Swasta','BUMN','Multinasional','Startup','Perusahaan Publik'],
@@ -1038,8 +1210,7 @@ const INDUSTRI_TREE = {
   'Pertanian & Perikanan':['Agrikultur','Peternakan','Perikanan','Agroindustri'],
   'Lainnya':['Lainnya']
 };
-
-const LEVEL_JABATAN = {
+const LEVEL_JABATAN={
   'Staff':['Junior Staff','Staff','Senior Staff','Officer','Asisten'],
   'Supervisor':['Supervisor','Team Leader','Koordinator','Superintendent'],
   'Manager':['Manager','Senior Manager','General Manager','Head of Department','Head of Division'],
@@ -1048,101 +1219,63 @@ const LEVEL_JABATAN = {
   'Wirausaha':['Founder','Co-Founder','Owner','Partner'],
   'Lainnya':['Lainnya']
 };
-
-const BANTUAN_KARIER_OPTS = ['Informasi lowongan','Pelatihan CV & portofolio','Latihan interview','Networking event','Magang','Sertifikasi kompetensi','Pelatihan skill teknis','Mentoring 1-on-1','Konseling karier','Lainnya'];
-
-const KEPUASAN_ITEMS = [
-  {key:'layananAkademik', label:'Layanan akademik'},
-  {key:'layananAdministrasi', label:'Layanan administrasi'},
-  {key:'kualitasDosen', label:'Kualitas dosen'},
-  {key:'kualitasProdi', label:'Program studi'},
-  {key:'kualitasFakultas', label:'Fakultas secara keseluruhan'},
-  {key:'fasilitasPembelajaran', label:'Fasilitas pembelajaran'},
-  {key:'fasilitasLaboratorium', label:'Laboratorium'},
-  {key:'fasilitasPerpustakaan', label:'Perpustakaan'},
-  {key:'sistemInformasiAkademik', label:'Sistem informasi akademik'},
-  {key:'layananKarier', label:'Layanan karier'},
-  {key:'layananAlumni', label:'Layanan alumni'}
+const BANTUAN_KARIER_OPTS=['Informasi lowongan','Pelatihan CV & portofolio','Latihan interview','Networking event','Magang','Sertifikasi kompetensi','Pelatihan skill teknis','Mentoring 1-on-1','Konseling karier','Lainnya'];
+const KEPUASAN_ITEMS=[
+  {key:'layananAkademik',label:'Layanan akademik'},
+  {key:'layananAdministrasi',label:'Layanan administrasi'},
+  {key:'kualitasDosen',label:'Kualitas dosen'},
+  {key:'kualitasProdi',label:'Program studi'},
+  {key:'kualitasFakultas',label:'Fakultas secara keseluruhan'},
+  {key:'fasilitasPembelajaran',label:'Fasilitas pembelajaran'},
+  {key:'fasilitasLaboratorium',label:'Laboratorium'},
+  {key:'fasilitasPerpustakaan',label:'Perpustakaan'},
+  {key:'sistemInformasiAkademik',label:'Sistem informasi akademik'},
+  {key:'layananKarier',label:'Layanan karier'},
+  {key:'layananAlumni',label:'Layanan alumni'}
 ];
-
-/* ============================================================
- * MAPPING: Bagian H (Q-ID) → field Bagian A–G
- * (untuk payload questionBank.answers — backend tetap menerima
- *  semua Q-ID, tapi nilainya otomatis dari field inline).
- * ============================================================ */
-const QB_MAP = {
-  // === S1 ===
-  'S1-Q001':'tahunMasuk','S1-Q002':'tahunLulus','S1-Q003':'jenisKelamin',
-  'S1-Q004':'provinsiDomisili','S1-Q005':'kotaDomisili',
-  'S1-Q006':'whatsapp','S1-Q007':'email',
-  'S1-Q010':'statusPekerjaanUtama',
-  'S1-Q020':'masaTungguKerja','S1-Q021':'pekerjaanPertamaSesuai',
-  'S1-Q022':'caraDapatKerja','S1-Q023':'jumlahPerusahaanDilamar',
-  'S1-Q024':'namaPerusahaan','S1-Q025':'industriSub','S1-Q026':'jabatanSpesifik',
-  'S1-Q027':'levelJabatan','S1-Q028':'jenisPekerjaan','S1-Q029':'tahunMulaiKerja',
-  'S1-Q030':'kesesuaianPekerjaan','S1-Q031':'relevansiPendidikanKomunikasi',
-  'S1-Q032':'penghasilanRange','S1-Q033':'jumlahPindahKerja','S1-Q034':'pernahPromosi',
-  'S1-Q035':'fikomBantuKarier',
-  'S1-Q041':'namaUsaha','S1-Q042':'bidangUsaha','S1-Q043':'tahunMulaiUsaha',
-  'S1-Q044':'posisiUsaha','S1-Q045':'jumlahTenagaKerja','S1-Q046':'statusLegalitas',
-  'S1-Q047':'omzetRange','S1-Q048':'usahaBerkaitanKomunikasi','S1-Q049':'kompetensiFikomUntukUsaha',
-  'S1-Q050':'melanjutkanStudi','S1-Q051':'jenjangStudiLanjut','S1-Q052':'ptStudiLanjut',
-  'S1-Q053':'prodiStudiLanjut','S1-Q054':'negaraStudiLanjut','S1-Q055':'tahunMulaiStudi',
-  'S1-Q056':'statusStudiLanjut','S1-Q057':'keterkaitanStudiKomunikasi','S1-Q058':'alasanStudiLanjut',
-  'S1-Q060':'sedangMencariKerja','S1-Q061':'lamaMencariKerja','S1-Q062':'jumlahLamaran',
-  'S1-Q063':'jumlahWawancara','S1-Q064':'hambatanCariKerja','S1-Q065':'butuhBantuanKarier',
-  'S1-Q066':'jenisBantuanKarier',
-  'S1-Q090':'relevansiKurikulumKerja','S1-Q097':'mataKuliahBermanfaat',
-  'S1-Q098':'mataKuliahPerluUpdate','S1-Q099':'kompetensiKurang','S1-Q100':'kompetensiTambahan',
-  'S1-Q104':'ikutMagang',
-  'S1-Q110':'kepuasanFikom','S1-Q125':'frekuensiKomunikasiFikom','S1-Q126':'ikutKegiatanAlumni',
-  'S1-Q127':'bersediaNarasumber','S1-Q128':'bersediaMentor','S1-Q129':'bersediaTempatMagang',
-  'S1-Q130':'bersediaLowongan','S1-Q131':'bersediaKolaborasi','S1-Q132':'bersediaKurikulum',
-  'S1-Q140':'keunggulanFikom','S1-Q141':'halPerluDiperbaiki','S1-Q142':'saranKurikulum',
-  'S1-Q143':'saranPembelajaran','S1-Q144':'saranLayanan','S1-Q145':'saranMahasiswa',
-  'S1-Q146':'saranDosen','S1-Q147':'saranProgramStudi','S1-Q148':'saranFakultas',
-  'S1-Q149':'kesanPesan',
-  // === S2 ===
-  'S2-Q001':'jenjang','S2-Q004':'usahaBerkaitanKomunikasi','S2-Q005':'relevansiPendidikanKomunikasi',
-  'S2-Q010':'statusPekerjaanUtama','S2-Q011':'jabatanSpesifik','S2-Q012':'industriSub',
-  'S2-Q013':'masaTungguKerja','S2-Q014':'statusPekerjaanUtama',
-  'S2-Q020':'namaPerusahaan','S2-Q021':'industriSub','S2-Q022':'jabatanSpesifik',
-  'S2-Q023':'levelJabatan','S2-Q024':'jenisPekerjaan','S2-Q025':'tahunMulaiKerja',
-  'S2-Q026':'pernahPromosi','S2-Q027':'pernahPromosi','S2-Q028':'pernahPromosi','S2-Q029':'pernahPromosi',
-  'S2-Q030':'fikomBantuKarier','S2-Q031':'fikomBantuKarier','S2-Q032':'fikomBantuKarier','S2-Q033':'fikomBantuKarier',
-  'S2-Q040':'usahaBerkaitanKomunikasi','S2-Q041':'namaUsaha','S2-Q042':'bidangUsaha',
-  'S2-Q043':'tahunMulaiUsaha','S2-Q044':'posisiUsaha','S2-Q045':'jumlahTenagaKerja',
-  'S2-Q046':'omzetRange','S2-Q047':'fikomBantuKarier','S2-Q048':'kompetensiFikomUntukUsaha',
-  'S2-Q050':'melanjutkanStudi','S2-Q051':'jenjangStudiLanjut','S2-Q052':'prodiStudiLanjut',
-  'S2-Q053':'ptStudiLanjut','S2-Q054':'negaraStudiLanjut','S2-Q055':'tahunMulaiStudi',
-  'S2-Q056':'statusStudiLanjut','S2-Q057':'alasanStudiLanjut',
-  'S2-Q060':'sedangMencariKerja','S2-Q061':'lamaMencariKerja','S2-Q062':'jumlahLamaran',
-  'S2-Q063':'jumlahWawancara','S2-Q064':'hambatanCariKerja','S2-Q065':'butuhBantuanKarier',
-  'S2-Q066':'jenisBantuanKarier',
-  'S2-Q090':'relevansiKurikulumKerja','S2-Q091':'relevansiKurikulumKerja',
-  'S2-Q100':'mataKuliahBermanfaat','S2-Q101':'mataKuliahBermanfaat',
-  'S2-Q110':'ikutKegiatanAlumni','S2-Q111':'ikutKegiatanAlumni','S2-Q112':'pernahNarasumber',
-  'S2-Q113':'mataKuliahBermanfaat','S2-Q114':'pernahNarasumber','S2-Q115':'butuhBantuanKarier',
-  'S2-Q120':'kepuasanFikom','S2-Q130':'kepuasanFikom',
-  'S2-Q150':'frekuensiKomunikasiFikom','S2-Q151':'ikutKegiatanAlumni','S2-Q152':'bersediaNarasumber',
-  'S2-Q153':'bersediaMentor','S2-Q154':'bersediaKolaborasi','S2-Q155':'bersediaKolaborasi',
-  'S2-Q156':'bersediaLowongan','S2-Q157':'bersediaKurikulum',
-  'S2-Q160':'keunggulanFikom','S2-Q161':'halPerluDiperbaiki','S2-Q162':'saranKurikulum',
-  'S2-Q163':'saranKurikulum','S2-Q164':'saranPembelajaran','S2-Q165':'saranPembelajaran',
-  'S2-Q166':'saranLayanan','S2-Q167':'saranLayanan','S2-Q168':'saranMahasiswa',
-  'S2-Q169':'saranDosen','S2-Q170':'saranProgramStudi','S2-Q171':'saranFakultas',
-  'S2-Q172':'kesanPesan'
+const KOMPETENSI_S1={
+  dikuasai:['etikaIntegritas','keahlianBidang','komunikasiLisanTulisan','teknologiDigital','analisisKritis','kerjaSamaTim','bahasaInggris','risetKontenMedia'],
+  metode:['kuliahTatapMuka','praktikumLab','magangPkl','projectBased','diskusiPresentasi','daringBlended']
+};
+const KOMPETENSI_S2={
+  dikuasai:['etikaIntegritas','keahlianBidang','risetKomunikasi','teoriKontemporer','publikasiIlmiah','kepemimpinanManajemen','bahasaInggris','analisisKebijakan','komunikasiLisanTulisan','teknologiDigital'],
+  metode:['kuliahTatapMuka','seminarLokakarya','penelitianMandiri','studiKasus','publikasiIlmiah','daringBlended','magangProfesional']
+};
+const KOMPETENSI_LABELS={
+  etikaIntegritas:'Etika & integritas profesional',
+  keahlianBidang:'Keahlian bidang komunikasi',
+  komunikasiLisanTulisan:'Komunikasi lisan & tulisan',
+  teknologiDigital:'Teknologi & media digital',
+  analisisKritis:'Analisis & berpikir kritis',
+  kerjaSamaTim:'Kerja sama tim & kepemimpinan',
+  bahasaInggris:'Bahasa Inggris',
+  risetKontenMedia:'Riset & produksi konten',
+  risetKomunikasi:'Riset komunikasi',
+  teoriKontemporer:'Teori komunikasi kontemporer',
+  publikasiIlmiah:'Publikasi ilmiah',
+  kepemimpinanManajemen:'Kepemimpinan & manajemen',
+  analisisKebijakan:'Analisis kebijakan media',
+  kuliahTatapMuka:'Perkuliahan tatap muka',
+  praktikumLab:'Praktikum laboratorium',
+  magangPkl:'Magang/PKL',
+  projectBased:'Pembelajaran berbasis proyek',
+  diskusiPresentasi:'Diskusi & presentasi',
+  daringBlended:'Daring/blended learning',
+  seminarLokakarya:'Seminar & lokakarya',
+  penelitianMandiri:'Penelitian mandiri/tesis',
+  studiKasus:'Studi kasus',
+  magangProfesional:'Magang profesional'
 };
 
 /* ============================================================
- * STATE
+ *  STATE GLOBAL
  * ============================================================ */
 let TOKEN=sessionStorage.getItem('ts_token')||'';
 let TOKEN_EXP=Number(sessionStorage.getItem('ts_token_exp')||0);
 let PROFILE=(()=>{try{return JSON.parse(sessionStorage.getItem('ts_profile')||'null')}catch(_){return null}})();
-let META=null, step=1, charts={}, VERIFIED_NIM='', VERIFIED_ALUMNI=null;
-let respPage=1, masterPage=1, formSubmitted=false, PUBLIC_NONCE='';
-let dashFilters={}, accScope='all', _uploadFile=null;
+let META=null,step=1,charts={},VERIFIED_NIM='',VERIFIED_ALUMNI=null;
+let respPage=1,masterPage=1,formSubmitted=false,PUBLIC_NONCE='';
+let dashFilters={},accScope='all',_uploadFile=null;
 
 const $=id=>document.getElementById(id);
 const $$=s=>document.querySelectorAll(s);
@@ -1150,7 +1283,7 @@ const val=id=>$(id)?String($(id).value||'').trim():'';
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
 /* ============================================================
- * UTILITIES UI
+ *  UI HELPERS
  * ============================================================ */
 function toast(t,k='info'){const w=$('toastWrap');if(!w)return;const e=document.createElement('div');e.className='toast '+k;e.innerHTML=String(t).slice(0,500);w.appendChild(e);setTimeout(()=>e.remove(),5000)}
 function msg(id,t,ok){const e=$(id);if(!e)return;e.innerHTML=t||'';e.className='status '+(ok===true?'ok':ok==='info'?'info':'err');e.style.display=t?'block':'none'}
@@ -1160,7 +1293,7 @@ function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('h
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
 
 /* ============================================================
- * API LAYER (base64)
+ *  API LAYER (base64)
  * ============================================================ */
 function b64EncodeUnicode(str){return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(_,p)=>String.fromCharCode('0x'+p)))}
 function toWireParams(data){const p={...data};Object.keys(p).forEach(k=>{if(p[k]!==undefined&&p[k]!==null&&typeof p[k]==='object')p[k]=JSON.stringify(p[k])});return p}
@@ -1185,7 +1318,7 @@ async function apiGet(data){
 }
 
 /* ============================================================
- * CONNECTION & META
+ *  CONNECTION & META BOOTSTRAP
  * ============================================================ */
 async function checkConnection(){
   const dot=$('connDot'),txt=$('connText');
@@ -1208,16 +1341,13 @@ async function loadMeta(){
       const btn=$('checkNimBtn');if(btn)btn.disabled=true;
     }
     populateFilterSelects();
-    // Init hierarki dropdown
     initWilayahSelects();
     initIndustriSelects();
     initLevelJabatanSelects();
-    // Init checkbox grids
-    const opts=(META.fieldSchema&&META.fieldSchema.optionLists)||{};
-    renderCheckGrid('organisasiProfesi',opts.organisasiProfesi||['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
-    renderCheckGrid('jenisPrestasi',opts.jenisPrestasi||['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
+    renderCheckGrid('organisasiProfesi',['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
+    renderCheckGrid('jenisPrestasi',['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
     renderCheckGrid('jenisBantuanKarier',BANTUAN_KARIER_OPTS);
-  }catch(e){toast('Gagal memuat metadata sistem: '+e.message,'err')}
+  }catch(e){toast('Gagal memuat metadata: '+e.message,'err')}
 }
 function populateFilterSelects(){
   if(!META)return;
@@ -1232,15 +1362,11 @@ function updateTahunFilterFromData(yearCounts){
 }
 
 /* ============================================================
- * HIERARKI DROPDOWN (Bertingkat)
+ *  HIERARKI DROPDOWN
  * ============================================================ */
 function initWilayahSelects(){
   const provOpts=Object.keys(WILAYAH).sort().map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
-  ['provinsiDomisili','provinsiKerja'].forEach(id=>{
-    const el=$(id);if(!el)return;
-    el.innerHTML='<option value="">Pilih Provinsi</option>'+provOpts;
-  });
-  // Cascade
+  ['provinsiDomisili','provinsiKerja'].forEach(id=>{const el=$(id);if(!el)return;el.innerHTML='<option value="">Pilih Provinsi</option>'+provOpts});
   bindCascade('provinsiDomisili','kotaDomisili');
   bindCascade('provinsiKerja','kotaKerja');
 }
@@ -1284,7 +1410,7 @@ function initLevelJabatanSelects(){
 }
 
 /* ============================================================
- * NIM VERIFICATION
+ *  NIM VERIFICATION
  * ============================================================ */
 function setSelectValue(id,value){
   const el=$(id);if(!el)return;
@@ -1303,7 +1429,7 @@ function applyJenjang(jenjang){
 async function checkNim(){
   clearErrors();
   const nim=val('nim');
-  if(!/^\d{9}$/.test(nim)){setFieldError('nim','NIM harus tepat 9 digit angka.');return}
+  if(!/^\d{9}$/.test(nim)){setFieldError('nim','NIM harus 9 digit angka.');return}
   const btn=$('checkNimBtn');const old=btn?btn.innerHTML:'';if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Memeriksa...'}
   try{
     const r=await apiGet({action:'checknim',nim});
@@ -1323,7 +1449,7 @@ async function checkNim(){
 }
 
 /* ============================================================
- * DYNAMIC "LAINNYA" BOXES
+ *  DYNAMIC "LAINNYA" BOX
  * ============================================================ */
 function ensureLainBox(anchorEl,fieldId,labelText){
   let box=document.getElementById(fieldId+'Box');
@@ -1337,7 +1463,7 @@ function ensureLainBox(anchorEl,fieldId,labelText){
 }
 
 /* ============================================================
- * RENDER: Rating Grid (F1–F3) + Kepuasan + Check Grid
+ *  RENDER GRIDS
  * ============================================================ */
 function renderRatingGrid(containerId,keys,labels,groupPrefix){
   const el=$(containerId);if(!el)return;
@@ -1350,15 +1476,10 @@ function renderRatingGrid(containerId,keys,labels,groupPrefix){
     </div>`).join('');
 }
 function renderKompetensi(jenjang){
-  const ck=(META&&META.fieldSchema&&META.fieldSchema.competencyKeys&&META.fieldSchema.competencyKeys[jenjang])||{dikuasai:['k1','k2','k3','k4','k5','k6'],metode:['m1','m2','m3','m4']};
-  const labels=(META&&META.fieldSchema&&META.fieldSchema.competencyLabels)||{
-    k1:'Etika & integritas',k2:'Keahlian bidang',k3:'Komunikasi lisan/tulisan',k4:'Teknologi digital',
-    k5:'Analisis kritis',k6:'Kerja sama tim',m1:'Kuliah tatap muka',m2:'Praktikum',m3:'Magang/PKL',m4:'Proyek nyata'
-  };
-  renderRatingGrid('kompetensiDikuasai',ck.dikuasai,labels,'kd');
-  renderRatingGrid('kompetensiDibutuhkan',ck.dikuasai,labels,'kb');
-  renderRatingGrid('metodePembelajaran',ck.metode,labels,'mp');
-  // Kepuasan FIKOM
+  const ck=jenjang==='S2'?KOMPETENSI_S2:KOMPETENSI_S1;
+  renderRatingGrid('kompetensiDikuasai',ck.dikuasai,KOMPETENSI_LABELS,'kd');
+  renderRatingGrid('kompetensiDibutuhkan',ck.dikuasai,KOMPETENSI_LABELS,'kb');
+  renderRatingGrid('metodePembelajaran',ck.metode,KOMPETENSI_LABELS,'mp');
   renderRatingGrid('kepuasanFikom',KEPUASAN_ITEMS.map(x=>x.key),
     KEPUASAN_ITEMS.reduce((a,x)=>(a[x.key]=x.label,a),{}),'kf');
 }
@@ -1374,13 +1495,14 @@ function renderCheckGrid(containerId,options){
 }
 
 /* ============================================================
- * VALIDASI PER STEP
+ *  VALIDASI PER STEP
  * ============================================================ */
 function validateStep(n){
   clearErrors();
   const stepEl=document.querySelector(`.step[data-step="${n}"]`);
   let ok=true;
-  // Generic required
+
+  // Generic required untuk field yang terlihat
   if(stepEl){
     stepEl.querySelectorAll('[required]').forEach(inp=>{
       if(!isVisible(inp))return;
@@ -1388,6 +1510,7 @@ function validateStep(n){
       if(!String(inp.value||'').trim()){setFieldError(inp.id,'Wajib diisi.');ok=false}
     });
   }
+
   if(n===1){
     if(!VERIFIED_NIM||VERIFIED_NIM!==val('nim')){setFieldError('nim','Verifikasi NIM terlebih dahulu.');ok=false}
     if(!/^\d{4}$/.test(val('tahunMasuk'))){setFieldError('tahunMasuk','Tahun 4 digit (contoh 2020).');ok=false}
@@ -1401,7 +1524,6 @@ function validateStep(n){
   }
   if(n===2){
     const sp=val('statusPekerjaanUtama');
-    if(sp==='Lainnya'&&!val('statusPekerjaanLain')){setFieldError('statusPekerjaanLain','Wajib diisi.');ok=false}
     const work=['Bekerja','Bekerja dan berwirausaha','Bekerja sambil melanjutkan pendidikan'].includes(sp);
     const biz=['Berwirausaha','Bekerja dan berwirausaha','Berwirausaha sambil melanjutkan pendidikan'].includes(sp);
     if(work){
@@ -1412,37 +1534,30 @@ function validateStep(n){
   }
   if(n===3){
     if(val('ikutMagang')==='Ya'){['tempatMagang','durasiMagang','kontribusiMagang','magangBantuKerja'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}})}
-    if(val('ikutOrganisasi')==='Ya'){
-      const chosen=collectChecked('organisasiProfesi');
-      if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}
-    }
-    if(val('punyaPrestasi')==='Ya'){
-      const chosen=collectChecked('jenisPrestasi');
-      if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}
-    }
+    if(val('ikutOrganisasi')==='Ya'){const chosen=collectChecked('organisasiProfesi');if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}}
+    if(val('punyaPrestasi')==='Ya'){const chosen=collectChecked('jenisPrestasi');if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}}
   }
   if(n===4){
     const jenjang=val('jenjang')||'S1';
-    const ck=(META&&META.fieldSchema&&META.fieldSchema.competencyKeys&&META.fieldSchema.competencyKeys[jenjang])||{dikuasai:['k1','k2','k3','k4','k5','k6'],metode:['m1','m2','m3','m4']};
+    const ck=jenjang==='S2'?KOMPETENSI_S2:KOMPETENSI_S1;
     const dk=collectRatingGrid('kompetensiDikuasai'),db=collectRatingGrid('kompetensiDibutuhkan'),mp=collectRatingGrid('metodePembelajaran');
     if(ck.dikuasai.some(k=>!dk[k])||ck.dikuasai.some(k=>!db[k])||ck.metode.some(k=>!mp[k])){toast('Lengkapi seluruh penilaian F1–F3.','err');ok=false}
     ['hubunganBidang','tingkatPendidikanTepat','kontribusiProdiKompetensi','relevansiKurikulumKerja'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}});
   }
   if(n===5){
-    // Kepuasan — pastikan semua terisi
     const kf=collectRatingGrid('kepuasanFikom');
     if(KEPUASAN_ITEMS.some(x=>!kf[x.key])){toast('Lengkapi seluruh penilaian kepuasan.','err');ok=false}
   }
   if(n===6){
     if(val('melanjutkanStudi')==='Ya'){
       ['jenjangStudiLanjut','ptStudiLanjut','prodiStudiLanjut','tahunMulaiStudi','biayaStudiLanjut'].forEach(id=>{if(!val(id)){setFieldError(id,'Wajib diisi.');ok=false}});
+      if(val('jenjangStudiLanjut')==='Lainnya'&&!val('jenjangStudiLanjutLain')){setFieldError('jenjangStudiLanjutLain','Wajib diisi.');ok=false}
       if(val('biayaStudiLanjut')==='Lainnya'&&!val('biayaStudiLanjutLain')){setFieldError('biayaStudiLanjutLain','Wajib diisi.');ok=false}
     }
   }
   if(n===7){
-    // Saran — opsional tapi minimal 1 diisi
     const anySaran=['keunggulanFikom','halPerluDiperbaiki','saranKurikulum','saranPembelajaran','saranLayanan','saranMahasiswa','saranDosen','saranProgramStudi','saranFakultas','kesanPesan'].some(id=>val(id));
-    if(!anySaran){toast('Mohon isi minimal satu saran/masukan untuk FIKOM.','warn')}
+    if(!anySaran)toast('Mohon isi minimal satu saran/masukan untuk FIKOM.','warn');
   }
   if(n===8){
     if(!$('consentData').checked){setFieldError('consentData','Wajib dicentang.');ok=false}
@@ -1452,7 +1567,7 @@ function validateStep(n){
 }
 
 /* ============================================================
- * STEP NAVIGATION
+ *  STEP NAVIGATION
  * ============================================================ */
 function updateSteps(){
   $$('.step').forEach(e=>e.classList.toggle('active',Number(e.dataset.step)===step));
@@ -1479,29 +1594,14 @@ function renderSummary(){
 }
 
 /* ============================================================
- * BUILD PAYLOAD (matching backend RESPONSES_HEADERS)
+ *  PAYLOAD — sinkron dengan backend `buildResponsesRow`
  * ============================================================ */
-function mapQBAnswers(){
-  const jenjang=val('jenjang')||'S1';
-  const prefix=jenjang==='S2'?'S2-':'S1-';
-  const answers={};
-  Object.keys(QB_MAP).forEach(qid=>{
-    if(!qid.startsWith(prefix))return;
-    const srcField=QB_MAP[qid];
-    if(srcField==='kepuasanFikom'){answers[qid]=JSON.stringify(collectRatingGrid('kepuasanFikom'));return}
-    if(srcField==='jenisBantuanKarier'){const v=collectChecked('jenisBantuanKarier');if(v.length)answers[qid]=v.join('; ');return}
-    const v=val(srcField);
-    if(v)answers[qid]=v;
-  });
-  return answers;
-}
-
 function collectPayload(){
   const jenjang=val('jenjang');
   const domProv=val('provinsiDomisili'),domKota=val('kotaDomisili');
   const kProv=val('provinsiKerja'),kKota=val('kotaKerja');
   return {
-    // A
+    // A. Identitas
     nim:val('nim'),nama:val('nama'),programStudi:val('programStudi'),jenjang,
     tahunMasuk:val('tahunMasuk'),tahunLulus:val('tahunLulus'),ipk:val('ipk'),
     jenisKelamin:val('jenisKelamin'),tempatLahir:val('tempatLahir'),tanggalLahir:val('tanggalLahir'),
@@ -1511,87 +1611,126 @@ function collectPayload(){
     alamatTetap:val('alamatTetap'),
     judulSkripsi:val('judulSkripsi'),konsentrasiS1:val('konsentrasiS1'),konsentrasiS1Lain:val('konsentrasiS1Lain'),pembimbingSkripsi:val('pembimbingSkripsi'),
     judulTesis:val('judulTesis'),konsentrasiS2:val('konsentrasiS2'),konsentrasiS2Lain:val('konsentrasiS2Lain'),pembimbingTesis:val('pembimbingTesis'),
-    // B
+    // A2. S2 khusus (data sebelumnya)
+    jenjangSebelumnya:val('jenjangSebelumnya'),prodiSebelumnya:val('prodiSebelumnya'),
+    ptSebelumnya:val('ptSebelumnya'),pendidikanSebelumnyaKomunikasi:val('pendidikanSebelumnyaKomunikasi'),
+    // B. Pekerjaan
     statusPekerjaanUtama:val('statusPekerjaanUtama'),statusPekerjaanLain:val('statusPekerjaanLain'),
     masaTungguKerja:val('masaTungguKerja'),
     pekerjaanPertamaSesuai:val('pekerjaanPertamaSesuai'),
     caraDapatKerja:val('caraDapatKerja'),caraDapatKerjaLain:val('caraDapatKerjaLain'),
     jumlahPerusahaanDilamar:val('jumlahPerusahaanDilamar'),
     namaPerusahaan:val('namaPerusahaan'),websitePerusahaan:val('websitePerusahaan'),
-    bidangIndustri:val('industriSub')||val('industriKategori'),bidangIndustriLain:val('bidangIndustriLain'),
     industriKategori:val('industriKategori'),industriSub:val('industriSub'),
-    jabatan:val('jabatanSpesifik'),levelJabatan:val('levelJabatan'),jabatanSpesifik:val('jabatanSpesifik'),
+    bidangIndustri:val('industriSub')||val('industriKategori')||val('bidangIndustriLain'),
+    bidangIndustriLain:val('bidangIndustriLain'),
+    levelJabatan:val('levelJabatan'),jabatanSpesifik:val('jabatanSpesifik'),
+    jabatan:val('jabatanSpesifik'),
     jenisPekerjaan:val('jenisPekerjaan'),sistemKerja:val('sistemKerja'),
     ukuranOrganisasi:val('ukuranOrganisasi'),penghasilanRange:val('penghasilanRange'),
     provinsiKerja:kProv,kotaKerja:kKota,negaraKerja:'Indonesia',
-    kesesuaianPekerjaan:val('kesesuaianPekerjaan'),relevansiPendidikanKomunikasi:val('relevansiPendidikanKomunikasi'),
-    tahunMulaiKerja:val('tahunMulaiKerja'),tanggalMulaiKerja:val('tahunMulaiKerja')?val('tahunMulaiKerja')+'-01-01':'',
-    jumlahPindahKerja:val('jumlahPindahKerja'),pernahPromosi:val('pernahPromosi'),fikomBantuKarier:val('fikomBantuKarier'),
-    // B - Wirausaha
+    kesesuaianPekerjaan:val('kesesuaianPekerjaan'),
+    relevansiPendidikanKomunikasi:val('relevansiPendidikanKomunikasi'),
+    tahunMulaiKerja:val('tahunMulaiKerja'),
+    tanggalMulaiKerja:val('tahunMulaiKerja')?val('tahunMulaiKerja')+'-01-01':'',
+    jumlahPindahKerja:val('jumlahPindahKerja'),
+    pernahPromosi:val('pernahPromosi'),
+    fikomBantuKarier:val('fikomBantuKarier'),
+    // B. Wirausaha
     namaUsaha:val('namaUsaha'),bidangUsaha:val('bidangUsaha'),tahunMulaiUsaha:val('tahunMulaiUsaha'),
     posisiUsaha:val('posisiUsaha'),jumlahTenagaKerja:val('jumlahTenagaKerja'),
     statusLegalitas:val('statusLegalitas'),omzetRange:val('omzetRange'),lokasiUsaha:val('lokasiUsaha'),
-    usahaBerkaitanKomunikasi:val('usahaBerkaitanKomunikasi'),kompetensiFikomUntukUsaha:val('kompetensiFikomUntukUsaha'),
-    // B - Belum kerja
+    usahaBerkaitanKomunikasi:val('usahaBerkaitanKomunikasi'),
+    kompetensiFikomUntukUsaha:val('kompetensiFikomUntukUsaha'),
+    // B. Belum kerja
     sedangMencariKerja:val('sedangMencariKerja'),lamaMencariKerja:val('lamaMencariKerja'),
     jumlahLamaran:val('jumlahLamaran'),jumlahWawancara:val('jumlahWawancara'),
     hambatanCariKerja:val('hambatanCariKerja'),butuhBantuanKarier:val('butuhBantuanKarier'),
     jenisBantuanKarier:collectChecked('jenisBantuanKarier'),
-    // C - Magang & Organisasi & Prestasi
+    // C. Magang
     ikutMagang:val('ikutMagang'),tempatMagang:val('tempatMagang'),durasiMagang:val('durasiMagang'),
     kontribusiMagang:val('kontribusiMagang'),magangBantuKerja:val('magangBantuKerja'),
-    kerjaDiTempatMagang:val('kerjaDiTempatMagang'),penekananMagangKurikulum:val('penekananMagangKurikulum'),saranMagang:val('saranMagang'),
+    kerjaDiTempatMagang:val('kerjaDiTempatMagang'),
+    penekananMagangKurikulum:val('penekananMagangKurikulum'),
+    saranMagang:val('saranMagang'),
+    // C. Organisasi
     ikutOrganisasi:val('ikutOrganisasi'),organisasiProfesi:collectChecked('organisasiProfesi'),
     organisasiProfesiLain:val('organisasiProfesiLain'),
     tahunBergabungOrg:val('tahunBergabungOrg'),peranOrganisasi:val('peranOrganisasi'),
-    tingkatKeterlibatan:val('tingkatKeterlibatan'),manfaatOrganisasi:val('manfaatOrganisasi'),fasilitasiOrganisasi:val('fasilitasiOrganisasi'),
+    tingkatKeterlibatan:val('tingkatKeterlibatan'),
+    manfaatOrganisasi:val('manfaatOrganisasi'),
+    fasilitasiOrganisasi:val('fasilitasiOrganisasi'),
+    // C. Prestasi
     punyaPrestasi:val('punyaPrestasi'),jenisPrestasi:collectChecked('jenisPrestasi'),
     jenisPrestasiLain:val('jenisPrestasiLain'),
-    namaPrestasiSpesifik:val('namaPrestasiSpesifik'),penyelenggaraPrestasi:val('penyelenggaraPrestasi'),
-    urlBuktiPrestasi:val('urlBuktiPrestasi'),kategoriPrestasi:val('kategoriPrestasi'),
-    tingkatPrestasi:val('tingkatPrestasi'),tahunPrestasi:val('tahunPrestasi'),
-    peranProdiPrestasi:val('peranProdiPrestasi'),pernahNarasumber:val('pernahNarasumber'),
-    // D - Kompetensi
+    namaPrestasiSpesifik:val('namaPrestasiSpesifik'),
+    penyelenggaraPrestasi:val('penyelenggaraPrestasi'),
+    urlBuktiPrestasi:val('urlBuktiPrestasi'),
+    kategoriPrestasi:val('kategoriPrestasi'),
+    tingkatPrestasi:val('tingkatPrestasi'),
+    tahunPrestasi:val('tahunPrestasi'),
+    peranProdiPrestasi:val('peranProdiPrestasi'),
+    pernahNarasumber:val('pernahNarasumber'),
+    // D. Kompetensi
     kompetensiDikuasai:collectRatingGrid('kompetensiDikuasai'),
     kompetensiDibutuhkan:collectRatingGrid('kompetensiDibutuhkan'),
     metodePembelajaran:collectRatingGrid('metodePembelajaran'),
-    hubunganBidang:val('hubunganBidang'),tingkatPendidikanTepat:val('tingkatPendidikanTepat'),
-    kontribusiProdiKompetensi:val('kontribusiProdiKompetensi'),relevansiKurikulumKerja:val('relevansiKurikulumKerja'),
-    mataKuliahBermanfaat:val('mataKuliahBermanfaat'),mataKuliahPerluUpdate:val('mataKuliahPerluUpdate'),
-    kompetensiKurang:val('kompetensiKurang'),kompetensiTambahan:val('kompetensiTambahan'),
-    // E - Kepuasan & Kontribusi
+    hubunganBidang:val('hubunganBidang'),
+    tingkatPendidikanTepat:val('tingkatPendidikanTepat'),
+    kontribusiProdiKompetensi:val('kontribusiProdiKompetensi'),
+    relevansiKurikulumKerja:val('relevansiKurikulumKerja'),
+    mataKuliahBermanfaat:val('mataKuliahBermanfaat'),
+    mataKuliahPerluUpdate:val('mataKuliahPerluUpdate'),
+    kompetensiKurang:val('kompetensiKurang'),
+    kompetensiTambahan:val('kompetensiTambahan'),
+    // E. Kepuasan & Kontribusi
     kepuasanFikom:JSON.stringify(collectRatingGrid('kepuasanFikom')),
-    frekuensiKomunikasiFikom:val('frekuensiKomunikasiFikom'),ikutKegiatanAlumni:val('ikutKegiatanAlumni'),
-    bersediaNarasumber:val('bersediaNarasumber'),bersediaMentor:val('bersediaMentor'),
-    bersediaTempatMagang:val('bersediaTempatMagang'),bersediaLowongan:val('bersediaLowongan'),
-    bersediaKolaborasi:val('bersediaKolaborasi'),bersediaKurikulum:val('bersediaKurikulum'),
-    kontakProfesional:val('kontakProfesional'),rekomendasiAlumniIndustri:val('rekomendasiAlumniIndustri'),
-    // F - Studi Lanjut
-    melanjutkanStudi:val('melanjutkanStudi'),jenjangStudiLanjut:val('jenjangStudiLanjut'),
+    frekuensiKomunikasiFikom:val('frekuensiKomunikasiFikom'),
+    ikutKegiatanAlumni:val('ikutKegiatanAlumni'),
+    bersediaNarasumber:val('bersediaNarasumber'),
+    bersediaMentor:val('bersediaMentor'),
+    bersediaTempatMagang:val('bersediaTempatMagang'),
+    bersediaLowongan:val('bersediaLowongan'),
+    bersediaKolaborasi:val('bersediaKolaborasi'),
+    bersediaKurikulum:val('bersediaKurikulum'),
+    kontakProfesional:val('kontakProfesional'),
+    rekomendasiAlumniIndustri:val('rekomendasiAlumniIndustri'),
+    // F. Studi Lanjut
+    melanjutkanStudi:val('melanjutkanStudi'),
+    jenjangStudiLanjut:val('jenjangStudiLanjut'),
     jenjangStudiLanjutLain:val('jenjangStudiLanjutLain'),
-    ptStudiLanjut:val('ptStudiLanjut'),prodiStudiLanjut:val('prodiStudiLanjut'),
-    negaraStudiLanjut:val('negaraStudiLanjut'),tahunMulaiStudi:val('tahunMulaiStudi'),
+    ptStudiLanjut:val('ptStudiLanjut'),
+    prodiStudiLanjut:val('prodiStudiLanjut'),
+    negaraStudiLanjut:val('negaraStudiLanjut'),
+    tahunMulaiStudi:val('tahunMulaiStudi'),
     statusStudiLanjut:val('statusStudiLanjut'),
-    biayaStudiLanjut:val('biayaStudiLanjut'),biayaStudiLanjutLain:val('biayaStudiLanjutLain'),
+    biayaStudiLanjut:val('biayaStudiLanjut'),
+    biayaStudiLanjutLain:val('biayaStudiLanjutLain'),
     keterkaitanStudiKomunikasi:val('keterkaitanStudiKomunikasi'),
-    studiDukungKarier:val('studiDukungKarier'),alasanStudiLanjut:val('alasanStudiLanjut'),
-    // G - Saran
-    keunggulanFikom:val('keunggulanFikom'),halPerluDiperbaiki:val('halPerluDiperbaiki'),
-    saranKurikulum:val('saranKurikulum'),saranPembelajaran:val('saranPembelajaran'),
-    saranLayanan:val('saranLayanan'),saranMahasiswa:val('saranMahasiswa'),
-    saranDosen:val('saranDosen'),saranProgramStudi:val('saranProgramStudi'),
-    saranFakultas:val('saranFakultas'),kesanPesan:val('kesanPesan'),
+    studiDukungKarier:val('studiDukungKarier'),
+    alasanStudiLanjut:val('alasanStudiLanjut'),
+    // G. Saran
+    keunggulanFikom:val('keunggulanFikom'),
+    halPerluDiperbaiki:val('halPerluDiperbaiki'),
+    saranKurikulum:val('saranKurikulum'),
+    saranPembelajaran:val('saranPembelajaran'),
+    saranLayanan:val('saranLayanan'),
+    saranMahasiswa:val('saranMahasiswa'),
+    saranDosen:val('saranDosen'),
+    saranProgramStudi:val('saranProgramStudi'),
+    saranFakultas:val('saranFakultas'),
+    kesanPesan:val('kesanPesan'),
     // Consent & meta
     consentData:!!($('consentData')&&$('consentData').checked),
     consentContact:!!($('consentContact')&&$('consentContact').checked),
-    periodeId:(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
+    periodeId:(META&&META.periodeAktif&&META.periodeAktif.id)||(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
     responseSchema:'QUESTION_BANK+OPTION_BANK+ROUTE_RULES+RESPONSE',
     questionBank:{
       programId: jenjang==='S2'?'S2_MIK':'S1_ILKOM',
       schemaVersion:'1.0.0',
       responseId: VERIFIED_NIM?('QR-'+VERIFIED_NIM):'',
       alumniId: val('nim'),
-      answers: mapQBAnswers(),
+      answers: {},
       routeSnapshot: [],
       submittedAt: new Date().toISOString()
     },
@@ -1600,7 +1739,7 @@ function collectPayload(){
 }
 
 /* ============================================================
- * SUBMIT
+ *  SUBMIT
  * ============================================================ */
 async function submitTracer(){
   if(formSubmitted)return;
@@ -1623,7 +1762,7 @@ async function submitTracer(){
     }catch(e){
       errMsg=e.message;const low=errMsg.toLowerCase();
       if(/lock|concurrent|sibuk|timeout/.test(low)){
-        retry++;if(retry<3){toast(`Server padat. Retry otomatis (${retry}/3)...`,'warn');await new Promise(r=>setTimeout(r,2000*retry))}
+        retry++;if(retry<3){toast(`Server padat. Retry (${retry}/3)...`,'warn');await new Promise(r=>setTimeout(r,2000*retry))}
       }else if(/nonce|kedaluwarsa/.test(low)){
         await refreshNonce();retry++;if(retry<3){toast('Sesi diperbarui, mencoba lagi...','warn');await new Promise(r=>setTimeout(r,500))}
       }else break;
@@ -1636,7 +1775,7 @@ async function submitTracer(){
 }
 
 /* ============================================================
- * LOCAL DRAFT
+ *  LOCAL DRAFT
  * ============================================================ */
 function saveLocalDraft(){try{localStorage.setItem('ts_draft_data',JSON.stringify({nim:val('nim'),step,time:Date.now()}))}catch(e){}}
 function checkLocalDraft(){
@@ -1647,7 +1786,7 @@ function checkLocalDraft(){
 }
 
 /* ============================================================
- * TRACKING
+ *  TRACKING
  * ============================================================ */
 async function lookupTracer(){
   const id=val('trackingId');if(!id)return toast('Masukkan Tracer ID.','err');
@@ -1664,7 +1803,7 @@ async function lookupTracer(){
 }
 
 /* ============================================================
- * LOGIN & DASHBOARD
+ *  LOGIN & DASHBOARD
  * ============================================================ */
 async function login(){
   const username=val('username').toLowerCase(),password=val('password');
@@ -1695,10 +1834,10 @@ function showDashboard(){
   $('ubahPassBtn')&&$('ubahPassBtn').classList.remove('hidden');
   const role=PROFILE?.role||'ADMIN';
   let title='Dashboard',scope='—',icon='🛡️',desc='Ringkasan Eksekutif.';
-  const welc=$('roleWelcomeMsg');welc.className='role-welcome hidden';welc.classList.remove('hidden');
+  const welc=$('roleWelcomeMsg');welc.className='role-welcome hidden';
 
   if(role==='ADMIN'){title='Pusat Kendali Admin';scope='Full Access';icon='🛡️';desc='Kontrol penuh data & konfigurasi.';welc.innerHTML='👋 <b>Halo Admin,</b> kelola data alumni, unggah Master, dan awasi sistem.';welc.className='role-welcome'}
-  else if(role==='DEKAN'){title='Dashboard Dekanat';scope='Fakultas';icon='👑';desc='Ringkasan eksekutif fakultas.';welc.innerHTML='👑 <b>Selamat Datang Pimpinan Fakultas,</b> berikut ringkasan pencapaian IKU dan sebaran karier alumni.';welc.className='role-welcome dekan'}
+  else if(role==='DEKAN'){title='Dashboard Dekanat';scope='Fakultas (S1+S2)';icon='👑';desc='Ringkasan eksekutif fakultas.';welc.innerHTML='👑 <b>Selamat Datang Pimpinan Fakultas,</b> ringkasan pencapaian IKU dan sebaran karier alumni.';welc.className='role-welcome dekan'}
   else if(role==='WADEK'){title='Dashboard Wakil Dekan';scope='Fakultas';icon='🎯';desc='Monitoring partisipasi alumni.';welc.innerHTML='🎯 <b>Selamat Datang,</b> pantau Response Rate untuk target akreditasi.';welc.className='role-welcome wadek'}
   else if(role==='KAPRODI_S1'){title='Dashboard Kaprodi S1';scope='Prodi S1';icon='📗';desc='Evaluasi kurikulum & karier alumni S1.';welc.innerHTML='📗 <b>Halo Kaprodi S1,</b> evaluasi kurikulum dan pantau relevansi lulusan.';welc.className='role-welcome kaprodi-s1'}
   else if(role==='KAPRODI_S2'){title='Dashboard Kaprodi S2';scope='Prodi S2';icon='📘';desc='Dampak magister pada karier alumni.';welc.innerHTML='📘 <b>Halo Kaprodi S2,</b> lihat dampak program magister terhadap karier alumni.';welc.className='role-welcome kaprodi-s2'}
@@ -1707,9 +1846,19 @@ function showDashboard(){
   $('rbIcon').textContent=icon;
   $('profileBadge').textContent=(PROFILE?.nama||'Pengguna')+' ('+role+')';
 
-  // Role gating
-  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',role!=='ADMIN'));
-  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role)));
+  // Role gating tabs
+  const isAdmin=role==='ADMIN';
+  const isPimpinan=['ADMIN','DEKAN','WADEK','KAPRODI_S1','KAPRODI_S2'].includes(role);
+  $$('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
+  $$('.pimpinan-only').forEach(e=>e.classList.toggle('hidden',!isPimpinan));
+
+  // Reset ke tab overview
+  $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
+  const firstTab=document.querySelector('#adminTabs button[data-panel="overview"]');
+  if(firstTab)firstTab.classList.add('active');
+  $$('.panel').forEach(p=>p.classList.add('hidden'));
+  const overviewPanel=document.querySelector('.panel[data-panel="overview"]');
+  if(overviewPanel)overviewPanel.classList.remove('hidden');
 
   loadDashboardData();
 }
@@ -1799,8 +1948,10 @@ async function loadDashboardData(){
     renderRecentTable(r.recent);renderRespTable(r.items,r.pagination);renderAccreditation(r.accreditation);
     if(r.master)renderMasterTable(r.master.items||[]);
     if(r.reminder)renderReminderTable(r.reminder.items||[]);
-    if(PROFILE&&PROFILE.role==='ADMIN')renderAdminPanel(r.users||[],r.periode||[],r.audit||[]);
-    if(PROFILE&&PROFILE.role==='ADMIN')loadMasterStats();
+    if(PROFILE&&PROFILE.role==='ADMIN'){
+      renderAdminPanel(r.users||[],r.periode||[],r.audit||[]);
+      loadMasterStats();
+    }
   }catch(e){
     toast('Gagal memuat data: '+e.message,'err');
     if(/sesi/i.test(e.message))doLogout();
@@ -1809,7 +1960,7 @@ async function loadDashboardData(){
 }
 
 /* ============================================================
- * EXPORT & MASTER
+ *  EXPORT / MASTER / REMINDER
  * ============================================================ */
 function downloadBase64(filename,base64,mime){
   const bin=atob(base64),bytes=new Uint8Array(bin.length);
@@ -1824,7 +1975,7 @@ async function exportMaster(){try{const r=await apiPost({action:'masterlist',exp
 async function reloadReminder(){try{const r=await apiPost({action:'reminderlist',filters:dashFilters});renderReminderTable(r.items)}catch(e){toast(e.message,'err')}}
 
 /* ============================================================
- * MASTER UPLOAD (ADMIN)
+ *  MASTER UPLOAD (ADMIN)
  * ============================================================ */
 function b64EncodeText(str){return btoa(unescape(encodeURIComponent(String(str||''))))}
 function setupMasterUpload(){
@@ -1878,7 +2029,7 @@ async function loadMasterStats(){
   try{
     const r=await apiPost({action:'masterstats'});
     const byJ=r.byJenjang||{};
-    const cell=(label,val,color)=>`<div style="padding:14px;background:#fff;border:1px solid #e0ece7;border-radius:12px"><b style="font-size:22px;color:${color||'var(--accent2)'}">${val}</b><div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase">${label}</div></div>`;
+    const cell=(label,v,color)=>`<div style="padding:14px;background:#fff;border:1px solid #e0ece7;border-radius:12px"><b style="font-size:22px;color:${color||'var(--accent2)'}">${v}</b><div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase">${label}</div></div>`;
     box.innerHTML=cell('Total Master',r.total||0)+cell('Sudah Isi',r.sudah||0,'#087443')+cell('Belum Isi',r.belum||0,'#b42318')+
       (byJ.S1?cell('S1 Sudah/Total',`${byJ.S1.sudah||0}/${byJ.S1.total||0}`,'#059669'):'')+
       (byJ.S2?cell('S2 Sudah/Total',`${byJ.S2.sudah||0}/${byJ.S2.total||0}`,'#4f46e5'):'');
@@ -1886,7 +2037,7 @@ async function loadMasterStats(){
 }
 
 /* ============================================================
- * MODALS
+ *  MODALS
  * ============================================================ */
 function openModal(html){$('modalRoot').innerHTML=`<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px"><div class="card" style="max-width:440px;width:100%">${html}</div></div>`}
 function closeModal(){$('modalRoot').innerHTML=''}
@@ -1935,7 +2086,7 @@ function openPeriodeModal(){
 }
 
 /* ============================================================
- * EVENT BINDINGS
+ *  EVENT BINDINGS
  * ============================================================ */
 function bindEvents(){
   $$('.tab').forEach(b=>b.onclick=()=>{
@@ -1975,7 +2126,7 @@ function bindEvents(){
   $('punyaPrestasi').addEventListener('change',e=>$('prestasiBox').classList.toggle('hidden',e.target.value!=='Ya'));
   $('melanjutkanStudi').addEventListener('change',e=>$('studiBox').classList.toggle('hidden',e.target.value!=='Ya'));
 
-  // Login/dashboard
+  // Login
   $('loginBtn').onclick=login;
   $('logoutBtn').onclick=doLogout;
   $('ubahPassBtn')&&($('ubahPassBtn').onclick=openChangePasswordModal);
@@ -2014,7 +2165,7 @@ function bindEvents(){
 }
 
 /* ============================================================
- * INIT
+ *  INIT
  * ============================================================ */
 document.addEventListener('DOMContentLoaded',async()=>{
   bindEvents();
