@@ -694,7 +694,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 <script>
 'use strict';
 
-const APP_VERSION_STR='v16.1.0';
+const APP_VERSION_STR='v16.2.0';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwQDMfM5e0ZElG_muoH3EkceIs_v2rQH-34qjyykH_W-NrfI3EyQjcQTNuqYnQifWUX/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
 const TOTAL_STEPS=9, RESP_PER_PAGE=50;
@@ -716,18 +716,35 @@ function collectChecked(containerId){const el=$(containerId);if(!el)return [];re
 // ---------------- API Handling ----------------
 async function parseResponse(r){const txt=await r.text();let j;try{j=JSON.parse(txt)}catch(_){throw new Error('Server sibuk (tidak merespons JSON). Silakan coba lagi.')}if(j.ok===false)throw new Error(j.error||'Permintaan gagal.');return j}
 
+// FIX v16.2.0: seluruh payload dikirim sebagai satu blok base64 (`_b64`)
+// alih-alih field per field. Ini mencegah teks panjang/karakter khusus
+// (kutip, enter, unicode) pada jawaban Data Khusus/kuesioner rusak saat
+// di-encode application/x-www-form-urlencoded. Struktur data yang sampai
+// di backend tetap identik dengan sebelumnya (objek di-JSON.stringify
+// dahulu per-field, backend cukup menambah satu langkah decode base64).
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(_,p)=>String.fromCharCode('0x'+p)));
+}
+function toWireParams(data){
+  const p={...data};
+  Object.keys(p).forEach(k=>{ if(p[k]!==undefined&&p[k]!==null&&typeof p[k]==='object') p[k]=JSON.stringify(p[k]); });
+  return p;
+}
 async function apiPost(data){
-  const p={...data,action:String(data?.action||'').trim()};
+  const p=toWireParams({...data,action:String(data?.action||'').trim()});
   if(TOKEN)p.token=TOKEN;
-  const pStr=new URLSearchParams();
-  Object.entries(p).forEach(([k,v])=>{if(v!==undefined)pStr.set(k,typeof v==='object'?JSON.stringify(v):v)});
-  const r=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:pStr});
+  const body=new URLSearchParams();
+  body.set('_b64',b64EncodeUnicode(JSON.stringify(p)));
+  body.set('action',p.action||'');
+  const r=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
   return parseResponse(r);
 }
 async function apiGet(data){
-  const p={...data};
-  const q=new URLSearchParams(Object.fromEntries(Object.entries(p).map(([k,v])=>[k,typeof v==='object'?JSON.stringify(v):v]))).toString();
-  const r=await fetch(GAS_URL+'?'+q);
+  const p=toWireParams({...data});
+  const q=new URLSearchParams();
+  q.set('_b64',b64EncodeUnicode(JSON.stringify(p)));
+  q.set('action',String(p.action||''));
+  const r=await fetch(GAS_URL+'?'+q.toString());
   return parseResponse(r);
 }
 
@@ -992,6 +1009,27 @@ function validateStep(n){
     if(val('jenjangStudiLanjut')==='Lainnya'&&!val('jenjangStudiLanjutLain')){ setFieldError('jenjangStudiLanjutLain','Wajib diisi.'); ok=false; }
     if(val('biayaStudiLanjut')==='Lainnya'&&!val('biayaStudiLanjutLain')){ setFieldError('biayaStudiLanjutLain','Wajib diisi.'); ok=false; }
   }
+  // FIX v16.2.0: validasi Data Khusus (kuesioner dinamis S1/S2) — sebelumnya
+  // tidak ada validasi sama sekali di step 8 karena endpoint 'questionbank'
+  // belum pernah dikembalikan backend, jadi tidak ada pertanyaan untuk
+  // divalidasi. Sekarang wajib menjawab seluruh pertanyaan yang tampak
+  // (mengikuti ROUTE_RULES) sebelum lanjut ke konfirmasi.
+  if(n===8){
+    const jenjang=val('jenjang')||'S1';
+    const qb=QB_CACHE[jenjang];
+    if(!qb||!qb.groups||!qb.groups.length){
+      toast('Kuesioner Data Khusus belum termuat. Muat ulang halaman dan coba lagi.','err'); ok=false;
+    }else{
+      const root=$('qbankRoot');
+      const visible=root?[...root.querySelectorAll('.qitem')].filter(el=>!el.closest('.q-hidden')&&!el.classList.contains('q-hidden')):[];
+      const unanswered=visible.filter(el=>el.dataset.qtype==='multi'?el.querySelectorAll('input[type=checkbox]:checked').length===0:!getAnswerValue(el));
+      if(unanswered.length){
+        unanswered[0].scrollIntoView({behavior:'smooth',block:'center'});
+        toast(`Lengkapi seluruh pertanyaan Data Khusus (${unanswered.length} pertanyaan belum dijawab).`,'err');
+        ok=false;
+      }
+    }
+  }
   if(ok)saveLocalDraft();
   return ok;
 }
@@ -1041,6 +1079,11 @@ function collectPayload(){
     ptStudiLanjut:val('ptStudiLanjut'),prodiStudiLanjut:val('prodiStudiLanjut'),tahunMulaiStudi:val('tahunMulaiStudi'),biayaStudiLanjut:val('biayaStudiLanjut'),biayaStudiLanjutLain:val('biayaStudiLanjutLain'),
     consentData:!!($('consentData')&&$('consentData').checked),consentContact:!!($('consentContact')&&$('consentContact').checked),
     periodeId:(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
+    // FIX v16.2.0: responseSchema wajib di-echo dari respons endpoint
+    // 'questionbank' (di-cache di QB_CACHE) agar cocok dengan RESPONSE_SCHEMA
+    // di backend — sebelumnya field ini tidak pernah dikirim sehingga submit
+    // selalu gagal dengan "Response schema QUESTION_BANK tidak sesuai versi aplikasi".
+    responseSchema:(QB_CACHE[jenjang]&&QB_CACHE[jenjang].responseSchema)||'QUESTION_BANK+OPTION_BANK+ROUTE_RULES+RESPONSE',
     questionBank:{
       programId: jenjang==='S2'?'S2_MIK':'S1_ILKOM',
       schemaVersion:(QB_CACHE[jenjang]&&QB_CACHE[jenjang].schemaVersion)||'1.0.0',
