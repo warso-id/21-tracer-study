@@ -1020,6 +1020,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <span class="badge ok" id="rbScope" style="margin-left:auto;font-size:13px;padding:6px 14px">Akses Data</span>
       </div>
       <div id="roleWelcomeMsg" class="role-welcome hidden"></div>
+      <!-- [FIX-HTML-1] Scope banner dinamis per role -->
+      <div id="scopeBanner" class="role-welcome hidden" style="font-weight:700"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <span id="profileBadge" class="badge info" style="font-size:13px;padding:8px 16px"></span>
         <div class="actions">
@@ -1167,7 +1169,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v16.3.2-production · Secured &amp; Optimized</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v16.3.3-production · Secured &amp; Optimized</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -1177,7 +1179,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 /* ============================================================
  *  KONSTANTA
  * ============================================================ */
-const APP_VERSION_STR='v16.3.2-production';
+const APP_VERSION_STR='v16.3.3-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
 const TOTAL_STEPS=8, RESP_PER_PAGE=50;
@@ -1509,7 +1511,7 @@ function bindCheckboxLainnya(containerId, boxId){
     }
   };
   el.addEventListener('change', handler);
-  handler(); // sinkronkan state awal
+  handler();
 }
 
 /* ============================================================
@@ -1552,7 +1554,6 @@ function validateStep(n){
   const stepEl=document.querySelector(`.step[data-step="${n}"]`);
   let ok=true;
 
-  // Generic required untuk field yang terlihat
   if(stepEl){
     stepEl.querySelectorAll('[required]').forEach(inp=>{
       if(!isVisible(inp))return;
@@ -1570,7 +1571,6 @@ function validateStep(n){
     const email=val('email');if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setFieldError('email','Email tidak valid.');ok=false}
     const wa=val('whatsapp');if(wa&&!/^\d{10,15}$/.test(wa)){setFieldError('whatsapp','WA 10–15 digit.');ok=false}
 
-    /* [FIX-1] Data akademik khusus — wajib diisi sesuai jenjang */
     const jj = val('jenjang');
     if(jj === 'S1'){
       if(!val('judulSkripsi')){setFieldError('judulSkripsi','Judul skripsi wajib diisi.');ok=false}
@@ -1601,14 +1601,12 @@ function validateStep(n){
     if(val('ikutOrganisasi')==='Ya'){
       const chosen=collectChecked('organisasiProfesi');
       if(chosen.length===0){setFieldError('organisasiProfesi','Pilih minimal 1.');ok=false}
-      /* [FIX-2] Wajib isi "Lainnya" bila dipilih */
       if(chosen.includes('Lainnya') && !val('organisasiProfesiLain')){setFieldError('organisasiProfesiLain','Wajib diisi.');ok=false}
     }
 
     if(val('punyaPrestasi')==='Ya'){
       const chosen=collectChecked('jenisPrestasi');
       if(chosen.length===0){setFieldError('jenisPrestasi','Pilih minimal 1.');ok=false}
-      /* [FIX-2] Wajib isi "Lainnya" bila dipilih */
       if(chosen.includes('Lainnya') && !val('jenisPrestasiLain')){setFieldError('jenisPrestasiLain','Wajib diisi.');ok=false}
     }
   }
@@ -1682,7 +1680,6 @@ function collectPayload(){
   const domProv=val('provinsiDomisili'),domKota=val('kotaDomisili');
   const kProv=val('provinsiKerja'),kKota=val('kotaKerja');
   return {
-    // A. Identitas
     nim:val('nim'),nama:val('nama'),programStudi:val('programStudi'),jenjang,
     tahunMasuk:val('tahunMasuk'),tahunLulus:val('tahunLulus'),ipk:val('ipk'),
     jenisKelamin:val('jenisKelamin'),tempatLahir:val('tempatLahir'),tanggalLahir:val('tanggalLahir'),
@@ -1694,7 +1691,6 @@ function collectPayload(){
     judulTesis:val('judulTesis'),konsentrasiS2:val('konsentrasiS2'),konsentrasiS2Lain:val('konsentrasiS2Lain'),pembimbingTesis:val('pembimbingTesis'),
     jenjangSebelumnya:val('jenjangSebelumnya'),prodiSebelumnya:val('prodiSebelumnya'),
     ptSebelumnya:val('ptSebelumnya'),pendidikanSebelumnyaKomunikasi:val('pendidikanSebelumnyaKomunikasi'),
-    // B. Pekerjaan
     statusPekerjaanUtama:val('statusPekerjaanUtama'),statusPekerjaanLain:val('statusPekerjaanLain'),
     masaTungguKerja:val('masaTungguKerja'),
     pekerjaanPertamaSesuai:val('pekerjaanPertamaSesuai'),
@@ -1716,31 +1712,26 @@ function collectPayload(){
     jumlahPindahKerja:val('jumlahPindahKerja'),
     pernahPromosi:val('pernahPromosi'),
     fikomBantuKarier:val('fikomBantuKarier'),
-    // B. Wirausaha
     namaUsaha:val('namaUsaha'),bidangUsaha:val('bidangUsaha'),tahunMulaiUsaha:val('tahunMulaiUsaha'),
     posisiUsaha:val('posisiUsaha'),jumlahTenagaKerja:val('jumlahTenagaKerja'),
     statusLegalitas:val('statusLegalitas'),omzetRange:val('omzetRange'),lokasiUsaha:val('lokasiUsaha'),
     usahaBerkaitanKomunikasi:val('usahaBerkaitanKomunikasi'),
     kompetensiFikomUntukUsaha:val('kompetensiFikomUntukUsaha'),
-    // B. Belum kerja
     sedangMencariKerja:val('sedangMencariKerja'),lamaMencariKerja:val('lamaMencariKerja'),
     jumlahLamaran:val('jumlahLamaran'),jumlahWawancara:val('jumlahWawancara'),
     hambatanCariKerja:val('hambatanCariKerja'),butuhBantuanKarier:val('butuhBantuanKarier'),
     jenisBantuanKarier:collectChecked('jenisBantuanKarier'),
-    // C. Magang
     ikutMagang:val('ikutMagang'),tempatMagang:val('tempatMagang'),durasiMagang:val('durasiMagang'),
     kontribusiMagang:val('kontribusiMagang'),magangBantuKerja:val('magangBantuKerja'),
     kerjaDiTempatMagang:val('kerjaDiTempatMagang'),
     penekananMagangKurikulum:val('penekananMagangKurikulum'),
     saranMagang:val('saranMagang'),
-    // C. Organisasi
     ikutOrganisasi:val('ikutOrganisasi'),organisasiProfesi:collectChecked('organisasiProfesi'),
     organisasiProfesiLain:val('organisasiProfesiLain'),
     tahunBergabungOrg:val('tahunBergabungOrg'),peranOrganisasi:val('peranOrganisasi'),
     tingkatKeterlibatan:val('tingkatKeterlibatan'),
     manfaatOrganisasi:val('manfaatOrganisasi'),
     fasilitasiOrganisasi:val('fasilitasiOrganisasi'),
-    // C. Prestasi
     punyaPrestasi:val('punyaPrestasi'),jenisPrestasi:collectChecked('jenisPrestasi'),
     jenisPrestasiLain:val('jenisPrestasiLain'),
     namaPrestasiSpesifik:val('namaPrestasiSpesifik'),
@@ -1751,7 +1742,6 @@ function collectPayload(){
     tahunPrestasi:val('tahunPrestasi'),
     peranProdiPrestasi:val('peranProdiPrestasi'),
     pernahNarasumber:val('pernahNarasumber'),
-    // D. Kompetensi
     kompetensiDikuasai:collectRatingGrid('kompetensiDikuasai'),
     kompetensiDibutuhkan:collectRatingGrid('kompetensiDibutuhkan'),
     metodePembelajaran:collectRatingGrid('metodePembelajaran'),
@@ -1763,7 +1753,6 @@ function collectPayload(){
     mataKuliahPerluUpdate:val('mataKuliahPerluUpdate'),
     kompetensiKurang:val('kompetensiKurang'),
     kompetensiTambahan:val('kompetensiTambahan'),
-    // E. Kepuasan & Kontribusi
     kepuasanFikom:JSON.stringify(collectRatingGrid('kepuasanFikom')),
     frekuensiKomunikasiFikom:val('frekuensiKomunikasiFikom'),
     ikutKegiatanAlumni:val('ikutKegiatanAlumni'),
@@ -1775,7 +1764,6 @@ function collectPayload(){
     bersediaKurikulum:val('bersediaKurikulum'),
     kontakProfesional:val('kontakProfesional'),
     rekomendasiAlumniIndustri:val('rekomendasiAlumniIndustri'),
-    // F. Studi Lanjut
     melanjutkanStudi:val('melanjutkanStudi'),
     jenjangStudiLanjut:val('jenjangStudiLanjut'),
     jenjangStudiLanjutLain:val('jenjangStudiLanjutLain'),
@@ -1789,7 +1777,6 @@ function collectPayload(){
     keterkaitanStudiKomunikasi:val('keterkaitanStudiKomunikasi'),
     studiDukungKarier:val('studiDukungKarier'),
     alasanStudiLanjut:val('alasanStudiLanjut'),
-    // G. Saran
     keunggulanFikom:val('keunggulanFikom'),
     halPerluDiperbaiki:val('halPerluDiperbaiki'),
     saranKurikulum:val('saranKurikulum'),
@@ -1800,7 +1787,6 @@ function collectPayload(){
     saranProgramStudi:val('saranProgramStudi'),
     saranFakultas:val('saranFakultas'),
     kesanPesan:val('kesanPesan'),
-    // Consent & meta
     consentData:!!($('consentData')&&$('consentData').checked),
     consentContact:!!($('consentContact')&&$('consentContact').checked),
     periodeId:(META&&META.periodeAktif&&META.periodeAktif.id)||(META&&META.periodeAktif&&META.periodeAktif.periodeId)||'',
@@ -1908,6 +1894,24 @@ async function doLogout(){
   $('ubahPassBtn')&&$('ubahPassBtn').classList.add('hidden');
   toast('Berhasil keluar.','ok');
 }
+
+/* [FIX-HTML-2] Banner scope dinamis per role */
+function renderScopeBanner(role){
+  const el = document.getElementById('scopeBanner');
+  if(!el) return;
+  const map = {
+    'ADMIN':      {t:'🛡️ SCOPE: Full Access (S1 + S2)', c:'admin'},
+    'DEKAN':      {t:'👑 SCOPE: Fakultas (S1 + S2)', c:'dekan'},
+    'WADEK':      {t:'🎯 SCOPE: Fakultas (S1 + S2)', c:'wadek'},
+    'KAPRODI_S1': {t:'📗 SCOPE: Prodi S1 Ilmu Komunikasi', c:'kaprodi-s1'},
+    'KAPRODI_S2': {t:'📘 SCOPE: Prodi S2 Magister Ilmu Komunikasi', c:'kaprodi-s2'}
+  };
+  const info = map[role] || {t:'Scope tidak dikenali', c:''};
+  el.className = 'role-welcome ' + info.c;
+  el.textContent = info.t;
+  el.classList.remove('hidden');
+}
+
 function showDashboard(){
   $('loginBox').classList.add('hidden');
   $('dashBox').classList.remove('hidden');
@@ -1938,6 +1942,8 @@ function showDashboard(){
   const overviewPanel=document.querySelector('.panel[data-panel="overview"]');
   if(overviewPanel)overviewPanel.classList.remove('hidden');
 
+  /* [FIX-HTML-2] Render banner scope sesuai role */
+  renderScopeBanner(role);
   loadDashboardData();
 }
 
@@ -1948,18 +1954,24 @@ function drawBarChart(canvasId,dataObj,label,color){
   const labels=Object.keys(dataObj||{}),data=labels.map(k=>dataObj[k]);
   charts[canvasId]=new Chart(el.getContext('2d'),{type:'bar',data:{labels,datasets:[{label,data,backgroundColor:color||'#116149'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
 }
+
+/* [FIX-HTML-3] RenderKpi robust terhadap data kosong/null */
 function renderKpi(s){
-  if(!s)return;
-  $('kpiBox').innerHTML=`
+  const box = $('kpiBox');
+  if(!box) return;
+  if(!s){ box.innerHTML='<div><b>0</b><span>Tidak ada data pada scope Anda</span></div>'; return; }
+  box.innerHTML=`
     <div><span class="kpi-icon">🎯</span><b>${s.responseRate}%</b><span>Response Rate</span></div>
     <div><span class="kpi-icon">💼</span><b>${s.total?Math.round(s.bekerja/s.total*100):0}%</b><span>Bekerja</span></div>
     <div><span class="kpi-icon">⏳</span><b>${s.avgMasaTunggu}</b><span>Masa Tunggu</span></div>
     <div><span class="kpi-icon">🏆</span><b>${s.prestasi||0}</b><span>Berprestasi</span></div>`;
-  $('summaryInsight').innerHTML=`
+  const ins = $('summaryInsight');
+  if(ins) ins.innerHTML=`
     <div class="card" style="padding:12px 16px"><b>${s.total}</b> dari <b>${s.totalMaster}</b> alumni terisi (${s.belumMengisi} belum)</div>
     <div class="card" style="padding:12px 16px">Relevansi: <b>${s.relevansiRate}%</b></div>
     <div class="card" style="padding:12px 16px">Wirausaha: <b>${s.wirausaha||0}</b> · Magang: <b>${s.magang||0}</b> · Organisasi: <b>${s.organisasi||0}</b></div>`;
 }
+
 function renderCharts(c){
   if(!c)return;
   drawBarChart('chStatus',c.statusCounts,'Jumlah','#116149');
@@ -1997,13 +2009,13 @@ function renderAccreditation(a){
 }
 function renderMasterTable(items){
   const t=$('masterTable');if(!t)return;
-  t.innerHTML=(!items||!items.length)?'<tr><td>Tidak ada data.</td></tr>':
+  t.innerHTML=(!items||!items.length)?'<tr><td>Tidak ada data pada scope Anda.</td></tr>':
     `<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Tahun Lulus</th><th>Status</th></tr>`+
     items.map(x=>`<tr><td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td><td>${esc(x.JENJANG)}</td><td>${esc(x.TAHUN_LULUS)}</td><td>${x.sudah?'✅ Sudah':'⏳ Belum'}</td></tr>`).join('');
 }
 function renderReminderTable(items){
   const t=$('reminderTable');if(!t)return;
-  t.innerHTML=(!items||!items.length)?'<tr><td>Semua alumni sudah mengisi 🎉</td></tr>':
+  t.innerHTML=(!items||!items.length)?'<tr><td>Semua alumni pada scope Anda sudah mengisi 🎉</td></tr>':
     `<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Email</th><th>WhatsApp</th></tr>`+
     items.map(x=>`<tr><td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td><td>${esc(x.EMAIL)}</td><td>${esc(x.WHATSAPP)}</td></tr>`).join('');
 }
@@ -2022,8 +2034,12 @@ async function loadDashboardData(){
   if(btn){btn.innerHTML='<span class="spinner" style="border-width:2px"></span> Memuat...';btn.disabled=true}
   try{
     const r=await apiPost({action:'dashboard',filters:Object.assign({},dashFilters,{scope:accScope}),page:respPage,perPage:RESP_PER_PAGE});
-    renderKpi(r.summary);renderCharts(r.charts);updateTahunFilterFromData(r.charts&&r.charts.yearCounts);
-    renderRecentTable(r.recent);renderRespTable(r.items,r.pagination);renderAccreditation(r.accreditation);
+    renderKpi(r.summary);
+    renderCharts(r.charts);
+    updateTahunFilterFromData(r.charts&&r.charts.yearCounts);
+    renderRecentTable(r.recent);
+    renderRespTable(r.items,r.pagination);
+    renderAccreditation(r.accreditation);
     if(r.master)renderMasterTable(r.master.items||[]);
     if(r.reminder)renderReminderTable(r.reminder.items||[]);
     if(PROFILE&&PROFILE.role==='ADMIN'){
@@ -2181,12 +2197,10 @@ function bindEvents(){
   $('tracerForm').onsubmit=(e)=>{e.preventDefault();submitTracer()};
   $('checkNimBtn').onclick=checkNim;
 
-  // Conditional "Lainnya" (untuk select)
   document.querySelectorAll('[data-conditional]').forEach(el=>{
     el.addEventListener('change',()=>{const box=document.getElementById(el.dataset.conditional+'Box');if(box)box.classList.toggle('hidden',el.value!=='Lainnya')});
   });
 
-  // Status pekerjaan — show/hide blok
   $('statusPekerjaanUtama').addEventListener('change',e=>{
     const v=e.target.value;
     const box=ensureLainBox(e.target,'statusPekerjaanLain','Sebutkan status pekerjaan lainnya');
@@ -2204,14 +2218,12 @@ function bindEvents(){
   $('punyaPrestasi').addEventListener('change',e=>$('prestasiBox').classList.toggle('hidden',e.target.value!=='Ya'));
   $('melanjutkanStudi').addEventListener('change',e=>$('studiBox').classList.toggle('hidden',e.target.value!=='Ya'));
 
-  // Login
   $('loginBtn').onclick=login;
   $('logoutBtn').onclick=doLogout;
   $('ubahPassBtn')&&($('ubahPassBtn').onclick=openChangePasswordModal);
   $('refreshBtn').onclick=loadDashboardData;
   $('togglePass').onclick=()=>{const p=$('password');p.type=p.type==='password'?'text':'password'};
 
-  // Tabs admin
   $$('#adminTabs button').forEach(b=>b.onclick=()=>{
     $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
@@ -2221,17 +2233,14 @@ function bindEvents(){
     if(b.dataset.panel==='reminder')reloadReminder();
   });
 
-  // Filters
   $('applyFilter').onclick=()=>{dashFilters={periodeId:val('fPeriode'),tahun:val('fTahun'),programStudi:val('fProdi'),q:val('fQ')};respPage=1;loadDashboardData()};
   $('resetFilter').onclick=()=>{$('fPeriode').value='';$('fTahun').value='';$('fProdi').value='';$('fQ').value='';dashFilters={};respPage=1;loadDashboardData()};
 
-  // Export
   $$('[data-export]').forEach(b=>b.onclick=()=>exportResponden(b.dataset.export));
   $('reloadMasterBtn')&&($('reloadMasterBtn').onclick=reloadMaster);
   $('exportMasterBtn')&&($('exportMasterBtn').onclick=exportMaster);
   $('reloadReminderBtn')&&($('reloadReminderBtn').onclick=reloadReminder);
 
-  // Akreditasi scope
   $$('#accScopeBar button').forEach(b=>b.onclick=async()=>{
     $$('#accScopeBar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
     accScope=b.dataset.scope;
