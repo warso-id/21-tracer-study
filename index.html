@@ -206,9 +206,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 </header>
 
 <nav><div class="wrap navin">
-  <button class="tab active" data-view="form">📝 Tracer Study</button>
-  <button class="tab" data-view="tracking">🔎 Cek Tracer ID</button>
-  <button class="tab" data-view="admin">📊 Dashboard</button>
+  <button type="button" class="tab active" data-view="form">📝 Tracer Study</button>
+  <button type="button" class="tab" data-view="tracking">🔎 Cek Tracer ID</button>
+  <button type="button" class="tab" data-view="admin">📊 Dashboard</button>
 </div></nav>
 
 <main class="wrap">
@@ -959,7 +959,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
     <p class="hint">Masukkan Tracer ID yang Anda terima setelah pengisian berhasil.</p>
     <div class="grid">
       <div><label for="trackingId">Tracer ID</label><input id="trackingId" placeholder="TS-2026-000001" maxlength="20"></div>
-      <div style="align-self:end"><button id="trackBtn" class="btn">Cek Status</button></div>
+      <div style="align-self:end"><button type="button" id="trackBtn" class="btn">Cek Status</button></div>
     </div>
     <div id="trackResult" style="margin-top:16px"></div>
   </div>
@@ -990,7 +990,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <p class="hint" style="margin-bottom:24px">Gunakan kredensial resmi institusi.</p>
           <div style="margin-bottom:16px"><label for="username">Username</label><input id="username" autocomplete="username" placeholder="contoh: admin, dekan, wadek" style="padding:12px 16px"></div>
           <div style="margin-bottom:24px;position:relative"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••" style="padding:12px 16px"><button type="button" id="togglePass" style="position:absolute;right:12px;top:36px;border:0;background:transparent;font-size:16px;cursor:pointer">👁️</button></div>
-          <button id="loginBtn" class="btn block" style="padding:14px;font-size:15px">Masuk Dashboard →</button>
+          <button type="button" id="loginBtn" class="btn block" style="padding:14px;font-size:15px">Masuk Dashboard →</button>
         </div>
       </div>
     </div>
@@ -1007,19 +1007,19 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div class="dh-actions">
           <span class="badge info" id="profileBadge"></span>
           <span class="badge ok" id="debugBadge" style="font-size:11px;cursor:help" title="Diagnostik"></span>
-          <button id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
-          <button id="logoutBtn" class="btn danger sm">Keluar</button>
+          <button type="button" id="refreshBtn" class="btn secondary sm">↻ Refresh</button>
+          <button type="button" id="logoutBtn" class="btn danger sm">Keluar</button>
         </div>
       </div>
 
       <div class="subtab" id="adminTabs">
-        <button class="active" data-panel="overview">Ringkasan</button>
-        <button data-panel="responden">Data Responden</button>
-        <button data-panel="analitik">Grafik Analitik</button>
-        <button data-panel="akreditasi">IKU Akreditasi</button>
-        <button data-panel="reminder" class="pimpinan-only">🔔 Reminder</button>
-        <button data-panel="masteralumni" class="pimpinan-only">👥 Master Alumni</button>
-        <button data-panel="adminpanel" class="admin-only">⚙️ Pengaturan</button>
+        <button type="button" class="active" data-panel="overview">Ringkasan</button>
+        <button type="button" data-panel="responden">Data Responden</button>
+        <button type="button" data-panel="analitik">Grafik Analitik</button>
+        <button type="button" data-panel="akreditasi">IKU Akreditasi</button>
+        <button type="button" data-panel="reminder" class="pimpinan-only">🔔 Reminder</button>
+        <button type="button" data-panel="masteralumni" class="pimpinan-only">👥 Master Alumni</button>
+        <button type="button" data-panel="adminpanel" class="admin-only">⚙️ Pengaturan</button>
       </div>
 
       <div class="card" style="background:#f4f8f6;border-color:#dce5e1;box-shadow:none">
@@ -1029,8 +1029,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <div><label for="fProdi">Program Studi</label><select id="fProdi"><option value="">Semua</option></select></div>
           <div><label for="fQ">Cari (NIM/Nama)</label><input id="fQ" placeholder="Ketik kata kunci..."></div>
           <div style="display:flex;gap:8px">
-            <button id="applyFilter" class="btn" style="flex:1">Terapkan Filter</button>
-            <button id="resetFilter" class="btn secondary" title="Reset">↻</button>
+            <button type="button" id="applyFilter" class="btn" style="flex:1">Terapkan Filter</button>
+            <button type="button" id="resetFilter" class="btn secondary" title="Reset">↻</button>
           </div>
         </div>
       </div>
@@ -1054,8 +1054,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
           <span class="badge info" id="respInfo"></span>
           <div class="actions">
-            <button class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
-            <button class="btn secondary sm" data-export="xlsx">⬇ Export Excel</button>
+            <button type="button" class="btn secondary sm" data-export="csv">⬇ Export CSV</button>
+            <button type="button" class="btn secondary sm" data-export="xlsx">⬇ Export Excel</button>
           </div>
         </div>
         <div class="tablewrap"><table class="table" id="respTable"></table></div>
@@ -1073,10 +1073,10 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
       <div class="panel hidden" data-panel="akreditasi">
         <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto" id="accScopeBar">
-          <button class="btn sm secondary active" data-scope="all">Semua</button>
-          <button class="btn sm secondary" data-scope="s1">Prodi S1</button>
-          <button class="btn sm secondary" data-scope="s2">Prodi S2</button>
-          <button class="btn sm secondary" data-scope="fak">Fakultas</button>
+          <button type="button" class="btn sm secondary active" data-scope="all">Semua</button>
+          <button type="button" class="btn sm secondary" data-scope="s1">Prodi S1</button>
+          <button type="button" class="btn sm secondary" data-scope="s2">Prodi S2</button>
+          <button type="button" class="btn sm secondary" data-scope="fak">Fakultas</button>
         </div>
         <div class="grid">
           <div class="card" style="background:#f4f8f6"><h4 style="margin-bottom:12px">Indikator BAN-PT</h4><ul id="accListBANPT" style="margin:0;padding-left:20px;font-size:13.5px;line-height:1.6"></ul></div>
@@ -1089,9 +1089,9 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
             <h3>👥 Master Data Alumni</h3>
             <div class="actions">
-              <button class="btn secondary sm" id="reloadMasterBtn">↻ Reload</button>
-              <button class="btn secondary sm" id="exportMasterBtn">⬇ Export CSV</button>
-              <button class="btn sm admin-only" id="openUploadBtn">⬆️ Upload File</button>
+              <button type="button" class="btn secondary sm" id="reloadMasterBtn">↻ Reload</button>
+              <button type="button" class="btn secondary sm" id="exportMasterBtn">⬇ Export CSV</button>
+              <button type="button" class="btn sm admin-only" id="openUploadBtn">⬆️ Upload File</button>
             </div>
           </div>
           <div id="masterStats" class="kpi" style="margin-bottom:16px"></div>
@@ -1114,8 +1114,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             <div id="uploadStatus" class="status" style="margin-top:12px"></div>
             <div id="uploadPreview" class="tablewrap" style="margin-top:12px;display:none;max-height:220px"></div>
             <div class="actions" style="margin-top:14px">
-              <button class="btn secondary sm" id="cancelUploadBtn">Batal</button>
-              <button class="btn sm" id="doUploadBtn" disabled>⬆️ Unggah ke MASTER_ALUMNI</button>
+              <button type="button" class="btn secondary sm" id="cancelUploadBtn">Batal</button>
+              <button type="button" class="btn sm" id="doUploadBtn" disabled>⬆️ Unggah ke MASTER_ALUMNI</button>
             </div>
           </div>
           <div class="tablewrap"><table class="table" id="masterTable"></table></div>
@@ -1128,8 +1128,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
             <h3>🔔 Target Reminder Responden</h3>
             <div class="actions">
-              <button class="btn secondary sm" id="exportReminderBtn">⬇ Export CSV</button>
-              <button class="btn sm" id="reloadReminderBtn">Muat Data Belum Isi</button>
+              <button type="button" class="btn secondary sm" id="exportReminderBtn">⬇ Export CSV</button>
+              <button type="button" class="btn sm" id="reloadReminderBtn">Muat Data Belum Isi</button>
             </div>
           </div>
           <p class="hint">Alumni yang belum berpartisipasi pada periode ini (sesuai scope Anda). Setiap kali dimuat/diexport akan tercatat di sheet <code>REMINDER_LOG</code>.</p>
@@ -1140,11 +1140,11 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
       <div class="panel hidden" data-panel="adminpanel">
         <div class="card"><h3>👥 Manajemen Pengguna</h3>
           <div class="tablewrap"><table class="table" id="usersTable"></table></div>
-          <button class="btn sm" id="addUserBtn" style="margin-top:12px">+ Tambah/Ubah Pengguna</button>
+          <button type="button" class="btn sm" id="addUserBtn" style="margin-top:12px">+ Tambah/Ubah Pengguna</button>
         </div>
         <div class="card"><h3>🗓️ Manajemen Periode</h3>
           <div class="tablewrap"><table class="table" id="periodeTable"></table></div>
-          <button class="btn sm" id="addPeriodeBtn" style="margin-top:12px">+ Tambah/Ubah Periode</button>
+          <button type="button" class="btn sm" id="addPeriodeBtn" style="margin-top:12px">+ Tambah/Ubah Periode</button>
         </div>
         <div class="card"><h3>📜 Log Audit Terbaru</h3><div class="tablewrap"><table class="table" id="auditTable"></table></div></div>
         <div class="card"><h3>🔔 Log Reminder Terbaru</h3><div class="tablewrap"><table class="table" id="reminderLogTable"></table></div></div>
@@ -1309,6 +1309,7 @@ function clearErrors(){$$('.field-error').forEach(e=>{e.textContent='';e.classLi
 function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('hidden'))return false;n=n.parentElement}return true}
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
 function setHTML(id,html){const el=$(id);if(el)el.innerHTML=html}
+function forceReflow(el){if(!el)return;void el.offsetHeight;}
 
 /* ============================================================
  *  API LAYER
@@ -1903,7 +1904,7 @@ function showDashboard(){
   if(firstTab)firstTab.classList.add('active');
   $$('.panel').forEach(p=>p.classList.add('hidden'));
   const overviewPanel=document.querySelector('.panel[data-panel="overview"]');
-  if(overviewPanel)overviewPanel.classList.remove('hidden');
+  if(overviewPanel){overviewPanel.classList.remove('hidden');forceReflow(overviewPanel);}
 
   respPage=1;masterPage=1;
 
@@ -1913,19 +1914,48 @@ function showDashboard(){
 /* ============================================================
  *  CHARTS
  * ============================================================ */
-function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
+function destroyChart(id){if(charts[id]){try{charts[id].destroy()}catch(_){}delete charts[id]}}
+function isCanvasVisible(canvasId){
+  const el=$(canvasId);
+  if(!el)return false;
+  // Check if element is actually rendered (has non-zero size and no hidden ancestors)
+  if(el.offsetWidth===0&&el.offsetHeight===0)return false;
+  let n=el;
+  while(n){if(n.classList&&n.classList.contains('hidden'))return false;n=n.parentElement}
+  return true;
+}
 function drawBarChart(canvasId,dataObj,label,color){
   const el=$(canvasId);if(!el||typeof Chart==='undefined')return;
+  if(!isCanvasVisible(canvasId))return; // Skip hidden canvas - will render when panel becomes visible
+
   destroyChart(canvasId);
   const labels=Object.keys(dataObj||{}),data=labels.map(k=>dataObj[k]);
+
+  const ctx=el.getContext('2d');
   if(!labels.length){
-    const ctx=el.getContext('2d');
     ctx.clearRect(0,0,el.width,el.height);
     ctx.font='14px system-ui';ctx.fillStyle='#66736d';ctx.textAlign='center';
-    ctx.fillText('Belum ada data pada scope ini',el.width/2,60);
+    ctx.fillText('Belum ada data pada scope ini',el.width/2||150,60);
     return;
   }
-  charts[canvasId]=new Chart(el.getContext('2d'),{type:'bar',data:{labels,datasets:[{label,data,backgroundColor:color||'#116149'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+  try{
+    charts[canvasId]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label,data,backgroundColor:color||'#116149'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+  }catch(e){console.error('[drawBarChart:'+canvasId+']',e)}
+}
+function renderChartsForPanel(panelName){
+  if(!DASH_DATA||!DASH_DATA.charts)return;
+  const c=DASH_DATA.charts;
+  if(panelName==='overview'){
+    drawBarChart('chStatus',c.statusCounts,'Jumlah','#116149');
+    drawBarChart('chTahun',c.yearCounts,'Jumlah','#0c4d3a');
+    drawBarChart('chKesesuaian',c.kesesuaianCounts,'Jumlah','#1d4ed8');
+    drawBarChart('chMasaTunggu',c.masaTungguBuckets,'Jumlah','#b54708');
+  } else if(panelName==='analitik'){
+    drawBarChart('chKompetensi',c.kompetensiDikuasaiAvg,'Rata-rata','#059669');
+    drawBarChart('chKebutuhan',c.kompetensiDibutuhkanAvg,'Rata-rata','#4f46e5');
+    drawBarChart('chBidang',c.bidangCounts,'Jumlah','#d97706');
+    drawBarChart('chOrganisasi',c.organisasiCounts,'Jumlah','#7c3aed');
+  }
 }
 
 /* ============================================================
@@ -1953,18 +1983,6 @@ function renderKpi(s){
     <div class="card" style="padding:12px 16px">Wirausaha: <b>${s.wirausaha||0}</b> · Magang: <b>${s.magang||0}</b> · Organisasi: <b>${s.organisasi||0}</b></div>`;
 }
 
-function renderCharts(c){
-  if(!c)return;
-  drawBarChart('chStatus',c.statusCounts,'Jumlah','#116149');
-  drawBarChart('chTahun',c.yearCounts,'Jumlah','#0c4d3a');
-  drawBarChart('chKesesuaian',c.kesesuaianCounts,'Jumlah','#1d4ed8');
-  drawBarChart('chMasaTunggu',c.masaTungguBuckets,'Jumlah','#b54708');
-  drawBarChart('chKompetensi',c.kompetensiDikuasaiAvg,'Rata-rata','#059669');
-  drawBarChart('chKebutuhan',c.kompetensiDibutuhkanAvg,'Rata-rata','#4f46e5');
-  drawBarChart('chBidang',c.bidangCounts,'Jumlah','#d97706');
-  drawBarChart('chOrganisasi',c.organisasiCounts,'Jumlah','#7c3aed');
-}
-
 function renderRecentTable(rows){
   const t=$('recentTable');if(!t)return;
   if(!rows||!rows.length){t.innerHTML='<tr><td>Belum ada data pada scope Anda.</td></tr>';return}
@@ -1980,7 +1998,7 @@ function renderRespTable(rows,pagination){
   $('respInfo')&&($('respInfo').textContent=pagination?`Total ${pagination.total} data · Hal ${pagination.page}/${pagination.totalPages}`:'');
   const pg=$('respPagination');
   if(pg&&pagination){
-    pg.innerHTML=`<button class="btn secondary sm" id="respPrev" ${pagination.page<=1?'disabled':''}>← Sebelumnya</button><span>Hal ${pagination.page} / ${pagination.totalPages}</span><button class="btn secondary sm" id="respNext" ${pagination.page>=pagination.totalPages?'disabled':''}>Berikutnya →</button>`;
+    pg.innerHTML=`<button type="button" class="btn secondary sm" id="respPrev" ${pagination.page<=1?'disabled':''}>← Sebelumnya</button><span>Hal ${pagination.page} / ${pagination.totalPages}</span><button type="button" class="btn secondary sm" id="respNext" ${pagination.page>=pagination.totalPages?'disabled':''}>Berikutnya →</button>`;
     const prev=$('respPrev'),next=$('respNext');
     if(prev)prev.onclick=()=>{respPage=Math.max(1,pagination.page-1);loadDashboardData('all')};
     if(next)next.onclick=()=>{respPage=pagination.page+1;loadDashboardData('all')};
@@ -2022,13 +2040,15 @@ function renderAdminPanel(users,periode,audit,reminderLog){
 
 /* ============================================================
  *  RENDER ALL PANELS — idempotent dari cache DASH_DATA
+ *  [FIX-W] Chart HANYA di-render untuk panel yang sedang visible,
+ *  mencegah canvas berukuran 0x0 dan chart "hilang".
  * ============================================================ */
 function renderAllPanels(){
   if(!DASH_DATA){console.warn('[renderAllPanels] DASH_DATA masih null');return}
   const safe=(label,fn)=>{try{fn()}catch(e){console.error('[render:'+label+']',e)}};
 
+  // Tabel & KPI: aman di-render meski panel hidden (innerHTML tidak butuh layout)
   safe('KPI',    ()=>renderKpi(DASH_DATA.summary));
-  safe('Charts', ()=>renderCharts(DASH_DATA.charts));
   safe('Tahun',  ()=>updateTahunFilterFromData(DASH_DATA.charts&&DASH_DATA.charts.yearCounts));
   safe('Recent', ()=>renderRecentTable(DASH_DATA.recent));
   safe('Resp',   ()=>renderRespTable(DASH_DATA.items,DASH_DATA.pagination));
@@ -2038,7 +2058,11 @@ function renderAllPanels(){
   if(PROFILE&&PROFILE.role==='ADMIN'&&DASH_DATA.users){
     safe('Admin', ()=>renderAdminPanel(DASH_DATA.users||[],DASH_DATA.periode||[],DASH_DATA.audit||[],DASH_DATA.reminderLog||[]));
   }
-  /* Debug badge di header */
+
+  // [FIX-W] Charts hanya untuk panel aktif yang sedang visible
+  safe('Charts', ()=>renderChartsForPanel(DASH_ACTIVE_TAB));
+
+  // Debug badge di header
   if(DASH_DATA.debug){
     const dbg=DASH_DATA.debug;
     const tag=$('debugBadge');
@@ -2084,7 +2108,7 @@ async function loadDashboardData(include){
     if(DASH_DATA) renderAllPanels();
     else {
       const box=$('kpiBox');
-      if(box) box.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><div><b>Gagal memuat data</b><br>${esc(e.message)}<br><br><button class="btn sm" onclick="location.reload()">🔄 Muat Ulang Halaman</button></div></div>`;
+      if(box) box.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><div><b>Gagal memuat data</b><br>${esc(e.message)}<br><br><button type="button" class="btn sm" onclick="location.reload()">🔄 Muat Ulang Halaman</button></div></div>`;
     }
   }
   finally{
@@ -2144,11 +2168,11 @@ function renderMasterPagination(r){
   const page=r.page||1,totalPages=r.totalPages||1;
   box.innerHTML=`
     <span class="badge info" style="padding:8px 14px">Total ${r.total||0} · Sudah ${r.sudah||0} · Belum ${r.belum||0}</span>
-    <button class="btn secondary sm" ${page<=1?'disabled':''} id="masterFirst">« Pertama</button>
-    <button class="btn secondary sm" ${page<=1?'disabled':''} id="masterPrev">‹ Prev</button>
+    <button type="button" class="btn secondary sm" ${page<=1?'disabled':''} id="masterFirst">« Pertama</button>
+    <button type="button" class="btn secondary sm" ${page<=1?'disabled':''} id="masterPrev">‹ Prev</button>
     <span>Hal ${page} / ${totalPages}</span>
-    <button class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterNext">Next ›</button>
-    <button class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterLast">Terakhir »</button>`;
+    <button type="button" class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterNext">Next ›</button>
+    <button type="button" class="btn secondary sm" ${page>=totalPages?'disabled':''} id="masterLast">Terakhir »</button>`;
   $('masterFirst')&&($('masterFirst').onclick=()=>{masterPage=1;reloadMaster()});
   $('masterPrev')&&($('masterPrev').onclick=()=>{masterPage=Math.max(1,page-1);reloadMaster()});
   $('masterNext')&&($('masterNext').onclick=()=>{masterPage=page+1;reloadMaster()});
@@ -2227,7 +2251,7 @@ function openChangePasswordModal(){
   openModal(`<h3>Ubah Password</h3>
     <div style="margin-bottom:10px"><label>Password Lama</label><input id="mOldPass" type="password"></div>
     <div style="margin-bottom:14px"><label>Password Baru (min 8 karakter)</label><input id="mNewPass" type="password"></div>
-    <div class="actions"><button class="btn secondary sm" id="mCancel">Batal</button><button class="btn sm" id="mSave">Simpan</button></div>`);
+    <div class="actions"><button type="button" class="btn secondary sm" id="mCancel">Batal</button><button type="button" class="btn sm" id="mSave">Simpan</button></div>`);
   $('mCancel').onclick=closeModal;
   $('mSave').onclick=async()=>{try{const r=await apiPost({action:'changepassword',oldPassword:val('mOldPass'),newPassword:val('mNewPass')});toast(r.message||'Password diubah','ok');closeModal()}catch(e){toast(e.message,'err')}};
 }
@@ -2239,7 +2263,7 @@ function openUserModal(){
     <div style="margin-bottom:10px"><label>Program Studi</label><input id="mProdi"></div>
     <div style="margin-bottom:10px"><label>Password (kosongkan bila tidak diubah)</label><input id="mPassword" type="password"></div>
     <div style="margin-bottom:14px"><label style="font-weight:600"><input type="checkbox" id="mAktif" checked style="width:auto;margin-right:6px"> Aktif</label></div>
-    <div class="actions"><button class="btn secondary sm" id="mCancel">Batal</button><button class="btn sm" id="mSave">Simpan</button></div>`);
+    <div class="actions"><button type="button" class="btn secondary sm" id="mCancel">Batal</button><button type="button" class="btn sm" id="mSave">Simpan</button></div>`);
   $('mCancel').onclick=closeModal;
   $('mSave').onclick=async()=>{
     try{
@@ -2256,7 +2280,7 @@ function openPeriodeModal(){
     <div style="margin-bottom:10px"><label>Status</label><select id="mPeriodeStatus"><option>BUKA</option><option>TUTUP</option></select></div>
     <div style="margin-bottom:10px;display:flex;gap:8px"><div style="flex:1"><label>Tahun Min</label><input id="mTahunMin"></div><div style="flex:1"><label>Tahun Max</label><input id="mTahunMax"></div></div>
     <div style="margin-bottom:14px;display:flex;gap:8px"><div style="flex:1"><label>Tgl Buka</label><input id="mTglBuka" type="date"></div><div style="flex:1"><label>Tgl Tutup</label><input id="mTglTutup" type="date"></div></div>
-    <div class="actions"><button class="btn secondary sm" id="mCancel">Batal</button><button class="btn sm" id="mSave">Simpan</button></div>`);
+    <div class="actions"><button type="button" class="btn secondary sm" id="mCancel">Batal</button><button type="button" class="btn sm" id="mSave">Simpan</button></div>`);
   $('mCancel').onclick=closeModal;
   $('mSave').onclick=async()=>{
     try{
@@ -2312,23 +2336,44 @@ function bindEvents(){
   $('refreshBtn').onclick=()=>{respPage=1;masterPage=1;loadDashboardData('all')};
   $('togglePass').onclick=()=>{const p=$('password');p.type=p.type==='password'?'text':'password'};
 
-  /* Tab switching: re-render dari cache DASH_DATA, lazy-load bila perlu */
+  /* [FIX-W] Tab switching: JANGAN re-render tabel (sudah ada di DOM).
+     Hanya toggle visibility + force reflow + render charts panel aktif.
+     Jika data master/reminder belum di-load, lazy-load. */
   $$('#adminTabs button').forEach(b=>b.onclick=()=>{
+    const targetPanel=b.dataset.panel;
+
     $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
+
     $$('.panel').forEach(p=>p.classList.add('hidden'));
-    const panel=document.querySelector(`[data-panel="${b.dataset.panel}"]`);
-    if(panel)panel.classList.remove('hidden');
-    DASH_ACTIVE_TAB=b.dataset.panel;
+    const panel=document.querySelector(`.panel[data-panel="${targetPanel}"]`);
+    if(panel){
+      panel.classList.remove('hidden');
+      forceReflow(panel); // Pastikan layout dihitung sebelum Chart.js query ukuran canvas
+    }
 
-    renderAllPanels();
+    DASH_ACTIVE_TAB=targetPanel;
 
-    if(b.dataset.panel==='masteralumni'){
+    // [FIX-W] Re-render hanya chart untuk panel aktif (tabel & KPI sudah ada di DOM)
+    try{renderChartsForPanel(targetPanel)}catch(e){console.error('[tab:charts]',e)}
+
+    // Debug badge tetap di-update
+    if(DASH_DATA&&DASH_DATA.debug){
+      const dbg=DASH_DATA.debug;
+      const tag=$('debugBadge');
+      if(tag){
+        tag.textContent=`📊 ${dbg.totalResponsesScoped||0}/${dbg.totalMasterScoped||0} · ${dbg.scopeLabel||'-'}`;
+        tag.title=JSON.stringify(dbg,null,2);
+      }
+    }
+
+    // Lazy-load master/reminder bila belum ada di cache
+    if(targetPanel==='masteralumni'){
       if(!DASH_DATA || !DASH_DATA.master){ masterPage=1; reloadMaster(); }
       else { renderMasterTable(DASH_DATA.master.items||[]); renderMasterPagination(DASH_DATA.master); }
       loadMasterStats();
     }
-    if(b.dataset.panel==='reminder'){
+    if(targetPanel==='reminder'){
       if(!DASH_DATA || !DASH_DATA.reminder){ reloadReminder(); }
       else { renderReminderTable(DASH_DATA.reminder.items||[]); }
     }
