@@ -213,12 +213,18 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
 .admin-tile .at-icon{font-size:32px;margin-bottom:8px}
 .admin-tile b{display:block;font-size:14px;color:var(--accent2);margin-bottom:4px;word-break:break-word}
 .admin-tile span{font-size:12px;color:var(--muted);word-break:break-word}
-.receipt-box{background:linear-gradient(135deg,#eaf7ef,#d1fae5);border:2px solid #6ee7b7;border-radius:14px;padding:18px;margin-top:16px;animation:slideUp .4s}
-.receipt-box h4{margin:0 0 8px;color:var(--s1-dark);font-size:16px;display:flex;align-items:center;gap:8px}
-.receipt-box p{margin:4px 0;font-size:13.5px;color:var(--s1-dark);word-break:break-word}
-.receipt-box .receipt-id{background:#fff;padding:10px 14px;border-radius:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;font-weight:800;color:var(--accent2);letter-spacing:1px;text-align:center;margin:10px 0;word-break:break-all}
-.receipt-box .receipt-link{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;margin-top:8px;transition:all .2s}
+.receipt-box{background:linear-gradient(135deg,#eaf7ef,#d1fae5);border:2px solid #6ee7b7;border-radius:14px;padding:20px;margin-top:16px;animation:slideUp .4s}
+.receipt-box h4{margin:0 0 10px;color:var(--s1-dark);font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.receipt-box p{margin:6px 0;font-size:13.5px;color:var(--s1-dark);word-break:break-word;line-height:1.6}
+.receipt-box .receipt-id{background:#fff;padding:12px 14px;border-radius:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(15px,4vw,18px);font-weight:800;color:var(--accent2);letter-spacing:1.5px;text-align:center;margin:12px 0;word-break:break-all;border:1px solid #6ee7b7}
+.receipt-box .receipt-link{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;margin-top:8px;transition:all .2s;border:0;cursor:pointer;font-family:inherit}
 .receipt-box .receipt-link:hover{background:var(--accent2);transform:translateY(-1px)}
+.receipt-box .receipt-email-status{background:#fff;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:13px;border-left:3px solid var(--s1);word-break:break-word}
+.receipt-box .receipt-email-status.warn{border-left-color:var(--warn);background:#fff8e8;color:var(--warn)}
+.receipt-box .receipt-email-status code{background:#f1f7f4;padding:2px 6px;border-radius:4px;font-size:12.5px;word-break:break-all}
+.reminder-editor{background:#fdf8ee;border:2px solid #fcd34d;border-radius:14px;padding:16px 18px;margin:12px 0}
+.reminder-editor h4{margin:0 0 12px;color:var(--admin-dark);font-size:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.reminder-editor textarea{font-family:inherit;font-size:13.5px;min-height:100px}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.login-shell{grid-template-columns:1fr}.acc-grid{grid-template-columns:1fr}.acc-metrics{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}
@@ -247,6 +253,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
   .toast{width:100%}
   .filters{grid-template-columns:1fr}
   .kpi{grid-template-columns:repeat(2,1fr)}
+  .acc-card ul{font-size:13px}
 }
 @media(max-width:400px){
   .kpi{grid-template-columns:1fr}
@@ -306,7 +313,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
 
   <div class="card">
     <h2>Isi Tracer Study</h2>
-    <p class="hint">Formulir dioptimalkan: pertanyaan otomatis menyesuaikan jenjang &amp; status Anda. Dropdown bertingkat memandu pengisian lebih cepat &amp; akurat.</p>
+    <p class="hint">Formulir dioptimalkan: pertanyaan otomatis menyesuaikan jenjang &amp; status Anda.</p>
     <div id="periodeInfo" class="status info" style="display:none"></div>
     <div id="formStatus" class="status"></div>
     <div id="receiptBox" class="hidden"></div>
@@ -329,7 +336,8 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
       <span class="badge warn" id="levelHint" style="margin-left:auto;padding:6px 12px;font-size:12px">Belum Terverifikasi</span>
     </div>
 
-    <form id="tracerForm" novalidate autocomplete="off" autocomplete="new-password">
+    <form id="tracerForm" novalidate autocomplete="off">
+      <!-- STEP 1 -->
       <div class="step active" data-step="1">
         <h3>Bagian A — Data Pribadi</h3>
         <div class="form-section-title">🔐 Verifikasi NIM</div>
@@ -360,7 +368,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
           <div><label for="whatsapp">No. WhatsApp <span class="req">*</span></label><input id="whatsapp" required inputmode="numeric" maxlength="15" minlength="10" pattern="\d{10,15}" placeholder="08xxxxxxxxxx" autocomplete="tel"><span class="field-error" id="err-whatsapp"></span></div>
         </div>
         <div class="form-section-title">🏠 Alamat Domisili (Dropdown Bertingkat)</div>
-        <div class="cascade-info">📍 Pilih <b>Provinsi</b> → daftar <b>Kota/Kabupaten</b> akan muncul otomatis (bersumber dari REF_WILAYAH).</div>
+        <div class="cascade-info">📍 Pilih <b>Provinsi</b> → daftar <b>Kota/Kabupaten</b> akan muncul otomatis.</div>
         <div class="grid">
           <div><label for="provinsiDomisili">Provinsi Domisili</label><select id="provinsiDomisili"><option value="">Pilih Provinsi</option></select></div>
           <div><label for="kotaDomisili">Kota/Kabupaten Domisili</label><select id="kotaDomisili" disabled><option value="">Pilih Provinsi terlebih dahulu</option></select></div>
@@ -368,54 +376,41 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
           <div class="full"><label for="alamatTetap">Alamat Tetap (KTP)</label><textarea id="alamatTetap" maxlength="500" placeholder="Kosongkan jika sama dengan domisili"></textarea></div>
         </div>
         <div class="form-section-title">🎓 Data Akademik Khusus</div>
+
+        <!-- [UPDATED] S1: Single dropdown Konsentrasi -->
         <div id="groupS1" class="hidden" style="border:2px solid var(--s1-border);border-radius:12px;padding:16px;background:var(--s1-bg)">
           <p style="font-weight:800;color:var(--s1-dark);margin:0 0 12px;text-transform:uppercase">Khusus S1 Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulSkripsi">Judul Skripsi <span class="req">*</span></label><textarea id="judulSkripsi" required maxlength="1000"></textarea><span class="field-error" id="err-judulSkripsi"></span></div>
             <div>
-              <label for="konsentrasiS1">Kategori Konsentrasi S1 <span class="req">*</span></label>
+              <label for="konsentrasiS1">Konsentrasi S1 <span class="req">*</span></label>
               <select id="konsentrasiS1" required>
-                <option value="">Pilih kategori</option>
-                <option>Jurnalistik</option><option>Periklanan</option><option>Hubungan Masyarakat</option>
-                <option>Penyiaran</option><option>Media Digital</option><option>Lainnya</option>
+                <option value="">Pilih konsentrasi</option>
+                <option>Digital Public Relations</option>
+                <option>Digital Advertising</option>
+                <option>Digital Media Journalism</option>
+                <option>Digital Broadcasting</option>
               </select>
               <span class="field-error" id="err-konsentrasiS1"></span>
-            </div>
-            <div id="konsentrasiS1SubBox" class="hidden">
-              <label for="konsentrasiS1Sub">Sub-Konsentrasi S1 <span class="req">*</span></label>
-              <select id="konsentrasiS1Sub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
-              <span class="field-error" id="err-konsentrasiS1Sub"></span>
-            </div>
-            <div id="konsentrasiS1LainBox" class="hidden">
-              <label for="konsentrasiS1Lain">Sebutkan konsentrasi S1 <span class="req">*</span></label>
-              <input id="konsentrasiS1Lain" maxlength="100">
-              <span class="field-error" id="err-konsentrasiS1Lain"></span>
             </div>
             <div><label for="pembimbingSkripsi">Dosen Pembimbing Skripsi</label><input id="pembimbingSkripsi" maxlength="120"></div>
           </div>
         </div>
+
+        <!-- [UPDATED] S2: Single dropdown Konsentrasi -->
         <div id="groupS2" class="hidden" style="border:2px solid var(--s2-border);border-radius:12px;padding:16px;background:var(--s2-bg)">
           <p style="font-weight:800;color:var(--s2-dark);margin:0 0 12px;text-transform:uppercase">Khusus S2 Magister Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulTesis">Judul Tesis <span class="req">*</span></label><textarea id="judulTesis" required maxlength="1000"></textarea><span class="field-error" id="err-judulTesis"></span></div>
             <div>
-              <label for="konsentrasiS2">Kategori Konsentrasi S2 <span class="req">*</span></label>
+              <label for="konsentrasiS2">Konsentrasi S2 <span class="req">*</span></label>
               <select id="konsentrasiS2" required>
-                <option value="">Pilih kategori</option>
-                <option>Komunikasi Strategis</option><option>Media dan Digital</option>
-                <option>Komunikasi Politik</option><option>Komunikasi Korporat</option><option>Lainnya</option>
+                <option value="">Pilih konsentrasi</option>
+                <option>Public Relations</option>
+                <option>Advertising</option>
+                <option>Media dan Komunikasi Visual</option>
               </select>
               <span class="field-error" id="err-konsentrasiS2"></span>
-            </div>
-            <div id="konsentrasiS2SubBox" class="hidden">
-              <label for="konsentrasiS2Sub">Sub-Konsentrasi S2 <span class="req">*</span></label>
-              <select id="konsentrasiS2Sub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
-              <span class="field-error" id="err-konsentrasiS2Sub"></span>
-            </div>
-            <div id="konsentrasiS2LainBox" class="hidden">
-              <label for="konsentrasiS2Lain">Sebutkan konsentrasi S2 <span class="req">*</span></label>
-              <input id="konsentrasiS2Lain" maxlength="100">
-              <span class="field-error" id="err-konsentrasiS2Lain"></span>
             </div>
             <div><label for="pembimbingTesis">Dosen Pembimbing Tesis</label><input id="pembimbingTesis" maxlength="120"></div>
             <div class="full"><label for="jenjangSebelumnya">Jenjang pendidikan sebelumnya</label><select id="jenjangSebelumnya"><option value="">Pilih</option><option>D3</option><option>D4</option><option>S1</option><option>Profesi</option><option>Lainnya</option></select></div>
@@ -424,9 +419,11 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
             <div><label for="pendidikanSebelumnyaKomunikasi">Apakah dari Ilmu Komunikasi?</label><select id="pendidikanSebelumnyaKomunikasi"><option value="">Pilih</option><option>Ya</option><option>Tidak</option></select></div>
           </div>
         </div>
+
         <div class="stepnav"><button type="button" class="btn next" style="margin-left:auto">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 2 -->
       <div class="step" data-step="2">
         <h3>Bagian B — Status &amp; Pekerjaan</h3>
         <div class="grid">
@@ -524,6 +521,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 3 -->
       <div class="step" data-step="3">
         <h3>Bagian C — Pengalaman &amp; Prestasi</h3>
         <div class="form-section-title">🎯 Pengalaman Magang / PKL</div>
@@ -577,6 +575,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 4 -->
       <div class="step" data-step="4">
         <h3>Bagian D — Kompetensi &amp; Relevansi Kurikulum</h3>
         <div class="cascade-info"><b>Petunjuk:</b> Nilai penguasaan (F1) &amp; kebutuhan (F2) menggunakan skala 1 (Sangat Rendah) sampai 5 (Sangat Tinggi). Daftar kompetensi otomatis menyesuaikan jenjang (S1/S2).</div>
@@ -600,6 +599,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 5 -->
       <div class="step" data-step="5">
         <h3>Bagian E — Kepuasan &amp; Kontribusi Alumni</h3>
         <div class="form-section-title">⭐ Kepuasan terhadap FIKOM</div>
@@ -620,6 +620,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 6 -->
       <div class="step" data-step="6">
         <h3>Bagian F — Studi Lanjut</h3>
         <div class="grid">
@@ -644,6 +645,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 7 -->
       <div class="step" data-step="7">
         <h3>Bagian G — Saran &amp; Masukan</h3>
         <p class="hint">Masukan Anda sangat berharga untuk peningkatan mutu FIKOM UPDM (B). Minimal isi 1 saran.</p>
@@ -662,6 +664,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         <div class="stepnav"><button type="button" class="btn secondary prev">← Kembali</button><button type="button" class="btn next">Lanjut →</button></div>
       </div>
 
+      <!-- STEP 8 -->
       <div class="step" data-step="8">
         <h3>Bagian H — Konfirmasi &amp; Pengiriman</h3>
         <div class="card" style="background:#f9fcfb">
@@ -678,7 +681,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
         </div>
         <div id="summaryBox" class="card"></div>
         <div style="background:#fff8e8;border-left:4px solid var(--warn);padding:14px;border-radius:10px;font-size:13px;color:var(--warn);margin:16px 0;font-weight:500">
-          🔒 <b>Keamanan Pengiriman:</b> Sistem dilindungi dari pengiriman ganda. Jika server padat, sistem akan mencoba ulang otomatis (auto-retry). Ringkasan Tracer ID akan otomatis dikirim ke email Anda.
+          🔒 <b>Keamanan Pengiriman:</b> Sistem dilindungi dari pengiriman ganda. Ringkasan &amp; Tracer ID akan otomatis dikirim ke email Anda.
         </div>
         <div class="stepnav">
           <button type="button" class="btn secondary prev">← Kembali Edit</button>
@@ -885,12 +888,11 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
           </div>
           <p class="hint">Alumni yang belum berpartisipasi pada periode ini (sesuai scope Anda). Setiap kali dimuat/diexport akan tercatat di sheet <code>REMINDER_LOG</code>.</p>
 
-          <!-- [NEW] EDIT REDAKSI & LINK FORM -->
-          <div class="card" style="background:#fdf8ee;border:2px solid #fcd34d;box-shadow:none;margin:12px 0">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px">
-              <b style="color:var(--admin-dark);font-size:14px">✏️ Redaksi &amp; Link Form (Edit Manual)</b>
+          <div class="reminder-editor">
+            <h4>
+              <span>✏️ Redaksi &amp; Link Form (Edit Manual)</span>
               <button type="button" class="btn secondary sm" id="toggleReminderEditor">✏️ Edit</button>
-            </div>
+            </h4>
             <div id="reminderEditorPanel" class="hidden">
               <div style="margin-bottom:12px">
                 <label for="reminderFormLink">🔗 Link Form Tracer Study</label>
@@ -900,7 +902,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
               <div style="margin-bottom:12px">
                 <label for="reminderWaTemplate">📱 Redaksi WhatsApp</label>
                 <textarea id="reminderWaTemplate" rows="4" maxlength="1500" placeholder="Assalamualaikum {NAMA}, ..."></textarea>
-                <p class="hint" style="margin-top:4px">Placeholder tersedia: <code>{NAMA}</code>, <code>{NIM}</code>, <code>{PRODI}</code>, <code>{LINK}</code></p>
+                <p class="hint" style="margin-top:4px">Placeholder: <code>{NAMA}</code>, <code>{NIM}</code>, <code>{PRODI}</code>, <code>{LINK}</code></p>
               </div>
               <div style="margin-bottom:12px">
                 <label for="reminderEmailSubject">✉️ Subject Email</label>
@@ -909,7 +911,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
               <div style="margin-bottom:12px">
                 <label for="reminderEmailBody">✉️ Body Email</label>
                 <textarea id="reminderEmailBody" rows="6" maxlength="4000" placeholder="Yth. {NAMA}, ..."></textarea>
-                <p class="hint" style="margin-top:4px">Placeholder tersedia: <code>{NAMA}</code>, <code>{NIM}</code>, <code>{PRODI}</code>, <code>{LINK}</code></p>
+                <p class="hint" style="margin-top:4px">Placeholder: <code>{NAMA}</code>, <code>{NIM}</code>, <code>{PRODI}</code>, <code>{LINK}</code></p>
               </div>
               <div class="actions" style="justify-content:flex-start">
                 <button type="button" class="btn secondary sm" id="resetReminderBtn">↻ Reset Default</button>
@@ -965,7 +967,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v16.5.0-production · Secured &amp; Optimized · Cross-platform</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v16.6.0-production · Secured &amp; Optimized · Cross-platform</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -975,7 +977,7 @@ footer{text-align:center;color:var(--muted);padding:30px;padding-bottom:calc(30p
 /* ============================================================
  *  KONSTANTA
  * ============================================================ */
-const APP_VERSION_STR='v16.5.0-production';
+const APP_VERSION_STR='v16.6.0-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
 const TOTAL_STEPS=8, RESP_PER_PAGE=50, MASTER_PER_PAGE=50;
@@ -989,7 +991,6 @@ const DEFAULT_REMINDER_SETTINGS = {
   emailSubject: 'Reminder: Tracer Study FIKOM UPDM (B)',
   emailBody: 'Yth. {NAMA},\n\nSemoga Anda dalam keadaan sehat dan sukses selalu.\n\nKami dari FIKOM UPDM (B) mengingatkan Anda untuk berpartisipasi dalam Tracer Study FIKOM UPDM (B). Data Anda sangat berharga untuk peningkatan mutu pendidikan, akreditasi program studi (BAN-PT, LAMSPAK), dan pelaporan PDDIKTI.\n\nNIM: {NIM}\nProgram Studi: {PRODI}\n\n🔗 Link pengisian: {LINK}\n\nWaktu pengisian ±12 menit. Mohon kesediaan Anda sebelum periode berakhir.\n\nTerima kasih atas partisipasi dan dukungan Anda 🙏\n\nSalam hormat,\nFIKOM UPDM (B)'
 };
-
 let REMINDER_SETTINGS = Object.assign({}, DEFAULT_REMINDER_SETTINGS);
 
 /* ============================================================
@@ -1058,21 +1059,7 @@ const LEVEL_JABATAN_FALLBACK={
   'Lainnya':['Lainnya']
 };
 
-const KONSENTRASI_S1_TREE = {
-  'Jurnalistik': ['Jurnalistik Cetak','Jurnalistik Online','Jurnalistik TV','Jurnalistik Radio','Jurnalistik Foto','Jurnalisme Data'],
-  'Periklanan': ['Periklanan Kreatif','Media Planning','Copywriting','Art Direction','Digital Advertising','Brand Strategy'],
-  'Hubungan Masyarakat': ['Corporate PR','Government PR','Marketing PR','Crisis Communication','Community Relations','Internal Communication'],
-  'Penyiaran': ['Produser TV','Produser Radio','Presenter','Reporter','Editor Video','Content Producer','Broadcast Journalist'],
-  'Media Digital': ['Social Media Specialist','Content Creator','SEO/SEM Specialist','Web Editor','Digital Strategist','Community Manager'],
-  'Lainnya': []
-};
-const KONSENTRASI_S2_TREE = {
-  'Komunikasi Strategis': ['Strategic Communication Planning','Corporate Communication Strategy','Public Affairs','Issue Management','Reputation Management'],
-  'Media dan Digital': ['Digital Media Studies','Social Media Analytics','Media Convergence','Digital Journalism','Interactive Media'],
-  'Komunikasi Politik': ['Political Campaign','Political Marketing','Public Opinion','Political Public Relations','Government Communication'],
-  'Komunikasi Korporat': ['Corporate Reputation','Stakeholder Relations','Crisis & Risk Communication','Corporate Social Responsibility','Investor Relations'],
-  'Lainnya': []
-};
+/* Bidang usaha — cascade tetap (belum diminta perubahan) */
 const BIDANG_USAHA_TREE = {
   'Media & Penyiaran': ['Media Cetak','Media Online','TV & Radio','Production House','Content Studio','Media Monitoring'],
   'Periklanan & PR': ['Creative Agency','Digital Agency','PR Firm','Media Buying','Brand Consultancy','Event Organizer'],
@@ -1199,12 +1186,19 @@ function updateStudentBanner(jenjang, alumni){
  * ============================================================ */
 function showReceiptBox(tracerId, email, emailStatus){
   const box=$('receiptBox'); if(!box) return;
-  const trackingLink = window.location.origin + window.location.pathname + '#tracking=' + encodeURIComponent(tracerId);
+  // [FIX] Gunakan window.location saat ini sebagai base URL — konsisten dengan apa yang user lihat
+  const basePath = window.location.origin + window.location.pathname;
+  const trackingLink = basePath + '#tracking=' + encodeURIComponent(tracerId);
   const emailInfo = emailStatus === 'sent'
-    ? `<p>📧 <b>Ringkasan telah dikirim ke:</b> <code>${esc(email)}</code></p>
-       <p class="hint">Silakan cek inbox/spam Anda. Simpan email ini sebagai bukti partisipasi Anda.</p>`
+    ? `<div class="receipt-email-status">
+         <p style="margin:0 0 4px">📧 <b>Ringkasan telah dikirim ke email:</b></p>
+         <p style="margin:0"><code>${esc(email||'-')}</code></p>
+         <p class="hint" style="margin:6px 0 0;font-size:12px">Silakan cek inbox/spam Anda. Simpan email ini sebagai bukti partisipasi.</p>
+       </div>`
     : emailStatus === 'failed'
-    ? `<p style="color:var(--warn)">⚠️ Ringkasan email gagal terkirim. Anda tetap dapat menyimpan Tracer ID di bawah.</p>`
+    ? `<div class="receipt-email-status warn">
+         <p style="margin:0">⚠️ Ringkasan email gagal terkirim. Anda tetap dapat menyimpan Tracer ID di bawah untuk keperluan verifikasi.</p>
+       </div>`
     : '';
   box.className='receipt-box';
   box.innerHTML = `
@@ -1212,11 +1206,29 @@ function showReceiptBox(tracerId, email, emailStatus){
     <p>Simpan <b>Tracer ID</b> berikut untuk keperluan verifikasi:</p>
     <div class="receipt-id">${esc(tracerId)}</div>
     ${emailInfo}
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-      <a href="${esc(trackingLink)}" class="receipt-link">🔎 Cek Status Tracer ID</a>
-      <button type="button" class="btn secondary sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(tracerId)}').then(()=>toast('Tracer ID disalin ke clipboard','ok')).catch(()=>toast('Gagal menyalin','err'))">📋 Salin Tracer ID</button>
+    <p style="margin-top:14px">🔎 <b>Ingin memeriksa kembali status pengisian Anda?</b></p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      <a href="${esc(trackingLink)}" class="receipt-link">👉 Cek Tracer ID Sekarang</a>
+      <button type="button" class="btn secondary sm" id="copyTracerIdBtn">📋 Salin Tracer ID</button>
     </div>
-    <p class="hint" style="margin-top:12px;font-size:12px">💡 Halaman dapat ditutup. Untuk pertanyaan hubungi admin FIKOM UPDM (B).</p>`;
+    <p class="hint" style="margin-top:12px;font-size:12.5px;word-break:break-all">Atau salin tautan berikut:<br><a href="${esc(trackingLink)}" style="color:var(--accent);word-break:break-all">${esc(trackingLink)}</a></p>
+    <p class="hint" style="margin-top:10px;font-size:12px">💡 Halaman dapat ditutup. Untuk pertanyaan hubungi admin FIKOM UPDM (B).</p>`;
+  // Attach copy handler
+  const copyBtn=$('copyTracerIdBtn');
+  if(copyBtn){
+    copyBtn.onclick=async()=>{
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(tracerId);
+        } else {
+          const ta=document.createElement('textarea');
+          ta.value=tracerId;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+        }
+        toast('Tracer ID disalin ke clipboard','ok');
+      }catch(_){ toast('Gagal menyalin. Silakan salin manual.','err'); }
+    };
+  }
 }
 
 /* ============================================================
@@ -1282,7 +1294,6 @@ async function loadMeta(){
     initWilayahSelects();
     initIndustriSelects();
     initLevelJabatanSelects();
-    initKonsentrasiCascade();
     initBidangUsahaCascade();
     renderCheckGrid('organisasiProfesi',['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
     renderCheckGrid('jenisPrestasi',['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
@@ -1349,29 +1360,6 @@ function initLevelJabatanSelects(){
     jab.disabled=false;
   };
   jab.disabled=true;
-}
-function initKonsentrasiCascade(){
-  ['S1','S2'].forEach(level=>{
-    const main=$('konsentrasi'+level), sub=$('konsentrasi'+level+'Sub'),
-          subBox=$('konsentrasi'+level+'SubBox'), lainBox=$('konsentrasi'+level+'LainBox'),
-          lainInput=$('konsentrasi'+level+'Lain');
-    if(!main||!sub||!subBox||!lainBox)return;
-    const tree = level==='S1' ? KONSENTRASI_S1_TREE : KONSENTRASI_S2_TREE;
-    main.onchange=()=>{
-      const v=main.value;
-      sub.innerHTML='<option value="">Pilih sub-konsentrasi</option>';
-      sub.disabled=true;
-      lainBox.classList.add('hidden');
-      if(lainInput) lainInput.value='';
-      if(!v){ subBox.classList.add('hidden'); return; }
-      if(v==='Lainnya'){ subBox.classList.add('hidden'); lainBox.classList.remove('hidden'); return; }
-      const list=tree[v]||[];
-      if(list.length){
-        sub.innerHTML='<option value="">Pilih sub-konsentrasi</option>'+list.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
-        sub.disabled=false; subBox.classList.remove('hidden');
-      } else { subBox.classList.add('hidden'); }
-    };
-  });
 }
 function initBidangUsahaCascade(){
   const main=$('bidangUsaha'), sub=$('bidangUsahaSub'), subBox=$('bidangUsahaSubBox');
@@ -1510,15 +1498,9 @@ function validateStep(n){
     if(jj === 'S1'){
       if(!val('judulSkripsi')){setFieldError('judulSkripsi','Wajib diisi.');ok=false}
       if(!val('konsentrasiS1')){setFieldError('konsentrasiS1','Wajib dipilih.');ok=false}
-      const kv=val('konsentrasiS1');
-      if(kv && kv!=='Lainnya'){ if(!val('konsentrasiS1Sub')){setFieldError('konsentrasiS1Sub','Sub-konsentrasi wajib dipilih.');ok=false} }
-      if(kv==='Lainnya' && !val('konsentrasiS1Lain')){setFieldError('konsentrasiS1Lain','Wajib diisi.');ok=false}
     } else if(jj === 'S2'){
       if(!val('judulTesis')){setFieldError('judulTesis','Wajib diisi.');ok=false}
       if(!val('konsentrasiS2')){setFieldError('konsentrasiS2','Wajib dipilih.');ok=false}
-      const kv=val('konsentrasiS2');
-      if(kv && kv!=='Lainnya'){ if(!val('konsentrasiS2Sub')){setFieldError('konsentrasiS2Sub','Sub-konsentrasi wajib dipilih.');ok=false} }
-      if(kv==='Lainnya' && !val('konsentrasiS2Lain')){setFieldError('konsentrasiS2Lain','Wajib diisi.');ok=false}
     }
   }
   if(n===2){
@@ -1584,7 +1566,7 @@ function updateSteps(){
 }
 function renderSummary(){
   const jenjang=val('jenjang')||'-';
-  const konsen = jenjang==='S2' ? (val('konsentrasiS2') + (val('konsentrasiS2Sub')?' → '+val('konsentrasiS2Sub'):'') + (val('konsentrasiS2Lain')?' ('+val('konsentrasiS2Lain')+')':'')) : (val('konsentrasiS1') + (val('konsentrasiS1Sub')?' → '+val('konsentrasiS1Sub'):'') + (val('konsentrasiS1Lain')?' ('+val('konsentrasiS1Lain')+')':''));
+  const konsen = jenjang==='S2' ? val('konsentrasiS2') : val('konsentrasiS1');
   setHTML('summaryBox',`
     <h4 style="margin-bottom:12px">Ringkasan Data (Siap Kirim)</h4>
     <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">Pastikan data sudah benar. Data tidak dapat diubah setelah terkirim. Ringkasan akan otomatis dikirim ke email Anda.</p>
@@ -1606,14 +1588,6 @@ function collectPayload(){
   const jenjang=val('jenjang');
   const domProv=val('provinsiDomisili'),domKota=val('kotaDomisili');
   const kProv=val('provinsiKerja'),kKota=val('kotaKerja');
-  const konsentrasiS1 = val('konsentrasiS1');
-  const konsentrasiS1Sub = val('konsentrasiS1Sub');
-  const konsentrasiS1Lain = val('konsentrasiS1Lain');
-  const konsentrasiS1FinalLain = (konsentrasiS1==='Lainnya'?konsentrasiS1Lain:(konsentrasiS1Sub||''));
-  const konsentrasiS2 = val('konsentrasiS2');
-  const konsentrasiS2Sub = val('konsentrasiS2Sub');
-  const konsentrasiS2Lain = val('konsentrasiS2Lain');
-  const konsentrasiS2FinalLain = (konsentrasiS2==='Lainnya'?konsentrasiS2Lain:(konsentrasiS2Sub||''));
   const bidangUsahaMain = val('bidangUsaha');
   const bidangUsahaSub = val('bidangUsahaSub');
   const bidangUsahaFinal = bidangUsahaSub || bidangUsahaMain;
@@ -1625,8 +1599,8 @@ function collectPayload(){
     provinsiDomisili:domProv,kotaDomisili:domKota,
     alamatDomisili:(domKota?domKota+', ':'')+(domProv?domProv+'. ':'')+val('alamatDomisili'),
     alamatTetap:val('alamatTetap'),
-    judulSkripsi:val('judulSkripsi'),konsentrasiS1:konsentrasiS1,konsentrasiS1Lain:konsentrasiS1FinalLain,pembimbingSkripsi:val('pembimbingSkripsi'),
-    judulTesis:val('judulTesis'),konsentrasiS2:konsentrasiS2,konsentrasiS2Lain:konsentrasiS2FinalLain,pembimbingTesis:val('pembimbingTesis'),
+    judulSkripsi:val('judulSkripsi'),konsentrasiS1:val('konsentrasiS1'),konsentrasiS1Lain:'',pembimbingSkripsi:val('pembimbingSkripsi'),
+    judulTesis:val('judulTesis'),konsentrasiS2:val('konsentrasiS2'),konsentrasiS2Lain:'',pembimbingTesis:val('pembimbingTesis'),
     jenjangSebelumnya:val('jenjangSebelumnya'),prodiSebelumnya:val('prodiSebelumnya'),
     ptSebelumnya:val('ptSebelumnya'),pendidikanSebelumnyaKomunikasi:val('pendidikanSebelumnyaKomunikasi'),
     statusPekerjaanUtama:val('statusPekerjaanUtama'),statusPekerjaanLain:val('statusPekerjaanLain'),
@@ -1702,7 +1676,7 @@ function collectPayload(){
 }
 
 /* ============================================================
- *  SUBMIT — [FIX-AE] + auto-send email receipt
+ *  SUBMIT + AUTO EMAIL RECEIPT
  * ============================================================ */
 async function submitTracer(){
   if(formSubmitted)return;
@@ -1725,10 +1699,11 @@ async function submitTracer(){
       sessionStorage.setItem('last_tracer_id',tracerId);
       localStorage.removeItem('ts_draft_data');
 
-      // [FIX-AE] Kirim email ringkasan ke mahasiswa
+      // Kirim email ringkasan — dengan frontend URL agar tracking link mengarah ke frontend
       let emailStatus = 'skipped';
       try {
-        const er = await apiPost({action:'sendreceipt', tracerId});
+        const frontendUrl = window.location.origin + window.location.pathname;
+        const er = await apiPost({action:'sendreceipt', tracerId, frontendUrl});
         emailStatus = er && er.ok ? 'sent' : 'failed';
         if (emailStatus === 'sent') toast('📧 Ringkasan telah dikirim ke email Anda','ok');
         else if (emailStatus === 'failed') toast('⚠️ Gagal mengirim email ringkasan: '+(er.error||'unknown'),'warn');
@@ -2006,6 +1981,14 @@ function renderMasterTable(items){
     `<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Tahun Lulus</th><th>Status</th></tr>`+
     items.map(x=>`<tr><td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td><td>${esc(x.JENJANG)}</td><td>${esc(x.TAHUN_LULUS)}</td><td>${x.sudah?'✅ Sudah':'⏳ Belum'}</td></tr>`).join('');
 }
+function buildRedaksi(template, alumni){
+  const link = REMINDER_SETTINGS.formLink || DEFAULT_REMINDER_SETTINGS.formLink;
+  return String(template||'')
+    .replace(/\{NAMA\}/g, alumni?.NAMA || alumni?.nama || '')
+    .replace(/\{NIM\}/g, alumni?.NIM || alumni?.nim || '')
+    .replace(/\{PRODI\}/g, alumni?.PROGRAM_STUDI || alumni?.programStudi || '')
+    .replace(/\{LINK\}/g, link);
+}
 function renderReminderTable(items){
   const t=$('reminderTable');if(!t)return;
   CURRENT_REMINDER_ITEMS = items||[];
@@ -2030,14 +2013,6 @@ function renderReminderTable(items){
         </div></td>
       </tr>`;
     }).join('');
-}
-function buildRedaksi(template, alumni){
-  const link = REMINDER_SETTINGS.formLink || DEFAULT_REMINDER_SETTINGS.formLink;
-  return String(template||'')
-    .replace(/\{NAMA\}/g, alumni?.NAMA || alumni?.nama || '')
-    .replace(/\{NIM\}/g, alumni?.NIM || alumni?.nim || '')
-    .replace(/\{PRODI\}/g, alumni?.PROGRAM_STUDI || alumni?.programStudi || '')
-    .replace(/\{LINK\}/g, link);
 }
 function renderSaranList(items){
   const box=$('saranList'); if(!box) return;
@@ -2125,7 +2100,7 @@ async function loadDashboardData(include){
 }
 
 /* ============================================================
- *  REMINDER SETTINGS — [FIX-AF]
+ *  REMINDER SETTINGS
  * ============================================================ */
 async function loadReminderSettings(){
   try{
@@ -2141,13 +2116,11 @@ async function loadReminderSettings(){
     const badge=$('reminderEditorBadge');
     if(badge){badge.textContent='Mode fallback (default lokal)';badge.className='badge warn';badge.style.padding='8px 14px';}
   }
-  // Isi form editor
   const fl=$('reminderFormLink'), wt=$('reminderWaTemplate'), es=$('reminderEmailSubject'), eb=$('reminderEmailBody');
   if(fl) fl.value = REMINDER_SETTINGS.formLink;
   if(wt) wt.value = REMINDER_SETTINGS.waTemplate;
   if(es) es.value = REMINDER_SETTINGS.emailSubject;
   if(eb) eb.value = REMINDER_SETTINGS.emailBody;
-  // Re-render tabel reminder agar redaksi baru terpakai
   if(CURRENT_REMINDER_ITEMS.length) renderReminderTable(CURRENT_REMINDER_ITEMS);
 }
 async function saveReminderSettings(){
@@ -2167,7 +2140,6 @@ async function saveReminderSettings(){
       toast('Redaksi & link tersimpan','ok');
       const badge=$('reminderEditorBadge');
       if(badge){badge.textContent='Tersimpan '+(r.savedAt?('· '+r.savedAt.slice(11,19)):'');badge.className='badge ok';}
-      // Refresh tabel agar langsung pakai redaksi baru
       if(CURRENT_REMINDER_ITEMS.length) renderReminderTable(CURRENT_REMINDER_ITEMS);
     } else {
       throw new Error(r.error || 'Gagal menyimpan');
@@ -2245,7 +2217,7 @@ function renderMasterPagination(r){
 }
 
 /* ============================================================
- *  REMINDER BROADCAST — pakai redaksi tersimpan
+ *  REMINDER BROADCAST
  * ============================================================ */
 function broadcastWhatsApp(){
   const items = CURRENT_REMINDER_ITEMS;
@@ -2254,7 +2226,7 @@ function broadcastWhatsApp(){
   if(!withWa.length){ toast('Tidak ada nomor WhatsApp pada daftar reminder.','warn'); return; }
   if(withWa.length>10 && !confirm(`Akan membuka ${withWa.length} tab WhatsApp. Lanjutkan?`)) return;
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const maxOpen = isIOS ? 5 : 20; // iOS Safari membatasi jumlah tab sekaligus
+  const maxOpen = isIOS ? 5 : 20;
   withWa.slice(0,maxOpen).forEach((x,i)=>{
     setTimeout(()=>{
       const wa=String(x.WHATSAPP).replace(/\D/g,'');
@@ -2273,9 +2245,8 @@ function broadcastEmail(){
   if(!withEmail.length){ toast('Tidak ada email valid pada daftar reminder.','warn'); return; }
   const emails = withEmail.slice(0,50).map(x=>x.EMAIL).join(',');
   const subject = encodeURIComponent(REMINDER_SETTINGS.emailSubject);
-  // Body email massal: gunakan template umum, placeholder {NAMA} diganti sapaan generik
   const body = encodeURIComponent(
-    buildRedaksi(REMINDER_SETTINGS.emailBody, { NAMA:'Alumni FIKOM UPDM (B)', NIM:'(lihat NIM pada data kami)', PROGRAM_STUDI:'FIKOM UPDM (B)' })
+    buildRedaksi(REMINDER_SETTINGS.emailBody, { NAMA:'Alumni FIKOM UPDM (B)', NIM:'(lihat data kami)', PROGRAM_STUDI:'FIKOM UPDM (B)' })
   );
   window.location.href = `mailto:?bcc=${encodeURIComponent(emails)}&subject=${subject}&body=${body}`;
   toast(`Membuka draft email untuk ${withEmail.slice(0,50).length} alumni (BCC).`,'ok');
@@ -2506,7 +2477,7 @@ function bindEvents(){
   $('waBroadcastBtn')&&($('waBroadcastBtn').onclick=broadcastWhatsApp);
   $('emailBroadcastBtn')&&($('emailBroadcastBtn').onclick=broadcastEmail);
 
-  // [NEW] Toggle editor redaksi
+  // Toggle editor redaksi
   $('toggleReminderEditor')&&($('toggleReminderEditor').onclick=()=>{
     const p=$('reminderEditorPanel'); if(!p) return;
     p.classList.toggle('hidden');
@@ -2540,7 +2511,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   checkLocalDraft();
   const lastId=sessionStorage.getItem('last_tracer_id');if(lastId)$('trackingId').value=lastId;
 
-  // [NEW] Handle deep link #tracking=TS-...
+  // Deep link #tracking=TS-...
   if(window.location.hash && window.location.hash.indexOf('#tracking=')===0){
     const tid = decodeURIComponent(window.location.hash.replace('#tracking=',''));
     if(tid){
@@ -2552,7 +2523,6 @@ document.addEventListener('DOMContentLoaded',async()=>{
   if(TOKEN&&TOKEN_EXP>Date.now()&&PROFILE)showDashboard();
 });
 
-// [NEW] Support deep link on hashchange
 window.addEventListener('hashchange',()=>{
   if(window.location.hash.indexOf('#tracking=')===0){
     const tid = decodeURIComponent(window.location.hash.replace('#tracking=',''));
