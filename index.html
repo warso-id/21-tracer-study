@@ -125,6 +125,22 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .level-badge{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:12px 16px;border-radius:12px;font-weight:900;font-size:17px;letter-spacing:.8px;background:var(--muted);color:#fff}
 .level-info h4{margin:0;font-size:16px}
 .level-info p{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+/* [NEW] Student banner */
+.student-banner{display:none;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;border:2px solid var(--line);background:#fbfdfc;margin:0 0 20px;animation:fadeIn .4s}
+.student-banner.show{display:flex}
+.student-banner.s1{border-color:var(--s1-border);background:linear-gradient(135deg,var(--s1-bg),var(--s1-bg2))}
+.student-banner.s2{border-color:var(--s2-border);background:linear-gradient(135deg,var(--s2-bg),var(--s2-bg2))}
+.student-banner .sb-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.06);flex:0 0 auto}
+.student-banner.s1 .sb-icon{background:var(--s1-bg2)}
+.student-banner.s2 .sb-icon{background:var(--s2-bg2)}
+.student-banner .sb-info{flex:1;min-width:0}
+.student-banner .sb-info h4{margin:0 0 4px;font-size:16px}
+.student-banner.s1 .sb-info h4{color:var(--s1-dark)}
+.student-banner.s2 .sb-info h4{color:var(--s2-dark)}
+.student-banner .sb-info p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.student-banner .sb-status{flex:0 0 auto;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:#f0f4f2;color:var(--muted);border:1px solid var(--line)}
+.student-banner.s1 .sb-status{background:#fff;color:var(--s1-dark);border-color:var(--s1-border)}
+.student-banner.s2 .sb-status{background:#fff;color:var(--s2-dark);border-color:var(--s2-border)}
 .toast-wrap{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:12px;max-width:340px}
 .toast{background:#fff;border-left:4px solid var(--accent);padding:14px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);font-size:13.5px;font-weight:600;animation:slideInRight .3s cubic-bezier(.16,1,.3,1) forwards}
 @keyframes slideInRight{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
@@ -141,7 +157,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .step-indicator{display:flex;justify-content:space-between;gap:8px;margin-bottom:24px;position:relative}
 .step-indicator::before{content:"";position:absolute;top:20px;left:0;right:0;height:2px;background:#e3ebe8;z-index:1}
 .step-indicator button{position:relative;z-index:2;flex:1;padding:12px 4px;border:2px solid var(--line);background:#fff;border-radius:12px;font-size:11.5px;font-weight:800;color:var(--muted);cursor:pointer;text-align:center;line-height:1.4;transition:all .3s cubic-bezier(.4,0,.2,1)}
-.step-indicator button:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(17,97,73,.1)}
+.step-indicator button:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
 .step-indicator button.active{background:var(--mhs);color:#fff;border-color:var(--mhs);transform:translateY(-4px);box-shadow:0 8px 16px rgba(124,58,237,.3)}
 .step-indicator button.done{background:var(--s1-bg2);color:var(--s1-dark);border-color:var(--s1-border)}
 .step-indicator .si-num{display:block;font-size:16px;margin-bottom:4px;font-weight:900}
@@ -149,7 +165,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .btn-loading{pointer-events:none;opacity:.8}
 .cascade-info{background:#eef4ff;border-left:3px solid var(--info);padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--info)}
 .dropzone{border:2px dashed #cbd7d2;border-radius:12px;padding:24px;text-align:center;background:#fff;cursor:pointer;transition:all .2s}
-.dropzone:hover,.dropzone.drag{border-color:var(--accent);background:#eef7f3;transform:translateY(-2px);box-shadow:0 4px 12px rgba(17,97,73,.08)}
+.dropzone:hover,.dropzone.drag{border-color:var(--accent);background:#eef7f3;transform:translateY(-2px)}
 .dropzone p{pointer-events:none;margin:0 0 6px}
 .dropzone b{color:var(--accent2)}
 .empty-state{padding:32px 24px;text-align:center;color:var(--muted);font-size:14px;background:#f9fbfa;border-radius:12px;border:1px dashed var(--line);grid-column:1/-1}
@@ -184,6 +200,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 .admin-tile .at-icon{font-size:32px;margin-bottom:8px}
 .admin-tile b{display:block;font-size:14px;color:var(--accent2);margin-bottom:4px}
 .admin-tile span{font-size:12px;color:var(--muted)}
+/* Cascade sub-dropdown */
+.cascade-sub{padding-left:0;transition:all .3s}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.login-shell{grid-template-columns:1fr}.acc-grid{grid-template-columns:1fr}.acc-metrics{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){
   .grid,.grid3,.radio-grid,.check-grid{grid-template-columns:1fr}
@@ -201,6 +219,10 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
   .dash-header .dh-actions{width:100%;justify-content:stretch}
   .dash-header .dh-actions .btn{flex:1}
   .acc-metrics{grid-template-columns:1fr}
+  .student-banner{padding:14px}
+  .student-banner .sb-icon{width:44px;height:44px;font-size:22px}
+  .student-banner .sb-info h4{font-size:14px}
+  .student-banner .sb-status{font-size:10.5px;padding:5px 10px}
 }
 </style>
 </head>
@@ -235,6 +257,16 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
     <div class="hero-badges">
       <span>📗 S1 Ilmu Komunikasi</span><span>📘 S2 Magister Ilmu Komunikasi</span><span>🔒 Data terenkripsi</span><span>⏱️ 12–15 menit</span>
     </div>
+  </div>
+
+  <!-- [NEW] STUDENT BANNER - indikator S1/S2 -->
+  <div id="studentBanner" class="student-banner" role="status" aria-live="polite">
+    <div class="sb-icon" id="sbIcon">🎓</div>
+    <div class="sb-info">
+      <h4 id="sbTitle">Belum Terverifikasi</h4>
+      <p id="sbDesc">Masukkan NIM 9 digit Anda dan klik <b>Verifikasi NIM</b> untuk memulai pengisian.</p>
+    </div>
+    <span class="sb-status" id="sbStatus">Menunggu NIM</span>
   </div>
 
   <div class="card">
@@ -317,38 +349,58 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
         <div class="form-section-title">🎓 Data Akademik Khusus</div>
 
+        <!-- [UPDATED] S1: konsentrasi cascade -->
         <div id="groupS1" class="hidden" style="border:2px solid var(--s1-border);border-radius:12px;padding:16px;background:var(--s1-bg)">
           <p style="font-weight:800;color:var(--s1-dark);margin:0 0 12px;text-transform:uppercase">Khusus S1 Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulSkripsi">Judul Skripsi <span class="req">*</span></label><textarea id="judulSkripsi" required maxlength="1000"></textarea><span class="field-error" id="err-judulSkripsi"></span></div>
             <div>
-              <label for="konsentrasiS1">Konsentrasi Studi S1 <span class="req">*</span></label>
-              <select id="konsentrasiS1" required data-conditional="konsentrasiS1Lain">
-                <option value="">Pilih</option>
+              <label for="konsentrasiS1">Kategori Konsentrasi S1 <span class="req">*</span></label>
+              <select id="konsentrasiS1" required>
+                <option value="">Pilih kategori</option>
                 <option>Jurnalistik</option><option>Periklanan</option><option>Hubungan Masyarakat</option>
                 <option>Penyiaran</option><option>Media Digital</option><option>Lainnya</option>
               </select>
               <span class="field-error" id="err-konsentrasiS1"></span>
             </div>
-            <div id="konsentrasiS1LainBox" class="hidden"><label for="konsentrasiS1Lain">Sebutkan konsentrasi <span class="req">*</span></label><input id="konsentrasiS1Lain" maxlength="100"><span class="field-error" id="err-konsentrasiS1Lain"></span></div>
+            <div id="konsentrasiS1SubBox" class="hidden">
+              <label for="konsentrasiS1Sub">Sub-Konsentrasi S1 <span class="req">*</span></label>
+              <select id="konsentrasiS1Sub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
+              <span class="field-error" id="err-konsentrasiS1Sub"></span>
+            </div>
+            <div id="konsentrasiS1LainBox" class="hidden">
+              <label for="konsentrasiS1Lain">Sebutkan konsentrasi S1 <span class="req">*</span></label>
+              <input id="konsentrasiS1Lain" maxlength="100">
+              <span class="field-error" id="err-konsentrasiS1Lain"></span>
+            </div>
             <div><label for="pembimbingSkripsi">Dosen Pembimbing Skripsi</label><input id="pembimbingSkripsi" maxlength="120"></div>
           </div>
         </div>
 
+        <!-- [UPDATED] S2: konsentrasi cascade -->
         <div id="groupS2" class="hidden" style="border:2px solid var(--s2-border);border-radius:12px;padding:16px;background:var(--s2-bg)">
           <p style="font-weight:800;color:var(--s2-dark);margin:0 0 12px;text-transform:uppercase">Khusus S2 Magister Ilmu Komunikasi</p>
           <div class="grid">
             <div class="full"><label for="judulTesis">Judul Tesis <span class="req">*</span></label><textarea id="judulTesis" required maxlength="1000"></textarea><span class="field-error" id="err-judulTesis"></span></div>
             <div>
-              <label for="konsentrasiS2">Konsentrasi Studi S2 <span class="req">*</span></label>
-              <select id="konsentrasiS2" required data-conditional="konsentrasiS2Lain">
-                <option value="">Pilih</option>
+              <label for="konsentrasiS2">Kategori Konsentrasi S2 <span class="req">*</span></label>
+              <select id="konsentrasiS2" required>
+                <option value="">Pilih kategori</option>
                 <option>Komunikasi Strategis</option><option>Media dan Digital</option>
                 <option>Komunikasi Politik</option><option>Komunikasi Korporat</option><option>Lainnya</option>
               </select>
               <span class="field-error" id="err-konsentrasiS2"></span>
             </div>
-            <div id="konsentrasiS2LainBox" class="hidden"><label for="konsentrasiS2Lain">Sebutkan konsentrasi <span class="req">*</span></label><input id="konsentrasiS2Lain" maxlength="100"><span class="field-error" id="err-konsentrasiS2Lain"></span></div>
+            <div id="konsentrasiS2SubBox" class="hidden">
+              <label for="konsentrasiS2Sub">Sub-Konsentrasi S2 <span class="req">*</span></label>
+              <select id="konsentrasiS2Sub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
+              <span class="field-error" id="err-konsentrasiS2Sub"></span>
+            </div>
+            <div id="konsentrasiS2LainBox" class="hidden">
+              <label for="konsentrasiS2Lain">Sebutkan konsentrasi S2 <span class="req">*</span></label>
+              <input id="konsentrasiS2Lain" maxlength="100">
+              <span class="field-error" id="err-konsentrasiS2Lain"></span>
+            </div>
             <div><label for="pembimbingTesis">Dosen Pembimbing Tesis</label><input id="pembimbingTesis" maxlength="120"></div>
             <div class="full"><label for="jenjangSebelumnya">Jenjang pendidikan sebelumnya</label>
               <select id="jenjangSebelumnya"><option value="">Pilih</option><option>D3</option><option>D4</option><option>S1</option><option>Profesi</option><option>Lainnya</option></select>
@@ -418,12 +470,8 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
             <div><label for="industriSub">B9. Sub-kategori industri</label>
               <select id="industriSub" disabled><option value="">Pilih kategori terlebih dahulu</option></select>
             </div>
-            <div><label for="levelJabatan">B10. Level jabatan</label>
-              <select id="levelJabatan"><option value="">Pilih level</option></select>
-            </div>
-            <div><label for="jabatanSpesifik">B11. Jabatan spesifik</label>
-              <select id="jabatanSpesifik" disabled><option value="">Pilih level terlebih dahulu</option></select>
-            </div>
+            <div><label for="levelJabatan">B10. Level jabatan</label><select id="levelJabatan"><option value="">Pilih level</option></select></div>
+            <div><label for="jabatanSpesifik">B11. Jabatan spesifik</label><select id="jabatanSpesifik" disabled><option value="">Pilih level terlebih dahulu</option></select></div>
             <div><label for="jenisPekerjaan">B12. Jenis pekerjaan</label>
               <select id="jenisPekerjaan"><option value="">Pilih</option><option>Full-time</option><option>Part-time</option><option>Kontrak</option><option>Freelance</option><option>Internship</option><option>Outsourcing</option></select>
             </div>
@@ -454,18 +502,44 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
           </div>
         </div>
 
+        <!-- [UPDATED] Wirausaha: bidang usaha cascade -->
         <div id="wirausahaBox" class="hidden" style="margin-top:16px;padding:16px;border:2px solid #cbd7d2;border-radius:12px;background:#fbfdfc">
           <h4 style="margin:0 0 16px;color:#116149">🚀 Detail Wirausaha</h4>
           <div class="grid">
             <div class="full"><label for="namaUsaha">Nama Usaha <span class="req">*</span></label><input id="namaUsaha" maxlength="150"><span class="field-error" id="err-namaUsaha"></span></div>
-            <div><label for="bidangUsaha">Bidang Usaha</label>
-              <select id="bidangUsaha"><option value="">Pilih</option><option>Media</option><option>Komunikasi</option><option>Periklanan</option><option>Public Relations</option><option>Event Organizer</option><option>Digital Marketing</option><option>Content Creator</option><option>Production House</option><option>Jurnalistik</option><option>Pendidikan</option><option>Kuliner</option><option>Perdagangan</option><option>Jasa</option><option>Teknologi</option><option>Industri Kreatif</option><option>Lainnya</option></select>
+            <div>
+              <label for="bidangUsaha">Kategori Bidang Usaha</label>
+              <select id="bidangUsaha">
+                <option value="">Pilih kategori</option>
+                <option>Media &amp; Penyiaran</option>
+                <option>Periklanan &amp; PR</option>
+                <option>Digital &amp; Teknologi</option>
+                <option>Kreatif &amp; Desain</option>
+                <option>Pendidikan &amp; Pelatihan</option>
+                <option>Kuliner &amp; F&amp;B</option>
+                <option>Retail &amp; Perdagangan</option>
+                <option>Jasa &amp; Konsultan</option>
+                <option>Event &amp; Hiburan</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div id="bidangUsahaSubBox" class="hidden">
+              <label for="bidangUsahaSub">Sub-Bidang Usaha</label>
+              <select id="bidangUsahaSub" disabled><option value="">Pilih kategori dulu</option></select>
             </div>
             <div><label for="tahunMulaiUsaha">Tahun mulai usaha</label><input id="tahunMulaiUsaha" inputmode="numeric" maxlength="4" placeholder="contoh: 2022"></div>
-            <div><label for="posisiUsaha">Posisi dalam usaha</label><select id="posisiUsaha"><option value="">Pilih</option><option>Founder</option><option>Co-Founder</option><option>Owner</option><option>Manager</option><option>Partner</option><option>Freelancer</option><option>Lainnya</option></select></div>
-            <div><label for="jumlahTenagaKerja">Jumlah tenaga kerja</label><select id="jumlahTenagaKerja"><option value="">Pilih</option><option>0 (solo)</option><option>1–2</option><option>3–5</option><option>6–10</option><option>11–20</option><option>&gt;20</option></select></div>
-            <div><label for="statusLegalitas">Status legalitas usaha</label><select id="statusLegalitas"><option value="">Pilih</option><option>Belum berbadan hukum</option><option>CV</option><option>PT</option><option>PT Perorangan</option><option>Yayasan</option><option>Koperasi</option><option>Lainnya</option></select></div>
-            <div><label for="omzetRange">Kisaran omzet per bulan</label><select id="omzetRange"><option value="">Pilih</option><option>&lt; Rp2 juta</option><option>Rp2–5 juta</option><option>&gt;Rp5–10 juta</option><option>&gt;Rp10–25 juta</option><option>&gt;Rp25–50 juta</option><option>&gt;Rp50 juta</option><option>Tidak ingin menjawab</option></select></div>
+            <div><label for="posisiUsaha">Posisi dalam usaha</label>
+              <select id="posisiUsaha"><option value="">Pilih</option><option>Founder</option><option>Co-Founder</option><option>Owner</option><option>Manager</option><option>Partner</option><option>Freelancer</option><option>Lainnya</option></select>
+            </div>
+            <div><label for="jumlahTenagaKerja">Jumlah tenaga kerja</label>
+              <select id="jumlahTenagaKerja"><option value="">Pilih</option><option>0 (solo)</option><option>1–2</option><option>3–5</option><option>6–10</option><option>11–20</option><option>&gt;20</option></select>
+            </div>
+            <div><label for="statusLegalitas">Status legalitas usaha</label>
+              <select id="statusLegalitas"><option value="">Pilih</option><option>Belum berbadan hukum</option><option>CV</option><option>PT</option><option>PT Perorangan</option><option>Yayasan</option><option>Koperasi</option><option>Lainnya</option></select>
+            </div>
+            <div><label for="omzetRange">Kisaran omzet per bulan</label>
+              <select id="omzetRange"><option value="">Pilih</option><option>&lt; Rp2 juta</option><option>Rp2–5 juta</option><option>&gt;Rp5–10 juta</option><option>&gt;Rp10–25 juta</option><option>&gt;Rp25–50 juta</option><option>&gt;Rp50 juta</option><option>Tidak ingin menjawab</option></select>
+            </div>
             <div><label for="lokasiUsaha">Lokasi usaha</label><input id="lokasiUsaha" maxlength="150" placeholder="Kota/Provinsi"></div>
             <div class="full"><label for="usahaBerkaitanKomunikasi">Apakah usaha berkaitan dengan Ilmu Komunikasi?</label><select id="usahaBerkaitanKomunikasi"><option value="">Pilih</option><option>Ya</option><option>Tidak</option></select></div>
             <div class="full"><label for="kompetensiFikomUntukUsaha">Kompetensi FIKOM yang paling membantu usaha</label><textarea id="kompetensiFikomUntukUsaha" maxlength="1000" placeholder="Jelaskan singkat"></textarea></div>
@@ -761,7 +835,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: OVERVIEW -->
       <div class="panel" data-panel="overview">
         <div class="kpi" id="kpiBox"></div>
         <div id="summaryInsight" style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;overflow-x:auto"></div>
@@ -781,7 +854,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: RESPONDEN -->
       <div class="panel hidden" data-panel="responden">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
           <span class="badge info" id="respInfo"></span>
@@ -794,7 +866,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         <div id="respPagination" style="display:flex;justify-content:center;gap:8px;margin-top:20px;align-items:center;font-weight:600;flex-wrap:wrap"></div>
       </div>
 
-      <!-- PANEL: ANALITIK -->
       <div class="panel hidden" data-panel="analitik">
         <div class="grid">
           <div class="chartbox"><h4>📗 Kompetensi Lulusan (F1) — Dikuasai</h4><div class="chartwrap"><canvas id="chKompetensi"></canvas></div></div>
@@ -814,7 +885,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: AKREDITASI -->
       <div class="panel hidden" data-panel="akreditasi">
         <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;flex-wrap:wrap" id="accScopeBar">
           <button type="button" class="btn sm secondary active" data-scope="all">Semua</button>
@@ -831,7 +901,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: MASTER ALUMNI -->
       <div class="panel hidden" data-panel="masteralumni">
         <div class="card">
           <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
@@ -871,7 +940,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: REMINDER -->
       <div class="panel hidden" data-panel="reminder">
         <div class="card">
           <div style="display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
@@ -895,7 +963,6 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
         </div>
       </div>
 
-      <!-- PANEL: ADMIN PANEL -->
       <div class="panel hidden" data-panel="adminpanel">
         <div class="admin-tiles">
           <div class="admin-tile" data-action="changePassword"><div class="at-icon">🔑</div><b>Ubah Password Saya</b><span>Ganti kredensial login</span></div>
@@ -926,7 +993,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 
 </main>
 
-<footer>Tracer Study FIKOM UPDM (B) · v16.3.8-production · Secured &amp; Optimized</footer>
+<footer>Tracer Study FIKOM UPDM (B) · v16.4.0-production · Secured &amp; Optimized</footer>
 <div id="modalRoot"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -936,13 +1003,13 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:13px;backgrou
 /* ============================================================
  *  KONSTANTA
  * ============================================================ */
-const APP_VERSION_STR='v16.3.8-production';
+const APP_VERSION_STR='v16.4.0-production';
 const DEFAULT_GAS_URL='https://script.google.com/macros/s/AKfycbwz2mlEM0tYWn50G9FZumhxoBJ6C5rOwWwrSBcD5J1hFWcAs-qqOCSQaCavzcb6Oxaw/exec';
 const GAS_URL=(localStorage.getItem('ts_gas_url')||DEFAULT_GAS_URL).trim().replace(/\/$/,'');
 const TOTAL_STEPS=8, RESP_PER_PAGE=50, MASTER_PER_PAGE=50;
 
 /* ============================================================
- *  DATA HIRARKI — fallback (jika REF_ sheet kosong / offline)
+ *  DATA HIRARKI — fallback & tree
  * ============================================================ */
 const WILAYAH_FALLBACK={
   'DKI Jakarta':['Jakarta Pusat','Jakarta Selatan','Jakarta Barat','Jakarta Timur','Jakarta Utara','Kepulauan Seribu'],
@@ -1007,7 +1074,36 @@ const LEVEL_JABATAN_FALLBACK={
   'Lainnya':['Lainnya']
 };
 
-/* Runtime data hirarki (diisi dari REF_ atau fallback) */
+/* [NEW] Cascade trees untuk konsentrasi & bidang usaha */
+const KONSENTRASI_S1_TREE = {
+  'Jurnalistik': ['Jurnalistik Cetak','Jurnalistik Online','Jurnalistik TV','Jurnalistik Radio','Jurnalistik Foto','Jurnalisme Data'],
+  'Periklanan': ['Periklanan Kreatif','Media Planning','Copywriting','Art Direction','Digital Advertising','Brand Strategy'],
+  'Hubungan Masyarakat': ['Corporate PR','Government PR','Marketing PR','Crisis Communication','Community Relations','Internal Communication'],
+  'Penyiaran': ['Produser TV','Produser Radio','Presenter','Reporter','Editor Video','Content Producer','Broadcast Journalist'],
+  'Media Digital': ['Social Media Specialist','Content Creator','SEO/SEM Specialist','Web Editor','Digital Strategist','Community Manager'],
+  'Lainnya': []
+};
+const KONSENTRASI_S2_TREE = {
+  'Komunikasi Strategis': ['Strategic Communication Planning','Corporate Communication Strategy','Public Affairs','Issue Management','Reputation Management'],
+  'Media dan Digital': ['Digital Media Studies','Social Media Analytics','Media Convergence','Digital Journalism','Interactive Media'],
+  'Komunikasi Politik': ['Political Campaign','Political Marketing','Public Opinion','Political Public Relations','Government Communication'],
+  'Komunikasi Korporat': ['Corporate Reputation','Stakeholder Relations','Crisis & Risk Communication','Corporate Social Responsibility','Investor Relations'],
+  'Lainnya': []
+};
+const BIDANG_USAHA_TREE = {
+  'Media & Penyiaran': ['Media Cetak','Media Online','TV & Radio','Production House','Content Studio','Media Monitoring'],
+  'Periklanan & PR': ['Creative Agency','Digital Agency','PR Firm','Media Buying','Brand Consultancy','Event Organizer'],
+  'Digital & Teknologi': ['Software House','Startup Tech','E-commerce','SaaS','AI & Data','Game Studio','Platform Digital'],
+  'Kreatif & Desain': ['Desain Grafis','Video & Animasi','Fotografi','Ilustrasi','UI/UX Design','Fashion'],
+  'Pendidikan & Pelatihan': ['Lembaga Kursus','EdTech','Training Center','Konsultan Pendidikan','Bimbingan Belajar'],
+  'Kuliner & F&B': ['Restoran','Kafe','Catering','Food Truck','Cloud Kitchen','Brand Kuliner'],
+  'Retail & Perdagangan': ['Toko Retail','Distributor','Reseller','Marketplace','Grosir','Brand Lokal'],
+  'Jasa & Konsultan': ['Konsultan Bisnis','Jasa Kreatif','Jasa Digital Marketing','Jasa Event','Jasa Fotografi'],
+  'Event & Hiburan': ['Event Organizer','Wedding Organizer','Talent Management','Venue','Promotor'],
+  'Lainnya': []
+};
+
+/* Runtime data hirarki */
 let WILAYAH = Object.assign({}, WILAYAH_FALLBACK);
 let INDUSTRI_TREE = Object.assign({}, INDUSTRI_FALLBACK);
 let LEVEL_JABATAN = Object.assign({}, LEVEL_JABATAN_FALLBACK);
@@ -1068,7 +1164,7 @@ let META=null,step=1,charts={},VERIFIED_NIM='',VERIFIED_ALUMNI=null;
 let respPage=1,masterPage=1,formSubmitted=false,PUBLIC_NONCE='';
 let dashFilters={},accScope='all',_uploadFile=null;
 let DASH_DATA=null;
-let ACC_DATA={};  /* cache accreditation per scope */
+let ACC_DATA={};
 let DASH_ACTIVE_TAB='overview';
 let DASH_LOADING=false;
 let CURRENT_REMINDER_ITEMS=[];
@@ -1089,6 +1185,37 @@ function isVisible(el){let n=el;while(n){if(n.classList&&n.classList.contains('h
 function collectChecked(containerId){const el=$(containerId);if(!el)return [];return [...el.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value)}
 function setHTML(id,html){const el=$(id);if(el)el.innerHTML=html}
 function forceReflow(el){if(!el)return;void el.offsetHeight;}
+
+/* ============================================================
+ *  STUDENT BANNER — [NEW]
+ * ============================================================ */
+function updateStudentBanner(jenjang, alumni){
+  const b=$('studentBanner'); if(!b) return;
+  if(!jenjang){
+    b.classList.remove('show','s1','s2');
+    return;
+  }
+  b.classList.add('show');
+  b.classList.toggle('s1', jenjang==='S1');
+  b.classList.toggle('s2', jenjang==='S2');
+  const icon=$('sbIcon'), title=$('sbTitle'), desc=$('sbDesc'), status=$('sbStatus');
+  if(jenjang==='S1'){
+    if(icon) icon.textContent='📗';
+    if(title) title.textContent='Anda mengisi sebagai Mahasiswa S1';
+    if(desc) desc.textContent=(alumni?.nama?'Halo, '+alumni.nama+'. ':'')+'Program Studi: '+(alumni?.programStudi||'S1 Ilmu Komunikasi')+(alumni?.nim?' · NIM '+alumni.nim:'')+'. Formulir disesuaikan untuk jenjang S1.';
+    if(status) status.textContent='S1 Terverifikasi';
+  } else if(jenjang==='S2'){
+    if(icon) icon.textContent='📘';
+    if(title) title.textContent='Anda mengisi sebagai Mahasiswa S2';
+    if(desc) desc.textContent=(alumni?.nama?'Halo, '+alumni.nama+'. ':'')+'Program Studi: '+(alumni?.programStudi||'S2 Magister Ilmu Komunikasi')+(alumni?.nim?' · NIM '+alumni.nim:'')+'. Formulir disesuaikan untuk jenjang S2.';
+    if(status) status.textContent='S2 Terverifikasi';
+  } else {
+    if(icon) icon.textContent='🎓';
+    if(title) title.textContent='Jenjang Terverifikasi';
+    if(desc) desc.textContent='Formulir disesuaikan untuk jenjang '+jenjang+'.';
+    if(status) status.textContent=jenjang+' Terverifikasi';
+  }
+}
 
 /* ============================================================
  *  API LAYER
@@ -1128,10 +1255,6 @@ async function refreshNonce(){
   try{const m=await apiGet({action:'meta'});if(m&&m.publicNonce)PUBLIC_NONCE=m.publicNonce}catch(_){}
   return PUBLIC_NONCE;
 }
-
-/* ============================================================
- *  REF DATA LOADER — WILAYAH / INDUSTRI / JABATAN
- * ============================================================ */
 async function loadRefData(){
   try{
     const r=await apiGet({action:'refdata'});
@@ -1157,7 +1280,6 @@ async function loadRefData(){
     }
   }catch(e){console.warn('[RefData] Gagal memuat dari backend, pakai fallback:',e.message)}
 }
-
 async function loadMeta(){
   try{
     META=await apiGet({action:'meta'});
@@ -1169,10 +1291,12 @@ async function loadMeta(){
       const btn=$('checkNimBtn');if(btn)btn.disabled=true;
     }
     populateFilterSelects();
-    await loadRefData();  /* [FIX-X] load REF_ dulu sebelum init dropdown */
+    await loadRefData();
     initWilayahSelects();
     initIndustriSelects();
     initLevelJabatanSelects();
+    initKonsentrasiCascade();
+    initBidangUsahaCascade();
     renderCheckGrid('organisasiProfesi',['ISKI','PR Indonesia (Perhumas)','PWI','IJTI','AMSI','Aliansi Jurnalis Independen','Asosiasi PR Indonesia','Lainnya']);
     renderCheckGrid('jenisPrestasi',['Juara 1 Regional','Juara 2 Regional','Juara 3 Regional','Finalis Nasional','Juara Nasional','Juara Internasional','Lainnya']);
     renderCheckGrid('jenisBantuanKarier',BANTUAN_KARIER_OPTS);
@@ -1239,6 +1363,60 @@ function initLevelJabatanSelects(){
   };
   jab.disabled=true;
 }
+/* [NEW] Cascade konsentrasi S1/S2 */
+function initKonsentrasiCascade(){
+  ['S1','S2'].forEach(level=>{
+    const main=$('konsentrasi'+level), sub=$('konsentrasi'+level+'Sub'),
+          subBox=$('konsentrasi'+level+'SubBox'), lainBox=$('konsentrasi'+level+'LainBox'),
+          lainInput=$('konsentrasi'+level+'Lain');
+    if(!main||!sub||!subBox||!lainBox)return;
+    const tree = level==='S1' ? KONSENTRASI_S1_TREE : KONSENTRASI_S2_TREE;
+    main.onchange=()=>{
+      const v=main.value;
+      // Reset
+      sub.innerHTML='<option value="">Pilih sub-konsentrasi</option>';
+      sub.disabled=true;
+      lainBox.classList.add('hidden');
+      if(lainInput) lainInput.value='';
+      if(!v){
+        subBox.classList.add('hidden');
+        return;
+      }
+      if(v==='Lainnya'){
+        subBox.classList.add('hidden');
+        lainBox.classList.remove('hidden');
+        return;
+      }
+      const list=tree[v]||[];
+      if(list.length){
+        sub.innerHTML='<option value="">Pilih sub-konsentrasi</option>'+list.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+        sub.disabled=false;
+        subBox.classList.remove('hidden');
+      } else {
+        subBox.classList.add('hidden');
+      }
+    };
+  });
+}
+/* [NEW] Cascade bidang usaha */
+function initBidangUsahaCascade(){
+  const main=$('bidangUsaha'), sub=$('bidangUsahaSub'), subBox=$('bidangUsahaSubBox');
+  if(!main||!sub||!subBox)return;
+  main.onchange=()=>{
+    const v=main.value;
+    sub.innerHTML='<option value="">Pilih sub-bidang</option>';
+    sub.disabled=true;
+    if(!v){ subBox.classList.add('hidden'); return; }
+    const list=BIDANG_USAHA_TREE[v]||[];
+    if(list.length){
+      sub.innerHTML='<option value="">Pilih sub-bidang</option>'+list.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+      sub.disabled=false;
+      subBox.classList.remove('hidden');
+    } else {
+      subBox.classList.add('hidden');
+    }
+  };
+}
 
 /* ============================================================
  *  NIM VERIFICATION
@@ -1256,6 +1434,8 @@ function applyJenjang(jenjang){
   $('levelDesc')&&($('levelDesc').textContent=jenjang?('Form disesuaikan otomatis untuk jenjang '+jenjang+'.'):'Verifikasi NIM terlebih dahulu untuk menentukan jenjang Anda.');
   const hint=$('levelHint');if(hint){hint.textContent=jenjang?'Terverifikasi':'Belum Terverifikasi';hint.className='badge '+(jenjang?'ok':'warn')}
   if(jenjang)renderKompetensi(jenjang);
+  // Update banner
+  updateStudentBanner(jenjang, VERIFIED_ALUMNI);
 }
 async function checkNim(){
   clearErrors();
@@ -1264,7 +1444,7 @@ async function checkNim(){
   const btn=$('checkNimBtn');const old=btn?btn.innerHTML:'';if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Memeriksa...'}
   try{
     const r=await apiGet({action:'checknim',nim});
-    if(r.sudahMengisi){setFieldError('nim','NIM ini sudah pernah mengisi Tracer Study.');VERIFIED_NIM='';VERIFIED_ALUMNI=null;$('nama').value='';applyJenjang('');return}
+    if(r.sudahMengisi){setFieldError('nim','NIM ini sudah pernah mengisi Tracer Study.');VERIFIED_NIM='';VERIFIED_ALUMNI=null;$('nama').value='';applyJenjang('');updateStudentBanner('');return}
     VERIFIED_NIM=nim;VERIFIED_ALUMNI=r.alumni;
     $('nama').value=r.alumni.nama;
     if(r.alumni.email&&!val('email'))$('email').value=r.alumni.email;
@@ -1274,8 +1454,9 @@ async function checkNim(){
     setSelectValue('programStudi',r.alumni.programStudi);
     setSelectValue('jenjang',r.alumni.jenjang);
     applyJenjang(r.alumni.jenjang);
+    updateStudentBanner(r.alumni.jenjang, r.alumni);
     toast('NIM terverifikasi: '+r.alumni.nama,'ok');
-  }catch(e){setFieldError('nim',e.message);VERIFIED_NIM='';VERIFIED_ALUMNI=null;$('nama').value='';applyJenjang('')}
+  }catch(e){setFieldError('nim',e.message);VERIFIED_NIM='';VERIFIED_ALUMNI=null;$('nama').value='';applyJenjang('');updateStudentBanner('')}
   finally{if(btn){btn.disabled=false;btn.innerHTML=old}}
 }
 
@@ -1359,12 +1540,21 @@ function validateStep(n){
     if(jj === 'S1'){
       if(!val('judulSkripsi')){setFieldError('judulSkripsi','Wajib diisi.');ok=false}
       if(!val('konsentrasiS1')){setFieldError('konsentrasiS1','Wajib dipilih.');ok=false}
+      // [NEW] sub-konsentrasi validation
+      const kv=val('konsentrasiS1');
+      if(kv && kv!=='Lainnya'){
+        if(!val('konsentrasiS1Sub')){setFieldError('konsentrasiS1Sub','Sub-konsentrasi wajib dipilih.');ok=false}
+      }
+      if(kv==='Lainnya' && !val('konsentrasiS1Lain')){setFieldError('konsentrasiS1Lain','Wajib diisi.');ok=false}
     } else if(jj === 'S2'){
       if(!val('judulTesis')){setFieldError('judulTesis','Wajib diisi.');ok=false}
       if(!val('konsentrasiS2')){setFieldError('konsentrasiS2','Wajib dipilih.');ok=false}
+      const kv=val('konsentrasiS2');
+      if(kv && kv!=='Lainnya'){
+        if(!val('konsentrasiS2Sub')){setFieldError('konsentrasiS2Sub','Sub-konsentrasi wajib dipilih.');ok=false}
+      }
+      if(kv==='Lainnya' && !val('konsentrasiS2Lain')){setFieldError('konsentrasiS2Lain','Wajib diisi.');ok=false}
     }
-    if(val('konsentrasiS1')==='Lainnya'&&!val('konsentrasiS1Lain')){setFieldError('konsentrasiS1Lain','Wajib diisi.');ok=false}
-    if(val('konsentrasiS2')==='Lainnya'&&!val('konsentrasiS2Lain')){setFieldError('konsentrasiS2Lain','Wajib diisi.');ok=false}
   }
   if(n===2){
     const sp=val('statusPekerjaanUtama');
@@ -1432,6 +1622,7 @@ function updateSteps(){
 }
 function renderSummary(){
   const jenjang=val('jenjang')||'-';
+  const konsen = jenjang==='S2' ? (val('konsentrasiS2') + (val('konsentrasiS2Sub')?' → '+val('konsentrasiS2Sub'):'') + (val('konsentrasiS2Lain')?' ('+val('konsentrasiS2Lain')+')':'')) : (val('konsentrasiS1') + (val('konsentrasiS1Sub')?' → '+val('konsentrasiS1Sub'):'') + (val('konsentrasiS1Lain')?' ('+val('konsentrasiS1Lain')+')':''));
   setHTML('summaryBox',`
     <h4 style="margin-bottom:12px">Ringkasan Data (Siap Kirim)</h4>
     <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">Pastikan data sudah benar. Data tidak dapat diubah setelah terkirim.</p>
@@ -1439,6 +1630,7 @@ function renderSummary(){
       <tr><th style="width:180px">NIM</th><td>${esc(val('nim'))||'-'}</td></tr>
       <tr><th>Nama Lengkap</th><td>${esc(val('nama'))||'-'}</td></tr>
       <tr><th>Program Studi</th><td>${esc(val('programStudi'))||'-'} (${esc(jenjang)})</td></tr>
+      <tr><th>Konsentrasi</th><td>${esc(konsen)||'-'}</td></tr>
       <tr><th>Status Pekerjaan</th><td>${esc(val('statusPekerjaanUtama'))||'-'}</td></tr>
       <tr><th>Email</th><td>${esc(val('email'))||'-'}</td></tr>
       <tr><th>WhatsApp</th><td>${esc(val('whatsapp'))||'-'}</td></tr>
@@ -1446,12 +1638,25 @@ function renderSummary(){
 }
 
 /* ============================================================
- *  PAYLOAD
+ *  PAYLOAD — konsistensi dengan code.gs (RESPONSES_HEADERS)
  * ============================================================ */
 function collectPayload(){
   const jenjang=val('jenjang');
   const domProv=val('provinsiDomisili'),domKota=val('kotaDomisili');
   const kProv=val('provinsiKerja'),kKota=val('kotaKerja');
+  // Konsentrasi: gabungkan sub ke field "Lain" agar kompatibel dengan skema
+  const konsentrasiS1 = val('konsentrasiS1');
+  const konsentrasiS1Sub = val('konsentrasiS1Sub');
+  const konsentrasiS1Lain = val('konsentrasiS1Lain');
+  const konsentrasiS1FinalLain = (konsentrasiS1==='Lainnya'?konsentrasiS1Lain:(konsentrasiS1Sub||''));
+  const konsentrasiS2 = val('konsentrasiS2');
+  const konsentrasiS2Sub = val('konsentrasiS2Sub');
+  const konsentrasiS2Lain = val('konsentrasiS2Lain');
+  const konsentrasiS2FinalLain = (konsentrasiS2==='Lainnya'?konsentrasiS2Lain:(konsentrasiS2Sub||''));
+  // Bidang usaha: gabungkan sub ke bidangUsaha
+  const bidangUsahaMain = val('bidangUsaha');
+  const bidangUsahaSub = val('bidangUsahaSub');
+  const bidangUsahaFinal = bidangUsahaSub || bidangUsahaMain;
   return {
     nim:val('nim'),nama:val('nama'),programStudi:val('programStudi'),jenjang,
     tahunMasuk:val('tahunMasuk'),tahunLulus:val('tahunLulus'),ipk:val('ipk'),
@@ -1460,8 +1665,14 @@ function collectPayload(){
     provinsiDomisili:domProv,kotaDomisili:domKota,
     alamatDomisili:(domKota?domKota+', ':'')+(domProv?domProv+'. ':'')+val('alamatDomisili'),
     alamatTetap:val('alamatTetap'),
-    judulSkripsi:val('judulSkripsi'),konsentrasiS1:val('konsentrasiS1'),konsentrasiS1Lain:val('konsentrasiS1Lain'),pembimbingSkripsi:val('pembimbingSkripsi'),
-    judulTesis:val('judulTesis'),konsentrasiS2:val('konsentrasiS2'),konsentrasiS2Lain:val('konsentrasiS2Lain'),pembimbingTesis:val('pembimbingTesis'),
+    judulSkripsi:val('judulSkripsi'),
+    konsentrasiS1:konsentrasiS1,
+    konsentrasiS1Lain:konsentrasiS1FinalLain,
+    pembimbingSkripsi:val('pembimbingSkripsi'),
+    judulTesis:val('judulTesis'),
+    konsentrasiS2:konsentrasiS2,
+    konsentrasiS2Lain:konsentrasiS2FinalLain,
+    pembimbingTesis:val('pembimbingTesis'),
     jenjangSebelumnya:val('jenjangSebelumnya'),prodiSebelumnya:val('prodiSebelumnya'),
     ptSebelumnya:val('ptSebelumnya'),pendidikanSebelumnyaKomunikasi:val('pendidikanSebelumnyaKomunikasi'),
     statusPekerjaanUtama:val('statusPekerjaanUtama'),statusPekerjaanLain:val('statusPekerjaanLain'),
@@ -1483,7 +1694,7 @@ function collectPayload(){
     tanggalMulaiKerja:val('tahunMulaiKerja')?val('tahunMulaiKerja')+'-01-01':'',
     jumlahPindahKerja:val('jumlahPindahKerja'),pernahPromosi:val('pernahPromosi'),
     fikomBantuKarier:val('fikomBantuKarier'),
-    namaUsaha:val('namaUsaha'),bidangUsaha:val('bidangUsaha'),tahunMulaiUsaha:val('tahunMulaiUsaha'),
+    namaUsaha:val('namaUsaha'),bidangUsaha:bidangUsahaFinal,tahunMulaiUsaha:val('tahunMulaiUsaha'),
     posisiUsaha:val('posisiUsaha'),jumlahTenagaKerja:val('jumlahTenagaKerja'),
     statusLegalitas:val('statusLegalitas'),omzetRange:val('omzetRange'),lokasiUsaha:val('lokasiUsaha'),
     usahaBerkaitanKomunikasi:val('usahaBerkaitanKomunikasi'),
@@ -1816,14 +2027,12 @@ function renderKpi(s){
     <div class="card" style="padding:12px 16px">Relevansi: <b>${s.relevansiRate||0}%</b></div>
     <div class="card" style="padding:12px 16px">Wirausaha: <b>${s.wirausaha||0}</b> · Magang: <b>${s.magang||0}</b> · Organisasi: <b>${s.organisasi||0}</b></div>`;
 }
-
 function renderRecentTable(rows){
   const t=$('recentTable');if(!t)return;
   if(!rows||!rows.length){t.innerHTML='<tr><td>Belum ada data pada scope Anda.</td></tr>';return}
   t.innerHTML=`<tr><th>Tracer ID</th><th>NIM</th><th>Nama</th><th>Prodi</th><th>Status</th></tr>`+
     rows.map(r=>`<tr><td>${esc(r.tracerId)}</td><td>${esc(r.nim)}</td><td>${esc(r.nama)}</td><td>${esc(r.programStudi)}</td><td>${esc(r.status)}</td></tr>`).join('');
 }
-
 function renderRespTable(rows,pagination){
   const t=$('respTable');if(!t)return;
   t.innerHTML=(!rows||!rows.length)?'<tr><td>Tidak ada data pada scope Anda.</td></tr>':
@@ -1838,12 +2047,8 @@ function renderRespTable(rows,pagination){
     if(next)next.onclick=()=>{respPage=pagination.page+1;loadDashboardData('all')};
   }
 }
-
-/* ============================================================
- *  ACCREDITATION — [FIX-Y] render per scope konsisten
- * ============================================================ */
 function renderAccreditationFor(scope){
-  const a = ACC_DATA[scope];
+  const a = ACC_DATA[scope] || (DASH_DATA&&DASH_DATA.accreditation);
   if(!a){
     setHTML('accListBANPT','<li>Memuat…</li>');
     setHTML('accListLAMSPAK','<li>Memuat…</li>');
@@ -1870,14 +2075,12 @@ function renderAccreditationFor(scope){
     <li><b>Filter scope:</b> ${esc(scope||'all')}</li>
     <li><b>Periode data:</b> ${esc((META&&META.periodeAktif&&META.periodeAktif.nama)||'Semua')}</li>`);
 }
-
 function renderMasterTable(items){
   const t=$('masterTable');if(!t)return;
   t.innerHTML=(!items||!items.length)?'<tr><td>Tidak ada data pada scope Anda.</td></tr>':
     `<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Jenjang</th><th>Tahun Lulus</th><th>Status</th></tr>`+
     items.map(x=>`<tr><td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td><td>${esc(x.JENJANG)}</td><td>${esc(x.TAHUN_LULUS)}</td><td>${x.sudah?'✅ Sudah':'⏳ Belum'}</td></tr>`).join('');
 }
-
 function renderReminderTable(items){
   const t=$('reminderTable');if(!t)return;
   CURRENT_REMINDER_ITEMS = items||[];
@@ -1889,7 +2092,7 @@ function renderReminderTable(items){
   t.innerHTML=`<tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>Email</th><th>WhatsApp</th><th>Aksi</th></tr>`+
     items.map(x=>{
       const wa = String(x.WHATSAPP||'').replace(/\D/g,'');
-      const waLink = wa ? `https://wa.me/${wa.startsWith('0')?'62'+wa.slice(1):wa}?text=${encodeURIComponent('Assalamualaikum '+x.NAMA+', mohon kesediaan mengisi Tracer Study FIKOM UPDM (B) di https://s.id/tracer-fikom. Terima kasih.')}` : '';
+      const waLink = wa ? `https://wa.me/${wa.startsWith('0')?'62'+wa.slice(1):wa}?text=${encodeURIComponent('Assalamualaikum '+x.NAMA+', mohon kesediaan mengisi Tracer Study FIKOM UPDM (B). Terima kasih.')}` : '';
       const emailLink = x.EMAIL ? `mailto:${x.EMAIL}?subject=${encodeURIComponent('Reminder Tracer Study FIKOM UPDM (B)')}&body=${encodeURIComponent('Yth. '+x.NAMA+',\n\nMohon kesediaan Anda mengisi Tracer Study FIKOM UPDM (B).\n\nTerima kasih.')}` : '';
       return `<tr>
         <td>${esc(x.NIM)}</td><td>${esc(x.NAMA)}</td><td>${esc(x.PROGRAM_STUDI)}</td>
@@ -1901,7 +2104,6 @@ function renderReminderTable(items){
       </tr>`;
     }).join('');
 }
-
 function renderSaranList(items){
   const box=$('saranList'); if(!box) return;
   if(!items||!items.length){ box.innerHTML='<div class="empty-state"><div class="es-icon">💬</div><div>Belum ada saran.</div></div>'; return; }
@@ -1914,7 +2116,6 @@ function renderSaranList(items){
       <p style="margin:0;font-size:13px;color:var(--muted);line-height:1.6">${esc(x.saran||'-')}</p>
     </div>`).join('');
 }
-
 function renderAdminPanel(users,periode,audit,reminderLog){
   setHTML('usersTable',`<tr><th>Username</th><th>Nama</th><th>Role</th><th>Aktif</th></tr>`+
     (users||[]).map(u=>`<tr><td>${esc(u.username)}</td><td>${esc(u.nama)}</td><td>${esc(u.role)}</td><td>${u.aktif?'✅':'❌'}</td></tr>`).join(''));
@@ -1925,14 +2126,9 @@ function renderAdminPanel(users,periode,audit,reminderLog){
   setHTML('reminderLogTable',`<tr><th>Waktu</th><th>Aktor</th><th>Channel</th><th>Total</th></tr>`+
     (reminderLog||[]).slice(0,20).map(r=>`<tr><td>${esc(r.timestamp)}</td><td>${esc(r.actor)}</td><td>${esc(r.channel)}</td><td>${esc(r.total)}</td></tr>`).join(''));
 }
-
-/* ============================================================
- *  RENDER ALL PANELS — idempotent dari cache DASH_DATA
- * ============================================================ */
 function renderAllPanels(){
   if(!DASH_DATA){console.warn('[renderAllPanels] DASH_DATA masih null');return}
   const safe=(label,fn)=>{try{fn()}catch(e){console.error('[render:'+label+']',e)}};
-
   safe('KPI',    ()=>renderKpi(DASH_DATA.summary));
   safe('Tahun',  ()=>updateTahunFilterFromData(DASH_DATA.charts&&DASH_DATA.charts.yearCounts));
   safe('Recent', ()=>renderRecentTable(DASH_DATA.recent));
@@ -1948,7 +2144,6 @@ function renderAllPanels(){
     safe('Admin', ()=>renderAdminPanel(DASH_DATA.users||[],DASH_DATA.periode||[],DASH_DATA.audit||[],DASH_DATA.reminderLog||[]));
   }
   safe('Charts', ()=>renderChartsForPanel(DASH_ACTIVE_TAB));
-
   if(DASH_DATA.debug){
     const dbg=DASH_DATA.debug;
     const tag=$('debugBadge');
@@ -1972,7 +2167,6 @@ async function loadDashboardData(include){
     const inc=include||'all';
     const r=await apiPost({action:'dashboard',filters,page:respPage,perPage:RESP_PER_PAGE,include:inc});
     console.log('[Dashboard] Response (include='+inc+', scope='+accScope+'):',{ok:r.ok,total:r.summary&&r.summary.total,debug:r.debug});
-
     if(!DASH_DATA) DASH_DATA={};
     Object.keys(r).forEach(k=>{
       if(k==='master'||k==='reminder'){
@@ -1981,9 +2175,7 @@ async function loadDashboardData(include){
         DASH_DATA[k]=r[k];
       }
     });
-
     renderAllPanels();
-
     if(PROFILE&&PROFILE.role==='ADMIN'&&(inc==='all')){
       try{await loadMasterStats()}catch(e){console.warn('loadMasterStats err',e)}
     }
@@ -2066,7 +2258,7 @@ function renderMasterPagination(r){
 }
 
 /* ============================================================
- *  REMINDER BROADCAST — [FIX-Z] WhatsApp & Email massal
+ *  REMINDER BROADCAST
  * ============================================================ */
 function broadcastWhatsApp(){
   const items = CURRENT_REMINDER_ITEMS;
@@ -2074,14 +2266,12 @@ function broadcastWhatsApp(){
   const withWa = items.filter(x => String(x.WHATSAPP||'').replace(/\D/g,''));
   if(!withWa.length){ toast('Tidak ada nomor WhatsApp pada daftar reminder.','warn'); return; }
   if(withWa.length>10 && !confirm(`Akan membuka ${withWa.length} tab WhatsApp. Lanjutkan?`)) return;
-  let opened=0;
   withWa.slice(0,20).forEach((x,i)=>{
     setTimeout(()=>{
       const wa=String(x.WHATSAPP).replace(/\D/g,'');
       const phone=wa.startsWith('0')?'62'+wa.slice(1):wa;
       const text=encodeURIComponent(`Assalamualaikum ${x.NAMA},\n\nKami dari FIKOM UPDM (B) mengingatkan Anda untuk mengisi Tracer Study. Partisipasi Anda penting untuk akreditasi prodi.\n\nLink: https://s.id/tracer-fikom\n\nTerima kasih 🙏`);
       window.open(`https://wa.me/${phone}?text=${text}`,'_blank','noopener');
-      opened++;
     }, i*400);
   });
   toast(`Membuka ${Math.min(withWa.length,20)} tab WhatsApp…`,'ok');
@@ -2262,7 +2452,6 @@ function bindEvents(){
   $('refreshBtn').onclick=()=>{respPage=1;masterPage=1;loadDashboardData('all')};
   $('togglePass').onclick=()=>{const p=$('password');p.type=p.type==='password'?'text':'password'};
 
-  /* Subtab switching — [FIX-Y] pastikan render per panel konsisten */
   $$('#adminTabs button').forEach(b=>b.onclick=()=>{
     const targetPanel=b.dataset.panel;
     $$('#adminTabs button').forEach(x=>x.classList.remove('active'));
@@ -2271,17 +2460,13 @@ function bindEvents(){
     const panel=document.querySelector(`.panel[data-panel="${targetPanel}"]`);
     if(panel){panel.classList.remove('hidden');forceReflow(panel);}
     DASH_ACTIVE_TAB=targetPanel;
-
-    // Re-render chart panel aktif
     try{renderChartsForPanel(targetPanel)}catch(e){console.error('[tab:charts]',e)}
-    // [FIX-Y] Re-render accreditation untuk scope saat ini
     if(targetPanel==='akreditasi'){
       try{
         renderAccreditationFor(accScope);
         if(!ACC_DATA[accScope]) loadDashboardData('all');
       }catch(e){console.error('[tab:acc]',e)}
     }
-    // Update debug badge
     if(DASH_DATA&&DASH_DATA.debug){
       const dbg=DASH_DATA.debug;
       const tag=$('debugBadge');
@@ -2290,7 +2475,6 @@ function bindEvents(){
         tag.title=JSON.stringify(dbg,null,2);
       }
     }
-    // Lazy-load master/reminder
     if(targetPanel==='masteralumni'){
       if(!DASH_DATA || !DASH_DATA.master){ masterPage=1; reloadMaster(); }
       else { renderMasterTable(DASH_DATA.master.items||[]); renderMasterPagination(DASH_DATA.master); }
@@ -2302,7 +2486,6 @@ function bindEvents(){
     }
   });
 
-  /* Admin tiles */
   document.querySelectorAll('.admin-tile').forEach(t=>t.onclick=()=>{
     const a=t.dataset.action;
     if(a==='changePassword')openChangePasswordModal();
@@ -2336,7 +2519,6 @@ function bindEvents(){
   $('waBroadcastBtn')&&($('waBroadcastBtn').onclick=broadcastWhatsApp);
   $('emailBroadcastBtn')&&($('emailBroadcastBtn').onclick=broadcastEmail);
 
-  /* Scope bar akreditasi — [FIX-Y] refresh scope */
   $$('#accScopeBar button').forEach(b=>b.onclick=()=>{
     $$('#accScopeBar button').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
